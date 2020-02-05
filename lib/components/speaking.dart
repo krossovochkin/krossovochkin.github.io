@@ -7,7 +7,22 @@ final _data = {
   "Android Design Support Library": ["https://speakerdeck.com/krossovochkin/android-design-support-library"],
 };
 
-speaking() {  
+class Speaking extends StatelessWidget {
+  
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        HeaderText("Speaking"),
+        ..._speaking(),
+      ]
+    );
+  }
+}
+
+_speaking() {  
   return _data.entries.map((e) => Row(children: [
       NormalText(e.key + " "),
       LinkText("Slides", e.value[0]),

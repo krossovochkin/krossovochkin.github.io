@@ -11,6 +11,21 @@ final _data = {
   "Cryptography I": "https://www.coursera.org/course/crypto",
 };
 
-certificates() {  
+class Certificates extends StatelessWidget {
+	
+	@override
+	Widget build(BuildContext context) {
+		return Column(
+			mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+			children: [
+				HeaderText("Certificates"),
+        ..._certificates(),
+			]
+		);
+	}
+}
+
+_certificates() {  
   return _data.entries.map((e) => LinkText(e.key, e.value)).toList();
 }

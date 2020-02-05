@@ -14,6 +14,21 @@ final _data = {
   "Reddit": "https://www.reddit.com/user/krossovochkin"
 };
 
-links() {
+class Links extends StatelessWidget {
+  
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        HeaderText("Links"),
+        ..._links(),
+      ]
+    );
+  }
+}
+
+_links() {
   return _data.entries.map((e) => LinkText(e.key, e.value)).toList();
 }

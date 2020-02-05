@@ -11,8 +11,22 @@ final _data = {
   "Boolba Labs": { "https://www.facebook.com/Boolba.labs/": "Mobile Developer 05/2011 – 03/2014" },
 };
 
-workExperience() {
+class WorkExperience extends StatelessWidget {
+  
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        HeaderText("Work Experience"),
+        ..._workExperience(),
+      ]
+    );
+  }
+}
 
+_workExperience() {
   return _data.entries
   .map((e) => 
     e.value.entries.map((e2) => Row(children: [LinkText(e.key, e2.key), NormalText(" " + e2.value)]))

@@ -23,6 +23,21 @@ final _data = {
   "[Android] Notifications Overview and Pitfalls": "https://medium.com/@krossovochkin/android-notifications-overview-and-pitfalls-517d1118ec83",
 };
 
-publications() {   
+class Publications extends StatelessWidget {
+  
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        HeaderText("Publications"),
+        ..._publications(),
+      ]
+    );
+  }
+}
+
+_publications() {   
   return _data.entries.map((e) => LinkText(e.key, e.value)).toList();
 }

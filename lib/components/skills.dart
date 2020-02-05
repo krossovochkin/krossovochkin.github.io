@@ -20,6 +20,21 @@ final _data = {
   "C++": "https://en.wikipedia.org/wiki/C%2B%2B",
 };
 
-skills() {  
+class Skills extends StatelessWidget {
+  
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        HeaderText("Skills"),
+        ..._skills(),
+      ]
+    );
+  }
+}
+
+_skills() {  
   return _data.entries.map((e) => LinkText(e.key, e.value)).toList();
 }
