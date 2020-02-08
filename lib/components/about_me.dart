@@ -1,4 +1,4 @@
-import '..ui/ui_components.dart';
+import '../ui/ui_components.dart';
 
 class AboutMe extends StatelessWidget {
 	

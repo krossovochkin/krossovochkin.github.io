@@ -1,6 +1,6 @@
 import 'ui/ui_components.dart';
 
-import 'components/about_me.dart'
+import 'components/about_me.dart';
 import 'components/links.dart';
 import 'components/publications.dart';
 import 'components/speaking.dart';
@@ -30,24 +30,18 @@ class HomePage extends StatelessWidget {
       backgroundColor: bgColor,
       body: SafeArea(
         child: Scrollbar(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  AboutMe(),
-                  Links(),
-                  Publications(),
-                  Speaking(),
-                  Certificates(),
-                  Skills(),
-                  WorkExperience(),
-                  Education(),
-                ],
-              ),
-            ),
+          child: ListView(
+            padding: const EdgeInsets.all(8.0),  
+            children: <Widget>[
+              AboutMe(),
+              Links(),
+              Publications(),
+              Speaking(),
+              Certificates(),
+              Skills(),
+              WorkExperience(),
+              Education(),
+            ],
           ),
         ),
       ),
