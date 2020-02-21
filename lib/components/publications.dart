@@ -1,6 +1,7 @@
 import '../ui/ui_components.dart';
 
 final _data = {
+  "Vinyls animation with MotionLayout": "https://medium.com/@krossovochkin/vinyls-animation-with-motionlayout-595e716c2752",
   "From RxJava to Kotlin Flow: Backpressure": "https://proandroiddev.com/from-rxjava-to-kotlin-flow-backpressure-d1fb91e6dea8",
   "Diving Deep into Android Dex bytecode": "https://proandroiddev.com/diving-deep-into-android-dex-bytecode-48db82b170c8",
   "From RxJava 2 to Kotlin Flow: Threading": "https://proandroiddev.com/from-rxjava-2-to-kotlin-flow-threading-8618867e1955",
