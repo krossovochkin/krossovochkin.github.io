@@ -2,6 +2,7 @@ import 'ui/ui_components.dart';
 
 import 'components/about_me.dart';
 import 'components/links.dart';
+import 'components/projects.dart';
 import 'components/publications.dart';
 import 'components/speaking.dart';
 import 'components/certificates.dart';
@@ -35,6 +36,7 @@ class HomePage extends StatelessWidget {
             children: <Widget>[
               AboutMe(),
               Links(),
+			  Projects(),
               Publications(),
               Speaking(),
               Certificates(),
