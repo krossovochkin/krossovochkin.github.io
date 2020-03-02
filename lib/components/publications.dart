@@ -1,6 +1,7 @@
 import '../ui/ui_components.dart';
 
 final _data = {
+  "From RxJava to Kotlin Flow: Throttling": "https://proandroiddev.com/from-rxjava-to-kotlin-flow-throttling-ed1778847619",
   "From RxJava to Kotlin Flow: Stream Types": "https://proandroiddev.com/from-rxjava-to-kotlin-flow-stream-types-7916be6cabc2",
   "From RxJava to Kotlin Flow: Error Handling": "https://proandroiddev.com/from-rxjava-to-kotlin-flow-error-handling-da1f6a4f2708",
   "Vinyls animation with MotionLayout": "https://medium.com/@krossovochkin/vinyls-animation-with-motionlayout-595e716c2752",
