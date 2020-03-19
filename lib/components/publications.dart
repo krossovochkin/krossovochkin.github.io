@@ -1,6 +1,8 @@
 import '../ui/ui_components.dart';
 
 final _data = {
+  "Unit Testing Best Practices": "https://medium.com/better-programming/unit-testing-best-practices-9bceeafe6edf",
+  "Compiler-generated classes, methods and fields in Java": "https://medium.com/javarevisited/compiler-generated-classes-methods-and-fields-in-java-343dde2cce61",
   "From RxJava to Kotlin Flow: Testing": "https://proandroiddev.com/from-rxjava-to-kotlin-flow-testing-42f1641d8433",
   "From RxJava to Kotlin Flow: Throttling": "https://proandroiddev.com/from-rxjava-to-kotlin-flow-throttling-ed1778847619",
   "From RxJava to Kotlin Flow: Stream Types": "https://proandroiddev.com/from-rxjava-to-kotlin-flow-stream-types-7916be6cabc2",
