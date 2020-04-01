@@ -11,7 +11,9 @@ final _data = {
   "Twitter": "https://twitter.com/krossovochkin",
   "Kaggle": "https://www.kaggle.com/krossovochkin",
   "SpeakerDeck": "https://speakerdeck.com/krossovochkin",
-  "Reddit": "https://www.reddit.com/user/krossovochkin"
+  "Reddit": "https://www.reddit.com/user/krossovochkin",
+  "HackerRank": "https://www.hackerrank.com/krossovochkin",
+  "LeetCode": "https://leetcode.com/krossovochkin/"
 };
 
 class Links extends StatelessWidget {
