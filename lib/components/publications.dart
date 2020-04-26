@@ -1,6 +1,7 @@
 import '../ui/ui_components.dart';
 
 final _data = {
+  "Category Theory": "https://medium.com/@krossovochkin/category-theory-90b89ec9f2ab",
   "Accessibility of text over random background colors": "https://proandroiddev.com/accessibility-of-text-over-generic-background-color-e82e9546731a",
   "Unit Testing Best Practices": "https://medium.com/better-programming/unit-testing-best-practices-9bceeafe6edf",
   "Compiler-generated classes, methods and fields in Java": "https://medium.com/javarevisited/compiler-generated-classes-methods-and-fields-in-java-343dde2cce61",
