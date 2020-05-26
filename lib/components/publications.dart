@@ -20,9 +20,13 @@ class _Feature {
 }
 
 final _data = {
-  _Publication("The Real Kotlin Flow benefits over RxJava", "https://proandroiddev.com/the-real-kotlin-flow-benefits-over-rxjava-c19b99ba6eb9", []),
+  _Publication("The Real Kotlin Flow benefits over RxJava", "https://proandroiddev.com/the-real-kotlin-flow-benefits-over-rxjava-c19b99ba6eb9", [
+	_Feature("ProAndroidDev Digest #22", "https://proandroiddev.com/proandroiddev-digest-22-a7bf64f9f068")
+  ]),
   _Publication("Raising old project from the depth", "https,//medium.com/@krossovochkin/raising-old-project-from-the-depth-22f3084ed82e", []),
-  _Publication("Kotlin useful but unfairly not mentioned features", "https,//proandroiddev.com/kotlin-useful-but-unfairly-not-mentioned-features-25ec41ea0a87", []),
+  _Publication("Kotlin useful but unfairly not mentioned features", "https,//proandroiddev.com/kotlin-useful-but-unfairly-not-mentioned-features-25ec41ea0a87", [
+	_Feature("ProAndroidDev Digest #21", "https://proandroiddev.com/proandroiddev-digest-21-60de024d6337")
+  ]),
   _Publication("Category Theory", "https,//medium.com/@krossovochkin/category-theory-90b89ec9f2ab", []),
   _Publication("Accessibility of text over random background colors", "https,//proandroiddev.com/accessibility-of-text-over-generic-background-color-e82e9546731a", [
 	_Feature("ProAndroidDev Digest #18", "https://proandroiddev.com/proandroiddev-digest-18-4c6a096fc7e8")
