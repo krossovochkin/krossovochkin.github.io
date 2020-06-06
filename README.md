@@ -1,1 +1,0 @@
-# Krossovochkin personal website
