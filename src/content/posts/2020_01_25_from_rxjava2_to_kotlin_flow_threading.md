@@ -32,7 +32,7 @@ Both RxJava 2 Observable and Kotlin Flow are cold streams. That means that code 
 
 Basic usage looks like the following:
 
-![](../../1-Y8LjGynLPUwJ6ZNzVAG2HQ.png)
+![](../../img/img/1-Y8LjGynLPUwJ6ZNzVAG2HQ.png)
 
 Here we see that we observe for some changes with subscribing on io. And each result received we print on main thread (because we are observing on main).
 
@@ -42,27 +42,27 @@ This is an operator which declares on which scheduler observable will be subscri
 
 The first important thing about subscribeOn is that it doesn’t matter where it will be:
 
-![](../../1-l2-3g3OFyw_IOLIwTKLl7A.png)
+![](../../img/1-l2-3g3OFyw_IOLIwTKLl7A.png)
 
-![](../../1-zwQicVXtWi_uvcHNmQH8rQ.png)
+![](../../img/1-zwQicVXtWi_uvcHNmQH8rQ.png)
 
 Both these cases produce same results and it is not surprise. By providing this operator in the chain we declare where chain will be started — and this knowledge can’t be dependent on position.
 
 Second thing is that as chain can’t be started on multiple schedulers simultaneously — there is no need to put multiple subscribeOn in the chain as only one will take effect. If you for some reason put multiple subscribeOn operators in the chain, then the top one will win and the bottom will be ignored:
 
-![](../../1-LBKRVDIpr_rxjylKadaSgg.png)
+![](../../img/1-LBKRVDIpr_rxjylKadaSgg.png)
 
 ###### observeOn
 
 When subscribeOn says on which scheduler chain will be started, observeOn says on which scheduler thread will proceed. Effectively that means that observeOn changes scheduler in the chain below itself.
 
-![](../../1-uCiZwTFtiPoh8KZdMUDLpg.png)
+![](../../img/1-uCiZwTFtiPoh8KZdMUDLpg.png)
 
 Here we see that from the chain started till the observeOn we’re on io (red line) and then observeOn changes chain to be run on mainThread scheduler — so everything below is on mainThread now (green line).
 
 Unlike subscribeOn it is actually has some sense to add multiple observeOn if there is a need:
 
-![](../../1-ES5NJCpKCmVVhdD36UurzQ.png)
+![](../../img/1-ES5NJCpKCmVVhdD36UurzQ.png)
 
 If we look at example above: here we might say that we load something from network, then calculate something and then print result. Adding multiple observeOn first switches to computation scheduler (to make computation in background thread — it is blue line), and then switch to mainThread to print result.
 
@@ -70,13 +70,13 @@ If we look at example above: here we might say that we load something from netwo
 
 One common mistake with subscribeOn is its usage with Observable.just.
 
-![](../../1-4EVWYZCJ4u9mPrJazHQaeg.png)
+![](../../img/1-4EVWYZCJ4u9mPrJazHQaeg.png)
 
 Value inside just is calculated immediately and not upon subscription. That means that if you create such observable on main thread, then that potentially heavy computation will be done on main thread. Subscription would be done correctly on io, but value for just will be calculated before that.
 
 One of the ways to fix this is to wrap your Observable.just into Observable.defer, so everything inside will be calculated upon subscription and on the scheduler we’ve declared in subscribeOn:
 
-![](../../1-x8ASbBk5N1KnVIDaT8KRHA.png)
+![](../../img/1-x8ASbBk5N1KnVIDaT8KRHA.png)
 
 ###### flatMap concurrency and parallelism
 
@@ -84,19 +84,19 @@ Another tricky thing comes from the usage of operator flatMap and understanding 
 
 One example to understand a problem is when we have stream of list of ids and for each we’d like to load some data from the network:
 
-![](../../1-KmPkrVtEedgkXu08JxSMew.png)
+![](../../img/1-KmPkrVtEedgkXu08JxSMew.png)
 
 What we could expect here is that we’ve subscribed to io, io() has thread pool under the hood, therefore our loadData calls for each id was successfully paralleled. But that’s not the case.
 We wrote concurrent code using flatMap, but it is not run in parallel and the reason of that is that we’ve declared our chain to be started on io. Our chain start is on flatMapIterable and that means that upon subscription one thread from io pool will be taken and on that single thread everything will be run.
 In order to change behavior and make our code run in parallel we need to move subscribeOn inside flatMap:
 
-![](../../1-RfeS9DYoGIMoj05cI-zkpA.png)
+![](../../img/1-RfeS9DYoGIMoj05cI-zkpA.png)
 
 Each inner observable (observable inside flatMap) will be subscribed as soon as event comes into flatMap. On each event there will be subscription on which new thread from io pool will be taken. And this way we achieve parallelism.
 
 So, when we use some operators like flatMap our chain has more than one subscription points: one for original chain start and one for each inner observable:
 
-![](../../1-qft5P6_SBwP8sbYVL5IETg.png)
+![](../../img/1-qft5P6_SBwP8sbYVL5IETg.png)
 
 On the picture arrows point where subscription happens. Using subscribeOn we can declare on which scheduler subscription in such a points should happen.
 
@@ -113,7 +113,7 @@ Kotlin Flow
 
 Basic usage with Kotlin Flow is the following:
 
-![](../../1-i95ne1PCxci1yCcizF14cQ.png)
+![](../../img/1-i95ne1PCxci1yCcizF14cQ.png)
 
 > And here we immediately have many concepts which are related to coroutines, which might be needed to explain. We’ll not dive deep into explaining coroutines stuff, article is about Kotlin Flow, so it might be a good idea to read the documentation on the coroutines first if you are not familiar with them.
 
@@ -129,13 +129,13 @@ So if we want to collect in Main, then we need to call collect function in the c
 
 This is an operator which changes the context (dispatcher particularly) on which flow is working.
 
-![](../../1-QOMRfQTktM17z2xHUYmcrQ.png)
+![](../../img/1-QOMRfQTktM17z2xHUYmcrQ.png)
 
 So in our example above, by writing flowOn(Dispatchers.IO) we say that we want everything *before* it run on the IO.
 
 If we add some computation (inside map) as we’ve done before with RxJava we’ll have the following result:
 
-![](../../1-zpbvxCRXjGLSEuFlnrWarg.png)
+![](../../img/1-zpbvxCRXjGLSEuFlnrWarg.png)
 
 We’ll see that basically we can change where our operators should work by declaring flowOn after them.
 
@@ -145,17 +145,17 @@ One important thing about collect function is that it is suspending. That means 
 
 So if you put inside same coroutine two collect functions, then first one will effectively block second from execution:
 
-![](../../1-xopZFayVenZK03PQ9RoZ0Q.png)
+![](../../img/1-xopZFayVenZK03PQ9RoZ0Q.png)
 
 Here we’ll see result printed, but “second $result” not, because first collect function will suspend and not allow second collect to happen.
 
 To fix that we need to launch each flow in a separate coroutine:
 
-![](../../1-511-boC1pDMN9gLmK9ySKg.png)
+![](../../img/1-511-boC1pDMN9gLmK9ySKg.png)
 
 But it doesn’t look pretty and to make it look a bit better (without additional nested level) we can use launchIn extension function (which is just syntactic sugar over that wrapped launch) with onEach:
 
-![](../../1-atQKeG0bwwMfjBD7nBIZHg.png)
+![](../../img/1-atQKeG0bwwMfjBD7nBIZHg.png)
 
 This way we create code which looks more similar to us (who wrote on RxJava before), because subscription in RxJava usually not blocking (unless some blockingXXX method is used), so seems launchIn should be primary option for similar use cases.
 
@@ -163,13 +163,13 @@ This way we create code which looks more similar to us (who wrote on RxJava befo
 
 With flowOf we have similar situation as with Observable.just. If you put some calculation (suspending) then it will be done in the outer scope and not affected by flowOn:
 
-![](../../1-jTX93fFjuwjxR33NLaSkmA.png)
+![](../../img/1-jTX93fFjuwjxR33NLaSkmA.png)
 
 If run inside context with Dispatchers.Main, then calculate() will be run on main and not on io.
 
 To fix that you can use flow builder and explicitly emit value inside:
 
-![](../../1-JSkHKLjh9X-YDL1Olkl5hQ.png)
+![](../../img/1-JSkHKLjh9X-YDL1Olkl5hQ.png)
 
 Then calculation will be done on IO thread.
 
@@ -177,7 +177,7 @@ Then calculation will be done on IO thread.
 
 To find out how Kotlin Flow works with flatMapMerge (analog of RxJava flatMap) we’ll use few test examples:
 
-![](../../1-_G4_NwfgY1wmO7aVoamsrw.png)
+![](../../img/1-_G4_NwfgY1wmO7aVoamsrw.png)
 
 Here we have flow which is collected on d1 dispatcher. The flow has two items, which are flat mapped onto two other items each. And we have single flowOn on the d2 dispatcher.
 In the code we’ve added onEach call with information on the thread on which execution happens.
@@ -199,7 +199,7 @@ So, we see that unlike RxJava even when we’ve put flowOn outside (below) the i
 
 If we put flowOn inside flatMapMerge:
 
-![](../../1-sv6HwmwwsOufpc-00wZpCQ.png)
+![](../../img/1-sv6HwmwwsOufpc-00wZpCQ.png)
 
 we’ll see the following result:
 
@@ -218,7 +218,7 @@ Again each inner flow runs on its own thread from second pool. Therefore there s
 
 But there is a difference and let’s see what it is by adding onEach below first flowOf call:
 
-![](../../1-isZ3b5z8Jg7f-V9tOqdFlw.png)
+![](../../img/1-isZ3b5z8Jg7f-V9tOqdFlw.png)
 
 The result will be:
 
@@ -237,13 +237,13 @@ collect: pool-1-thread-2 @coroutine#2
 
 That means that everything above flowOn is run on the second pool. Outer is on the first thread and each inner flow on its own (second and third):
 
-![](../../1-dfWRpulMkYT_8aNiXJVCPA.png)
+![](../../img/1-dfWRpulMkYT_8aNiXJVCPA.png)
 
 In red it is shown running on d2, and in blue — on d1 .
 
 Now let’s see what would be if we put flowOn inside flatMapMerge:
 
-![](../../1-SM6l5_038WGzm9Z4Zd97nA.png)
+![](../../img/1-SM6l5_038WGzm9Z4Zd97nA.png)
 
 The output will be:
 
@@ -262,7 +262,7 @@ collect: pool-1-thread-3 @coroutine#2
 
 We see that outer now runs on the d1 and therefore not affected by flowOn:
 
-![](../../1-5D5AHoF0nPJyD7lcMvp0cA.png)
+![](../../img/1-5D5AHoF0nPJyD7lcMvp0cA.png)
 
 And that’s the difference.
 
@@ -299,17 +299,17 @@ Also we should already keep in mind that non-blocking threading in RxJava and su
 To make our test example as correct as possible we’ll use java executors under the hood of the Scheduler and Dispatcher.
 We’ll create a number of them for Rx:
 
-![](../../1-24TAclWSQTvfOlYIw9I65w.png)
+![](../../img/1-24TAclWSQTvfOlYIw9I65w.png)
 
 And for Kotlin Flow:
 
-![](../../1-6WmwuDO_EMLlyHLDycCu8A.png)
+![](../../img/1-6WmwuDO_EMLlyHLDycCu8A.png)
 
 We’ll have 4 pools with 3 threads and main executor with only one thread.
 
 Our RxJava example will look like the following:
 
-![](../../1-nYL6iK4SOlMEh9YMOsSbKQ.png)
+![](../../img/1-nYL6iK4SOlMEh9YMOsSbKQ.png)
 
 Here we have stream of three items, which is started on s1, then we switch execution to s2. Inside flatMap we have inner observable with its own subscribe (allowing parallelism) and also some thread switching. Then after flat mapping we do some work and print result in main thread.
 
@@ -363,14 +363,14 @@ end: pool-6-thread-1
 It is pretty long, but should match our assumptions written before.
 Let’s visualize this:
 
-![](../../1-VNsQnjyftFkMvtcPD8x_rQ.png)
+![](../../img/1-VNsQnjyftFkMvtcPD8x_rQ.png)
 
 So here we see exactly what we’ve described above. The main trick is that “3” is run on the same scheduler as “inner 2”.
 We had two starting points (original and inner), where we put the subscribeOn allowing paralleling inside inner. And then moved below the chain adding where necessary observeOn.
 
 Now we’ll switch to the Kotlin Flow version:
 
-![](../../1-qIELqmv38MzyvsUml8QUYw.png)
+![](../../img/1-qIELqmv38MzyvsUml8QUYw.png)
 
 From the very beginning we fix the main thread as being our end thread. Then we start from the bottom and add flowOn where needed. First we add d4 and note that “inner 2” should also run on it. Then we switch to d3 and so on up to the very top of the chain.
 And here is the result:
@@ -440,7 +440,7 @@ This could be just a coincidence because of concurrency, or maybe it is because 
 
 If we visualize threading, we can do something like:
 
-![](../../1-z6XDLAkVgMLmyeYsvSTbbA.png)
+![](../../img/1-z6XDLAkVgMLmyeYsvSTbbA.png)
 
 ---
 
