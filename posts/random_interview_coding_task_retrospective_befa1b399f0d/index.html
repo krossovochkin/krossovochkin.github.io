@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Random interview coding task retrospective :: Krossovochkin — Android Developer</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content="Introduction It happens often that on interviews you’ve asked to perform some coding task. For unknown reason most of the times you’ve asked to write some code not in the IDE, but on piece of paper. I don’t like such tasks on an interview, because in real life one won’t write any kind of code on a paper. If you need to write something not in IDE you face issues like you can’t quickly change something or write new code in between the lines." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://krossovochkin.github.io/posts/random_interview_coding_task_retrospective_befa1b399f0d/" />
+
+
+
+
+<link rel="stylesheet" href="https://krossovochkin.github.io/assets/style.css">
+
+  <link rel="stylesheet" href="https://krossovochkin.github.io/assets/yellow.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://krossovochkin.github.io/img/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="https://krossovochkin.github.io/img/favicon/yellow.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  <meta name="twitter:site" content="krossovochkin" />
+
+<meta name="twitter:creator" content="krossovochkin" />
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Random interview coding task retrospective :: Krossovochkin">
+<meta property="og:description" content="Introduction It happens often that on interviews you’ve asked to perform some coding task. For unknown reason most of the times you’ve asked to write some code not in the IDE, but on piece of paper. I don’t like such tasks on an interview, because in real life one won’t write any kind of code on a paper. If you need to write something not in IDE you face issues like you can’t quickly change something or write new code in between the lines." />
+<meta property="og:url" content="https://krossovochkin.github.io/posts/random_interview_coding_task_retrospective_befa1b399f0d/" />
+<meta property="og:site_name" content="Random interview coding task retrospective" />
+
+  <meta property="og:image" content="https://krossovochkin.github.io/">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2019-09-27 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Krossovochkin
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About me</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About me</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://krossovochkin.github.io/posts/random_interview_coding_task_retrospective_befa1b399f0d/">Random interview coding task retrospective</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2019-09-27 
+      </span>
+    
+    
+    <span class="post-author">::
+      Vasya Drobushkov
+    </span>
+    
+  </div>
+
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <h1 id="introduction">Introduction<a href="#introduction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+<p>It happens often that on interviews you’ve asked to perform some coding task. For unknown reason most of the times you’ve asked to write some code not in the IDE, but on piece of paper. I don’t like such tasks on an interview, because in real life one won’t write any kind of code on a paper. If you need to write something not in IDE you face issues like you can’t quickly change something or write new code in between the lines. You don’t get suggestions or autocomplete. Basically, you are out of you zone of comfort. Considering that interview by itself is a stress (no matter how confident you are in your knowledge) you might not complete the task successfully.
+But anyway such tasks are pretty common so one should be prepared for them.</p>
+<p>I’ve been on an interview recently and had to write some algorithm implementation. Though I’m professional developer for quite some time my (general) programming skills are not that great (shame on me). In real life you rarely need to implement some algorithms by yourself, instead abstract thinking seems more valuable. And if you don’t do something for some time, you start to forget things pretty fast. I wasn’t prepared enough therefore I failed, but it is not what I’d like to talk about.</p>
+<p>Here I’d like to revisit the task, complete it and make some conclusions</p>
+<h2 id="the-task">The task<a href="#the-task" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>The task is pretty simple. There is singly linked list represented as head node. It is required to reverse it.</p>
+<p>The algorithm should be the following:</p>
+<ul>
+<li>
+<p>Take first item in the list (it has pointer to the next item)</p>
+</li>
+<li>
+<p>Make next item to point to the first item</p>
+</li>
+<li>
+<p>Make first item to point to the previous item (if exists)</p>
+</li>
+<li>
+<p>Repeat till the end of list</p>
+</li>
+</ul>
+<h2 id="prerequisites">Prerequisites<a href="#prerequisites" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>List is described as a Node:</p>
+<pre><code>class Node&lt;T&gt;(
+    val value: T,
+    var next: Node&lt;T&gt;?
+)
+</code></pre>
+<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="before-start">Before start<a href="#before-start" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>We’ll start from clarifying some questions:</p>
+<ul>
+<li>
+<p>List can be quite long, so we should not use some intermediate data structures like temp lists to copy data there</p>
+</li>
+<li>
+<p>List cannot be null, we always have head</p>
+</li>
+<li>
+<p>List might contain one item, in that case reversed list will be the same as original one</p>
+</li>
+<li>
+<p>Algorithm should be quite fast, the expected complexity should be linear (that means we should iterate through the list once)</p>
+</li>
+</ul>
+<h3 id="construction">Construction<a href="#construction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Before reversing the list we should be able to construct it first.
+We’ll do it the following way:</p>
+<pre><code>Node(1, Node(2, Node(3, Node(4, Node(5, Node(6, Node(7, Node(8, Node(9, Node(10, null))))))))))
+</code></pre>
+<p>It will describe the list of 10 items.</p>
+<p>For test and debug purposes we might want to print our list to console, for that following function will be helpful:</p>
+<pre><code>private fun &lt;T&gt; println(list: Node&lt;T&gt;) {
+    var currentNode: Node&lt;T&gt;? = list
+    while (currentNode != null) {
+        print(&quot;${currentNode.value} &quot;)
+        currentNode = currentNode.next
+    }
+    println()
+}
+</code></pre>
+<p>The output for our created list will be:</p>
+<pre><code>1 2 3 4 5 6 7 8 9 10
+</code></pre>
+<h3 id="method-signature">Method signature<a href="#method-signature" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>The method we’ll implement will have the following signature:</p>
+<pre><code>fun &lt;T&gt; Node&lt;T&gt;.reverse(): Node&lt;T&gt;
+</code></pre>
+<p>It will modify existing list, not create new one.</p>
+<h3 id="tests">Tests<a href="#tests" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>In order to verify our solution, we should have some tests.
+This task will be split into two parts.
+First of all we need to be able to compare two lists, for this we’ll create method assertEquals, it will throw exception if lists don’t have equal content:</p>
+<pre><code>fun &lt;T&gt; assertEquals(expected: Node&lt;T&gt;, actual: Node&lt;T&gt;) {
+
+    var first: Node&lt;T&gt;? = expected
+    var second: Node&lt;T&gt;? = actual
+
+    while (first != null &amp;&amp; second != null) {
+        if (first.value != second.value) {
+            throw RuntimeException()
+        }
+        first = first.next
+        second = second.next
+    }
+
+    if (first?.value != second?.value) {
+        throw RuntimeException()
+    }
+
+    println(&quot;OK&quot;)
+}
+</code></pre>
+<p>The tests we’ll make are:</p>
+<ul>
+<li>
+<p>If list has one item, then reversed list is same as original</p>
+</li>
+<li>
+<p>If list has more than one item, then reversed list is reversed correctly</p>
+<p>assertEquals(
+Node(1, null),
+Node(1, null).reverse()
+)</p>
+<p>assertEquals(
+Node(10, Node(9, Node(8, Node(7, Node(6, Node(5, Node(4, Node(3, Node(2, Node(1, null)))))))))),
+Node(1, Node(2, Node(3, Node(4, Node(5, Node(6, Node(7, Node(8, Node(9, Node(10, null))))))))))
+.reverse()
+)</p>
+</li>
+</ul>
+<p>Now we have our list implementation ready, algorithm is clear and tests are ready as well.</p>
+<h3 id="first-implementation">First implementation<a href="#first-implementation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>The main challenge in this task is that when we change links (current node should point to previous one and next one should point to current one) is that we should not loose the track of Node which is next for our next node. We’ll solve that by keeping reference to the node which is next of the next node.
+The implementation will be like this:</p>
+<pre><code>fun &lt;T&gt; Node&lt;T&gt;.reverse(): Node&lt;T&gt; {
+    var previousNode: Node&lt;T&gt;? = null
+    var currentNode: Node&lt;T&gt; = this
+    var nextNode: Node&lt;T&gt;? = currentNode.next
+
+    while (nextNode != null) {
+        val afterNextNode = nextNode.next
+
+        nextNode.next = currentNode
+        currentNode.next = previousNode
+
+        previousNode = currentNode
+        currentNode = nextNode
+        nextNode = afterNextNode
+    }
+
+    return currentNode
+}
+</code></pre>
+<p>We run our tests and they pass! So we solve the problem.
+But can we do better?</p>
+<h3 id="second-implementation">Second implementation<a href="#second-implementation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>The issue with current implementation is that we actually use 4 pointers to the list (previous, current, next, afterNext) to reverse the list. But can we do same with only 3 pointers?</p>
+<p>If we look carefully at our implementation we’ll see that we basically look one item ahead. And we can use 3 pointers by moving our pointers 1 step behind.
+We’ll get rid of afterNextNode pointer and replace references of nextNode to currentNode and currentNode to previousNode.</p>
+<p>The solution will be like:</p>
+<pre><code>fun &lt;T&gt; Node&lt;T&gt;.reverse(): Node&lt;T&gt; {
+    var previousNode: Node&lt;T&gt;? = null
+    var currentNode: Node&lt;T&gt;? = this
+    var nextNode: Node&lt;T&gt;?
+
+    while (currentNode != null) {
+        nextNode = currentNode.next
+        currentNode.next = previousNode
+
+        previousNode = currentNode
+        currentNode = nextNode
+
+    }
+
+    return previousNode!!
+}
+</code></pre>
+<blockquote>
+<p>NOTE: we use !! in the return, because actually we know that result will be non-null and we don’t want to make our implementation more complex by using unnecessary safe calls</p>
+</blockquote>
+<p>So we used only three pointers and the implementation is quite short. Tests are passed. So seems we’re fine.
+But can we do better?</p>
+<h3 id="final-implementation">Final implementation<a href="#final-implementation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>The last improvement we might do is to handle special case when list contains only one item. Currently if list has one item then we’ll still enter while loop and use few references.
+Let’s add additional check at the beginning:</p>
+<pre><code>fun &lt;T&gt; Node&lt;T&gt;.reverse(): Node&lt;T&gt; {
+    if (this.next == null) {
+        return this
+    }
+
+    var previousNode: Node&lt;T&gt;? = null
+    var currentNode: Node&lt;T&gt;? = this
+    var nextNode: Node&lt;T&gt;?
+
+    while (currentNode != null) {
+        nextNode = currentNode.next
+        currentNode.next = previousNode
+
+        previousNode = currentNode
+        currentNode = nextNode
+
+    }
+
+    return previousNode!!
+}
+</code></pre>
+<p>And it is our final solution.</p>
+<h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Interviews are difficult and always stressful. One can easily make some weird mistakes, not answer some questions or not solve some problems and one can be not prepared enough.
+But it is not that embarrassing to not answer/know something. It is embarrassing to not draw conclusions and not try to revisit the questions/tasks you’ve failed and learn from your mistakes.</p>
+<p>Happy learning.</p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="https://krossovochkin.github.io/posts/operator_fusion_in_rxjava_2_dcd6612cffae/">
+                <span class="button__icon">←</span>
+                <span class="button__text">Operator fusion in RxJava 2</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="https://krossovochkin.github.io/posts/simmmmplllledateformat_6bd326d17012/">
+                <span class="button__text">SiMMMMpLLLLeDateFormat</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>© 2020 Vasya Drobushkov</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="https://krossovochkin.github.io/assets/main.js"></script>
+<script src="https://krossovochkin.github.io/assets/prism.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

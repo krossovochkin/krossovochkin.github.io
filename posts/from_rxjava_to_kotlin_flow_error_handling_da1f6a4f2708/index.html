@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>From RxJava to Kotlin Flow: Error Handling :: Krossovochkin — Android Developer</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content="Source
+ This post is part of series of comparing RxJava to Kotlin Flow. Previous articles were about Threading and Backpressure.
+ Introduction Error handling is fundamental in reactive programming. Reactive streams might fail with exception and propagate it as an event downstream notifying consumers on the error that happened. As in previous articles, we’ll try to compare RxJava and Kotlin Flow error handling mechanisms. This might help us to migrate existing code from RxJava to Kotlin Flow and also understand how to properly use Kotlin Flow." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://krossovochkin.github.io/posts/from_rxjava_to_kotlin_flow_error_handling_da1f6a4f2708/" />
+
+
+
+
+<link rel="stylesheet" href="https://krossovochkin.github.io/assets/style.css">
+
+  <link rel="stylesheet" href="https://krossovochkin.github.io/assets/yellow.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://krossovochkin.github.io/img/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="https://krossovochkin.github.io/img/favicon/yellow.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  <meta name="twitter:site" content="krossovochkin" />
+
+<meta name="twitter:creator" content="krossovochkin" />
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="From RxJava to Kotlin Flow: Error Handling :: Krossovochkin">
+<meta property="og:description" content="Comparing Error Handling in RxJava and Kotlin Flow" />
+<meta property="og:url" content="https://krossovochkin.github.io/posts/from_rxjava_to_kotlin_flow_error_handling_da1f6a4f2708/" />
+<meta property="og:site_name" content="From RxJava to Kotlin Flow: Error Handling" />
+
+  <meta property="og:image" content="https://krossovochkin.github.io/">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2020-02-24 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Krossovochkin
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About me</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About me</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://krossovochkin.github.io/posts/from_rxjava_to_kotlin_flow_error_handling_da1f6a4f2708/">From RxJava to Kotlin Flow: Error Handling</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2020-02-24 
+      </span>
+    
+    
+    <span class="post-author">::
+      Vasya Drobushkov
+    </span>
+    
+  </div>
+
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <p><img src="https://cdn-images-1.medium.com/max/2000/0*vDKPkBinqLNmwO1Z" alt="Source"><em><a href="https://unsplash.com/photos/aYNyC6fIH84">Source</a></em></p>
+<blockquote>
+<p>This post is part of series of comparing RxJava to Kotlin Flow. Previous articles were about <a href="https://proandroiddev.com/from-rxjava-2-to-kotlin-flow-threading-8618867e1955">Threading </a>and <a href="https://proandroiddev.com/from-rxjava-to-kotlin-flow-backpressure-d1fb91e6dea8">Backpressure</a>.</p>
+</blockquote>
+<h2 id="introduction">Introduction<a href="#introduction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Error handling is fundamental in reactive programming. Reactive streams might fail with exception and propagate it as an event downstream notifying consumers on the error that happened.
+As in previous articles, we’ll try to compare RxJava and Kotlin Flow error handling mechanisms. This might help us to migrate existing code from RxJava to Kotlin Flow and also understand how to properly use Kotlin Flow.</p>
+<h2 id="rxjava-error-handling">RxJava Error Handling<a href="#rxjava-error-handling" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>In RxJava general concepts for error handling are pretty simple and straightforward:</p>
+<ul>
+<li>
+<p>“Error” is an event which might happen in a stream</p>
+</li>
+<li>
+<p>That “Error event” is propagated downstream as a terminal event. That means that after error happened stream is basically finished and no more events can come through it.</p>
+</li>
+<li>
+<p>Consumers are required to handle errors in the onError callback of Observer</p>
+</li>
+<li>
+<p>If Consumer didn’t handle error in Observer callback, then that error is sent to a global error handler (which in case of Android crashes the app by default).
+<strong>NOTE</strong>: some errors which happen inside stream can go directly to global error handler e.g. in cases when the stream is already disposed.</p>
+</li>
+<li>
+<p>Not a single error can escape chain. All the exceptions will go to the onError callback of Observer (or global error handler).</p>
+</li>
+</ul>
+<p>A basic example of error handling is:</p>
+<pre><code>observeChanges()
+    .subscribe(
+        { value -&gt; println(&quot;value: $value&quot;) },
+        { error -&gt; println(&quot;error: $error&quot;) }
+    )
+</code></pre>
+<h2 id="kotlin-flow-error-handling">Kotlin Flow Error Handling<a href="#kotlin-flow-error-handling" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>As Kotlin Flow is essentially based on coroutines, the following applies:</p>
+<ul>
+<li>
+<p>“Error” is a general Exception which can be thrown like any other exception</p>
+</li>
+<li>
+<p>That “error” is propagated via general coroutines error handling mechanism (propagating to parent jobs and canceling all the jobs in the coroutine scope)</p>
+</li>
+<li>
+<p>Consumers need to wrap Flow with try-catch if they want to handle exceptions</p>
+</li>
+<li>
+<p>If the consumer didn’t handle errors with try-catch then that exception will be thrown as usual and be handled by the parent coroutine scope (it might immediately crash your app or be handled by exception handler e.g. in launch)</p>
+</li>
+<li>
+<p>As we have to wrap chain in try-catch it looks like exception escaped the chain. It might be partially true, though as we’ll see later this is not the only mechanism to work with exceptions.</p>
+</li>
+</ul>
+<h2 id="comparison">Comparison<a href="#comparison" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="setup">Setup<a href="#setup" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>First of all, for our comparison, we’ll create helper functions of Flow and Observable, which emit a value and then throw an exception.</p>
+<p>For Observable:</p>
+<pre><code>private fun observable(
+    value: Int = 1
+): Observable&lt;Int&gt; {
+    return Observable.create { emitter -&gt;
+        emitter.onNext(value)
+        emitter.onError(RuntimeException())
+    }
+}
+</code></pre>
+<p>And for Kotlin Flow (due to clash of names have to name it with “my” prefix):</p>
+<pre><code>private fun myFlow(
+    value: Int = 1
+): Flow&lt;Int&gt; {
+    return flow {
+        emit(value)
+        throw RuntimeException()
+    }
+}
+</code></pre>
+<p>Next, we’ll set up short tests, which will be parametrized by operators. In that test we’ll take our test streams, subscribe to them on the io thread pool, then optionally will apply some operator and then print values and errors which will happen in the chain.</p>
+<p>For Observable:</p>
+<pre><code>private fun testObservable(
+    operator: Observable&lt;Int&gt;.() -&gt; Observable&lt;Int&gt;
+) {
+    val latch = CountDownLatch(1)
+    val result = StringBuffer()
+
+observable()
+        .subscribeOn(Schedulers.io())
+        .operator()
+        .doOnTerminate { latch.countDown() }
+        .subscribe(
+            { result.append(&quot;next $it, &quot;) },
+            { result.append(&quot;error $it&quot;) }
+        )
+
+latch.await()
+    println(result)
+}
+</code></pre>
+<p>For Kotlin Flow (note, that here we wrapped all the flow into the try-catch):</p>
+<pre><code>private fun testFlow(
+    operator: Flow&lt;Int&gt;.() -&gt; Flow&lt;Int&gt;
+) {
+    val latch = CountDownLatch(1)
+    val result = StringBuffer()
+
+    CoroutineScope(Job() + Dispatchers.IO).launch {
+        try {
+            myFlow()
+                .operator()
+                .onCompletion { latch.countDown() }
+                .collect {
+                    result.append(&quot;next $it, &quot;)
+                }
+        } catch (e: Exception) {
+            result.append(&quot;error $e&quot;)
+        }
+    }
+
+    latch.await()
+    println(result)
+}
+</code></pre>
+<h3 id="basic-error-handling">Basic Error Handling<a href="#basic-error-handling" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>First, our test will be to see what is the default behavior without additional changes. In this case, we’ll provide an identity operator:</p>
+<pre><code>testObservable { this }
+testFlow { this }
+</code></pre>
+<p>In both cases in logs it will be printed:</p>
+<pre><code>next 1, error java.lang.RuntimeException
+</code></pre>
+<p>So, as we already discussed, our test streams emit one value and then terminate with an exception.</p>
+<h3 id="catching-errors-with-an-emitting-default-value">Catching Errors with an emitting default value<a href="#catching-errors-with-an-emitting-default-value" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>What if we don’t want our stream to be terminated (as error event terminates the stream)? One of the options is to emit some default value if we encounter an exception.</p>
+<p>In RxJava for that, there is a special operator called onErrorReturn:</p>
+<pre><code>testObservable { onErrorReturn { 5 } }
+</code></pre>
+<p>If we run this example we’ll see that in logs it will be printed:</p>
+<pre><code>next 1, next 5,
+</code></pre>
+<p>So the first item in the stream (1) was emitted as before, but then instead of an error, we have a default value (5) emitted as well.</p>
+<p>In Kotlin Flow for the same use case, there is an operator catch, and the usage is the following:</p>
+<pre><code>testFlow { catch { emit(5) } }
+</code></pre>
+<p>Operator catch catches all the exceptions from the upstream and can do some work, such as emitting default value. And result in logs will be the same.</p>
+<h3 id="catching-errors-by-switching-to-another-stream">Catching Errors by switching to another stream<a href="#catching-errors-by-switching-to-another-stream" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Another option with not failing our stream on error is to switch to another stream. In RxJava for that, there is a special operator onErrorResumeNext:</p>
+<pre><code>testObservable { onErrorResumeNext(Observable.just(1, 2, 3)) }
+</code></pre>
+<p>After running the code the result will be:</p>
+<pre><code>next 1, next 1, next 2, next 3,
+</code></pre>
+<p>First, we have the value of 1 emitted (this is from the initial stream), then after error happened we switch to the new stream and all its values are emitted (and we won’t have an exception thrown).</p>
+<blockquote>
+<p><strong>NOTE</strong>: Essentially it is possible to achieve onErrorReturn with onErrorResumeNext by using onErrorResumeNext(Observable.just(5)), though usage of onErrorResumeNext has bigger overhead, so use it only when new stream is really needed.</p>
+</blockquote>
+<p>In Kotlin Flow for such a case we use that same operator catch:</p>
+<pre><code>testFlow { catch { emitAll(flowOf(1, 2, 3)) } }
+</code></pre>
+<p>Instead of emitting a single value on error, we emitAll values from the stream with the same expected result.</p>
+<h3 id="intercepting-errors">Intercepting Errors<a href="#intercepting-errors" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>The next thing which we’ll do is intercepting errors. When we intercept errors we can do some side effects without actually handling that error, for example, logging.</p>
+<p>In RxJava for this case, we can use the doOnError operator:</p>
+<pre><code>testObservable { doOnError { print(&quot;INTERCEPTED $it, &quot;) } }
+</code></pre>
+<p>The result will be:</p>
+<pre><code>INTERCEPTED java.lang.RuntimeException, next 1, error java.lang.RuntimeException
+</code></pre>
+<p>So, first, we intercepted our exception, printed some logs, and then as in the case with basic error handling, we got the first item emitted with error followed.</p>
+<p>In Kotlin Flow though there is no special operator for that case, but we can write our own:</p>
+<pre><code>fun &lt;T&gt; Flow&lt;T&gt;.doOnError(onError: (Throwable) -&gt; Unit): Flow&lt;T&gt; {
+    return flow {
+        try {
+            collect { value -&gt;
+                emit(value)
+            }
+        } catch (e: Exception) {
+            onError(e)
+            throw e
+        }
+    }
+}
+</code></pre>
+<p>Here we just create new Flow, inside it, we start collecting all the values. We wrap everything in try-catch and if an error happens — we’ll execute the callback and re-throw exception.</p>
+<p>The usage will be the following:</p>
+<pre><code>testFlow { doOnError { print(&quot;INTERCEPTED $it, &quot;) } }
+</code></pre>
+<p>And as before, results in logs will be the same.</p>
+<p>That’s all with the handling errors in the chain, but there is another topic of handling errors in inner streams.</p>
+<h3 id="inner-streams-errors-handling">Inner streams errors handling<a href="#inner-streams-errors-handling" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>As we know we can have inner streams by using flatMap in RxJava or flatMapMerge in Flow (or other xMap operators in RxJava or flatMapX operators in Kotlin Flow).
+We can apply directly what we’ve learned to our inner streams, though sometimes there is a need to control error handling from the parent stream perspective.</p>
+<p>We’ll modify our test samples a bit to better show that.</p>
+<p>For Observable our new example will be:</p>
+<pre><code>private fun testInnerObservable(
+    operator: Observable&lt;Int&gt;.() -&gt; Observable&lt;Int&gt;
+) {
+    val latch = CountDownLatch(1)
+    val result = StringBuffer()
+
+    Observable.just(10, 11, 12)
+        .subscribeOn(Schedulers.io())
+        .operator()
+        .doOnTerminate { latch.countDown() }
+        .subscribe(
+            { result.append(&quot;next $it, &quot;) },
+            { result.append(&quot;error $it&quot;) }
+        )
+
+    latch.await()
+    println(result)
+}
+</code></pre>
+<p>The difference is that now our parent observable won’t throw an exception, instead it will emit three items and complete. Inside operator we’ll be able to add our inner streams.</p>
+<p>For Kotlin Flow we’ll have the following sample:</p>
+<pre><code>private fun testInnerFlow(
+    operator: Flow&lt;Int&gt;.() -&gt; Flow&lt;Int&gt;
+) {
+    val latch = CountDownLatch(1)
+    val result = StringBuffer()
+
+    CoroutineScope(Job() + Dispatchers.IO).launch {
+        try {
+            flowOf(10, 11, 12)
+                .operator()
+                .onCompletion { latch.countDown() }
+                .collect {
+                    result.append(&quot;next $it, &quot;)
+                }
+        } catch (e: Exception) {
+            result.append(&quot;error $e&quot;)
+        }
+    }
+
+    latch.await()
+    println(result)
+}
+</code></pre>
+<p>There are many different operators in RxJava, but we’ll take a look only at one: concatMapDelayError.
+In order to understand how it works, let’s first look at the concatMap and flatMapConcat operators. Both these operators start subscribing to the inner streams one by one. And subscription to the next inner stream happens only when previous was completed.</p>
+<p>For RxJava and Kotlin Flow it will look like:</p>
+<pre><code>testInnerObservable { concatMap { observable(it) } }
+testInnerFlow { flatMapConcat { myFlow(it) } }
+</code></pre>
+<p>What happens here:</p>
+<ul>
+<li>
+<p>Our parent stream has three values</p>
+</li>
+<li>
+<p>For each value emitted we switch to the new inner stream (which emits value and then fails)</p>
+</li>
+<li>
+<p>Subscription to the next inner stream happens only after the previous inner stream has completed</p>
+</li>
+</ul>
+<p>Result of executing for RxJava and Kotlin Flow will be the same:</p>
+<pre><code>next 10, error java.lang.RuntimeException
+</code></pre>
+<p>We have first item emitted followed by an error and no more values are emitted. This happens because the first item (10) triggered a subscription of the inner stream, which emitted that value (10) and then failed with an exception. Because of that, the whole stream failed and the next item from parent (11) hasn’t been switched to the new inner stream.</p>
+<p>What if we want to have all the values emitted and emit error only in the end (if it happened)? For such a case there is concatMapDelayError in RxJava. It will delay all the errors until the stream completes and throw CompositeException with all the exceptions which happened in the stream.</p>
+<p>If we run the following code:</p>
+<pre><code>testInnerObservable { concatMapDelayError { observable(it) } }
+</code></pre>
+<p>We see the result:</p>
+<pre><code>next 10, next 11, next 12, error io.reactivex.exceptions.CompositeException: 3 exceptions occurred.
+</code></pre>
+<p>All three items were emitted followed by a single composite exception (which has three exceptions inside — one per each inner stream).</p>
+<p>What about Kotlin Flow? It doesn’t have any operator with delaying errors. But we can try to write our own. We’ll start by copy-pasting sources of flatMapConcat operator and add some error handling there:</p>
+<pre><code>fun &lt;T, R&gt; Flow&lt;T&gt;.flatMapConcatDelayError(
+    transform: suspend (value: T) -&gt; Flow&lt;R&gt;
+): Flow&lt;R&gt; = map(transform).flattenConcatDelayError()
+</code></pre>
+<p>We’ll start from defining our operator flatMapConcatDelayError as combination of map and flatten (yep, map + flatten == flatMap).
+Then we’ll define our flattenConcatDelayError:</p>
+<pre><code>fun &lt;T&gt; Flow&lt;Flow&lt;T&gt;&gt;.flattenConcatDelayError(): Flow&lt;T&gt; {
+    val list = CopyOnWriteArrayList&lt;Exception&gt;()
+    return flow&lt;T&gt; {
+        collect { value -&gt;
+            try {
+                emitAll(value)
+            } catch (e: Exception) {
+                list.add(e)
+            }
+        }
+    }.onCompletion {
+        if (list.isNotEmpty()) {
+            throw CompositeException(list)
+        }
+    }
+}
+</code></pre>
+<p>What we do here is wrap our emits into try-catch with saving all the exceptions (note that we need to use thread-safe list). And throw a composite exception at the end if there were some exceptions.</p>
+<p>Final call for Kotlin Flow will be:</p>
+<pre><code>testInnerFlow { flatMapConcatDelayError { myFlow(it) } }
+</code></pre>
+<h3 id="rxjava-like-subscribe-for-kotlin-flow">RxJava-like subscribe for Kotlin Flow<a href="#rxjava-like-subscribe-for-kotlin-flow" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Do I need to always use either catch at the bottom of each chain or wrap everything into try-catch? I’d say yes, but probably it could be useful to have similar API as in RxJava and have single subscribe with three lambdas.</p>
+<p>We can try to implement such:</p>
+<pre><code>suspend fun &lt;T&gt; Flow&lt;T&gt;.subscribe(
+    onNext: (T) -&gt; Unit,
+    onError: (Throwable) -&gt; Unit,
+    onComplete: () -&gt; Unit
+) {
+    this
+        .onEach **{ **onNext(**it**) **}
+        **.onCompletion **{ **error: Throwable? **-&gt;
+            **if (error == null) {
+                onComplete()
+            }
+        **}
+        **.catch **{ **onError(**it**) **}
+        **.collect()
+}
+</code></pre>
+<p>What we do here is instead of terminal collect method, we’ll use our own subscribe, which takes three lambdas.
+In onEach we’ll get all the values emitted. In onCompletion we’ll see that we track our onComplete (note that we need to check that we completed without error). And in catch we catch all the exceptions.</p>
+<blockquote>
+<p><strong>NOTE</strong>: we could move onError inside onCompletion if we wish and make catch clause empty. Say it is matter of taste.</p>
+</blockquote>
+<p><strong>But did anyone spot the issue?</strong></p>
+<p>Let’s run few tests:</p>
+<pre><code>runBlocking {
+    flowOf(1, 2, 3)
+        .subscribe(
+            { print(&quot;next $it, &quot;) },
+            { print(&quot;error $it, &quot;) },
+            { print(&quot;complete &quot;) }
+        )
+}
+</code></pre>
+<p>It prints:</p>
+<pre><code>next 1, next 2, next 3, complete
+</code></pre>
+<p>So far so good. We have all three values emitted following by completion event.</p>
+<p>Next test will be with error:</p>
+<pre><code>runBlocking {
+    flow {
+        emit(1)
+        throw RuntimeException()
+    }
+        .subscribe(
+            { print(&quot;next $it, &quot;) },
+            { print(&quot;error $it, &quot;) },
+            { print(&quot;complete &quot;) }
+        )
+}
+</code></pre>
+<p>It prints:</p>
+<pre><code>next 1, complete error java.lang.RuntimeException,
+</code></pre>
+<p>Also good, we have one value followed by error event. And we don’t have a completion event.</p>
+<p>Let’s check the final test — we throw exception in a callback:</p>
+<pre><code>runBlocking {
+    flow {
+        emit(1)
+    }
+        .subscribe(
+            { print(&quot;next $it, &quot;) },
+            { print(&quot;error $it, &quot;) },
+            { throw RuntimeException() }
+        )
+}
+</code></pre>
+<p>The result will be:</p>
+<pre><code>next 1, error java.lang.RuntimeException,
+</code></pre>
+<p>And this is not what we’ve expected. If we have an exception in a callback, then it should be thrown and should not pass to our error handler. Error handler should catch all the errors in the chain and callback is not essentially part of that chain.</p>
+<p>Why it happens so? Because catch is the last operator in the chain and it handles everything which is above. Including what is inside onEach and onCompletion operators.</p>
+<p>This is the difference which is needed to keep in mind. If anyone would be able to create an identical implementation of subscribe method, feel free to post it in comments.</p>
+<h2 id="upd-retry">UPD: retry<a href="#upd-retry" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>As was pointed by feedback I missed in this article operators for retry logic. Basically both RxJava and Kotlin Flow has built-in support for retry. For example to retry stream twice (if there was error) one need to use “retry(2)” operator.</p>
+<h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Following this article, I hope we now have a better understanding of error handling in RxJava and Kotlin Flow. RxJava has a lot of operators, many of them are really useful (and are missing in Kotlin Flow right now).</p>
+<p>We can write our own implementations, but they stick to be error-prone and platform-specific. Say that flatMapConcatDelayError operator: it uses platform-specific thread-safe list, which might work incorrectly with coroutines (which can jump over threads) — mean that mixing concepts might lead to weird issues. Also, the whole implementation might not be that refined, contain races or whatever.</p>
+<p>It is possible to do everything we can do in RxJava with Kotlin Flow and hopefully, additional operators will be added to Kotlin Flow as well.</p>
+<p>If anyone wants to play with the setup one can find in <a href="https://gist.github.com/krossovochkin/1a47f05d3ccbf20fffa872b22362e16d">this gist</a>. Feel free to post comments and share your examples or ideas on the important things in error handling in RxJava and Kotlin Flow.</p>
+<p>Happy coding!</p>
+<p>*Thanks for reading!
+If you enjoyed this article you can like it by <strong>clicking on the👏 button</strong> (up to 50 times!), also you can **share *<em>this article to help others.</em></p>
+<p><em>Have you any feedback, feel free to reach me on <a href="https://twitter.com/krossovochkin">twitter</a>, <a href="https://www.facebook.com/vasya.drobushkov">facebook</a></em></p>
+<p><em>Also you can visit <a href="http://krossovochkin.github.io">website </a>to read other articles.</em>
+<a href="https://twitter.com/krossovochkin"><strong>Vasya Drobushkov</strong>
+*The latest Tweets from Vasya Drobushkov (@krossovochkin). Android developer You want to see a miracle, son? Be the…*twitter.com</a></p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="https://krossovochkin.github.io/posts/from_rxjava_to_kotlin_flow_stream_types_7916be6cabc2/">
+                <span class="button__icon">←</span>
+                <span class="button__text">From RxJava to Kotlin Flow: Stream Types</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="https://krossovochkin.github.io/posts/vinyls_animation_with_motionlayout_595e716c2752/">
+                <span class="button__text">Vinyls animation with MotionLayout</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>© 2020 Vasya Drobushkov</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="https://krossovochkin.github.io/assets/main.js"></script>
+<script src="https://krossovochkin.github.io/assets/prism.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

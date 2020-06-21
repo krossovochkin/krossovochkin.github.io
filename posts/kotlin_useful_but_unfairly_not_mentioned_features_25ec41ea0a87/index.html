@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Kotlin useful but unfairly not mentioned features :: Krossovochkin — Android Developer</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content="Source
+Introduction Many of us first learned Kotlin after Java. Learning process was fairly simple because Kotlin has many similarities when at the same time improves development experience by fighting common pain points Java developer (especially on Java 6, which is common in Android world) has to encounter every day.
+There are a bunch of articles about cool Kotlin features like immutability, handling nullability, smart-cast, data classes, and so forth. Yes, these features are great." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://krossovochkin.github.io/posts/kotlin_useful_but_unfairly_not_mentioned_features_25ec41ea0a87/" />
+
+
+
+
+<link rel="stylesheet" href="https://krossovochkin.github.io/assets/style.css">
+
+  <link rel="stylesheet" href="https://krossovochkin.github.io/assets/yellow.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://krossovochkin.github.io/img/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="https://krossovochkin.github.io/img/favicon/yellow.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  <meta name="twitter:site" content="krossovochkin" />
+
+<meta name="twitter:creator" content="krossovochkin" />
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Kotlin useful but unfairly not mentioned features :: Krossovochkin">
+<meta property="og:description" content="Exploring some good Kotlin features which are not so widely discussed" />
+<meta property="og:url" content="https://krossovochkin.github.io/posts/kotlin_useful_but_unfairly_not_mentioned_features_25ec41ea0a87/" />
+<meta property="og:site_name" content="Kotlin useful but unfairly not mentioned features" />
+
+  <meta property="og:image" content="https://krossovochkin.github.io/">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2020-05-03 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Krossovochkin
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About me</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About me</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://krossovochkin.github.io/posts/kotlin_useful_but_unfairly_not_mentioned_features_25ec41ea0a87/">Kotlin useful but unfairly not mentioned features</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2020-05-03 
+      </span>
+    
+    
+    <span class="post-author">::
+      Vasya Drobushkov
+    </span>
+    
+  </div>
+
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <p><img src="https://cdn-images-1.medium.com/max/2000/0*Gj3qpLouvA7zca9R" alt="Source"><em><a href="https://unsplash.com/photos/5EoKAdyStik">Source</a></em></p>
+<h2 id="introduction">Introduction<a href="#introduction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Many of us first learned Kotlin after Java. Learning process was fairly simple because Kotlin has many similarities when at the same time improves development experience by fighting common pain points Java developer (especially on Java 6, which is common in Android world) has to encounter every day.</p>
+<p>There are a bunch of articles about cool Kotlin features like immutability, handling nullability, smart-cast, data classes, and so forth. Yes, these features are great. Having to add a bunch of nullability annotations, final keywords, override equals/hashCode methods, create additional local variables after type checks — all of this adds unnecessary work that needs to be done all the time.</p>
+<p>But also there are some differences between Kotlin and Java, which are not that significant, though useful. In this article, we’ll go through a few of them.</p>
+<h2 id="mutability-of-method-parameters-references">Mutability of method parameter’s references<a href="#mutability-of-method-parameters-references" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="java">Java<a href="#java" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>In Java references of parameters of a method are mutable by default.
+That means that one can “replace” object on a given reference. To make it immutable one needs to add final keyword. It is a good practice to not replace such references, because it adds complexity to the code. That means that one should consider to always add final keyword to all parameters, which is definitely not that satisfying.</p>
+<!-- raw HTML omitted -->
+<p>For example, as shown in a snippet, we get compilation error only if we add final keyword.</p>
+<h3 id="kotlin">Kotlin<a href="#kotlin" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Unlike Java, in Kotlin all the params are by default immutable. And there is no way to make them mutable. This follows general Kotlin idiom of restricting all the access unless explicitly declared (so instead of putting final one usually add open where needed). In this particular case, there is no way to make this parameter neither var nor open. And anyway there is no need for that.</p>
+<!-- raw HTML omitted -->
+<h2 id="package-private-vs-protected">Package private vs protected<a href="#package-private-vs-protected" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Kotlin and Java have different approaches to visibility access. Though they are well documented, there is at least one interesting case, which is worth mentioning. And it is about protected keyword.</p>
+<h3 id="java-1">Java<a href="#java-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>In Java there are four visibility modifiers: public, protected, package-private (default value, has no separate keyword), private.</p>
+<p>The rules are straightforward:</p>
+<ul>
+<li>
+<p>*private *is accessible from within a class</p>
+</li>
+<li>
+<p><em>package-private</em> is accessible as private (withing a class) plus within a package</p>
+</li>
+<li>
+<p>*protected *is accessible as package-private plus for all child classes</p>
+</li>
+<li>
+<p>*public *is accessible from everywhere</p>
+</li>
+</ul>
+<p>Important thing here is to note that protected is accessible from the same package, not only by child classes.</p>
+<p>So, if we, for example, we have a class with two methods: one protected and another package-private:</p>
+<!-- raw HTML omitted -->
+<p>And we had class A in the same package, then that class A will be able to access both methods from class B:</p>
+<!-- raw HTML omitted -->
+<h3 id="kotlin-1">Kotlin<a href="#kotlin-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>In Kotlin there are different visibility modifiers: public (default, can be omitted), protected, internal, private.</p>
+<ul>
+<li>
+<p>*public *is accessible from everywhere</p>
+</li>
+<li>
+<p>*protected *is accessible from child classes only</p>
+</li>
+<li>
+<p>*internal *is accessible from all the module (not only package, this is effectively “public in a module”)</p>
+</li>
+<li>
+<p>*private *is accessible from within a file/class</p>
+</li>
+</ul>
+<p>So, if we had a class similar to the previous example:</p>
+<!-- raw HTML omitted -->
+<p>Then class A, while being in the same package, would not be able to access protected method:</p>
+<!-- raw HTML omitted -->
+<p>And I personally found that really useful. Package-private thing is clunky and feels somewhat outdated. Having protected to be accessible from the same package feels like encapsulation hole. Glad that Kotlin has a more strict approach for protected keyword.</p>
+<p>But what if we would like to have something similar to package-private in Kotlin? In this case, we can consider putting two classes into same file with marking classes we’d like to hide as private. All the methods can remain public as class won’t be accessible from outside anyway:</p>
+<!-- raw HTML omitted -->
+<p>One can read more on visibility modifiers in Kotlin <a href="https://kotlinlang.org/docs/reference/visibility-modifiers.html">here</a>.</p>
+<h2 id="final-words">Final words<a href="#final-words" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>And that’s it for now. Hope this was interesting and useful. Kotlin is a great language and has a lot of cool features. But we can also look around and find also something else, not that impressive at first. Maybe there are some other features in Kotlin which are not highlighted that often in articles? Some features which save you time, make solutions clearer? Feel free to add your favorite features in comments.</p>
+<p>Happy coding!</p>
+<p>*Thanks for reading!
+If you enjoyed this article you can like it by <strong>clicking on the👏 button</strong> (up to 50 times!), also you can **share *<em>this article to help others.</em></p>
+<p><em>Have you any feedback, feel free to reach me on <a href="https://twitter.com/krossovochkin">twitter</a>, <a href="https://www.facebook.com/vasya.drobushkov">facebook</a></em>
+<a href="https://twitter.com/krossovochkin"><strong>Vasya Drobushkov</strong>
+*The latest Tweets from Vasya Drobushkov (@krossovochkin). Android developer You want to see a miracle, son? Be the…*twitter.com</a></p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="https://krossovochkin.github.io/posts/raising_old_project_from_the_depth_22f3084ed82e/">
+                <span class="button__icon">←</span>
+                <span class="button__text">Raising old project from the depth</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="https://krossovochkin.github.io/posts/category_theory_90b89ec9f2ab/">
+                <span class="button__text">Category theory</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>© 2020 Vasya Drobushkov</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="https://krossovochkin.github.io/assets/main.js"></script>
+<script src="https://krossovochkin.github.io/assets/prism.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

@@ -3,48 +3,168 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://krossovochkin.github.io/tags/flow/</loc>
-    <lastmod>2020-01-25T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://krossovochkin.github.io/posts/2020_01_25_from_rxjava2_to_kotlin_flow_threading/</loc>
-    <lastmod>2020-01-25T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://krossovochkin.github.io/tags/kotlin/</loc>
-    <lastmod>2020-01-25T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://krossovochkin.github.io/</loc>
-    <lastmod>2020-01-25T00:00:00+00:00</lastmod>
+    <lastmod>2020-05-17T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://krossovochkin.github.io/posts/</loc>
+    <lastmod>2020-05-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/the_real_kotlin_flow_benefits_over_rxjava_c19b99ba6eb9/</loc>
+    <lastmod>2020-05-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/raising_old_project_from_the_depth_22f3084ed82e/</loc>
+    <lastmod>2020-05-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/kotlin_useful_but_unfairly_not_mentioned_features_25ec41ea0a87/</loc>
+    <lastmod>2020-05-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/category_theory_90b89ec9f2ab/</loc>
+    <lastmod>2020-04-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/accessibility_of_text_over_generic_background_color_e82e9546731a/</loc>
+    <lastmod>2020-03-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/compiler_generated_classes_methods_and_fields_in_java_343dde2cce61/</loc>
+    <lastmod>2020-03-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/unit_testing_best_practices_9bceeafe6edf/</loc>
+    <lastmod>2020-03-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/from_rxjava_to_kotlin_flow_testing_42f1641d8433/</loc>
+    <lastmod>2020-03-05T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/from_rxjava_to_kotlin_flow_throttling_ed1778847619/</loc>
+    <lastmod>2020-03-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/from_rxjava_to_kotlin_flow_stream_types_7916be6cabc2/</loc>
+    <lastmod>2020-02-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/from_rxjava_to_kotlin_flow_error_handling_da1f6a4f2708/</loc>
+    <lastmod>2020-02-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/vinyls_animation_with_motionlayout_595e716c2752/</loc>
+    <lastmod>2020-02-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/from_rxjava_to_kotlin_flow_backpressure_d1fb91e6dea8/</loc>
+    <lastmod>2020-02-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/diving_deep_into_android_dex_bytecode_48db82b170c8/</loc>
+    <lastmod>2020-02-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/from_rxjava_2_to_kotlin_flow_threading_8618867e1955/</loc>
     <lastmod>2020-01-25T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://krossovochkin.github.io/tags/rxjava/</loc>
-    <lastmod>2020-01-25T00:00:00+00:00</lastmod>
+    <loc>https://krossovochkin.github.io/posts/change_theme_dynamically_with_circular_reveal_animation_on_android_8cd574f5f0d8/</loc>
+    <lastmod>2020-01-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://krossovochkin.github.io/tags/rxjava2/</loc>
-    <lastmod>2020-01-25T00:00:00+00:00</lastmod>
+    <loc>https://krossovochkin.github.io/posts/sqlite_triggers_android_room_2e7120bb3e3a/</loc>
+    <lastmod>2020-01-17T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://krossovochkin.github.io/tags/</loc>
-    <lastmod>2020-01-25T00:00:00+00:00</lastmod>
+    <loc>https://krossovochkin.github.io/posts/decoding_handler_and_looper_in_android_d4f3f2449513/</loc>
+    <lastmod>2019-12-24T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://krossovochkin.github.io/tags/thread/</loc>
-    <lastmod>2020-01-25T00:00:00+00:00</lastmod>
+    <loc>https://krossovochkin.github.io/posts/operator_fusion_in_rxjava_2_dcd6612cffae/</loc>
+    <lastmod>2019-11-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/random_interview_coding_task_retrospective_befa1b399f0d/</loc>
+    <lastmod>2019-09-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/simmmmplllledateformat_6bd326d17012/</loc>
+    <lastmod>2019-07-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/3x3x3_rubiks_cube_world_gif_alert_613d016d2ae7/</loc>
+    <lastmod>2019-07-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/android_version_code_tricks_f63421285ee7/</loc>
+    <lastmod>2019-07-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/throttling_in_rxjava_2_d640ea5f7bf1/</loc>
+    <lastmod>2019-06-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/rxjava_observable_to_single_49c2a14da625/</loc>
+    <lastmod>2019-05-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/dart_language_bad_design_choices_6e35987dc693/</loc>
+    <lastmod>2019-04-08T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/kotlin_android_synthetics_performance_analysis_with_butterknife_90a54ca4325d/</loc>
+    <lastmod>2019-02-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/kotlin_java_interop_function_references_and_sam_conversions_3d0cd36f7967/</loc>
+    <lastmod>2018-09-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/dynamic_mobile_client_development_problem_and_concept_df509891061/</loc>
+    <lastmod>2018-07-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/neural_networks_and_deep_learning_38aaca43ae0f/</loc>
+    <lastmod>2017-11-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/android_notifications_overview_and_pitfalls_517d1118ec83/</loc>
+    <lastmod>2017-02-11T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -54,6 +174,10 @@
   
   <url>
     <loc>https://krossovochkin.github.io/categories/</loc>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/tags/</loc>
   </url>
   
 </urlset>

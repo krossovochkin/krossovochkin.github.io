@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Raising old project from the depth :: Krossovochkin — Android Developer</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content="Introduction I am an Android Developer from the beginning of my professional career. Straight from the University, I’ve jumped into Android development, and to this day continue my journey. During that time I’ve worked in different areas: enterprise, product business applications, SDK development. But all that started with mobile game development.
+The first project I took part in was called “nICE”. It was a match-3-like game. It was at the time when there was Android Market and not Google Play Store, when we used Eclipse and not Android Studio and, of course, used Java." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://krossovochkin.github.io/posts/raising_old_project_from_the_depth_22f3084ed82e/" />
+
+
+
+
+<link rel="stylesheet" href="https://krossovochkin.github.io/assets/style.css">
+
+  <link rel="stylesheet" href="https://krossovochkin.github.io/assets/yellow.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://krossovochkin.github.io/img/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="https://krossovochkin.github.io/img/favicon/yellow.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  <meta name="twitter:site" content="krossovochkin" />
+
+<meta name="twitter:creator" content="krossovochkin" />
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Raising old project from the depth :: Krossovochkin">
+<meta property="og:description" content="Story about the first commercial project I took part in and how I tried to breathe life into it" />
+<meta property="og:url" content="https://krossovochkin.github.io/posts/raising_old_project_from_the_depth_22f3084ed82e/" />
+<meta property="og:site_name" content="Raising old project from the depth" />
+
+  <meta property="og:image" content="https://krossovochkin.github.io/">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2020-05-07 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Krossovochkin
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About me</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About me</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://krossovochkin.github.io/posts/raising_old_project_from_the_depth_22f3084ed82e/">Raising old project from the depth</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2020-05-07 
+      </span>
+    
+    
+    <span class="post-author">::
+      Vasya Drobushkov
+    </span>
+    
+  </div>
+
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <h2 id="introduction">Introduction<a href="#introduction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>I am an Android Developer from the beginning of my professional career. Straight from the University, I’ve jumped into Android development, and to this day continue my journey. During that time I’ve worked in different areas: enterprise, product business applications, SDK development. But all that started with mobile game development.</p>
+<p>The first project I took part in was called “nICE”. It was a match-3-like game. It was at the time when there was Android Market and not Google Play Store, when we used Eclipse and not Android Studio and, of course, used Java. The game was already available in the Market, but we wanted to develop it more by adding some power-ups to make game experience richer (and gain more from in-app purchases) and introduce some additional game modes (like puzzles).</p>
+<!-- raw HTML omitted -->
+<p><img src="../../img/0_cCNRPDsUFPSgYutl.jpg" alt="One could click on a penguin to get a hint!"><em>One could click on a penguin to get a hint!</em></p>
+<p>As it was my first project, I have special feelings about it. Currently, it is not available in the Play Store, because without support over time app had more and more issues and some critical bugs, which not allow you to play. One of the most prominent bugs was that game progress not saved across app launches. Upset.</p>
+<p>Even considering app is no longer in Play Store, it is installed on my phone and from time to time I can launch it to travel back to those times.</p>
+<p>A few years ago I asked my friend whether there are sources of that game, as I would like to fix some issues. Maybe after that long time, I will be able to do something. He found what he could, but I was too busy to concentrate on that, and sources were left for another few years. But now sitting at home I had some time to spend on that and in 3 long evenings, I was able to build it and fix some issues. Here will be some story on the process and result. There will be neither sources nor new application published though. More on that at the end of the article.</p>
+<p>Here we go.</p>
+<h2 id="day-1">Day 1<a href="#day-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>First of all, what I remembered was that game was done using <a href="https://libgdx.badlogicgames.com/">libgdx</a>. We had our wrapper framework over libgdx sources. And there was game itself and a bunch of various libraries.</p>
+<p>In the sources which I received there was wrapper framework, game sources, some libraries, but libgdx sources (or at least version) were missing. We haven’t used any build system at that time, and if someone remembered, in Eclipse one could add libraries and frameworks to classpath via IDE UI. So, connecting everything was a bit tricky task.</p>
+<p>First I tried to import project into Android Studio as Eclipse project. It almost worked, but from time to time there were some crashes while building. The latest told that some index files are broken and on Stackoverflow it was suggested that I should change Java compiler in settings from javac to eclipse. I did that with no luck and decided to just create Gradle project manually from sources.</p>
+<p>Adding Gradle project was simple: just a few config files and voila. But during build, there were a lot of issues between game source code and wrapper framework. That meant that versions were not compatible (actually that times we had 2 different but similar wrappers over libgdx and I had wrong sources, but I figured that out much later).</p>
+<p>After I found that I was like: sigh, it seems I can’t do anything about that.</p>
+<h2 id="day-2">Day 2<a href="#day-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>As usual, in programming some ideas came to your brain somewhere in the middle of another activity. I even don’t remember how I got to this, but I was like: I can decompile the APK file!</p>
+<p>I’ve extracted APK installed on my phone (using some app from market — yes you can extract APK from installed app) and decompiled it. General technique: rename .apk to .zip, unzip and you find all the resources and most important — sources: classes.dex.</p>
+<p>One can decompile dex file to jar and extract sources. There are tools for that. Unfortunately, not all code can be decompiled automatically, but we’ll go into that later. For decompiling I used <a href="https://github.com/pxb1988/dex2jar">dex2jar</a> and then worked with jar file with <a href="https://java-decompiler.github.io/">jd-gui</a>. I did all the process, extracted all the sources I could find (I was lucky as we didn’t use obfuscation), added to the project and found just that there are so many missing places and issues, that it is not possible to fix them being a human. Especially complex was code of the libgdx — low-level calculations where it is so easy to make a mistake.</p>
+<p>So, I need sources of libgdx. They are on GitHub, I just need to download correct version. I’ve compared the latest time of release and took some version — 0.9.6. Downloaded sources, added them — but there were a lot of differences, which concluded to me that there is no way I’ll be able to fix them.</p>
+<p>I gave up once again. Till tomorrow</p>
+<h2 id="day-3">Day 3<a href="#day-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>I don’t know how I decided to try again to look at the decompiled version of APK. I sit at the laptop, tried to find some game to play. Started Portal 2, passed a few levels, closed game and opened Android Studio. I don’t even know whether I had some other idea. I guess at that time I understood that there should be another version of wrapper framework and there are other decompilers.</p>
+<p>Pretty fast I found in the decompiled sources version of the libgdx — it was 0.9.1. I’ve downloaded it and added it to the project.</p>
+<p>Next, I tried <a href="https://github.com/skylot/jadx">jadx </a>as java decompiler and the result was much better (maybe it is just a coincidence).</p>
+<p>At that point, I had sources of libgdx, decompiled sources of wrapper framework and sources of game — almost everything I need.
+I fixed a few issues between libdgx and wrapper framework and project built successfully!</p>
+<p>But in runtime it crashed. It was crashing for many different reasons. I didn’t pay much attention to that — cutting everything that seemed outdated, removing all the code that is not interesting. I removed:</p>
+<ul>
+<li>
+<p>Scoreloop — that is an engine for leaderboards and achievements. No longer exists. Died after Google Play Games dominated in Android ecosystem</p>
+</li>
+<li>
+<p>Flurry analytics</p>
+</li>
+<li>
+<p>ACRA — crash reporter which was helpful before Crashlytics</p>
+</li>
+<li>
+<p>Ads — Google Ads were available that days for sure, but SDK anyway too outdated</p>
+</li>
+<li>
+<p>IAB — in-apps are the same story</p>
+</li>
+<li>
+<p>and so on</p>
+</li>
+</ul>
+<p>Project built, game started, crashed a few times for some reason. In general, it feels that it worked, but there were crashes in native libs (which I haven’t added). I tried to add libs from libgdx jni folders — but there were still crashes that some methods are missing.
+And then I’ve just taken these libs from where? From decompiled APK, of course.
+It was surprising to me that libs from the 0.9.1 release and in the APK were different. I didn’t want to analyze why. I’ve just added what I had.</p>
+<p>There were still some issues which — with the help of Stackoverflow — I found were because of too high targetSdkVersion. So I should’ve put targetSdkVersion to 22 at max.</p>
+<p>And. Game. Worked.</p>
+<p>This was a really cool moment when I understood that finally I did what felt not possible last few days.</p>
+<h2 id="fixes">Fixes<a href="#fixes" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>I haven’t focused on fixes much. The main which bothered me was issue with progress not being saved. Turned out the issue was with encryption — for some reason (maybe something changed on the devices for that time?) decryption started failing with “bad padding” error. I actually didn’t care about that much, as encryption was needed to make it more difficult for people to get to the top rankings in the leaderboards (prevent cheating). So, I’ve just dropped encryption.</p>
+<p>And of course, it worked.</p>
+<h2 id="whats-next">What’s next?<a href="#whats-next" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Anyway, this new version with “fixes” is a dead project. There is no way to publish that app as of targetSdkVersion 22 (Google Play Store now has restrictions on that), there is no way to increase that version as it requires to increase version of libgdx, which requires major refactoring of the whole app.</p>
+<p>I don’t think there is a need in spending time on that. As long as there is a way to side-load APK to the device and play — it is fine.</p>
+<p>It is by far exceptional project to me, not only because it was first, but also because I tried to make game experience cool by adding bonuses and power-ups while trying to define (with help of other guys from the company) puzzles for a new mode.</p>
+<p>And I’m happy that now we have at least some sources, which are possible to build and run.</p>
+<p>Happy coding!</p>
+<p>*Thanks for reading!
+If you enjoyed this article you can like it by <strong>clicking on the👏 button</strong> (up to 50 times!), also you can **share *<em>this article to help others.</em></p>
+<p><em>Have you any feedback, feel free to reach me on <a href="https://twitter.com/krossovochkin">twitter</a>, <a href="https://www.facebook.com/vasya.drobushkov">facebook</a></em>
+<a href="https://twitter.com/krossovochkin"><strong>Vasya Drobushkov</strong>
+*The latest Tweets from Vasya Drobushkov (@krossovochkin). Android developer You want to see a miracle, son? Be the…*twitter.com</a></p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="https://krossovochkin.github.io/posts/the_real_kotlin_flow_benefits_over_rxjava_c19b99ba6eb9/">
+                <span class="button__icon">←</span>
+                <span class="button__text">The Real Kotlin Flow benefits over RxJava</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="https://krossovochkin.github.io/posts/kotlin_useful_but_unfairly_not_mentioned_features_25ec41ea0a87/">
+                <span class="button__text">Kotlin useful but unfairly not mentioned features</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>© 2020 Vasya Drobushkov</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="https://krossovochkin.github.io/assets/main.js"></script>
+<script src="https://krossovochkin.github.io/assets/prism.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

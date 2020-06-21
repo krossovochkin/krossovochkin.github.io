@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>[Android] Notifications Overview and Pitfalls :: Krossovochkin — Android Developer</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content="Introduction Notifications are widely used in Android applications. Though API is pretty straightforward, there are some key things that one should know and understand. This article will try to be first step into understanding Notifications API.
+Sending Single Notification Notification singleNotification = new NotificationCompat.Builder(this).setContentTitle(&amp;quot;Title&amp;quot;).setContentText(&amp;quot;Text&amp;quot;).setSmallIcon(R.drawable.ic_notification).build();NotificationManagerCompat notificationManager = NotificationManagerCompat.*from*(context);notificationManager.notify(notificationId, singleNotification); Key things here:
+  We use NotificationCompat.Builder to have single interface for creating notifications and let Support Library do all compatibility tricks;" />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://krossovochkin.github.io/posts/android_notifications_overview_and_pitfalls_517d1118ec83/" />
+
+
+
+
+<link rel="stylesheet" href="https://krossovochkin.github.io/assets/style.css">
+
+  <link rel="stylesheet" href="https://krossovochkin.github.io/assets/yellow.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://krossovochkin.github.io/img/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="https://krossovochkin.github.io/img/favicon/yellow.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  <meta name="twitter:site" content="krossovochkin" />
+
+<meta name="twitter:creator" content="krossovochkin" />
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="[Android] Notifications Overview and Pitfalls :: Krossovochkin">
+<meta property="og:description" content="Introduction Notifications are widely used in Android applications. Though API is pretty straightforward, there are some key things that one should know and understand. This article will try to be first step into understanding Notifications API.
+Sending Single Notification Notification singleNotification = new NotificationCompat.Builder(this).setContentTitle(&amp;quot;Title&amp;quot;).setContentText(&amp;quot;Text&amp;quot;).setSmallIcon(R.drawable.ic_notification).build();NotificationManagerCompat notificationManager = NotificationManagerCompat.*from*(context);notificationManager.notify(notificationId, singleNotification); Key things here:
+  We use NotificationCompat.Builder to have single interface for creating notifications and let Support Library do all compatibility tricks;" />
+<meta property="og:url" content="https://krossovochkin.github.io/posts/android_notifications_overview_and_pitfalls_517d1118ec83/" />
+<meta property="og:site_name" content="[Android] Notifications Overview and Pitfalls" />
+
+  <meta property="og:image" content="https://krossovochkin.github.io/">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2017-02-11 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Krossovochkin
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About me</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About me</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://krossovochkin.github.io/posts/android_notifications_overview_and_pitfalls_517d1118ec83/">[Android] Notifications Overview and Pitfalls</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2017-02-11 
+      </span>
+    
+    
+    <span class="post-author">::
+      Vasya Drobushkov
+    </span>
+    
+  </div>
+
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <h1 id="introduction">Introduction<a href="#introduction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+<p>Notifications are widely used in Android applications. Though API is pretty straightforward, there are some key things that one should know and understand. This article will try to be first step into understanding Notifications API.</p>
+<h2 id="sending-single-notification">Sending Single Notification<a href="#sending-single-notification" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<pre><code>Notification singleNotification = new NotificationCompat.Builder(this)
+        .setContentTitle(&quot;Title&quot;)
+        .setContentText(&quot;Text&quot;)
+        .setSmallIcon(R.drawable.ic_notification)
+        .build();
+NotificationManagerCompat notificationManager = NotificationManagerCompat.*from*(context);
+notificationManager.notify(notificationId, singleNotification);
+</code></pre>
+<p><img src="../../img/1_i_FZ2R1UInhmPkXVB1sC9Q.png" alt=""></p>
+<p><strong>Key things here:</strong></p>
+<ol>
+<li>
+<p>We use NotificationCompat.Builder to have single interface for creating notifications and let Support Library do all compatibility tricks;</p>
+</li>
+<li>
+<p>Content title, context text and small icon are **required **to show notification;</p>
+</li>
+<li>
+<p>To show notification we should use NotificationManagerCompat (NotificationManagerCompat.from(context)) instead of system NotificationManager (context.getSystemService(NOTIFICATION_SERVICE)) — for compatibility;</p>
+</li>
+<li>
+<p>Each notification should have notificationId. To send **new **notification to the system notificationId should be <strong>unique</strong>.</p>
+</li>
+</ol>
+<h2 id="updating-single-notification">Updating Single Notification<a href="#updating-single-notification" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>To update notification (that is already showing — <strong>active</strong>) one should just send new notification with the <strong>same id</strong>. Old notification will be replaced with new one.</p>
+<h2 id="handling-clicks-on-notification">Handling clicks on notification<a href="#handling-clicks-on-notification" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>To handle clicking on notification one should set content intent.</p>
+<pre><code>Intent intent = new Intent(context, Activity.class);
+intent.putExtra(...); // add some extras here
+
+PendingIntent pendingIntent = PendingIntent.getActivity(context, requestCode, intent, flags);
+builder.setContentIntent(pendingIntent);
+</code></pre>
+<p><strong>Key things here:</strong></p>
+<ol>
+<li>
+<p>PendingIntent is a special “token” (reference to Intent).
+It can be retrieved from static methods such asPendingIntent#getActivity, PendingIntent#getBroadcast, PendingIntent#getService etc. to start activity or service or send broadcast;</p>
+</li>
+<li>
+<p>requestCode is some kind of id of PendingIntent (so it doesn’t have same sense as requestCode in #startActivityForResult) — one can use it to distinguish two PendingIntents that should be different;</p>
+</li>
+<li>
+<p>intent is an Intent to be sent on clicking notification;</p>
+</li>
+<li>
+<p>PendingIntents are references to tokens which describe data used to retrieve this PendingIntent.
+This means that retrieving PendingIntent with <strong>the same data</strong> will return reference to **the same token **(see example below);</p>
+</li>
+<li>
+<p>flags affect lifecycle of PendingIntent tokens.
+Full list of flags one can see in <a href="https://developer.android.com/reference/android/app/PendingIntent.html">official documentation</a>.
+For example, PendingIntent.FLAG_UPDATE_CURRENT flag means that if pending intent with given configuration doesn’t exist in the system — it will be created. Otherwise, it will be overwritten by new one.</p>
+</li>
+<li>
+<p>Adding different extras to original intent will return <strong>the same</strong> PendingIntent. 
+Different PendingIntents will be created for original intents for which Intents.filterEquals returns false.
+Also different PendingIntents will be created for different requestCodes.</p>
+</li>
+</ol>
+<p>Example to illustrate common mistake with PendingIntents lifecycle and updating.
+Consider we have MainActivity that prints text from intent extra with key &ldquo;KEY_TEXT&rdquo;.
+And we send notifications like following:</p>
+<pre><code>public void sendNotification(int notificationId, int requestCode, String text) {
+    Intent intent = new Intent(context, MainActivity);
+    intent.putExtra(&quot;KEY_TEXT&quot;, text);
+
+    PendingIntent pendingIntent = getActivity(context, requestCode, intent, FLAG_UPDATE_CURRENT);
+
+    Notification notification = ... // create notification as shown above
+    .setContentIntent(pendingIntent);
+
+    notificationManager.notify(notificationId, pendingIntent);
+}
+</code></pre>
+<p>And let’s send two notifications:</p>
+<pre><code>sendNotification(1, 0, &quot;Text 1&quot;);
+sendNotification(2, 0, &quot;Text 2&quot;);
+</code></pre>
+<p>As a result clicking on any of the notification will end up with opening MainActivity and showing &ldquo;Text 2&rdquo;. Why?
+Because request codes for PendingIntents are the same, and FLAG_UPDATE_CURRENT updated PendingIntent when new notification is sent.
+So, both notifications have the same PendingIntent (with latest original Intent posted) even considering the fact that extras in intents were different.</p>
+<p>One way to avoid this is to use different request codes (e.g. use notificationId as request code).</p>
+<p>Another way is to set different actions, e.g. like this:</p>
+<pre><code>intent.setAction(Long.toString(System.currentTimeMillis()))
+</code></pre>
+<h2 id="handling-dismissing-notification">Handling dismissing notification<a href="#handling-dismissing-notification" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Handling dismissing notification is the same as handling clicking notifications. But different method in builder is used:</p>
+<pre><code>builder.setDeleteIntent(pendingIntent);
+</code></pre>
+<p>Delete intent will be sent when user manually dismisses notification or when user clicks on “Clear all notifications” button in notification tray.</p>
+<p>Clicking on notification itself dismisses notification, but delete intent will not be sent in this case. Instead content intent will be sent.</p>
+<h2 id="notifications-grouping">Notifications grouping<a href="#notifications-grouping" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Each notification can be assigned to a group with some GROUP_KEY.</p>
+<pre><code>builder.setGroup(GROUP_KEY);
+</code></pre>
+<p>Specifying group on some notification does <strong>nothing</strong>, but only marks that notification now is a part of a group.
+If you mark two notifications with the same group, these notifications will **not **be grouped automatically.</p>
+<p>There is special notification called “Summary notification”.
+To make notification “Summary notification” one should call:</p>
+<pre><code>builder.setGroup(GROUP_KEY);
+builder.setGroupSummary(true);
+</code></pre>
+<p>In this case following will happen:</p>
+<ol>
+<li>On phone only Summary notification will be shown. Any other non-summary notification with the same group key as Summary notification will not be shown</li>
+</ol>
+<p><img src="../../img/1_ioGcmNRdinQLPVIS-tI0FA.png" alt=""></p>
+<ol start="2">
+<li>On wearable device Summary notification will not be shown. Instead all non-summary notifications will be shown (grouped automatically by the system).</li>
+</ol>
+<p><img src="../../img/1_wWiiDHysRTNz_bGQncwa5g.png" alt=""></p>
+<p><img src="../../img/1_y8IMp1FbJegM-HvQtvIg1A.png" alt=""></p>
+<h2 id="accessing-notifications-in-notification-tray">Accessing notifications in notification tray<a href="#accessing-notifications-in-notification-tray" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>In order to update notifications it is useful to access currently showing notifications.
+For example, if we have Summary notification then we might want to show number of notifications in this group. To do this we should know how many notifications of this group is showing at the moment.</p>
+<p>Unfortunately, there is no way to do that prior to API 23. Since API 23 there is method:</p>
+<pre><code>if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.M) {
+    NotificationManager notificationManager = context.getSystemService(NOTIFICATION_MANAGER);
+    StatusBarNotification[] notifications = notificationManager.getActiveNotifications();
+}
+</code></pre>
+<blockquote>
+<p><strong>Important</strong>: here we need NotificationManager and not NotificationManagerCompat.</p>
+</blockquote>
+<p><strong>Note</strong>: When only summary notification is currently visible to user in notification tray, getActiveNotifications returns whole list of notifications (including ones that grouped in summary and not visible on phone in notification tray).</p>
+<blockquote>
+<p><strong>Important</strong>: Don’t use emulators (neither Android official emulator nor Genymotion) for implementing notifications grouping, as in the case described aboveNotificationManager#getActiveNotifications() returns only summary notification and doesn’t list notifications that were sent, but currently not visible to user..</p>
+</blockquote>
+<h2 id="notification-styles">Notification Styles<a href="#notification-styles" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Here the best thing one can do is look at available Styles in <a href="https://developer.android.com/reference/android/app/Notification.Style.html">documentation</a>. Knowing available styles is important to find one that fits your needs.
+For example, for grouping notifications InboxStyle is very useful.
+We will use it below.</p>
+<h2 id="example-of-grouping-notifications">Example of grouping notifications<a href="#example-of-grouping-notifications" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Collecting everything above, we finally can do something useful.</p>
+<p>Snippet below does the following:</p>
+<ul>
+<li>If no notifications in notification tray: send single notification</li>
+<li>If only one notification is shown in notification tray: send single notification and group notifications into summary notification (with previews of current notifications)</li>
+<li>If summary notification is showing: send single notification and update group notification</li>
+</ul>
+<p>Call sendNotification multiple times with the same group key, and see what happens.</p>
+<pre><code>private void sendNotification(Context context, String groupKey, String message) {
+    NotificationManager notificationManager = (NotificationManager) getSystemService(*NOTIFICATION_SERVICE*);
+
+    boolean shouldShowGroupNotification = false;
+    List&lt;CharSequence&gt; currentNotificationMessages = new ArrayList&lt;&gt;();
+    currentNotificationMessages.add(message);
+    
+    if (Build.VERSION.*SDK_INT *&gt;= Build.VERSION_CODES.*M*) {
+        for (StatusBarNotification sbn : notificationManager.getActiveNotifications()) {
+            if (sbn.getId() != *GROUP_ID *&amp;&amp; groupKey.equalsIgnoreCase(sbn.getNotification().getGroup())) {
+                CharSequence text = sbn.getNotification().extras.getCharSequence(*EXTRA_TEXT*);
+                currentNotificationMessages.add(text);
+                shouldShowGroupNotification = true;
+                break;
+            }
+        }
+    }
+
+    showSingleNotification(context, groupKey, message);
+    if (shouldShowGroupNotification) {
+        showGroupNotification(context, groupKey, currentNotificationMessages);
+    }
+}
+
+private void showSingleNotification(Context context, String groupKey, String message) {
+    int notificationId = (int) (System.*currentTimeMillis*() / 1000);
+    
+    Intent intent = new Intent(this, MainActivity.class);
+    PendingIntent pendingIntent = PendingIntent.*getActivity*(context, notificationId, intent, PendingIntent.*FLAG_UPDATE_CURRENT*);
+
+    Notification singleNotification = new NotificationCompat.Builder(context)
+            .setContentTitle(&quot;Title&quot;)
+            .setContentText(message)
+            .setGroup(groupKey)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentIntent(pendingIntent)
+            .build();
+
+    NotificationManagerCompat notificationManager = NotificationManagerCompat.*from*(context);
+    notificationManager.notify(notificationId, singleNotification);
+}
+
+private void showGroupNotification(Context context, String groupKey, List&lt;CharSequence&gt; previousNotificationsTexts) {
+    NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
+    for (CharSequence text: previousNotificationsTexts) {
+        style.addLine(text);
+    }
+    int groupCount = previousNotificationsTexts.size() + 1;
+    style.setSummaryText(groupCount + &quot; new notifications&quot;);
+
+    Notification groupNotification = new NotificationCompat.Builder(context)
+            .setStyle(style)
+            .setContentTitle(&quot;Group Title&quot;)
+            .setContentText(&quot;Group Text&quot;)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setGroup(groupKey)
+            .setGroupSummary(true)
+            .build();
+
+    NotificationManagerCompat notificationManager = NotificationManagerCompat.*from*(context);
+    notificationManager.notify(*GROUP_ID*, groupNotification);
+}
+</code></pre>
+<p><img src="../../img/1_fSahpzH6zC7WKVATJUAfCw.png" alt=""></p>
+<p><img src="../../img/1_UY8HQlQ0tNsbwTHCDLZrog.png" alt=""></p>
+<p><img src="../../img/1_ocnLjgr4bpJ93Zf3iY4yWw.png" alt=""></p>
+<h2 id="further-improvements">Further improvements<a href="#further-improvements" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Things that are not covered here is updating group notification on clicking on notification or on dismissing notification.
+But this is like a union of “Handle clicking/dismissing notification” with “Update (summary) notification”.
+Consider this as a homework :)</p>
+<h2 id="referencesfurther-reading">References/Further reading<a href="#referencesfurther-reading" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p><a href="https://developer.android.com/guide/topics/ui/notifiers/notifications.html"><strong>Notifications | Android Developers</strong>
+*A notification is a message you can display to the user outside of your application's normal UI. When you tell the…*developer.android.com</a>
+<a href="https://developer.android.com/training/notify-user/index.html"><strong>Notifying the User | Android Developers</strong>
+*A notification is a user interface element that you display outside your app's normal UI to indicate that an event…*developer.android.com</a>
+<a href="https://developer.android.com/training/wearables/notifications/index.html"><strong>Adding Wearable Features to Notifications | Android Developers</strong>
+*When an Android handheld (phone or tablet) and Android wearable are connected, the handheld automatically shares…*developer.android.com</a></p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="https://krossovochkin.github.io/posts/neural_networks_and_deep_learning_38aaca43ae0f/">
+                <span class="button__icon">←</span>
+                <span class="button__text">Neural Networks and Deep Learning</span>
+            </a>
+        </span>
+        
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>© 2020 Vasya Drobushkov</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="https://krossovochkin.github.io/assets/main.js"></script>
+<script src="https://krossovochkin.github.io/assets/prism.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

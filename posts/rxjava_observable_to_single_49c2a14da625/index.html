@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>RxJava Observable to Single :: Krossovochkin — Android Developer</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content="Source: https://github.com/ReactiveX
+Transforming Single to Observable is simple, as Single satisfies Observable’s contract. Just call single.toObservable() and you’re good. But transforming Observable to Single is not that simple: if it happens that Observable emits exactly one value and completes (or terminates with error without emitting values) then it is pretty straightforward, otherwise one need to set up some additional rules.
+In RxJava there are a number of operators for transforming Observable to Single:" />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://krossovochkin.github.io/posts/rxjava_observable_to_single_49c2a14da625/" />
+
+
+
+
+<link rel="stylesheet" href="https://krossovochkin.github.io/assets/style.css">
+
+  <link rel="stylesheet" href="https://krossovochkin.github.io/assets/yellow.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://krossovochkin.github.io/img/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="https://krossovochkin.github.io/img/favicon/yellow.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  <meta name="twitter:site" content="krossovochkin" />
+
+<meta name="twitter:creator" content="krossovochkin" />
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="RxJava Observable to Single :: Krossovochkin">
+<meta property="og:description" content="Source: https://github.com/ReactiveX
+Transforming Single to Observable is simple, as Single satisfies Observable’s contract. Just call single.toObservable() and you’re good. But transforming Observable to Single is not that simple: if it happens that Observable emits exactly one value and completes (or terminates with error without emitting values) then it is pretty straightforward, otherwise one need to set up some additional rules.
+In RxJava there are a number of operators for transforming Observable to Single:" />
+<meta property="og:url" content="https://krossovochkin.github.io/posts/rxjava_observable_to_single_49c2a14da625/" />
+<meta property="og:site_name" content="RxJava Observable to Single" />
+
+  <meta property="og:image" content="https://krossovochkin.github.io/">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2019-05-27 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Krossovochkin
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About me</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About me</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://krossovochkin.github.io/posts/rxjava_observable_to_single_49c2a14da625/">RxJava Observable to Single</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2019-05-27 
+      </span>
+    
+    
+    <span class="post-author">::
+      Vasya Drobushkov
+    </span>
+    
+  </div>
+
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <p>Source: <a href="https://github.com/ReactiveX">https://github.com/ReactiveX</a></p>
+<p>Transforming Single to Observable is simple, as Single satisfies Observable’s contract. Just call single.toObservable() and you’re good. But transforming Observable to Single is not that simple: if it happens that Observable emits exactly one value and completes (or terminates with error without emitting values) then it is pretty straightforward, otherwise one need to set up some additional rules.</p>
+<p>In RxJava there are a number of operators for transforming Observable to Single:</p>
+<ul>
+<li>
+<p>Observable.single(T defaultValue) / Observable.singleOrError()</p>
+</li>
+<li>
+<p>Single.fromObservable(&hellip;)</p>
+</li>
+<li>
+<p>Observable.elementAt(0, T defaultValue) / Observable.elementAtOrError(0)</p>
+</li>
+<li>
+<p>Observable.first(T defaultValue) / Observable.firstOrError()</p>
+</li>
+</ul>
+<blockquote>
+<p>There are also toList() / toMap() / etc. methods, though they are out of scope in this article as with these operators everything is straightforward: after source Observable completed we just bundle all values into list/map.</p>
+</blockquote>
+<p>This variety of operators is due to different strategies we can apply on Observable to transform it to Single. First thing that we note is that Single.onSuccess does two things — emits value and completes stream. In Observable there are two different callbacks: for emitting value Observable.onNext and for completing stream Observable.onComplete. That means that we can wait for onNext or onComplete to be called to understand whether we’re ready to call onSuccess. This is where the key idea about strategies comes from.</p>
+<p>Let’s dive deeper and find out the difference and use cases.</p>
+<h3 id="observablesingle--observablesingleorerror--singlefromobservable">Observable.single / Observable.singleOrError / Single.fromObservable<a href="#observablesingle--observablesingleorerror--singlefromobservable" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>If we look at implementation of these we’ll find out that they all use the same operator underneath: ObservableSingleSingle</p>
+<p><img src="../../img/1_oDDem3_D9k2MvscfKox9jQ.png" alt="Observable.single(T defaultItem)"><em><a href="https://github.com/ReactiveX/RxJava/blob/2.x/src/main/java/io/reactivex/Observable.java#L11627">Observable.single(T defaultItem)</a></em></p>
+<p><img src="../../img/1_Xkolu5wTRPNJLxeVS7JSyg.png" alt="Observable.singleOrError()"><em><a href="https://github.com/ReactiveX/RxJava/blob/2.x/src/main/java/io/reactivex/Observable.java#L11649">Observable.singleOrError()</a></em></p>
+<p><img src="../../img/1_G9YehsMyDd_Sg0V29e6cmg.png" alt="Single.fromObservable(…)"><em><a href="https://github.com/ReactiveX/RxJava/blob/2.x/src/main/java/io/reactivex/Single.java#L809">Single.fromObservable(…)</a></em></p>
+<p>So Single.fromObservable and Observable.singleOrError are equivalents.
+All three use same operator underneath, but Observable.single provides defaultItem while other two provide null as a defaultItem.</p>
+<p>Let’s look inside ObservableSingleSingle to understand what it does.
+First let’s look at onNext:</p>
+<p><img src="../../img/1_aEMrs8XB8jECp94ocUyRvQ.png" alt="ObservableSingleSingle.java onNext"><em><a href="https://github.com/ReactiveX/RxJava/blob/0e7b8eaa61f9cac0538ef6a59bfbd0b119b87732/src/main/java/io/reactivex/internal/operators/observable/ObservableSingleSingle.java">ObservableSingleSingle.java onNext</a></em></p>
+<p>Here is the following:</p>
+<ul>
+<li>
+<p>first check whether we’re done (either completed or error) or not. And if done then we ignore provided value.</p>
+</li>
+<li>
+<p>then we check whether this is the first emitted item or not (inside we have field value which stores required single value). If this is the second emit, then we terminate with error (as Single can’t have two emitted items)</p>
+</li>
+<li>
+<p>if value is null — which means this is first emit — we store it inside and do nothing else.</p>
+</li>
+</ul>
+<p>So you see that item wasn’t emitted to downstream in onNext, then it should be somewhere else. Let’s check onComplete:</p>
+<p><img src="../../img/1_Rgc5BZ3nEG43897p2twcLQ.png" alt="ObservableSingleSingle.java onComplete"><em><a href="https://github.com/ReactiveX/RxJava/blob/0e7b8eaa61f9cac0538ef6a59bfbd0b119b87732/src/main/java/io/reactivex/internal/operators/observable/ObservableSingleSingle.java">ObservableSingleSingle.java onComplete</a></em></p>
+<p>In onComplete:</p>
+<ul>
+<li>
+<p>as in onNext we check whether we’re done</p>
+</li>
+<li>
+<p>we check whether our value is null (there was no emission from upstream) and if so we use defaultValue (remember, in singleOrError defaultValue is set as null)</p>
+</li>
+<li>
+<p>then again we check whether our value is null. If value is not null, then we complete downstream with success otherwise with error (as there is no value to be emitted to single when upstream is completed)</p>
+</li>
+</ul>
+<blockquote>
+<p>To conclude, singleOrError() -like operators wait for upstream to complete and only then can emit success.
+If upstream Observable emits one value and not completes — singleOrError() won’t emit any value and will just wait.</p>
+</blockquote>
+<p>If we take a look at marble diagram from documentation for example for singleOrError we’ll see exactly same:</p>
+<p><img src="../../img/0_IFiuMnboQXx3Pc5D.png" alt="singleOrError marble diagram"><em><a href="https://raw.github.com/wiki/ReactiveX/RxJava/images/rx-operators/singleOrError.png">singleOrError marble diagram</a></em></p>
+<h3 id="observablefirst--observablefirstorerror--observableelementat--observableelementatorerror">Observable.first / Observable.firstOrError / Observable.elementAt / Observable.elementAtOrError<a href="#observablefirst--observablefirstorerror--observableelementat--observableelementatorerror" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>First of all need to say that Observable.first(T defaultItem)just calls Observable.elementAt(0, T defaultItem) and Observable.firstOrError() just calls Observable.elementAtOrError(0). These are just operators with more human-readable names.</p>
+<p><img src="../../img/1_q0JP3_KZvDoqBmbxjjRDJg.png" alt="Observable.first"><em><a href="https://github.com/ReactiveX/RxJava/blob/2.x/src/main/java/io/reactivex/Observable.java#L8461">Observable.first</a></em></p>
+<p><img src="../../img/1_PZYemmryaCmyj8SFImRAdw.png" alt="Observable.firstOrError"><em><a href="https://github.com/ReactiveX/RxJava/blob/2.x/src/main/java/io/reactivex/Observable.java#L8480">Observable.firstOrError</a></em></p>
+<p>Base elementAt and elementAtOrError both use ObservableElementAtSingle:</p>
+<p><img src="../../img/1_oBlntCEJ2gupNQUQP68btA.png" alt="Observable.elementAt"><em><a href="https://github.com/ReactiveX/RxJava/blob/2.x/src/main/java/io/reactivex/Observable.java#L8367">Observable.elementAt</a></em></p>
+<p><img src="../../img/1_niAS5hd-rkhL65xjvlLaDw.png" alt="Observable.elementAtOrError"><em><a href="https://github.com/ReactiveX/RxJava/blob/2.x/src/main/java/io/reactivex/Observable.java#L8395">Observable.elementAtOrError</a></em></p>
+<p>As with single the difference between two methods is that one provides defaultItem and another provides null as default.</p>
+<p>Looking inside onNext method of ObservableElementAtSingle we see the following:</p>
+<p><img src="../../img/1_CfZ3FE5NGoh_zZPn7ekKdA.png" alt="ObservableElementAtSingle.java onNext"><em><a href="https://github.com/ReactiveX/RxJava/blob/0e7b8eaa61f9cac0538ef6a59bfbd0b119b87732/src/main/java/io/reactivex/internal/operators/observable/ObservableElementAtSingle.java">ObservableElementAtSingle.java onNext</a></em></p>
+<p>Here instead of saving value to be emitted, we store current index called count. And when count reaches requested index we dispose upstream and complete with success downstream single. So that means that elementAt-like operators don’t wait for upstream to complete and are more like eager version of transforming Observable to Single. If upstream Observable emits multiple values and even not completes — this operators will grab item on a requested position and complete downstream single with success.</p>
+<p>Inside onComplete though it also does some work:</p>
+<p><img src="../../img/1_Sk9Fr-trtQ1B9PQ-URUHKg.png" alt="ObservableElementAtSingle.java onComplete"><em><a href="https://github.com/ReactiveX/RxJava/blob/0e7b8eaa61f9cac0538ef6a59bfbd0b119b87732/src/main/java/io/reactivex/internal/operators/observable/ObservableElementAtSingle.java">ObservableElementAtSingle.java onComplete</a></em></p>
+<p>The only way we can get to onComplete is if upstream Observable not emit any value and completed (basically Observable.empty()). Here we check provided default value (remember for elementAtOrError default value is null) and if it is not null we complete with success otherwise with error as there is nothing to emit.</p>
+<blockquote>
+<p>To conclude, <em>elementAtOrError()</em> -like operators do not wait for upstream to complete and emit success as soon as upstream provided them with a requested value.
+If upstream Observable emits one value and not completes — <em>firstOrError()</em> will complete with success.</p>
+</blockquote>
+<p>And marble diagram for firstOrError:</p>
+<p><img src="../../img/0_6AAYKoAFuK3DL5Af.png" alt="firstOrError() marble diagram"><em><a href="https://raw.github.com/wiki/ReactiveX/RxJava/images/rx-operators/firstOrError.o.png">firstOrError() marble diagram</a></em></p>
+<h3 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>To sum up there is an overview of behaviors of operators for given upstream Observables:</p>
+<ul>
+<li>
+<p>yellow means stream emits nothing but not closes — it just waits</p>
+</li>
+<li>
+<p>green — that onSuccess was called (with name of the item emitted)</p>
+</li>
+<li>
+<p>red — that onError was called</p>
+</li>
+</ul>
+<p><img src="../../img/1_G7Al0r3t_IqklqWKRaT02Q.png" alt=""></p>
+<p>Also <a href="https://gist.github.com/krossovochkin/8a860ec1c34087518fc086dc40b42bc0">here</a> one can see the tests.</p>
+<p>Use these operators wisely, if you need more eager transforming and you are not interested in following emits — use first/firstOrError, if you want to have additional checks on upstream Observable (that it satisfies Single contract) then use single/singleOrError. But don’t forget that single/singleOrError might not complete if upstream Observable not completed.</p>
+<p>Further when you’d like to find out what operators do, check the documentation, look at the source code and write some tests.</p>
+<p>Happy coding!</p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="https://krossovochkin.github.io/posts/throttling_in_rxjava_2_d640ea5f7bf1/">
+                <span class="button__icon">←</span>
+                <span class="button__text">Throttling in RxJava 2</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="https://krossovochkin.github.io/posts/dart_language_bad_design_choices_6e35987dc693/">
+                <span class="button__text">Dart language bad design choices</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>© 2020 Vasya Drobushkov</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="https://krossovochkin.github.io/assets/main.js"></script>
+<script src="https://krossovochkin.github.io/assets/prism.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

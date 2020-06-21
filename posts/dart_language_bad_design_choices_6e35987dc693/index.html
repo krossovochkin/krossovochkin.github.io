@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Dart language bad design choices :: Krossovochkin — Android Developer</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content="Source: https://www.dartlang.org/assets/shared/dart-logo-for-shares.png?2
+Introduction Before raising a point about some design choices we need to define some criteria.
+  Intent/Declaration &amp;gt; Usage/Implementation Code one write should clearly state the intent. Implementation is not that important than an intent.
+  Implicit is bad Implicit things do not share the intention, therefore from the first point it means that any implicit thing hides true intent. If anything hides intention — it can be considered bad." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://krossovochkin.github.io/posts/dart_language_bad_design_choices_6e35987dc693/" />
+
+
+
+
+<link rel="stylesheet" href="https://krossovochkin.github.io/assets/style.css">
+
+  <link rel="stylesheet" href="https://krossovochkin.github.io/assets/yellow.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://krossovochkin.github.io/img/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="https://krossovochkin.github.io/img/favicon/yellow.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  <meta name="twitter:site" content="krossovochkin" />
+
+<meta name="twitter:creator" content="krossovochkin" />
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Dart language bad design choices :: Krossovochkin">
+<meta property="og:description" content="Source: https://www.dartlang.org/assets/shared/dart-logo-for-shares.png?2
+Introduction Before raising a point about some design choices we need to define some criteria.
+  Intent/Declaration &amp;gt; Usage/Implementation Code one write should clearly state the intent. Implementation is not that important than an intent.
+  Implicit is bad Implicit things do not share the intention, therefore from the first point it means that any implicit thing hides true intent. If anything hides intention — it can be considered bad." />
+<meta property="og:url" content="https://krossovochkin.github.io/posts/dart_language_bad_design_choices_6e35987dc693/" />
+<meta property="og:site_name" content="Dart language bad design choices" />
+
+  <meta property="og:image" content="https://krossovochkin.github.io/">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2019-04-08 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Krossovochkin
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About me</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About me</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://krossovochkin.github.io/posts/dart_language_bad_design_choices_6e35987dc693/">Dart language bad design choices</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2019-04-08 
+      </span>
+    
+    
+    <span class="post-author">::
+      Vasya Drobushkov
+    </span>
+    
+  </div>
+
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <p>Source: <a href="https://www.dartlang.org/assets/shared/dart-logo-for-shares.png?2">https://www.dartlang.org/assets/shared/dart-logo-for-shares.png?2</a></p>
+<h2 id="introduction">Introduction<a href="#introduction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Before raising a point about some design choices we need to define some criteria.</p>
+<ol>
+<li>
+<p>Intent/Declaration &gt; Usage/Implementation
+Code one write should clearly state the intent. 
+Implementation is not that important than an intent.</p>
+</li>
+<li>
+<p>Implicit is bad
+Implicit things do not share the intention, therefore from the first point it means that any implicit thing hides true intent.
+If anything hides intention — it can be considered bad.</p>
+</li>
+<li>
+<p>Mixing different things together is bad.
+Partially it relates to the first point about intention.
+If you do the change and it is not clear whether it is because of one thing or another (which are mixed into one) — then intention is hidden and it is bad.</p>
+</li>
+</ol>
+<p>Now let’s look at some design choices in Dart language and think whether they hide developer’s intent or they can be considered good.</p>
+<h2 id="visibility-modifiers">Visibility modifiers<a href="#visibility-modifiers" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<blockquote>
+<p>The import and library directives can help you create a modular and shareable code base. Libraries not only provide APIs, but are a unit of privacy: identifiers that start with an underscore (_) are visible only inside the library.
+<a href="https://www.dartlang.org/guides/language/language-tour#libraries-and-visibility">Reference</a></p>
+</blockquote>
+<p>Basically in Dart each file is a library.
+And effectively that means that in Dart there are only two visibility modifiers:</p>
+<ul>
+<li>
+<p>Visible everywhere (i.e. public)</p>
+</li>
+<li>
+<p>Visible in library/file only (hereinafter when I use <em>library</em>, I will also mean <em>file</em>)</p>
+</li>
+</ul>
+<p>There is no private in class. There is no protected.
+One can emulate private in class by using private-in-library with only one class in library.
+One can emulate protected by having both parent and child class in one file and using private-in-library.</p>
+<p>If you want to have one property private-in-class and another protected… Bad luck. This is not what Dart is about.</p>
+<blockquote>
+<p><strong>Note</strong>: visibility modifiers are designed that way because of performance and usage of **dynamic **(will discuss it later in the article).
+The question is: whether *<em>dynamic</em> ***feature is so great to have lack in visibility modifiers?
+<a href="https://github.com/dart-lang/sdk/issues/33383">Reference</a></p>
+</blockquote>
+<p>But not having some of the common visibility modifiers is not the only issue about them in Dart. As said before there are only two visibility modifiers (public and private-in-library).
+And to distinguish them one should use _ (underscore):</p>
+<ul>
+<li>
+<p>**property/function() **— is a public property/function</p>
+</li>
+<li>
+<p>**_property/_function() **— is a private-in-library property/function</p>
+</li>
+</ul>
+<p>“Clever solution” to distinguish two different cases. But it comes with a price:</p>
+<ul>
+<li>
+<p>If later on designers of language decide to add more visibility modifiers — it would be difficult.</p>
+</li>
+<li>
+<p>If you want to change visibility for some property/function you have to make *rename *refactoring.</p>
+</li>
+</ul>
+<p>Here the issue is that visibility modifier is mixed with name of property/function.
+Mixing different things is bad.
+If you want to change visibility of property you should be able to change visibility.
+If you want to change property name you should be able to change property name.
+If you want to change visibility of property you should not be forced to change property name (including all occurrences of usage of that property).</p>
+<p>Dart is not good at it.
+Though again it was done because of the *dynamic *feature (see link above).</p>
+<h2 id="implicit-returns">Implicit returns<a href="#implicit-returns" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<blockquote>
+<p>All functions return a value. If no return value is specified, the statement return null; is implicitly appended to the function body.
+<a href="https://www.dartlang.org/guides/language/language-tour#return-values">Reference</a></p>
+</blockquote>
+<p>Implicit is bad.</p>
+<p>I can’t say much about this.
+Just that language, which doesn’t really tries to protect you from NullPointerException issues, and instead provides you a way to face it if you made a mistake with missing return value, looks like a weird one.</p>
+<p><strong>Suggestion:</strong> One should setup lint to catch missing returns. And in each place where return null; was intentional, just put it explicitly.</p>
+<blockquote>
+<p><strong>Note</strong>: This implicit feature becomes even more weird when it comes to using void. You can read this <a href="https://medium.com/flutter-community/the-curious-case-of-void-in-dart-f0535705e529">article </a>to get more inside.</p>
+</blockquote>
+<h2 id="implicit-interfaces">Implicit interfaces<a href="#implicit-interfaces" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<blockquote>
+<p>Every class implicitly defines an interface containing all the instance members of the class and of any interfaces it implements.
+<a href="https://www.dartlang.org/guides/language/language-tour#implicit-interfaces">Reference</a></p>
+</blockquote>
+<p>Implicit is bad.
+Intent/Declaration &gt; Usage/Implementation</p>
+<p>Dart has no *interface *keyword.
+You can’t declare interface in Dart.
+I see this as a major issue. Interface &gt; Implementation.
+The only way to emulate interface in Dart is to create abstract class.</p>
+<p>That means that in Dart abstract class is mixed with interface.
+Mixing different things together is bad.</p>
+<p>Instead of having interfaces and abstract classes separate Dart designers decided to have different ways to extend classes.
+You can use keyword *extend *and it will work as usual.
+You can use keyword *implements *and in such case you will implement **implicit **interface some class defines.</p>
+<blockquote>
+<p><strong>Note</strong>: additionally you can add more functionality with mixin feature of Dart. This is questionable feature, which is similar to interfaces with default functions in Java (with some differences, of course).
+I’ll omit discussing mixins here as it is quite a big topic.
+Read <a href="https://medium.com/flutter-community/dart-what-are-mixins-3a72344011f3">this article</a> as some quick dive in.</p>
+</blockquote>
+<p>That means that if you add some public property to a class it immediately becomes part of that class interface.
+And keeping in mind private-in-library feature, if you add <strong>any</strong> property to a class it immediately becomes part of that class interface inside library.
+Therefore class has different implicit interfaces inside and outside of library.</p>
+<p>**Suggestion: **create explicit interfaces. Even considering Dart doesn’t support them.
+Create abstract classes with public-only properties/functions in a separate file (to ensure you’re not clashing with private-in-library features).</p>
+<blockquote>
+<p><strong>Note:</strong> Interface keyword was removed intentionally
+<a href="https://news.dartlang.org/2012/06/proposal-to-eliminate-interface.html">Reference</a></p>
+</blockquote>
+<h2 id="functions-first-class-support">Functions first-class support<a href="#functions-first-class-support" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<blockquote>
+<p>Dart is a true object-oriented language, so even functions are objects and have a type, <a href="https://api.dartlang.org/stable/dart-core/Function-class.html">Function.</a> This means that functions can be assigned to variables or passed as arguments to other functions.
+<a href="https://www.dartlang.org/guides/language/language-tour#functions">Reference</a>
+<strong>UPDATE</strong>: as pointed in <a href="https://medium.com/@jamesdlin/the-part-about-function-applies-only-if-you-dont-specify-return-types-or-parameter-types-cd5d7a454ca2">the comment</a> this part of the article is actually wrong as it is possible to add type information to function.
+Wherever possible use functions with explicit information.</p>
+</blockquote>
+<p>It is great that Dart has first-class support for functions.
+It is bad that Function has no information about parameters and return types.</p>
+<p>In general function can be represented as a class with one function.
+Classes can be of generic types as functions can. But Function in Dart has no type information (as dynamic feature we’ll look at later).</p>
+<p>That means that compiler doesn’t help you if you provide wrong number of arguments, incorrect argument types or return wrong type (or null).</p>
+<p><strong>Suggestion</strong>: Do not use Function in Dart. Try to use explicit interfaces. This can save you from weird issues at runtime.</p>
+<h2 id="dynamic">Dynamic<a href="#dynamic" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Feature of the language which it seems made other design choices required.</p>
+<p>In any object-oriented programming language there is a basic type. In Java it is Object, in Kotlin it is Any, in Dart it is <strong>dynamic</strong>.
+The difference is that in Java/Kotlin base type has limited number of supported methods (and if you would like to call some method which is not part of base type interface you have to make a downcast first), but in Dart on dynamic type one can call any property/function by name.
+That means that code like this is purely valid (for true/false value passed to a function):</p>
+<pre><code>void main() {
+  dynamic c = get(false);
+  print(c.a());
+}
+
+dynamic get(bool flag) {
+  if (flag) {
+    return A();
+  } else {
+    return B();
+  }
+}
+
+class A {
+  
+  dynamic a() {
+    return &quot;a&quot;;
+  }
+}
+
+class B {
+  
+  dynamic a() {
+    return &quot;b&quot;;
+  }
+}
+</code></pre>
+<p>This means that Dart is more like JavaScript and is less like Java.</p>
+<p>When you decide to have more dynamic things than statically typed things (which can be verified by compiler), you will get JavaScript-like language.</p>
+<p>Considering that in web development TypeScript with some types support is favorited by developers more than vanilla JavaScript is not a surprise.
+Developers like to delegate some checks to tests and compiler because it allows to concentrate on what matters.</p>
+<p>Direction Dart pointed to might be understandable, though not looking as a modern language.</p>
+<p>Also not making compiler do many checks during compilation allows Flutter to have hot-reload feature, as re-compilation is pretty fast (as compiler seems not doing many of checks).</p>
+<p>Though if one asked me whether I’d like to have issues in runtime with fast compilation or being able to catch issues at compile time, I’d for sure choose the second one.</p>
+<p><strong>Suggestion:</strong> avoid using <em>dynamic</em>. Use explicit interfaces instead.</p>
+<h2 id="bonus-dart-type-system">Bonus. Dart type system.<a href="#bonus-dart-type-system" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<blockquote>
+<p>A sound <em>type system</em> means you can never get into a state where an expression evaluates to a value that doesn’t match the expression’s static type. For example, if an expression’s static type is String, at runtime you are guaranteed to only get a string when you evaluate it.
+Dart’s type system, like the type systems in Java and C#, is sound.
+<a href="https://www.dartlang.org/guides/language/sound-dart#what-is-soundness">Reference</a></p>
+</blockquote>
+<p>Let’s create simple test:</p>
+<pre><code>void main() {
+  String s = null;
+  if (s is String) {
+    print(&quot;string&quot;);
+  } else if (s is Null) {
+    print(&quot;null&quot;);
+  } else {
+    print (&quot;none&quot;);
+  }
+}
+</code></pre>
+<p>We assign null (which is instance of Null class: <a href="https://api.dartlang.org/stable/2.2.0/dart-core/Null-class.html">Reference</a>) to a String variable.
+As stated in documentation each expression can return only value of expected static type.
+In an example above we expect value to be of type String, but program will print “null”.</p>
+<p>As Null is a type in Dart and Null is not a String, but we can assign null to String variable without errors even in runtime – there is inconsistency in Dart type system.</p>
+<p>This and another case with *void, *which also behaves in a special way, looks like Dart type system is not stable enough (and therefore designed poorly).</p>
+<p>Happy coding.</p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="https://krossovochkin.github.io/posts/rxjava_observable_to_single_49c2a14da625/">
+                <span class="button__icon">←</span>
+                <span class="button__text">RxJava Observable to Single</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="https://krossovochkin.github.io/posts/kotlin_android_synthetics_performance_analysis_with_butterknife_90a54ca4325d/">
+                <span class="button__text">Kotlin-android-synthetics performance analysis (with ButterKnife)</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>© 2020 Vasya Drobushkov</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="https://krossovochkin.github.io/assets/main.js"></script>
+<script src="https://krossovochkin.github.io/assets/prism.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

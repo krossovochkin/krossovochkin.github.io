@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="generator" content="Hugo 0.67.1" />
+  
+    <title>Krossovochkin — Android Developer</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content="Android Developer" />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://krossovochkin.github.io/" />
+
+
+
+
+<link rel="stylesheet" href="https://krossovochkin.github.io/assets/style.css">
+
+  <link rel="stylesheet" href="https://krossovochkin.github.io/assets/yellow.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://krossovochkin.github.io/img/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="https://krossovochkin.github.io/img/favicon/yellow.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  <meta name="twitter:site" content="krossovochkin" />
+
+<meta name="twitter:creator" content="krossovochkin" />
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Krossovochkin">
+<meta property="og:description" content="Android Developer" />
+<meta property="og:url" content="https://krossovochkin.github.io/" />
+<meta property="og:site_name" content="Krossovochkin" />
+
+  
+    <meta property="og:image" content="https://krossovochkin.github.io/img/favicon/yellow.png">
+  
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+
+
+
+  <link href="/index.xml" rel="alternate" type="application/rss+xml" title="Krossovochkin" />
+
+
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Krossovochkin
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About me</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About me</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+
+<div class="posts">
+  
+  
+
+  
+  
+    
+  
+  
+
+  
+  <div class="post on-list">
+    <h1 class="post-title">
+      <a href="https://krossovochkin.github.io/posts/dart_language_bad_design_choices_6e35987dc693/">Dart language bad design choices</a></h1>
+    <div class="post-meta">
+      <span class="post-date">
+        2019-04-08
+      </span>
+      <span class="post-author">::
+        Vasya Drobushkov</span>
+    </div>
+
+    
+
+    
+
+    <div class="post-content">
+      
+      
+      Source: <a href="https://www.dartlang.org/assets/shared/dart-logo-for-shares.png?2">https://www.dartlang.org/assets/shared/dart-logo-for-shares.png?2</a>
+Introduction Before raising a point about some design choices we need to define some criteria.
+Intent/Declaration &gt; Usage/Implementation Code one write should clearly state the intent. Implementation is not that important than an intent.
+Implicit is bad Implicit things do not share the intention, therefore from the first point it means that any implicit thing hides true intent. If anything hides intention — it can be considered bad.
+      
+      
+    </div>
+
+    
+    <div>
+      <a class="read-more button"
+        href="/posts/dart_language_bad_design_choices_6e35987dc693/">Read more →</a>
+    </div>
+    
+  </div>
+  
+  <div class="post on-list">
+    <h1 class="post-title">
+      <a href="https://krossovochkin.github.io/posts/kotlin_android_synthetics_performance_analysis_with_butterknife_90a54ca4325d/">Kotlin-android-synthetics performance analysis (with ButterKnife)</a></h1>
+    <div class="post-meta">
+      <span class="post-date">
+        2019-02-18
+      </span>
+      <span class="post-author">::
+        Vasya Drobushkov</span>
+    </div>
+
+    
+
+    
+
+    <div class="post-content">
+      
+      
+      Introduction After comment that synthetic is no longer recommended practice and some arguments I decided to go deeper into issue with performance of kotlin-android-synthetics by analyzing generated Java and byte code and comparing to other approaches (such as vanilla-*findViewById *and ButterKnife).
+Vanilla-findViewById This is sample Activity we’ll work with throughout the article. Approach with *findViewById *will be our baseline.
+Sample consists of:
+*Activity *class
+One *TextView *property inside *Activity *with *lateinit *modifier
+      
+      
+    </div>
+
+    
+    <div>
+      <a class="read-more button"
+        href="/posts/kotlin_android_synthetics_performance_analysis_with_butterknife_90a54ca4325d/">Read more →</a>
+    </div>
+    
+  </div>
+  
+  <div class="post on-list">
+    <h1 class="post-title">
+      <a href="https://krossovochkin.github.io/posts/kotlin_java_interop_function_references_and_sam_conversions_3d0cd36f7967/">Kotlin-Java interop: function references and SAM conversions</a></h1>
+    <div class="post-meta">
+      <span class="post-date">
+        2018-09-13
+      </span>
+      <span class="post-author">::
+        Vasya Drobushkov</span>
+    </div>
+
+    
+
+    
+
+    <div class="post-content">
+      
+      
+      Though all the things below are pretty obvious if being careful while dealing with Kotlin-Java interop, I decided still to write short note about one particular issue with function references (from Kotlin side) and SAM conversions (from Java side).
+Function reference Function reference is a good way to pass function as a parameter without explicitly using lambdas.
+For example, if we have function:
+fun method(callback: (Input) -&gt; Output) { &hellip; } then we can pass our function as a lambda with function call or as a function reference:
+      
+      
+    </div>
+
+    
+    <div>
+      <a class="read-more button"
+        href="/posts/kotlin_java_interop_function_references_and_sam_conversions_3d0cd36f7967/">Read more →</a>
+    </div>
+    
+  </div>
+  
+  <div class="post on-list">
+    <h1 class="post-title">
+      <a href="https://krossovochkin.github.io/posts/dynamic_mobile_client_development_problem_and_concept_df509891061/">Dynamic mobile client development. Problem and concept.</a></h1>
+    <div class="post-meta">
+      <span class="post-date">
+        2018-07-21
+      </span>
+      <span class="post-author">::
+        Vasya Drobushkov</span>
+    </div>
+
+    
+
+    
+
+    <div class="post-content">
+      
+      
+      Data and interfaces — are two of the most important things in development.
+Data usually comes from/to server and tells application what should be used (and therefore shown to the user on UI)
+One of the main challenges in mobile development is to be in sync with server. Server is updated immediately (often along with web). Publishing to Play Store takes some time (even not talking about AppStore and their app review).
+      
+      
+    </div>
+
+    
+    <div>
+      <a class="read-more button"
+        href="/posts/dynamic_mobile_client_development_problem_and_concept_df509891061/">Read more →</a>
+    </div>
+    
+  </div>
+  
+  <div class="post on-list">
+    <h1 class="post-title">
+      <a href="https://krossovochkin.github.io/posts/neural_networks_and_deep_learning_38aaca43ae0f/">Neural Networks and Deep Learning</a></h1>
+    <div class="post-meta">
+      <span class="post-date">
+        2017-11-09
+      </span>
+      <span class="post-author">::
+        Vasya Drobushkov</span>
+    </div>
+
+    
+
+    
+
+    <div class="post-content">
+      
+      
+      Disclaimer It is brief synopsis of Neural Networks and Deep learning course on Coursera. That course is a first part of Deep learning specialization. Though course is great and very useful, I found that it has a lot of mathematics explanation (linear algebra — matrices, derivatives etc.), so sometimes it was difficult to wait for the actual useful information I didn’t know. So, I think I might be interested in reviewing neural networks in the future, but won’t be able to review course information as there will be a lot of such noise.
+      
+      
+    </div>
+
+    
+    <div>
+      <a class="read-more button"
+        href="/posts/neural_networks_and_deep_learning_38aaca43ae0f/">Read more →</a>
+    </div>
+    
+  </div>
+  
+  <div class="pagination">
+  <div class="pagination__buttons">
+    
+      <span class="button previous">
+        <a href="/page/5/">
+          <span class="button__icon">←</span>
+          <span class="button__text">Newer posts</span>
+        </a>
+      </span>
+    
+    
+      <span class="button next">
+        <a href="/page/7/">
+          <span class="button__text">Older posts</span>
+          <span class="button__icon">→</span>
+        </a>
+      </span>
+    
+  </div>
+</div>
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>© 2020 Vasya Drobushkov</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="https://krossovochkin.github.io/assets/main.js"></script>
+<script src="https://krossovochkin.github.io/assets/prism.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>
