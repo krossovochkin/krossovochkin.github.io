@@ -19,7 +19,8 @@
       
       <guid>https://krossovochkin.github.io/posts/compiler_generated_classes_methods_and_fields_in_java_343dde2cce61/</guid>
       <description>Source
-Introduction When we write program in Java we create some classes, methods, fields and put all of this into our source code — .java files. After these files are compiled with javac (Java Compiler) into .class files we got a bunch of Java bytecode. It turns out that not only we create classes, methods and fields in our source code, but also compiler by itself can create them when needed.</description>
+ 
+ Introduction When we write program in Java we create some classes, methods, fields and put all of this into our source code — .java files. After these files are compiled with javac (Java Compiler) into .class files we got a bunch of Java bytecode. It turns out that not only we create classes, methods and fields in our source code, but also compiler by itself can create them when needed.</description>
     </item>
     
     <item>
@@ -51,7 +52,7 @@ One tricky thing about SimpleDateFormat formats is why we have M and L when they
       <description>Though all the things below are pretty obvious if being careful while dealing with Kotlin-Java interop, I decided still to write short note about one particular issue with function references (from Kotlin side) and SAM conversions (from Java side).
 Function reference Function reference is a good way to pass function as a parameter without explicitly using lambdas.
 For example, if we have function:
-fun method(callback: (Input) -&amp;gt; Output) { ... } then we can pass our function as a lambda with function call or as a function reference:</description>
+fun method(callback: (Input) -&amp;gt; Output) { .</description>
     </item>
     
   </channel>

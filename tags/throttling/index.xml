@@ -20,8 +20,9 @@
       <guid>https://krossovochkin.github.io/posts/from_rxjava_to_kotlin_flow_throttling_ed1778847619/</guid>
       <description>Source
  This post is part of series of comparing RxJava to Kotlin Flow. Previous articles were about Threading, Backpressure, Error Handling, Stream Types
+   
  It is advised to take a look at the overview of Throttling operators in RxJava before reading this article: Throttling in RxJava 2 Review of different throttling operators in RxJava2proandroiddev.com
-Introduction Throttling is also one of the essential features of reactive programming. Streams might emit more values than we’re expecting to receive, so ability to limit number of events in a stream is very important.</description>
+Introduction Throttling is also one of the essential features of reactive programming.</description>
     </item>
     
     <item>
@@ -31,7 +32,8 @@ Introduction Throttling is also one of the essential features of reactive progra
       
       <guid>https://krossovochkin.github.io/posts/throttling_in_rxjava_2_d640ea5f7bf1/</guid>
       <description>Source: https://github.com/ReactiveX
-Introduction I don’t know for what reason but I see from time to time same misunderstanding on different throttle operators in RxJava. Usually nobody says about throttle, instead by default everyone says that debounce can be used. Especially using debounce to avoid multiple clicks on buttons is commonly suggested, which I believe is a bad UX (some examples here and here). Let’s finally look at available options in RxJava and find out when it is better to use what.</description>
+ 
+ Introduction I don’t know for what reason but I see from time to time same misunderstanding on different throttle operators in RxJava. Usually nobody says about throttle, instead by default everyone says that debounce can be used. Especially using debounce to avoid multiple clicks on buttons is commonly suggested, which I believe is a bad UX (some examples here and here). Let’s finally look at available options in RxJava and find out when it is better to use what.</description>
     </item>
     
   </channel>

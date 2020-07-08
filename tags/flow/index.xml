@@ -19,8 +19,9 @@
       
       <guid>https://krossovochkin.github.io/posts/the_real_kotlin_flow_benefits_over_rxjava_c19b99ba6eb9/</guid>
       <description>Source
-Introduction Recently the article about Kotlin Flow benefits over RxJava was published by Antoni Castejón García: Kotlin Flow benefits over RxJava
-Though Antoni made a good work and many thanks to him for providing his feedback and experience (we need to share our thoughts, this improves community acknowledgment in various areas) — I found few places in the article with which I don’t fully or partially agree. Some points, in my opinion, were missing.</description>
+  
+ Introduction Recently the article about Kotlin Flow benefits over RxJava was published by Antoni Castejón García: Kotlin Flow benefits over RxJava
+Though Antoni made a good work and many thanks to him for providing his feedback and experience (we need to share our thoughts, this improves community acknowledgment in various areas) — I found few places in the article with which I don’t fully or partially agree.</description>
     </item>
     
     <item>
@@ -31,6 +32,7 @@ Though Antoni made a good work and many thanks to him for providing his feedback
       <guid>https://krossovochkin.github.io/posts/from_rxjava_to_kotlin_flow_testing_42f1641d8433/</guid>
       <description>Source
  This post is part of series of comparing RxJava to Kotlin Flow. Previous articles were about Threading, Backpressure, Error Handling, Stream Types, Throttling
+  
  Introduction Testing is a crucial part of whole development. Testing allows you to write programs in a reliable fashion, prevent regressions and have many other goodies. I won’t go through the list of advantages of writing tests in this article though. In testing it is important to have tools which allow you to write reliable tests and also tools which allow you to test your business logic.</description>
     </item>
     
@@ -42,8 +44,9 @@ Though Antoni made a good work and many thanks to him for providing his feedback
       <guid>https://krossovochkin.github.io/posts/from_rxjava_to_kotlin_flow_throttling_ed1778847619/</guid>
       <description>Source
  This post is part of series of comparing RxJava to Kotlin Flow. Previous articles were about Threading, Backpressure, Error Handling, Stream Types
+   
  It is advised to take a look at the overview of Throttling operators in RxJava before reading this article: Throttling in RxJava 2 Review of different throttling operators in RxJava2proandroiddev.com
-Introduction Throttling is also one of the essential features of reactive programming. Streams might emit more values than we’re expecting to receive, so ability to limit number of events in a stream is very important.</description>
+Introduction Throttling is also one of the essential features of reactive programming.</description>
     </item>
     
     <item>
@@ -54,6 +57,7 @@ Introduction Throttling is also one of the essential features of reactive progra
       <guid>https://krossovochkin.github.io/posts/from_rxjava_to_kotlin_flow_stream_types_7916be6cabc2/</guid>
       <description>Source
  This post is part of series of comparing RxJava to Kotlin Flow. Previous articles were about Threading, Backpressure, Error Handling
+   
  Introduction In reactive programming we use streams. Therefore in both RxJava and Kotlin Flow we’ll have to use some streams. Though we’ll encounter some differences if we decide to migrate. In this article we’ll try to get into the stream types which have RxJava and Kotlin Flow and some important differences.</description>
     </item>
     
@@ -65,6 +69,7 @@ Introduction Throttling is also one of the essential features of reactive progra
       <guid>https://krossovochkin.github.io/posts/from_rxjava_to_kotlin_flow_error_handling_da1f6a4f2708/</guid>
       <description>Source
  This post is part of series of comparing RxJava to Kotlin Flow. Previous articles were about Threading and Backpressure.
+  
  Introduction Error handling is fundamental in reactive programming. Reactive streams might fail with exception and propagate it as an event downstream notifying consumers on the error that happened. As in previous articles, we’ll try to compare RxJava and Kotlin Flow error handling mechanisms. This might help us to migrate existing code from RxJava to Kotlin Flow and also understand how to properly use Kotlin Flow.</description>
     </item>
     
@@ -84,7 +89,8 @@ Introduction Throttling is also one of the essential features of reactive progra
       
       <guid>https://krossovochkin.github.io/posts/from_rxjava_2_to_kotlin_flow_threading_8618867e1955/</guid>
       <description>Source
-Introduction For a long time RxJava was undisputed leader for reactive solutions on Android, though with Kotlin expansion and introducing cold streams (Flow) seems situation might be rapidly changing in the coming years. Though reactive programming is not related to threading in the first place, concurrency and parallelism are very important anyway. In this article we’ll try to make short recap on threading in RxJava 2 (with some basic caveats on its usage) and then take a look at how threading works in Kotlin Flow, so if anyone would like to migrate their code without affecting functionality it would be nice and smooth.</description>
+   
+ Introduction For a long time RxJava was undisputed leader for reactive solutions on Android, though with Kotlin expansion and introducing cold streams (Flow) seems situation might be rapidly changing in the coming years. Though reactive programming is not related to threading in the first place, concurrency and parallelism are very important anyway. In this article we’ll try to make short recap on threading in RxJava 2 (with some basic caveats on its usage) and then take a look at how threading works in Kotlin Flow, so if anyone would like to migrate their code without affecting functionality it would be nice and smooth.</description>
     </item>
     
   </channel>

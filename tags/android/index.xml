@@ -29,7 +29,8 @@ The first project I took part in was called “nICE”. It was a match-3-like ga
       
       <guid>https://krossovochkin.github.io/posts/accessibility_of_text_over_generic_background_color_e82e9546731a/</guid>
       <description>Source
-Introduction One of the important parts of application development is to make it accessible to as many users as possible. This includes people with impaired vision, color blindness, impaired hearing, impaired dexterity, cognitive disabilities, and many other disabilities. Making an app accessible is challenging but rewarding. The difficulty is because the development team should pay attention to some details which often might be overlooked. Though besides some advanced accessibility support might be too expensive to add, there are still some basic best practices to ensure that your app development is heading in the right direction (and can be improved later over time).</description>
+  
+ Introduction One of the important parts of application development is to make it accessible to as many users as possible. This includes people with impaired vision, color blindness, impaired hearing, impaired dexterity, cognitive disabilities, and many other disabilities. Making an app accessible is challenging but rewarding. The difficulty is because the development team should pay attention to some details which often might be overlooked. Though besides some advanced accessibility support might be too expensive to add, there are still some basic best practices to ensure that your app development is heading in the right direction (and can be improved later over time).</description>
     </item>
     
     <item>
@@ -39,7 +40,8 @@ Introduction One of the important parts of application development is to make it
       
       <guid>https://krossovochkin.github.io/posts/vinyls_animation_with_motionlayout_595e716c2752/</guid>
       <description>Source
-Introduction Being professional Android developer for many years, things which were always difficult to me are animations, colors and dimensions — basically all the UI/UX stuff. I can’t describe or easily understand what good colors can be used, how to implement this or that animation and so on. Though we’re waiting for MotionLayout for quite long time (and Android Studio 4.0) I took some time to play with it. And I should say that experience (even without Motion Editor) was much better than I expected.</description>
+ 
+ Introduction Being professional Android developer for many years, things which were always difficult to me are animations, colors and dimensions — basically all the UI/UX stuff. I can’t describe or easily understand what good colors can be used, how to implement this or that animation and so on. Though we’re waiting for MotionLayout for quite long time (and Android Studio 4.0) I took some time to play with it.</description>
     </item>
     
     <item>
@@ -49,7 +51,8 @@ Introduction Being professional Android developer for many years, things which w
       
       <guid>https://krossovochkin.github.io/posts/diving_deep_into_android_dex_bytecode_48db82b170c8/</guid>
       <description>Source
-Introduction Modern Android development is based on Kotlin, which is interoperable with Java. Whenever we use some cool feature from Kotlin (say High-order functions) under the hood (when running on JVM) the feature is implemented in terms of Java bytecode. This might lead to some overheads in memory and performance if used without caution (for example excessive usage of lambdas with parameters without inlining might produce a lot of anonymous classes and put additional pressure on GC).</description>
+  
+ Introduction Modern Android development is based on Kotlin, which is interoperable with Java. Whenever we use some cool feature from Kotlin (say High-order functions) under the hood (when running on JVM) the feature is implemented in terms of Java bytecode. This might lead to some overheads in memory and performance if used without caution (for example excessive usage of lambdas with parameters without inlining might produce a lot of anonymous classes and put additional pressure on GC).</description>
     </item>
     
     <item>

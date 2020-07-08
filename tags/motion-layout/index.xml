@@ -19,7 +19,8 @@
       
       <guid>https://krossovochkin.github.io/posts/vinyls_animation_with_motionlayout_595e716c2752/</guid>
       <description>Source
-Introduction Being professional Android developer for many years, things which were always difficult to me are animations, colors and dimensions — basically all the UI/UX stuff. I can’t describe or easily understand what good colors can be used, how to implement this or that animation and so on. Though we’re waiting for MotionLayout for quite long time (and Android Studio 4.0) I took some time to play with it. And I should say that experience (even without Motion Editor) was much better than I expected.</description>
+ 
+ Introduction Being professional Android developer for many years, things which were always difficult to me are animations, colors and dimensions — basically all the UI/UX stuff. I can’t describe or easily understand what good colors can be used, how to implement this or that animation and so on. Though we’re waiting for MotionLayout for quite long time (and Android Studio 4.0) I took some time to play with it.</description>
     </item>
     
   </channel>

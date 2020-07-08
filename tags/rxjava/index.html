@@ -478,8 +478,9 @@
     <div class="post-content">
       
       
-      Source: <a href="https://github.com/ReactiveX">https://github.com/ReactiveX</a>
-Introduction RxJava is a very powerful library, though it has some issues as well. Specifically performance and memory issues, which come from problems library tries to solve and how the solution is designed from technical perspective. In order to minimize overhead in RxJava there are a number of optimizations, which are called “operator fusion”. And we’ll talk about them in this article. But first let’s recap how RxJava reactive types work and what issues they have.
+      <p>Source: <a href="https://github.com/ReactiveX">https://github.com/ReactiveX</a></p>
+<p>Introduction RxJava is a very powerful library, though it has some issues as well. Specifically performance and memory issues, which come from problems library tries to solve and how the solution is designed from technical perspective. In order to minimize overhead in RxJava there are a number of optimizations, which are called “operator fusion”. And we’ll talk about them in this article. But first let’s recap how RxJava reactive types work and what issues they have.</p>
+
       
       
     </div>
@@ -520,8 +521,9 @@ Introduction RxJava is a very powerful library, though it has some issues as wel
     <div class="post-content">
       
       
-      Source: <a href="https://github.com/ReactiveX">https://github.com/ReactiveX</a>
-Introduction I don’t know for what reason but I see from time to time same misunderstanding on different throttle operators in RxJava. Usually nobody says about throttle, instead by default everyone says that debounce can be used. Especially using debounce to avoid multiple clicks on buttons is commonly suggested, which I believe is a bad UX (some examples here and here). Let’s finally look at available options in RxJava and find out when it is better to use what.
+      <p>Source: <a href="https://github.com/ReactiveX">https://github.com/ReactiveX</a></p>
+<p>Introduction I don’t know for what reason but I see from time to time same misunderstanding on different throttle operators in RxJava. Usually nobody says about throttle, instead by default everyone says that debounce can be used. Especially using debounce to avoid multiple clicks on buttons is commonly suggested, which I believe is a bad UX (some examples here and here). Let’s finally look at available options in RxJava and find out when it is better to use what.</p>
+
       
       
     </div>
@@ -564,9 +566,10 @@ Introduction I don’t know for what reason but I see from time to time same mis
     <div class="post-content">
       
       
-      Source: <a href="https://github.com/ReactiveX">https://github.com/ReactiveX</a>
-Transforming Single to Observable is simple, as Single satisfies Observable’s contract. Just call single.toObservable() and you’re good. But transforming Observable to Single is not that simple: if it happens that Observable emits exactly one value and completes (or terminates with error without emitting values) then it is pretty straightforward, otherwise one need to set up some additional rules.
-In RxJava there are a number of operators for transforming Observable to Single:
+      <p>Source: <a href="https://github.com/ReactiveX">https://github.com/ReactiveX</a></p>
+<p>Transforming Single to Observable is simple, as Single satisfies Observable’s contract. Just call single.toObservable() and you’re good. But transforming Observable to Single is not that simple: if it happens that Observable emits exactly one value and completes (or terminates with error without emitting values) then it is pretty straightforward, otherwise one need to set up some additional rules.
+In RxJava there are a number of operators for transforming Observable to Single:</p>
+
       
       
     </div>

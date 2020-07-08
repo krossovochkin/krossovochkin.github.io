@@ -21,7 +21,7 @@
       <description>Though all the things below are pretty obvious if being careful while dealing with Kotlin-Java interop, I decided still to write short note about one particular issue with function references (from Kotlin side) and SAM conversions (from Java side).
 Function reference Function reference is a good way to pass function as a parameter without explicitly using lambdas.
 For example, if we have function:
-fun method(callback: (Input) -&amp;gt; Output) { ... } then we can pass our function as a lambda with function call or as a function reference:</description>
+fun method(callback: (Input) -&amp;gt; Output) { .</description>
     </item>
     
   </channel>

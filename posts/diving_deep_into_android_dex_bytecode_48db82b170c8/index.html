@@ -7,7 +7,8 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <meta name="description" content="Source
-Introduction Modern Android development is based on Kotlin, which is interoperable with Java. Whenever we use some cool feature from Kotlin (say High-order functions) under the hood (when running on JVM) the feature is implemented in terms of Java bytecode. This might lead to some overheads in memory and performance if used without caution (for example excessive usage of lambdas with parameters without inlining might produce a lot of anonymous classes and put additional pressure on GC)." />
+  
+ Introduction Modern Android development is based on Kotlin, which is interoperable with Java. Whenever we use some cool feature from Kotlin (say High-order functions) under the hood (when running on JVM) the feature is implemented in terms of Java bytecode. This might lead to some overheads in memory and performance if used without caution (for example excessive usage of lambdas with parameters without inlining might produce a lot of anonymous classes and put additional pressure on GC)." />
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
 <link rel="canonical" href="https://krossovochkin.github.io/posts/diving_deep_into_android_dex_bytecode_48db82b170c8/" />
@@ -154,6 +155,10 @@ Introduction Modern Android development is based on Kotlin, which is interoperab
 
   <div class="post-content"><div>
         <p><img src="https://images.unsplash.com/photo-1501721709601-744e5bf3440d?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1357&amp;q=80" alt="Source"><em><a href="https://unsplash.com/photos/5MvL55-rSvI">Source</a></em></p>
+<blockquote>
+<p><a href="https://proandroiddev.com/diving-deep-into-android-dex-bytecode-48db82b170c8"><img src="https://img.shields.io/badge/original-proandroiddev-green" alt=""></a>
+<a href="https://proandroiddev.com/proandroiddev-digest-15-b467005869ce"><img src="https://img.shields.io/badge/proandroiddevdigest-15-green" alt=""></a></p>
+</blockquote>
 <h2 id="introduction">Introduction<a href="#introduction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>Modern Android development is based on Kotlin, which is interoperable with Java. Whenever we use some cool feature from Kotlin (say High-order functions) under the hood (when running on JVM) the feature is implemented in terms of Java bytecode. This might lead to some overheads in memory and performance if used without caution (for example excessive usage of lambdas with parameters without inlining might produce a lot of anonymous classes and put additional pressure on GC).</p>
 <p>In order to get some insight on the performance and memory we can look at Java bytecode (or decompile from it to .java files). This way we might see some additional classes instantiated, or variables etc.
