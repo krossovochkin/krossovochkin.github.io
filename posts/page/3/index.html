@@ -91,6 +91,10 @@
           <li><a href="/about">About me</a></li>
         
       
+        
+          <li><a href="/">Posts</a></li>
+        
+      
       
     
 
@@ -101,6 +105,10 @@
     
       
         <li><a href="/about">About me</a></li>
+      
+    
+      
+        <li><a href="/">Posts</a></li>
       
     
     
@@ -125,10 +133,10 @@
   
   <div class="post on-list">
     <h1 class="post-title">
-      <a href="https://krossovochkin.github.io/posts/from_rxjava_to_kotlin_flow_error_handling_da1f6a4f2708/">From RxJava to Kotlin Flow: Error Handling</a></h1>
+      <a href="https://krossovochkin.github.io/posts/simmmmplllledateformat_6bd326d17012/">SiMMMMpLLLLeDateFormat</a></h1>
     <div class="post-meta">
       <span class="post-date">
-        2020-02-24
+        2019-07-21
       </span>
       <span class="post-author">::
         Vasya Drobushkov</span>
@@ -140,24 +148,28 @@
 
     <div class="post-content">
       
-      Comparing Error Handling in RxJava and Kotlin Flow
+      
+      Introduction Using SimpleDateFormat to format dates and times is a common thing (as Java 8 Time API is not that available on Android yet). Usually it looks like:
+val formatter = SimpleDateFormat(&quot;dd MMMM yyyy&quot;, Locale.ENGLISH)formatter.format(date) We can use different formats and locales with not only providing correct translations, but also some additional locale-specific formatting rules.
+One tricky thing about SimpleDateFormat formats is why we have M and L when they look identical?
+      
       
     </div>
 
     
     <div>
       <a class="read-more button"
-        href="/posts/from_rxjava_to_kotlin_flow_error_handling_da1f6a4f2708/">Read more →</a>
+        href="/posts/simmmmplllledateformat_6bd326d17012/">Read more →</a>
     </div>
     
   </div>
   
   <div class="post on-list">
     <h1 class="post-title">
-      <a href="https://krossovochkin.github.io/posts/vinyls_animation_with_motionlayout_595e716c2752/">Vinyls animation with MotionLayout</a></h1>
+      <a href="https://krossovochkin.github.io/posts/3x3x3_rubiks_cube_world_gif_alert_613d016d2ae7/">3x3x3 Rubik’s cube world (GIF alert)</a></h1>
     <div class="post-meta">
       <span class="post-date">
-        2020-02-21
+        2019-07-07
       </span>
       <span class="post-author">::
         Vasya Drobushkov</span>
@@ -169,24 +181,26 @@
 
     <div class="post-content">
       
-      Playing with dribbble and MotionLayout
+      
+      Introduction I find Rubik’s cube an awesome puzzle. It has simple design, but quite difficult to solve (if you don’t know how to do that). At the same time it is possible to learn how to solve cube — there are a lot of algorithms for solving (for example Fridrich method describes quite a lot of them). These optimized algorithms made popular speedcubing — solving cube on time — with world record of less than 4 seconds.
+      
       
     </div>
 
     
     <div>
       <a class="read-more button"
-        href="/posts/vinyls_animation_with_motionlayout_595e716c2752/">Read more →</a>
+        href="/posts/3x3x3_rubiks_cube_world_gif_alert_613d016d2ae7/">Read more →</a>
     </div>
     
   </div>
   
   <div class="post on-list">
     <h1 class="post-title">
-      <a href="https://krossovochkin.github.io/posts/from_rxjava_to_kotlin_flow_backpressure_d1fb91e6dea8/">From RxJava to Kotlin Flow: Backpressure</a></h1>
+      <a href="https://krossovochkin.github.io/posts/android_version_code_tricks_f63421285ee7/">Android Version Code Tricks</a></h1>
     <div class="post-meta">
       <span class="post-date">
-        2020-02-06
+        2019-07-04
       </span>
       <span class="post-author">::
         Vasya Drobushkov</span>
@@ -198,24 +212,27 @@
 
     <div class="post-content">
       
-      Quick comparison between backpressure solutions in RxJava and Kotlin Flow
+      
+      Introduction Version code is a special integer value which works as an internal version number. It is not visible to end users. Android system uses this number to protect against application downgrades — it is not possible to install new application with version code lower than in currently installed application. Developers can use version code for example for doing specific tasks on updating to specific version.
+Version code is placed inside AndroidManifest, but usually it is inside *defaultConfig *in build.
+      
       
     </div>
 
     
     <div>
       <a class="read-more button"
-        href="/posts/from_rxjava_to_kotlin_flow_backpressure_d1fb91e6dea8/">Read more →</a>
+        href="/posts/android_version_code_tricks_f63421285ee7/">Read more →</a>
     </div>
     
   </div>
   
   <div class="post on-list">
     <h1 class="post-title">
-      <a href="https://krossovochkin.github.io/posts/diving_deep_into_android_dex_bytecode_48db82b170c8/">Diving deep into Android Dex bytecode</a></h1>
+      <a href="https://krossovochkin.github.io/posts/throttling_in_rxjava_2_d640ea5f7bf1/">Throttling in RxJava 2</a></h1>
     <div class="post-meta">
       <span class="post-date">
-        2020-02-02
+        2019-06-24
       </span>
       <span class="post-author">::
         Vasya Drobushkov</span>
@@ -227,24 +244,27 @@
 
     <div class="post-content">
       
-      Analyzing memory and performance of our code at the low-level.
+      
+      Source: <a href="https://github.com/ReactiveX">https://github.com/ReactiveX</a>
+Introduction I don’t know for what reason but I see from time to time same misunderstanding on different throttle operators in RxJava. Usually nobody says about throttle, instead by default everyone says that debounce can be used. Especially using debounce to avoid multiple clicks on buttons is commonly suggested, which I believe is a bad UX (some examples here and here). Let’s finally look at available options in RxJava and find out when it is better to use what.
+      
       
     </div>
 
     
     <div>
       <a class="read-more button"
-        href="/posts/diving_deep_into_android_dex_bytecode_48db82b170c8/">Read more →</a>
+        href="/posts/throttling_in_rxjava_2_d640ea5f7bf1/">Read more →</a>
     </div>
     
   </div>
   
   <div class="post on-list">
     <h1 class="post-title">
-      <a href="https://krossovochkin.github.io/posts/from_rxjava_2_to_kotlin_flow_threading_8618867e1955/">From RxJava 2 to Kotlin Flow: Threading</a></h1>
+      <a href="https://krossovochkin.github.io/posts/rxjava_observable_to_single_49c2a14da625/">RxJava Observable to Single</a></h1>
     <div class="post-meta">
       <span class="post-date">
-        2020-01-25
+        2019-05-27
       </span>
       <span class="post-author">::
         Vasya Drobushkov</span>
@@ -256,14 +276,185 @@
 
     <div class="post-content">
       
-      Comparing threading in RxJava 2 and Kotlin Flow
+      
+      Source: <a href="https://github.com/ReactiveX">https://github.com/ReactiveX</a>
+Transforming Single to Observable is simple, as Single satisfies Observable’s contract. Just call single.toObservable() and you’re good. But transforming Observable to Single is not that simple: if it happens that Observable emits exactly one value and completes (or terminates with error without emitting values) then it is pretty straightforward, otherwise one need to set up some additional rules.
+In RxJava there are a number of operators for transforming Observable to Single:
+      
       
     </div>
 
     
     <div>
       <a class="read-more button"
-        href="/posts/from_rxjava_2_to_kotlin_flow_threading_8618867e1955/">Read more →</a>
+        href="/posts/rxjava_observable_to_single_49c2a14da625/">Read more →</a>
+    </div>
+    
+  </div>
+  
+  <div class="post on-list">
+    <h1 class="post-title">
+      <a href="https://krossovochkin.github.io/posts/dart_language_bad_design_choices_6e35987dc693/">Dart language bad design choices</a></h1>
+    <div class="post-meta">
+      <span class="post-date">
+        2019-04-08
+      </span>
+      <span class="post-author">::
+        Vasya Drobushkov</span>
+    </div>
+
+    
+
+    
+
+    <div class="post-content">
+      
+      
+      Source: <a href="https://www.dartlang.org/assets/shared/dart-logo-for-shares.png?2">https://www.dartlang.org/assets/shared/dart-logo-for-shares.png?2</a>
+Introduction Before raising a point about some design choices we need to define some criteria.
+Intent/Declaration &gt; Usage/Implementation Code one write should clearly state the intent. Implementation is not that important than an intent.
+Implicit is bad Implicit things do not share the intention, therefore from the first point it means that any implicit thing hides true intent. If anything hides intention — it can be considered bad.
+      
+      
+    </div>
+
+    
+    <div>
+      <a class="read-more button"
+        href="/posts/dart_language_bad_design_choices_6e35987dc693/">Read more →</a>
+    </div>
+    
+  </div>
+  
+  <div class="post on-list">
+    <h1 class="post-title">
+      <a href="https://krossovochkin.github.io/posts/kotlin_android_synthetics_performance_analysis_with_butterknife_90a54ca4325d/">Kotlin-android-synthetics performance analysis (with ButterKnife)</a></h1>
+    <div class="post-meta">
+      <span class="post-date">
+        2019-02-18
+      </span>
+      <span class="post-author">::
+        Vasya Drobushkov</span>
+    </div>
+
+    
+
+    
+
+    <div class="post-content">
+      
+      
+      Introduction After comment that synthetic is no longer recommended practice and some arguments I decided to go deeper into issue with performance of kotlin-android-synthetics by analyzing generated Java and byte code and comparing to other approaches (such as vanilla-*findViewById *and ButterKnife).
+Vanilla-findViewById This is sample Activity we’ll work with throughout the article. Approach with *findViewById *will be our baseline.
+Sample consists of:
+*Activity *class
+One *TextView *property inside *Activity *with *lateinit *modifier
+      
+      
+    </div>
+
+    
+    <div>
+      <a class="read-more button"
+        href="/posts/kotlin_android_synthetics_performance_analysis_with_butterknife_90a54ca4325d/">Read more →</a>
+    </div>
+    
+  </div>
+  
+  <div class="post on-list">
+    <h1 class="post-title">
+      <a href="https://krossovochkin.github.io/posts/kotlin_java_interop_function_references_and_sam_conversions_3d0cd36f7967/">Kotlin-Java interop: function references and SAM conversions</a></h1>
+    <div class="post-meta">
+      <span class="post-date">
+        2018-09-13
+      </span>
+      <span class="post-author">::
+        Vasya Drobushkov</span>
+    </div>
+
+    
+
+    
+
+    <div class="post-content">
+      
+      
+      Though all the things below are pretty obvious if being careful while dealing with Kotlin-Java interop, I decided still to write short note about one particular issue with function references (from Kotlin side) and SAM conversions (from Java side).
+Function reference Function reference is a good way to pass function as a parameter without explicitly using lambdas.
+For example, if we have function:
+fun method(callback: (Input) -&gt; Output) { &hellip; } then we can pass our function as a lambda with function call or as a function reference:
+      
+      
+    </div>
+
+    
+    <div>
+      <a class="read-more button"
+        href="/posts/kotlin_java_interop_function_references_and_sam_conversions_3d0cd36f7967/">Read more →</a>
+    </div>
+    
+  </div>
+  
+  <div class="post on-list">
+    <h1 class="post-title">
+      <a href="https://krossovochkin.github.io/posts/dynamic_mobile_client_development_problem_and_concept_df509891061/">Dynamic mobile client development. Problem and concept.</a></h1>
+    <div class="post-meta">
+      <span class="post-date">
+        2018-07-21
+      </span>
+      <span class="post-author">::
+        Vasya Drobushkov</span>
+    </div>
+
+    
+
+    
+
+    <div class="post-content">
+      
+      
+      Data and interfaces — are two of the most important things in development.
+Data usually comes from/to server and tells application what should be used (and therefore shown to the user on UI)
+One of the main challenges in mobile development is to be in sync with server. Server is updated immediately (often along with web). Publishing to Play Store takes some time (even not talking about AppStore and their app review).
+      
+      
+    </div>
+
+    
+    <div>
+      <a class="read-more button"
+        href="/posts/dynamic_mobile_client_development_problem_and_concept_df509891061/">Read more →</a>
+    </div>
+    
+  </div>
+  
+  <div class="post on-list">
+    <h1 class="post-title">
+      <a href="https://krossovochkin.github.io/posts/neural_networks_and_deep_learning_38aaca43ae0f/">Neural Networks and Deep Learning</a></h1>
+    <div class="post-meta">
+      <span class="post-date">
+        2017-11-09
+      </span>
+      <span class="post-author">::
+        Vasya Drobushkov</span>
+    </div>
+
+    
+
+    
+
+    <div class="post-content">
+      
+      
+      Disclaimer It is brief synopsis of Neural Networks and Deep learning course on Coursera. That course is a first part of Deep learning specialization. Though course is great and very useful, I found that it has a lot of mathematics explanation (linear algebra — matrices, derivatives etc.), so sometimes it was difficult to wait for the actual useful information I didn’t know. So, I think I might be interested in reviewing neural networks in the future, but won’t be able to review course information as there will be a lot of such noise.
+      
+      
+    </div>
+
+    
+    <div>
+      <a class="read-more button"
+        href="/posts/neural_networks_and_deep_learning_38aaca43ae0f/">Read more →</a>
     </div>
     
   </div>
