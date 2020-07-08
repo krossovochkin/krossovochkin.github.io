@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>bytecode on Krossovochkin</title>
+    <link>https://krossovochkin.github.io/tags/bytecode/</link>
+    <description>Recent content in bytecode on Krossovochkin</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© 2020 Vasya Drobushkov</copyright>
+    <lastBuildDate>Sun, 02 Feb 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://krossovochkin.github.io/tags/bytecode/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Diving deep into Android Dex bytecode</title>
+      <link>https://krossovochkin.github.io/posts/diving_deep_into_android_dex_bytecode_48db82b170c8/</link>
+      <pubDate>Sun, 02 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.github.io/posts/diving_deep_into_android_dex_bytecode_48db82b170c8/</guid>
+      <description>Source
+Introduction Modern Android development is based on Kotlin, which is interoperable with Java. Whenever we use some cool feature from Kotlin (say High-order functions) under the hood (when running on JVM) the feature is implemented in terms of Java bytecode. This might lead to some overheads in memory and performance if used without caution (for example excessive usage of lambdas with parameters without inlining might produce a lot of anonymous classes and put additional pressure on GC).</description>
+    </item>
+    
+  </channel>
+</rss>

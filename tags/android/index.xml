@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>android on Krossovochkin</title>
+    <link>https://krossovochkin.github.io/tags/android/</link>
+    <description>Recent content in android on Krossovochkin</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© 2020 Vasya Drobushkov</copyright>
+    <lastBuildDate>Thu, 07 May 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://krossovochkin.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Raising old project from the depth</title>
+      <link>https://krossovochkin.github.io/posts/raising_old_project_from_the_depth_22f3084ed82e/</link>
+      <pubDate>Thu, 07 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.github.io/posts/raising_old_project_from_the_depth_22f3084ed82e/</guid>
+      <description>Introduction I am an Android Developer from the beginning of my professional career. Straight from the University, I’ve jumped into Android development, and to this day continue my journey. During that time I’ve worked in different areas: enterprise, product business applications, SDK development. But all that started with mobile game development.
+The first project I took part in was called “nICE”. It was a match-3-like game. It was at the time when there was Android Market and not Google Play Store, when we used Eclipse and not Android Studio and, of course, used Java.</description>
+    </item>
+    
+    <item>
+      <title>Accessibility of text over generic background color</title>
+      <link>https://krossovochkin.github.io/posts/accessibility_of_text_over_generic_background_color_e82e9546731a/</link>
+      <pubDate>Sun, 29 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.github.io/posts/accessibility_of_text_over_generic_background_color_e82e9546731a/</guid>
+      <description>Source
+Introduction One of the important parts of application development is to make it accessible to as many users as possible. This includes people with impaired vision, color blindness, impaired hearing, impaired dexterity, cognitive disabilities, and many other disabilities. Making an app accessible is challenging but rewarding. The difficulty is because the development team should pay attention to some details which often might be overlooked. Though besides some advanced accessibility support might be too expensive to add, there are still some basic best practices to ensure that your app development is heading in the right direction (and can be improved later over time).</description>
+    </item>
+    
+    <item>
+      <title>Vinyls animation with MotionLayout</title>
+      <link>https://krossovochkin.github.io/posts/vinyls_animation_with_motionlayout_595e716c2752/</link>
+      <pubDate>Fri, 21 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.github.io/posts/vinyls_animation_with_motionlayout_595e716c2752/</guid>
+      <description>Source
+Introduction Being professional Android developer for many years, things which were always difficult to me are animations, colors and dimensions — basically all the UI/UX stuff. I can’t describe or easily understand what good colors can be used, how to implement this or that animation and so on. Though we’re waiting for MotionLayout for quite long time (and Android Studio 4.0) I took some time to play with it. And I should say that experience (even without Motion Editor) was much better than I expected.</description>
+    </item>
+    
+    <item>
+      <title>Diving deep into Android Dex bytecode</title>
+      <link>https://krossovochkin.github.io/posts/diving_deep_into_android_dex_bytecode_48db82b170c8/</link>
+      <pubDate>Sun, 02 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.github.io/posts/diving_deep_into_android_dex_bytecode_48db82b170c8/</guid>
+      <description>Source
+Introduction Modern Android development is based on Kotlin, which is interoperable with Java. Whenever we use some cool feature from Kotlin (say High-order functions) under the hood (when running on JVM) the feature is implemented in terms of Java bytecode. This might lead to some overheads in memory and performance if used without caution (for example excessive usage of lambdas with parameters without inlining might produce a lot of anonymous classes and put additional pressure on GC).</description>
+    </item>
+    
+    <item>
+      <title>Change Theme Dynamically with Circular Reveal Animation on Android</title>
+      <link>https://krossovochkin.github.io/posts/change_theme_dynamically_with_circular_reveal_animation_on_android_8cd574f5f0d8/</link>
+      <pubDate>Sun, 19 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.github.io/posts/change_theme_dynamically_with_circular_reveal_animation_on_android_8cd574f5f0d8/</guid>
+      <description>Introduction Dark theme on Android is on a hype at the moment. More and more apps add support for Dark theme over time allowing users to customize their phones, save battery and provide better accessibility. Though another trend which grows today is animated theme changes. First app I saw support of this was Telegram:
+Source
+After that in different modifications such feature started to appear in other apps, for example VK.</description>
+    </item>
+    
+    <item>
+      <title>SQLite Triggers (&#43; Android Room)</title>
+      <link>https://krossovochkin.github.io/posts/sqlite_triggers_android_room_2e7120bb3e3a/</link>
+      <pubDate>Fri, 17 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.github.io/posts/sqlite_triggers_android_room_2e7120bb3e3a/</guid>
+      <description>Introduction SQLite is one of the most used database. This is because it is used on almost all mobile devices in the world. As SQLite is very similar to SQL everyone already knows the basic concepts like querying, inserting, updating, deleting data; databases and tables; joining tables etc. But SQLite also has some advanced features and this article is about one of such called Trigger.
+If we try to speculate on the name “Trigger” we might say that probably something will be done when some changes are made to the database.</description>
+    </item>
+    
+    <item>
+      <title>Decoding Handler and Looper in Android</title>
+      <link>https://krossovochkin.github.io/posts/decoding_handler_and_looper_in_android_d4f3f2449513/</link>
+      <pubDate>Tue, 24 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.github.io/posts/decoding_handler_and_looper_in_android_d4f3f2449513/</guid>
+      <description>Introduction Handler and Looper are one of the main low-level Android OS things, which almost nobody uses directly (at least nowadays). But they are at the core, so many other high-level solutions are based on them. Therefore one should know what Handler and Looper are, what and how they are doing.
+In this article we’ll try to understand Handler and Looper in Android. What, how and why we might need them.</description>
+    </item>
+    
+    <item>
+      <title>SiMMMMpLLLLeDateFormat</title>
+      <link>https://krossovochkin.github.io/posts/simmmmplllledateformat_6bd326d17012/</link>
+      <pubDate>Sun, 21 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.github.io/posts/simmmmplllledateformat_6bd326d17012/</guid>
+      <description>Introduction Using SimpleDateFormat to format dates and times is a common thing (as Java 8 Time API is not that available on Android yet). Usually it looks like:
+val formatter = SimpleDateFormat(&amp;quot;dd MMMM yyyy&amp;quot;, Locale.ENGLISH)formatter.format(date) We can use different formats and locales with not only providing correct translations, but also some additional locale-specific formatting rules.
+One tricky thing about SimpleDateFormat formats is why we have M and L when they look identical?</description>
+    </item>
+    
+    <item>
+      <title>Android Version Code Tricks</title>
+      <link>https://krossovochkin.github.io/posts/android_version_code_tricks_f63421285ee7/</link>
+      <pubDate>Thu, 04 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.github.io/posts/android_version_code_tricks_f63421285ee7/</guid>
+      <description>Introduction Version code is a special integer value which works as an internal version number. It is not visible to end users. Android system uses this number to protect against application downgrades — it is not possible to install new application with version code lower than in currently installed application. Developers can use version code for example for doing specific tasks on updating to specific version.
+Version code is placed inside AndroidManifest, but usually it is inside *defaultConfig *in build.</description>
+    </item>
+    
+    <item>
+      <title>Kotlin-android-synthetics performance analysis (with ButterKnife)</title>
+      <link>https://krossovochkin.github.io/posts/kotlin_android_synthetics_performance_analysis_with_butterknife_90a54ca4325d/</link>
+      <pubDate>Mon, 18 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.github.io/posts/kotlin_android_synthetics_performance_analysis_with_butterknife_90a54ca4325d/</guid>
+      <description>Introduction After comment that synthetic is no longer recommended practice and some arguments I decided to go deeper into issue with performance of kotlin-android-synthetics by analyzing generated Java and byte code and comparing to other approaches (such as vanilla-*findViewById *and ButterKnife).
+Vanilla-findViewById This is sample Activity we’ll work with throughout the article. Approach with *findViewById *will be our baseline.
+Sample consists of:
+  *Activity *class
+  One *TextView *property inside *Activity *with *lateinit *modifier</description>
+    </item>
+    
+    <item>
+      <title>Dynamic mobile client development. Problem and concept.</title>
+      <link>https://krossovochkin.github.io/posts/dynamic_mobile_client_development_problem_and_concept_df509891061/</link>
+      <pubDate>Sat, 21 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.github.io/posts/dynamic_mobile_client_development_problem_and_concept_df509891061/</guid>
+      <description>Data and interfaces — are two of the most important things in development.
+Data usually comes from/to server and tells application what should be used (and therefore shown to the user on UI)
+One of the main challenges in mobile development is to be in sync with server. Server is updated immediately (often along with web). Publishing to Play Store takes some time (even not talking about AppStore and their app review).</description>
+    </item>
+    
+    <item>
+      <title>[Android] Notifications Overview and Pitfalls</title>
+      <link>https://krossovochkin.github.io/posts/android_notifications_overview_and_pitfalls_517d1118ec83/</link>
+      <pubDate>Sat, 11 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.github.io/posts/android_notifications_overview_and_pitfalls_517d1118ec83/</guid>
+      <description>Introduction Notifications are widely used in Android applications. Though API is pretty straightforward, there are some key things that one should know and understand. This article will try to be first step into understanding Notifications API.
+Sending Single Notification Notification singleNotification = new NotificationCompat.Builder(this).setContentTitle(&amp;quot;Title&amp;quot;).setContentText(&amp;quot;Text&amp;quot;).setSmallIcon(R.drawable.ic_notification).build();NotificationManagerCompat notificationManager = NotificationManagerCompat.*from*(context);notificationManager.notify(notificationId, singleNotification); Key things here:
+  We use NotificationCompat.Builder to have single interface for creating notifications and let Support Library do all compatibility tricks;</description>
+    </item>
+    
+  </channel>
+</rss>

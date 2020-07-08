@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>unit on Krossovochkin</title>
+    <link>https://krossovochkin.github.io/tags/unit/</link>
+    <description>Recent content in unit on Krossovochkin</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© 2020 Vasya Drobushkov</copyright>
+    <lastBuildDate>Thu, 19 Mar 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://krossovochkin.github.io/tags/unit/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Unit Testing Best Practices</title>
+      <link>https://krossovochkin.github.io/posts/unit_testing_best_practices_9bceeafe6edf/</link>
+      <pubDate>Thu, 19 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.github.io/posts/unit_testing_best_practices_9bceeafe6edf/</guid>
+      <description>Source
+Disclaimer: This is a set of things I consider very useful when writing unit tests. I call them best practices because they allow me to write good, quality tests that are easier to read, more maintainable, and better describe business needs.
+These points might be subjective, you might have other opinions or have more items. That’s fine. Do not hesitate to put your opinions in the comments.
+Tests in the Development Process Tests are very important in the development process.</description>
+    </item>
+    
+  </channel>
+</rss>

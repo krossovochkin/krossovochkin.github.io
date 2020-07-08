@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>motion layout on Krossovochkin</title>
+    <link>https://krossovochkin.github.io/tags/motion-layout/</link>
+    <description>Recent content in motion layout on Krossovochkin</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© 2020 Vasya Drobushkov</copyright>
+    <lastBuildDate>Fri, 21 Feb 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://krossovochkin.github.io/tags/motion-layout/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Vinyls animation with MotionLayout</title>
+      <link>https://krossovochkin.github.io/posts/vinyls_animation_with_motionlayout_595e716c2752/</link>
+      <pubDate>Fri, 21 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.github.io/posts/vinyls_animation_with_motionlayout_595e716c2752/</guid>
+      <description>Source
+Introduction Being professional Android developer for many years, things which were always difficult to me are animations, colors and dimensions — basically all the UI/UX stuff. I can’t describe or easily understand what good colors can be used, how to implement this or that animation and so on. Though we’re waiting for MotionLayout for quite long time (and Android Studio 4.0) I took some time to play with it. And I should say that experience (even without Motion Editor) was much better than I expected.</description>
+    </item>
+    
+  </channel>
+</rss>

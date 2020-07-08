@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>notifications on Krossovochkin</title>
+    <link>https://krossovochkin.github.io/tags/notifications/</link>
+    <description>Recent content in notifications on Krossovochkin</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© 2020 Vasya Drobushkov</copyright>
+    <lastBuildDate>Sat, 11 Feb 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://krossovochkin.github.io/tags/notifications/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[Android] Notifications Overview and Pitfalls</title>
+      <link>https://krossovochkin.github.io/posts/android_notifications_overview_and_pitfalls_517d1118ec83/</link>
+      <pubDate>Sat, 11 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.github.io/posts/android_notifications_overview_and_pitfalls_517d1118ec83/</guid>
+      <description>Introduction Notifications are widely used in Android applications. Though API is pretty straightforward, there are some key things that one should know and understand. This article will try to be first step into understanding Notifications API.
+Sending Single Notification Notification singleNotification = new NotificationCompat.Builder(this).setContentTitle(&amp;quot;Title&amp;quot;).setContentText(&amp;quot;Text&amp;quot;).setSmallIcon(R.drawable.ic_notification).build();NotificationManagerCompat notificationManager = NotificationManagerCompat.*from*(context);notificationManager.notify(notificationId, singleNotification); Key things here:
+  We use NotificationCompat.Builder to have single interface for creating notifications and let Support Library do all compatibility tricks;</description>
+    </item>
+    
+  </channel>
+</rss>

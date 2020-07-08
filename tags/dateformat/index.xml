@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>dateformat on Krossovochkin</title>
+    <link>https://krossovochkin.github.io/tags/dateformat/</link>
+    <description>Recent content in dateformat on Krossovochkin</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© 2020 Vasya Drobushkov</copyright>
+    <lastBuildDate>Sun, 21 Jul 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://krossovochkin.github.io/tags/dateformat/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>SiMMMMpLLLLeDateFormat</title>
+      <link>https://krossovochkin.github.io/posts/simmmmplllledateformat_6bd326d17012/</link>
+      <pubDate>Sun, 21 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.github.io/posts/simmmmplllledateformat_6bd326d17012/</guid>
+      <description>Introduction Using SimpleDateFormat to format dates and times is a common thing (as Java 8 Time API is not that available on Android yet). Usually it looks like:
+val formatter = SimpleDateFormat(&amp;quot;dd MMMM yyyy&amp;quot;, Locale.ENGLISH)formatter.format(date) We can use different formats and locales with not only providing correct translations, but also some additional locale-specific formatting rules.
+One tricky thing about SimpleDateFormat formats is why we have M and L when they look identical?</description>
+    </item>
+    
+  </channel>
+</rss>

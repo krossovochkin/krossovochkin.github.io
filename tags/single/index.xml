@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>single on Krossovochkin</title>
+    <link>https://krossovochkin.github.io/tags/single/</link>
+    <description>Recent content in single on Krossovochkin</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© 2020 Vasya Drobushkov</copyright>
+    <lastBuildDate>Mon, 27 May 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://krossovochkin.github.io/tags/single/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>RxJava Observable to Single</title>
+      <link>https://krossovochkin.github.io/posts/rxjava_observable_to_single_49c2a14da625/</link>
+      <pubDate>Mon, 27 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.github.io/posts/rxjava_observable_to_single_49c2a14da625/</guid>
+      <description>Source: https://github.com/ReactiveX
+Transforming Single to Observable is simple, as Single satisfies Observable’s contract. Just call single.toObservable() and you’re good. But transforming Observable to Single is not that simple: if it happens that Observable emits exactly one value and completes (or terminates with error without emitting values) then it is pretty straightforward, otherwise one need to set up some additional rules.
+In RxJava there are a number of operators for transforming Observable to Single:</description>
+    </item>
+    
+  </channel>
+</rss>

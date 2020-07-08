@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>throttling on Krossovochkin</title>
+    <link>https://krossovochkin.github.io/tags/throttling/</link>
+    <description>Recent content in throttling on Krossovochkin</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© 2020 Vasya Drobushkov</copyright>
+    <lastBuildDate>Mon, 02 Mar 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://krossovochkin.github.io/tags/throttling/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>From RxJava to Kotlin Flow: Throttling</title>
+      <link>https://krossovochkin.github.io/posts/from_rxjava_to_kotlin_flow_throttling_ed1778847619/</link>
+      <pubDate>Mon, 02 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.github.io/posts/from_rxjava_to_kotlin_flow_throttling_ed1778847619/</guid>
+      <description>Source
+ This post is part of series of comparing RxJava to Kotlin Flow. Previous articles were about Threading, Backpressure, Error Handling, Stream Types
+ It is advised to take a look at the overview of Throttling operators in RxJava before reading this article: Throttling in RxJava 2 Review of different throttling operators in RxJava2proandroiddev.com
+Introduction Throttling is also one of the essential features of reactive programming. Streams might emit more values than we’re expecting to receive, so ability to limit number of events in a stream is very important.</description>
+    </item>
+    
+    <item>
+      <title>Throttling in RxJava 2</title>
+      <link>https://krossovochkin.github.io/posts/throttling_in_rxjava_2_d640ea5f7bf1/</link>
+      <pubDate>Mon, 24 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.github.io/posts/throttling_in_rxjava_2_d640ea5f7bf1/</guid>
+      <description>Source: https://github.com/ReactiveX
+Introduction I don’t know for what reason but I see from time to time same misunderstanding on different throttle operators in RxJava. Usually nobody says about throttle, instead by default everyone says that debounce can be used. Especially using debounce to avoid multiple clicks on buttons is commonly suggested, which I believe is a bad UX (some examples here and here). Let’s finally look at available options in RxJava and find out when it is better to use what.</description>
+    </item>
+    
+  </channel>
+</rss>
