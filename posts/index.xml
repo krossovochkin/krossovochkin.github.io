@@ -19,8 +19,8 @@
       
       <guid>https://krossovochkin.github.io/posts/the_real_kotlin_flow_benefits_over_rxjava_c19b99ba6eb9/</guid>
       <description>Source
-Introduction Recently the article about Kotlin Flow benefits over RxJava was published by Antoni Castejón García: Kotlin Flow benefits over RxJava *Lately I’ve been implementing a new project using Kotlin Asynchronous Flows instead of RxJava as I was used to. Why? I…*proandroiddev.com
-Though Antoni made a good work and many thanks to him for providing his feedback and experience (we need to share our thoughts, this improves community acknowledgment in various areas) — I found few places in the article with which I don’t fully or partially agree.</description>
+Introduction Recently the article about Kotlin Flow benefits over RxJava was published by Antoni Castejón García: Kotlin Flow benefits over RxJava
+Though Antoni made a good work and many thanks to him for providing his feedback and experience (we need to share our thoughts, this improves community acknowledgment in various areas) — I found few places in the article with which I don’t fully or partially agree. Some points, in my opinion, were missing.</description>
     </item>
     
     <item>

@@ -162,9 +162,81 @@ Approach with *findViewById *will be our baseline.</p>
 <p>Setting dynamically few properties on *TextView *afterwards</p>
 </li>
 </ul>
-<!-- raw HTML omitted -->
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : AppCompatActivity() {
+
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> textView: TextView
+
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
+        <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        textView = findViewById(R.id.textView)
+
+        update()
+    }
+
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">update</span>() {
+        textView.text = <span style="color:#e6db74">&#34;Text&#34;</span>
+        textView.setTextColor(Color.RED)
+        textView.textSize = <span style="color:#ae81ff">14.0f</span>
+    }
+}</code></pre></div>
 <p>Here is what we’ll get if we try to look at generated java code:</p>
-<!-- raw HTML omitted -->
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> <span style="color:#66d9ef">extends</span> AppCompatActivity <span style="color:#f92672">{</span>
+   <span style="color:#66d9ef">private</span> TextView textView<span style="color:#f92672">;</span>
+   <span style="color:#66d9ef">private</span> HashMap _$_findViewCache<span style="color:#f92672">;</span>
+
+   <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@Nullable</span> Bundle savedInstanceState<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+      <span style="color:#66d9ef">super</span><span style="color:#f92672">.</span><span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span>savedInstanceState<span style="color:#f92672">);</span>
+      <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setContentView</span><span style="color:#f92672">(-</span>1300009<span style="color:#f92672">);</span>
+      View var10001 <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">findViewById</span><span style="color:#f92672">(-</span>1000050<span style="color:#f92672">);</span>
+      Intrinsics<span style="color:#f92672">.</span><span style="color:#a6e22e">checkExpressionValueIsNotNull</span><span style="color:#f92672">(</span>var10001<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;findViewById(R.id.textView)&#34;</span><span style="color:#f92672">);</span>
+      <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">textView</span> <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>TextView<span style="color:#f92672">)</span>var10001<span style="color:#f92672">;</span>
+      <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">update</span><span style="color:#f92672">();</span>
+   <span style="color:#f92672">}</span>
+
+   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">update</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+      TextView var10000 <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">textView</span><span style="color:#f92672">;</span>
+      <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">textView</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+         Intrinsics<span style="color:#f92672">.</span><span style="color:#a6e22e">throwUninitializedPropertyAccessException</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;textView&#34;</span><span style="color:#f92672">);</span>
+      <span style="color:#f92672">}</span>
+
+      var10000<span style="color:#f92672">.</span><span style="color:#a6e22e">setText</span><span style="color:#f92672">((</span>CharSequence<span style="color:#f92672">)</span><span style="color:#e6db74">&#34;Text&#34;</span><span style="color:#f92672">);</span>
+      var10000 <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">textView</span><span style="color:#f92672">;</span>
+      <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">textView</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+         Intrinsics<span style="color:#f92672">.</span><span style="color:#a6e22e">throwUninitializedPropertyAccessException</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;textView&#34;</span><span style="color:#f92672">);</span>
+      <span style="color:#f92672">}</span>
+
+      var10000<span style="color:#f92672">.</span><span style="color:#a6e22e">setTextColor</span><span style="color:#f92672">(-</span>65536<span style="color:#f92672">);</span>
+      var10000 <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">textView</span><span style="color:#f92672">;</span>
+      <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">textView</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+         Intrinsics<span style="color:#f92672">.</span><span style="color:#a6e22e">throwUninitializedPropertyAccessException</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;textView&#34;</span><span style="color:#f92672">);</span>
+      <span style="color:#f92672">}</span>
+
+      var10000<span style="color:#f92672">.</span><span style="color:#a6e22e">setTextSize</span><span style="color:#f92672">(</span>14<span style="color:#f92672">.</span><span style="color:#a6e22e">0F</span><span style="color:#f92672">);</span>
+   <span style="color:#f92672">}</span>
+
+   <span style="color:#66d9ef">public</span> View <span style="color:#a6e22e">_$_findCachedViewById</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> var1<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+      <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">_$_findViewCache</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+         <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">_$_findViewCache</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">();</span>
+      <span style="color:#f92672">}</span>
+
+      View var2 <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>View<span style="color:#f92672">)</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">_$_findViewCache</span><span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>var1<span style="color:#f92672">);</span>
+      <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>var2 <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+         var2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">findViewById</span><span style="color:#f92672">(</span>var1<span style="color:#f92672">);</span>
+         <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">_$_findViewCache</span><span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>var1<span style="color:#f92672">,</span> var2<span style="color:#f92672">);</span>
+      <span style="color:#f92672">}</span>
+
+      <span style="color:#66d9ef">return</span> var2<span style="color:#f92672">;</span>
+   <span style="color:#f92672">}</span>
+
+   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">_$_clearFindViewByIdCache</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+      <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">_$_findViewCache</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+         <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">_$_findViewCache</span><span style="color:#f92672">.</span><span style="color:#a6e22e">clear</span><span style="color:#f92672">();</span>
+      <span style="color:#f92672">}</span>
+
+   <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span></code></pre></div>
 <p>We immediately have a number of questions:</p>
 <ul>
 <li>
@@ -192,27 +264,25 @@ For release build *ProGuard *(or <em>R8</em>) will remove unused methods and fie
 <p>This again might look as an overhead if we know that we’ll initialize *TextView *in *onCreate *(and we’ll check that value is not null) and that we’ll not try to change property concurrently and that we don’t call <em>update()</em> method before <em>onCreate</em>, so that additional checks are not really required (or at least it could be one).
 But it is something we know, not the compiler.</p>
 <p>One could look at generated Java code and decide to do little trick with <em>.apply</em> function:</p>
-<pre><code>private fun update() {
-    textView.*apply ***{
-        ***text *= &quot;Text&quot;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">update</span>() {
+    textView.apply {
+        text = <span style="color:#e6db74">&#34;Text&#34;</span>
         setTextColor(Color.*RED*)
-        *textSize *= 14.0f
-    **}
-**}
-</code></pre>
+        textSize = <span style="color:#ae81ff">14.0f</span>
+    }
+}</code></pre></div>
 <p>So the resulting Java code will be:</p>
-<pre><code>private final void update() {
-   TextView var10000 = this.textView;
-   if (this.textView == null) {
-      Intrinsics.*throwUninitializedPropertyAccessException*(&quot;textView&quot;);
-   }
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">update</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+   TextView var10000 <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">textView</span><span style="color:#f92672">;</span>
+   <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">textView</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+      Intrinsics<span style="color:#f92672">.*</span>throwUninitializedPropertyAccessException<span style="color:#f92672">*(</span><span style="color:#e6db74">&#34;textView&#34;</span><span style="color:#f92672">);</span>
+   <span style="color:#f92672">}</span>
 
-   TextView var1 = var10000;
-   var1.setText((CharSequence)&quot;Text&quot;);
-   var1.setTextColor(-65536);
-   var1.setTextSize(14.0F);
-}
-</code></pre>
+   TextView var1 <span style="color:#f92672">=</span> var10000<span style="color:#f92672">;</span>
+   var1<span style="color:#f92672">.</span><span style="color:#a6e22e">setText</span><span style="color:#f92672">((</span>CharSequence<span style="color:#f92672">)</span><span style="color:#e6db74">&#34;Text&#34;</span><span style="color:#f92672">);</span>
+   var1<span style="color:#f92672">.</span><span style="color:#a6e22e">setTextColor</span><span style="color:#f92672">(-</span>65536<span style="color:#f92672">);</span>
+   var1<span style="color:#f92672">.</span><span style="color:#a6e22e">setTextSize</span><span style="color:#f92672">(</span>14<span style="color:#f92672">.</span><span style="color:#a6e22e">0F</span><span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span></code></pre></div>
 <p>So we have only one check and then update all properties on local property. Neat.</p>
 <p>Though such optimizations are definitely premature as anyway in release build ProGuard will do better optimization work without making your code look a bit weird.</p>
 <h3 id="hashmapsparsearray">HashMap/SparseArray<a href="#hashmapsparsearray" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
@@ -220,10 +290,9 @@ But it is something we know, not the compiler.</p>
 <p>As keys are integers each lookup will trigger boxing of the integer value which will badly impact memory usage and make GC to trigger more often.
 Seems *SparseArray *is better option because we’ll have primitive integers as keys, why it is not used?</p>
 <p>Actually there is a way to generate code with <em>SparseArray</em>. For that it is needed to add to <em>build.gradle</em>:</p>
-<pre><code>androidExtensions {
-    defaultCacheImplementation = &quot;SPARSE_ARRAY&quot;
-}
-</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">androidExtensions <span style="color:#f92672">{</span>
+    defaultCacheImplementation <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;SPARSE_ARRAY&#34;</span>
+<span style="color:#f92672">}</span></code></pre></div>
 <p>After that we’ll have <em>SparseArray</em> as cache for views.</p>
 <p>Also it is possible to disable cache by using “NONE”, though this option hardly ever useful.</p>
 <h3 id="result">Result<a href="#result" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
@@ -235,12 +304,101 @@ Seems *SparseArray *is better option because we’ll have primitive integers as 
 </ul>
 <h2 id="butterknife">ButterKnife<a href="#butterknife" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>Let’s look at the same example with ButterKnife:</p>
-<!-- raw HTML omitted -->
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ButterKnifeAcivity</span> : AppCompatActivity() {
+
+    @BindView(R.id.textView)
+    <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> textView: TextView
+
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
+        <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        ButterKnife.bind(<span style="color:#66d9ef">this</span>)
+
+        update()
+    }
+
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">update</span>() {
+        textView.text = <span style="color:#e6db74">&#34;Text&#34;</span>
+        textView.setTextColor(Color.RED)
+        textView.textSize = <span style="color:#ae81ff">14.0f</span>
+    }
+}</code></pre></div>
 <p>Generated Java code (synthetics part is removed):</p>
-<!-- raw HTML omitted -->
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ButterKnifeAcivity</span> <span style="color:#66d9ef">extends</span> AppCompatActivity <span style="color:#f92672">{</span>
+   <span style="color:#a6e22e">@BindView</span><span style="color:#f92672">(-</span>1000050<span style="color:#f92672">)</span>
+   <span style="color:#a6e22e">@NotNull</span>
+   <span style="color:#66d9ef">public</span> TextView textView<span style="color:#f92672">;</span>
+
+   <span style="color:#a6e22e">@NotNull</span>
+   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> TextView <span style="color:#a6e22e">getTextView</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+      TextView var10000 <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">textView</span><span style="color:#f92672">;</span>
+      <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">textView</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+         Intrinsics<span style="color:#f92672">.</span><span style="color:#a6e22e">throwUninitializedPropertyAccessException</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;textView&#34;</span><span style="color:#f92672">);</span>
+      <span style="color:#f92672">}</span>
+
+      <span style="color:#66d9ef">return</span> var10000<span style="color:#f92672">;</span>
+   <span style="color:#f92672">}</span>
+
+   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setTextView</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NotNull</span> TextView var1<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+      Intrinsics<span style="color:#f92672">.</span><span style="color:#a6e22e">checkParameterIsNotNull</span><span style="color:#f92672">(</span>var1<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;&lt;set-?&gt;&#34;</span><span style="color:#f92672">);</span>
+      <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">textView</span> <span style="color:#f92672">=</span> var1<span style="color:#f92672">;</span>
+   <span style="color:#f92672">}</span>
+
+   <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@Nullable</span> Bundle savedInstanceState<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+      <span style="color:#66d9ef">super</span><span style="color:#f92672">.</span><span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span>savedInstanceState<span style="color:#f92672">);</span>
+      <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setContentView</span><span style="color:#f92672">(-</span>1300009<span style="color:#f92672">);</span>
+      ButterKnife<span style="color:#f92672">.</span><span style="color:#a6e22e">bind</span><span style="color:#f92672">((</span>Activity<span style="color:#f92672">)</span><span style="color:#66d9ef">this</span><span style="color:#f92672">);</span>
+      <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">update</span><span style="color:#f92672">();</span>
+   <span style="color:#f92672">}</span>
+
+   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">update</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+      TextView var10000 <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">textView</span><span style="color:#f92672">;</span>
+      <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">textView</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+         Intrinsics<span style="color:#f92672">.</span><span style="color:#a6e22e">throwUninitializedPropertyAccessException</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;textView&#34;</span><span style="color:#f92672">);</span>
+      <span style="color:#f92672">}</span>
+
+      var10000<span style="color:#f92672">.</span><span style="color:#a6e22e">setText</span><span style="color:#f92672">((</span>CharSequence<span style="color:#f92672">)</span><span style="color:#e6db74">&#34;Text&#34;</span><span style="color:#f92672">);</span>
+      var10000 <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">textView</span><span style="color:#f92672">;</span>
+      <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">textView</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+         Intrinsics<span style="color:#f92672">.</span><span style="color:#a6e22e">throwUninitializedPropertyAccessException</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;textView&#34;</span><span style="color:#f92672">);</span>
+      <span style="color:#f92672">}</span>
+
+      var10000<span style="color:#f92672">.</span><span style="color:#a6e22e">setTextColor</span><span style="color:#f92672">(-</span>65536<span style="color:#f92672">);</span>
+      var10000 <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">textView</span><span style="color:#f92672">;</span>
+      <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">textView</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+         Intrinsics<span style="color:#f92672">.</span><span style="color:#a6e22e">throwUninitializedPropertyAccessException</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;textView&#34;</span><span style="color:#f92672">);</span>
+      <span style="color:#f92672">}</span>
+
+      var10000<span style="color:#f92672">.</span><span style="color:#a6e22e">setTextSize</span><span style="color:#f92672">(</span>14<span style="color:#f92672">.</span><span style="color:#a6e22e">0F</span><span style="color:#f92672">);</span>
+   <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span></code></pre></div>
 <p>So, basically everything is the same. The difference is only that additional getter and setter for our *TextView *was generated.
 It is actually redundant (and will be removed by <em>ProGuard</em>), because *ButterKnife *injector will work directly on field:</p>
-<!-- raw HTML omitted -->
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ButterKnifeAcivity_ViewBinding</span> implements Unbinder {
+  <span style="color:#66d9ef">private</span> ButterKnifeAcivity target;
+
+  @UiThread
+  <span style="color:#66d9ef">public</span> ButterKnifeAcivity_ViewBinding(ButterKnifeAcivity target) {
+    <span style="color:#66d9ef">this</span>(target, target.getWindow().getDecorView());
+  }
+
+  @UiThread
+  <span style="color:#66d9ef">public</span> ButterKnifeAcivity_ViewBinding(ButterKnifeAcivity target, View source) {
+    <span style="color:#66d9ef">this</span>.target = target;
+
+    target.textView = Utils.findRequiredViewAsType(source, R.id.textView, <span style="color:#e6db74">&#34;field &#39;textView&#39;&#34;</span>, TextView.<span style="color:#66d9ef">class</span>);
+  }
+
+  @Override
+  <span style="color:#66d9ef">public</span> void unbind() {
+    ButterKnifeAcivity target = <span style="color:#66d9ef">this</span>.target;
+    <span style="color:#66d9ef">if</span> (target == <span style="color:#66d9ef">null</span>) <span style="color:#66d9ef">throw</span> new IllegalStateException(<span style="color:#e6db74">&#34;Bindings already cleared.&#34;</span>);
+    <span style="color:#66d9ef">this</span>.target = <span style="color:#66d9ef">null</span>;
+
+    target.textView = <span style="color:#66d9ef">null</span>;
+  }
+}</code></pre></div>
 <p>So, basically using <em>ButterKnife</em> is similar to vanilla approach. The only difference is that we don’t have to write a lot of *findViewById *calls (though we still need to write one line per property — *Binds *annotation — but it is anyway better as we have actual property and view id near to each other).</p>
 <p>There is small downside that *ButterKnife *uses reflection to instantiate *ViewBinding *class. But this is usual trade-off between reflection and code generation.</p>
 <h3 id="result-1">Result<a href="#result-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
@@ -252,27 +410,285 @@ It is actually redundant (and will be removed by <em>ProGuard</em>), because *Bu
 </ul>
 <h2 id="synthetics">Synthetics<a href="#synthetics" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>Same sample using synthetics:</p>
-<!-- raw HTML omitted -->
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">import</span> kotlinx.android.synthetic.main.activity_main.*
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ExtensionsActivity</span> : AppCompatActivity() {
+
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
+        <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        update()
+    }
+
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">update</span>() {
+        textView.text = <span style="color:#e6db74">&#34;Text&#34;</span>
+        textView.setTextColor(Color.RED)
+        textView.textSize = <span style="color:#ae81ff">14.0f</span>
+    }
+}</code></pre></div>
 <p>Generated Java code:</p>
-<!-- raw HTML omitted -->
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ExtensionsActivity</span> <span style="color:#66d9ef">extends</span> AppCompatActivity <span style="color:#f92672">{</span>
+   <span style="color:#66d9ef">private</span> SparseArray _$_findViewCache<span style="color:#f92672">;</span>
+
+   <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@Nullable</span> Bundle savedInstanceState<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+      <span style="color:#66d9ef">super</span><span style="color:#f92672">.</span><span style="color:#a6e22e">onCreate</span><span style="color:#f92672">(</span>savedInstanceState<span style="color:#f92672">);</span>
+      <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setContentView</span><span style="color:#f92672">(-</span>1300009<span style="color:#f92672">);</span>
+      <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">update</span><span style="color:#f92672">();</span>
+   <span style="color:#f92672">}</span>
+
+   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">update</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+      TextView var10000 <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>TextView<span style="color:#f92672">)</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">_$_findCachedViewById</span><span style="color:#f92672">(</span>id<span style="color:#f92672">.</span><span style="color:#a6e22e">textView</span><span style="color:#f92672">);</span>
+      Intrinsics<span style="color:#f92672">.</span><span style="color:#a6e22e">checkExpressionValueIsNotNull</span><span style="color:#f92672">(</span>var10000<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;textView&#34;</span><span style="color:#f92672">);</span>
+      var10000<span style="color:#f92672">.</span><span style="color:#a6e22e">setText</span><span style="color:#f92672">((</span>CharSequence<span style="color:#f92672">)</span><span style="color:#e6db74">&#34;Text&#34;</span><span style="color:#f92672">);</span>
+      <span style="color:#f92672">((</span>TextView<span style="color:#f92672">)</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">_$_findCachedViewById</span><span style="color:#f92672">(</span>id<span style="color:#f92672">.</span><span style="color:#a6e22e">textView</span><span style="color:#f92672">)).</span><span style="color:#a6e22e">setTextColor</span><span style="color:#f92672">(-</span>65536<span style="color:#f92672">);</span>
+      var10000 <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>TextView<span style="color:#f92672">)</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">_$_findCachedViewById</span><span style="color:#f92672">(</span>id<span style="color:#f92672">.</span><span style="color:#a6e22e">textView</span><span style="color:#f92672">);</span>
+      Intrinsics<span style="color:#f92672">.</span><span style="color:#a6e22e">checkExpressionValueIsNotNull</span><span style="color:#f92672">(</span>var10000<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;textView&#34;</span><span style="color:#f92672">);</span>
+      var10000<span style="color:#f92672">.</span><span style="color:#a6e22e">setTextSize</span><span style="color:#f92672">(</span>14<span style="color:#f92672">.</span><span style="color:#a6e22e">0F</span><span style="color:#f92672">);</span>
+   <span style="color:#f92672">}</span>
+
+   <span style="color:#66d9ef">public</span> View <span style="color:#a6e22e">_$_findCachedViewById</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> var1<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+      <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">_$_findViewCache</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+         <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">_$_findViewCache</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SparseArray<span style="color:#f92672">();</span>
+      <span style="color:#f92672">}</span>
+
+      View var2 <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>View<span style="color:#f92672">)</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">_$_findViewCache</span><span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>var1<span style="color:#f92672">);</span>
+      <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>var2 <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+         var2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">findViewById</span><span style="color:#f92672">(</span>var1<span style="color:#f92672">);</span>
+         <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">_$_findViewCache</span><span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>var1<span style="color:#f92672">,</span> var2<span style="color:#f92672">);</span>
+      <span style="color:#f92672">}</span>
+
+      <span style="color:#66d9ef">return</span> var2<span style="color:#f92672">;</span>
+   <span style="color:#f92672">}</span>
+
+   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">_$_clearFindViewByIdCache</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+      <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">_$_findViewCache</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+         <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">_$_findViewCache</span><span style="color:#f92672">.</span><span style="color:#a6e22e">clear</span><span style="color:#f92672">();</span>
+      <span style="color:#f92672">}</span>
+
+   <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span></code></pre></div>
 <p>Here we have version with *SparseArray *to not have, as discussed above, useless autoboxing of integer keys.</p>
 <p>The main issue with generated code is that even as we call three methods on same property sequentially, we still have 3 lookups in view cache (yes, *findViewById *will be called just once — at first time, but why to get value from cache all the time?).</p>
 <p>Again, we can work-around this by using <em>.apply</em>, as we did in vanilla approach. Then generated code will be like:</p>
-<pre><code>private final void update() {
-   TextView var1 = (TextView)this._$_findCachedViewById(id.textView);
-   var1.setText((CharSequence)&quot;Text&quot;);
-   var1.setTextColor(-65536);
-   var1.setTextSize(14.0F);
-}
-</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">update</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+   TextView var1 <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>TextView<span style="color:#f92672">)</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">_$_findCachedViewById</span><span style="color:#f92672">(</span>id<span style="color:#f92672">.</span><span style="color:#a6e22e">textView</span><span style="color:#f92672">);</span>
+   var1<span style="color:#f92672">.</span><span style="color:#a6e22e">setText</span><span style="color:#f92672">((</span>CharSequence<span style="color:#f92672">)</span><span style="color:#e6db74">&#34;Text&#34;</span><span style="color:#f92672">);</span>
+   var1<span style="color:#f92672">.</span><span style="color:#a6e22e">setTextColor</span><span style="color:#f92672">(-</span>65536<span style="color:#f92672">);</span>
+   var1<span style="color:#f92672">.</span><span style="color:#a6e22e">setTextSize</span><span style="color:#f92672">(</span>14<span style="color:#f92672">.</span><span style="color:#a6e22e">0F</span><span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span></code></pre></div>
 <p>Looks like we’ve improved our code a bit, as now we’ll call cache only once (and if HashMap is used, then we’ll not have two additional boxing of integer primitive).
 That actually looks pretty good.</p>
 <p>But if we look at generated *dex *byte-code for release build, then it turns out everything is not that easy and straightforward.
 Below are two listings, first one is byte-code from decompiled release APK of original example, second one for case with “optimization” of <em>.apply</em>.</p>
 <p><strong>Original</strong>:</p>
-<!-- raw HTML omitted -->
-<p>**With .<em>apply <em>“optimization”:</em></em></p>
-<!-- raw HTML omitted -->
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">.<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">public</span> <span style="color:#66d9ef">final</span> Lcom/krossovochkin/butterknifetest/ExtensionsActivity;
+.<span style="color:#66d9ef">super</span> Landroidx/appcompat/app/c;
+
+
+<span style="color:#960050;background-color:#1e0010">#</span> instance fields
+.field <span style="color:#66d9ef">private</span> j:Ljava/util/HashMap;
+
+
+<span style="color:#960050;background-color:#1e0010">#</span> direct methods
+.method <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">constructor</span> &lt;init&gt;()V
+    .registers <span style="color:#ae81ff">1</span>
+
+    invoke-direct {p0}, Landroidx/appcompat/app/c;-&gt;&lt;init&gt;()V
+
+    <span style="color:#66d9ef">return</span>-void
+.end method
+
+.method <span style="color:#66d9ef">private</span> a(I)Landroid/view/View;
+    .registers <span style="color:#ae81ff">4</span>
+
+    iget-<span style="color:#66d9ef">object</span> <span style="color:#a6e22e">v0</span>, p0, Lcom/krossovochkin/butterknifetest/ExtensionsActivity;-&gt;j:Ljava/util/HashMap;
+
+    <span style="color:#66d9ef">if</span>-nez v0, :cond_b
+
+    new-instance v0, Ljava/util/HashMap;
+
+    invoke-direct {v0}, Ljava/util/HashMap;-&gt;&lt;init&gt;()V
+
+    iput-<span style="color:#66d9ef">object</span> <span style="color:#a6e22e">v0</span>, p0, Lcom/krossovochkin/butterknifetest/ExtensionsActivity;-&gt;j:Ljava/util/HashMap;
+
+    :cond_b
+    iget-<span style="color:#66d9ef">object</span> <span style="color:#a6e22e">v0</span>, p0, Lcom/krossovochkin/butterknifetest/ExtensionsActivity;-&gt;j:Ljava/util/HashMap;
+
+    invoke-static {p1}, Ljava/lang/Integer;-&gt;valueOf(I)Ljava/lang/Integer;
+
+    move-result-<span style="color:#66d9ef">object</span> <span style="color:#a6e22e">v1</span>
+
+    invoke-virtual {v0, v1}, Ljava/util/HashMap;-&gt;<span style="color:#66d9ef">get</span>(Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-<span style="color:#66d9ef">object</span> <span style="color:#a6e22e">v0</span>
+
+    check-cast v0, Landroid/view/View;
+
+    <span style="color:#66d9ef">if</span>-nez v0, :cond_26
+
+    invoke-virtual {p0, p1}, Landroidx/fragment/app/d;-&gt;findViewById(I)Landroid/view/View;
+
+    move-result-<span style="color:#66d9ef">object</span> <span style="color:#a6e22e">v0</span>
+
+    iget-<span style="color:#66d9ef">object</span> <span style="color:#a6e22e">v1</span>, p0, Lcom/krossovochkin/butterknifetest/ExtensionsActivity;-&gt;j:Ljava/util/HashMap;
+
+    invoke-static {p1}, Ljava/lang/Integer;-&gt;valueOf(I)Ljava/lang/Integer;
+
+    move-result-<span style="color:#66d9ef">object</span> <span style="color:#a6e22e">p1</span>
+
+    invoke-virtual {v1, p1, v0}, Ljava/util/HashMap;-&gt;put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+
+    :cond_26
+    <span style="color:#66d9ef">return</span>-<span style="color:#66d9ef">object</span> <span style="color:#a6e22e">v0</span>
+.end method
+
+
+<span style="color:#960050;background-color:#1e0010">#</span> virtual methods
+.method <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> onCreate(Landroid/os/Bundle;)V
+    .registers <span style="color:#ae81ff">3</span>
+
+    invoke-<span style="color:#66d9ef">super</span> {p0, p1}, Landroidx/appcompat/app/c;-&gt;onCreate(Landroid/os/Bundle;)V
+
+    <span style="color:#66d9ef">const</span> p1, <span style="color:#ae81ff">0x7f0a001e</span>
+
+    invoke-virtual {p0, p1}, Lcom/krossovochkin/butterknifetest/ExtensionsActivity;-&gt;setContentView(I)V
+
+    sget p1, Lcom/krossovochkin/butterknifetest/a<span style="color:#960050;background-color:#1e0010">$</span>a;-&gt;textView:I
+
+    invoke-direct {p0, p1}, Lcom/krossovochkin/butterknifetest/ExtensionsActivity;-&gt;a(I)Landroid/view/View;
+
+    move-result-<span style="color:#66d9ef">object</span> <span style="color:#a6e22e">p1</span>
+
+    check-cast p1, Landroid/widget/TextView;
+
+    <span style="color:#66d9ef">const</span>-string v0, <span style="color:#e6db74">&#34;textView&#34;</span>
+
+    invoke-static {p1, v0}, La/a/a/a;-&gt;a(Ljava/lang/Object;Ljava/lang/String;)V
+
+    <span style="color:#66d9ef">const</span>-string v0, <span style="color:#e6db74">&#34;Text&#34;</span>
+
+    check-cast v0, Ljava/lang/CharSequence;
+
+    invoke-virtual {p1, v0}, Landroid/widget/TextView;-&gt;setText(Ljava/lang/CharSequence;)V
+
+    sget p1, Lcom/krossovochkin/butterknifetest/a<span style="color:#960050;background-color:#1e0010">$</span>a;-&gt;textView:I
+
+    invoke-direct {p0, p1}, Lcom/krossovochkin/butterknifetest/ExtensionsActivity;-&gt;a(I)Landroid/view/View;
+
+    move-result-<span style="color:#66d9ef">object</span> <span style="color:#a6e22e">p1</span>
+
+    check-cast p1, Landroid/widget/TextView;
+
+    <span style="color:#66d9ef">const</span>/high16 v0, -<span style="color:#ae81ff">0x10000</span>
+
+    invoke-virtual {p1, v0}, Landroid/widget/TextView;-&gt;setTextColor(I)V
+
+    sget p1, Lcom/krossovochkin/butterknifetest/a<span style="color:#960050;background-color:#1e0010">$</span>a;-&gt;textView:I
+
+    invoke-direct {p0, p1}, Lcom/krossovochkin/butterknifetest/ExtensionsActivity;-&gt;a(I)Landroid/view/View;
+
+    move-result-<span style="color:#66d9ef">object</span> <span style="color:#a6e22e">p1</span>
+
+    check-cast p1, Landroid/widget/TextView;
+
+    <span style="color:#66d9ef">const</span>-string v0, <span style="color:#e6db74">&#34;textView&#34;</span>
+
+    invoke-static {p1, v0}, La/a/a/a;-&gt;a(Ljava/lang/Object;Ljava/lang/String;)V
+
+    <span style="color:#66d9ef">const</span>/high16 v0, <span style="color:#ae81ff">0x41600000</span>    <span style="color:#960050;background-color:#1e0010">#</span> <span style="color:#ae81ff">14.0f</span>
+
+    invoke-virtual {p1, v0}, Landroid/widget/TextView;-&gt;setTextSize(F)V
+
+    <span style="color:#66d9ef">return</span>-void
+.end method</code></pre></div>
+<p><strong>With .<em>apply</em> “optimization”:</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">.<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">public</span> <span style="color:#66d9ef">final</span> Lcom/krossovochkin/butterknifetest/ExtensionsActivity;
+.<span style="color:#66d9ef">super</span> Landroidx/appcompat/app/c;
+
+
+<span style="color:#960050;background-color:#1e0010">#</span> instance fields
+.field <span style="color:#66d9ef">private</span> j:Ljava/util/HashMap;
+
+
+<span style="color:#960050;background-color:#1e0010">#</span> direct methods
+.method <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">constructor</span> &lt;init&gt;()V
+    .registers <span style="color:#ae81ff">1</span>
+
+    invoke-direct {p0}, Landroidx/appcompat/app/c;-&gt;&lt;init&gt;()V
+
+    <span style="color:#66d9ef">return</span>-void
+.end method
+
+
+<span style="color:#960050;background-color:#1e0010">#</span> virtual methods
+.method <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> onCreate(Landroid/os/Bundle;)V
+    .registers <span style="color:#ae81ff">4</span>
+
+    invoke-<span style="color:#66d9ef">super</span> {p0, p1}, Landroidx/appcompat/app/c;-&gt;onCreate(Landroid/os/Bundle;)V
+
+    <span style="color:#66d9ef">const</span> p1, <span style="color:#ae81ff">0x7f0a001e</span>
+
+    invoke-virtual {p0, p1}, Lcom/krossovochkin/butterknifetest/ExtensionsActivity;-&gt;setContentView(I)V
+
+    sget p1, Lcom/krossovochkin/butterknifetest/a<span style="color:#960050;background-color:#1e0010">$</span>a;-&gt;textView:I
+
+    iget-<span style="color:#66d9ef">object</span> <span style="color:#a6e22e">v0</span>, p0, Lcom/krossovochkin/butterknifetest/ExtensionsActivity;-&gt;j:Ljava/util/HashMap;
+
+    <span style="color:#66d9ef">if</span>-nez v0, :cond_16
+
+    new-instance v0, Ljava/util/HashMap;
+
+    invoke-direct {v0}, Ljava/util/HashMap;-&gt;&lt;init&gt;()V
+
+    iput-<span style="color:#66d9ef">object</span> <span style="color:#a6e22e">v0</span>, p0, Lcom/krossovochkin/butterknifetest/ExtensionsActivity;-&gt;j:Ljava/util/HashMap;
+
+    :cond_16
+    iget-<span style="color:#66d9ef">object</span> <span style="color:#a6e22e">v0</span>, p0, Lcom/krossovochkin/butterknifetest/ExtensionsActivity;-&gt;j:Ljava/util/HashMap;
+
+    invoke-static {p1}, Ljava/lang/Integer;-&gt;valueOf(I)Ljava/lang/Integer;
+
+    move-result-<span style="color:#66d9ef">object</span> <span style="color:#a6e22e">v1</span>
+
+    invoke-virtual {v0, v1}, Ljava/util/HashMap;-&gt;<span style="color:#66d9ef">get</span>(Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-<span style="color:#66d9ef">object</span> <span style="color:#a6e22e">v0</span>
+
+    check-cast v0, Landroid/view/View;
+
+    <span style="color:#66d9ef">if</span>-nez v0, :cond_31
+
+    invoke-virtual {p0, p1}, Landroidx/fragment/app/d;-&gt;findViewById(I)Landroid/view/View;
+
+    move-result-<span style="color:#66d9ef">object</span> <span style="color:#a6e22e">v0</span>
+
+    iget-<span style="color:#66d9ef">object</span> <span style="color:#a6e22e">v1</span>, p0, Lcom/krossovochkin/butterknifetest/ExtensionsActivity;-&gt;j:Ljava/util/HashMap;
+
+    invoke-static {p1}, Ljava/lang/Integer;-&gt;valueOf(I)Ljava/lang/Integer;
+
+    move-result-<span style="color:#66d9ef">object</span> <span style="color:#a6e22e">p1</span>
+
+    invoke-virtual {v1, p1, v0}, Ljava/util/HashMap;-&gt;put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+
+    :cond_31
+    check-cast v0, Landroid/widget/TextView;
+
+    <span style="color:#66d9ef">const</span>-string p1, <span style="color:#e6db74">&#34;Text&#34;</span>
+
+    check-cast p1, Ljava/lang/CharSequence;
+
+    invoke-virtual {v0, p1}, Landroid/widget/TextView;-&gt;setText(Ljava/lang/CharSequence;)V
+
+    <span style="color:#66d9ef">const</span>/high16 p1, -<span style="color:#ae81ff">0x10000</span>
+
+    invoke-virtual {v0, p1}, Landroid/widget/TextView;-&gt;setTextColor(I)V
+
+    <span style="color:#66d9ef">const</span>/high16 p1, <span style="color:#ae81ff">0x41600000</span>    <span style="color:#960050;background-color:#1e0010">#</span> <span style="color:#ae81ff">14.0f</span>
+
+    invoke-virtual {v0, p1}, Landroid/widget/TextView;-&gt;setTextSize(F)V
+
+    <span style="color:#66d9ef">return</span>-void
+.end method</code></pre></div>
 <p>Again, few questions and observations:</p>
 <ul>
 <li>

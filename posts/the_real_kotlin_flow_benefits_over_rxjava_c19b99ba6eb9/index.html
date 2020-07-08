@@ -7,8 +7,8 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <meta name="description" content="Source
-Introduction Recently the article about Kotlin Flow benefits over RxJava was published by Antoni Castejón García: Kotlin Flow benefits over RxJava *Lately I’ve been implementing a new project using Kotlin Asynchronous Flows instead of RxJava as I was used to. Why? I…*proandroiddev.com
-Though Antoni made a good work and many thanks to him for providing his feedback and experience (we need to share our thoughts, this improves community acknowledgment in various areas) — I found few places in the article with which I don’t fully or partially agree." />
+Introduction Recently the article about Kotlin Flow benefits over RxJava was published by Antoni Castejón García: Kotlin Flow benefits over RxJava
+Though Antoni made a good work and many thanks to him for providing his feedback and experience (we need to share our thoughts, this improves community acknowledgment in various areas) — I found few places in the article with which I don’t fully or partially agree. Some points, in my opinion, were missing." />
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
 <link rel="canonical" href="https://krossovochkin.github.io/posts/the_real_kotlin_flow_benefits_over_rxjava_c19b99ba6eb9/" />
@@ -139,8 +139,7 @@ Though Antoni made a good work and many thanks to him for providing his feedback
         <p><img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1357&amp;q=80" alt="Source"><em><a href="https://unsplash.com/photos/Lks7vei-eAg">Source</a></em></p>
 <h2 id="introduction">Introduction<a href="#introduction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>Recently the article about Kotlin Flow benefits over RxJava was published by <a href="undefined">Antoni Castejón García</a>:
-<a href="https://proandroiddev.com/kotlin-flow-benefits-over-rxjava-b220658f1a92"><strong>Kotlin Flow benefits over RxJava</strong>
-*Lately I’ve been implementing a new project using Kotlin Asynchronous Flows instead of RxJava as I was used to. Why? I…*proandroiddev.com</a></p>
+<a href="https://proandroiddev.com/kotlin-flow-benefits-over-rxjava-b220658f1a92"><strong>Kotlin Flow benefits over RxJava</strong></a></p>
 <p>Though Antoni made a good work and many thanks to him for providing his feedback and experience (we need to share our thoughts, this improves community acknowledgment in various areas) — I found few places in the article with which I don’t fully or partially agree. Some points, in my opinion, were missing. So, I decided to make a follow-up feedback post on what I consider the real benefits of Kotlin Flow over RxJava. Feedback is also a good thing as it helps us to drive forward and maybe look at the same things from a different angle.</p>
 <p>I didn’t want to be mean or offend anyone, especially Antoni. So, if one finds that some wording sounds offensive — please blame my English. My goal is not to argue or point to some mistakes, but to provide my humble opinion. At first, I was thinking about writing a comment to the original story, but the comment was too long, so I decided to make it as a separate article.</p>
 <p>The format will be simple — I’ll just take some quotes and add my humble comments. In the end, will try to summarize what I have in my head.</p>
@@ -200,9 +199,33 @@ Everything is simple when you know the details</p>
 Also flatMap allows concurrency (by merging various streams), when map is for different use case.</p>
 <p>In Kotlin there is only one stream type: Flow. Instead of Single etc. there are just general suspending functions. And this is exactly why map in Kotlin Flow accepts lambdas with suspend — because somehow () -&gt; T (analog of Single) has to be supported in the chain. flatMap version works with Flow, so it seems there is not much choice.</p>
 <p>The issue with having map to accept suspending functions is that now we can do something like this:</p>
-<!-- raw HTML omitted -->
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">hiThere</span>(): Int {
+    <span style="color:#66d9ef">return</span> withContext(Dispatchers.Default) {
+        delay(<span style="color:#ae81ff">1000</span>)
+        <span style="color:#ae81ff">40</span>
+    }
+}
+@Test
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">test</span>() {
+    CoroutineScope(Job()).launch {
+        flowOf(<span style="color:#ae81ff">1</span>)
+            .map { hiThere() }
+            .flowOn(Dispatchers.IO)
+            .collect { println(it) }
+    }
+}</code></pre></div>
 <p>In RxJava we would do something like:</p>
-<!-- raw HTML omitted -->
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">hiThere</span>(): Single&lt;Int&gt; {
+    <span style="color:#66d9ef">return</span> Completable.timer(<span style="color:#ae81ff">1</span>, TimeUnit.SECONDS)
+        .andThen(Single.just(<span style="color:#ae81ff">40</span>))
+        .subscribeOn(computation())
+}
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">test</span>() {
+    Observable.just(<span style="color:#ae81ff">1</span>)
+        .flatMapSingle { hiThere() }
+        .subscribeOn(io())
+        .subscribe { println(it) }
+}</code></pre></div>
 <p>One might say that RxJava is too verbose. Maybe, but not that is important. In RxJava we have clearly defined that our function hiThere provides a new stream. And like any other stream, it might be subscribed on some different scheduler. This is huge knowledge because from the usage I already know what function can do.
 If there would be map — then I’ll understand that there will be just transformation of values (which will be done on the particular scheduler in the chain).</p>
 <p>With Kotlin Flow and map accepting suspend it is not that clear. By looking at usage I don’t know whether it is just a stream content transformation or “flatMapping” some suspending “stream type”. I will have to look at the implementation and for me it is a downside.</p>
@@ -210,8 +233,7 @@ If there would be map — then I’ll understand that there will be just transfo
 Probably if we had map for content transformation and flatMapSuspend or something like this for suspend-map — it would be better.
 But yes “it is too verbose” :)</p>
 <p>More on stream types in RxJava and Kotlin Flow one can find here:
-<a href="https://proandroiddev.com/from-rxjava-to-kotlin-flow-stream-types-7916be6cabc2"><strong>From RxJava to Kotlin Flow: Stream Types</strong>
-<em>Comparing Stream Types in RxJava and Kotlin Flow</em>proandroiddev.com</a></p>
+<a href="https://proandroiddev.com/from-rxjava-to-kotlin-flow-stream-types-7916be6cabc2"><strong>From RxJava to Kotlin Flow: Stream Types</strong></a></p>
 <blockquote>
 <p>You can end up having the same behavior as an Rx operator just <strong>composing suspend methods</strong>. For instance, <em>interval</em> is an Rx operator that emits a <em>Long</em> every X time ( <em>Observable.interval(1, TimeUnit.Seconds)</em> ), you can implement it by composing:</p>
 </blockquote>
@@ -234,21 +256,85 @@ Common operators in the standard library is a good thing. It unifies behaviors, 
 <p>✅ Good thing is that in Kotlin Flow there is no need to use separate stream type to handle backpressure. Flow by itself supports backpressure.
 In RxJava there are Observable which doesn’t support backpressure and Flowable, which does. This is because Flowable is heavier than Observable as backpressure handling adds overhead.
 More on this in the article:
-<a href="https://proandroiddev.com/from-rxjava-to-kotlin-flow-backpressure-d1fb91e6dea8"><strong>From RxJava to Kotlin Flow: Backpressure</strong>
-<em>Quick comparison between backpressure solutions in RxJava and Kotlin Flow</em>proandroiddev.com</a></p>
+<a href="https://proandroiddev.com/from-rxjava-to-kotlin-flow-backpressure-d1fb91e6dea8"><strong>From RxJava to Kotlin Flow: Backpressure</strong></a></p>
 <blockquote>
 <p>Context preservation</p>
 </blockquote>
 <p>🆗 Nice, but somewhat whatever. Kotlin Flow has just a different approach. I can’t say whether it is better or not for now. I think one can get used to any.
 More info on the threading in the article:
-<a href="https://proandroiddev.com/from-rxjava-2-to-kotlin-flow-threading-8618867e1955"><strong>From RxJava 2 to Kotlin Flow: Threading</strong>
-<em>Comparing threading in RxJava 2 and Kotlin Flow</em>proandroiddev.com</a></p>
+<a href="https://proandroiddev.com/from-rxjava-2-to-kotlin-flow-threading-8618867e1955"><strong>From RxJava 2 to Kotlin Flow: Threading</strong></a></p>
 <blockquote>
 <p>Lifetime</p>
 </blockquote>
 <p>✅ The fact that coroutines (and therefore Flow) can be launched/collected only in some particular scope — is good, because the compiler won’t allow you to make mistake and launch coroutine without some scope.</p>
 <p>🚨 But regarding viewModelScope for coroutines: it is possible to make something similar for RxJava as well. Android Jetpack team just invests time into coroutines support and not RxJava.</p>
-<!-- raw HTML omitted -->
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TestViewModel</span> : MyViewModel() {
+
+    init {
+        scope.launch(
+            Observable.just(<span style="color:#e6db74">&#34;10&#34;</span>)
+                .subscribe { println(<span style="color:#e6db74">&#34;Something&#34;</span>) }
+        )
+
+        Observable.just(<span style="color:#e6db74">&#34;10&#34;</span>)
+            .doOnNext { println(<span style="color:#e6db74">&#34;something&#34;</span>) }
+            .launchIn(scope)
+
+        <span style="color:#75715e">// beware, still possible to run without scope
+</span><span style="color:#75715e"></span>        Observable.just(<span style="color:#e6db74">&#34;10&#34;</span>)
+            .subscribe { println(<span style="color:#e6db74">&#34;Something&#34;</span>) }
+    }
+}
+
+<span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyViewModel</span> {
+
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> observers = mutableMapOf&lt;String, Closeable&gt;()
+
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onDestroy</span>() {
+        observers.values.forEach(Closeable<span style="color:#f92672">::</span>close)
+        observers.clear()
+    }
+
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">setObserver</span>(key: String, value: Closeable) {
+        observers[key] = value
+    }
+
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getObserver</span>(key: String): Closeable? {
+        <span style="color:#66d9ef">return</span> observers[key]
+    }
+}
+
+<span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">MyScope</span> : Closeable {
+
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">launch</span>(job: Disposable)
+}
+
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">val</span> TAG_SCOPE = <span style="color:#e6db74">&#34;TAG_SCOPE&#34;</span>
+<span style="color:#66d9ef">val</span> MyViewModel.scope: MyScope
+    <span style="color:#66d9ef">get</span>() {
+        <span style="color:#66d9ef">val</span> scope = getObserver(TAG_SCOPE) <span style="color:#66d9ef">as</span>? MyScope
+        <span style="color:#66d9ef">if</span> (scope != <span style="color:#66d9ef">null</span>) {
+            <span style="color:#66d9ef">return</span> scope
+        }
+
+        <span style="color:#66d9ef">val</span> newScope = <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">: </span><span style="color:#a6e22e">MyScope</span> {
+            <span style="color:#66d9ef">val</span> compositeDisposable = CompositeDisposable()
+
+            <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">launch</span>(job: Disposable) {
+                compositeDisposable.add(job)
+            }
+
+            <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">close</span>() {
+                compositeDisposable.clear()
+            }
+        }
+        <span style="color:#66d9ef">this</span>.setObserver(TAG_SCOPE, newScope)
+        <span style="color:#66d9ef">return</span> newScope
+    }
+
+<span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">Observable</span>&lt;T&gt;.launchIn(scope: MyScope) {
+    <span style="color:#66d9ef">return</span> scope.launch(<span style="color:#66d9ef">this</span>.subscribe())
+}</code></pre></div>
 <p>Of course, this won’t enforce you to add all your subscriptions that way. One might set up custom lint rule for that or so, though it wouldn’t be trivial.</p>
 <blockquote>
 <p>According to this <a href="https://github.com/Kotlin/kotlinx.coroutines/tree/master/benchmarks/src/jmh/kotlin/benchmarks/flow/scrabble">github project</a> Flow is a little bit <strong>faster</strong> than Rx</p>
@@ -317,11 +403,6 @@ More info on the threading in the article:
 </ul>
 <p>In my opinion in the coming years we’ll get used to Kotlin Flow and most likely new projects will be written using it not RxJava. Though there is little gain to rewrite existing apps to Kotlin Flow. At least now. But right now is the best time to start learning and trying on your pet projects maybe.</p>
 <p>Happy coding!</p>
-<p>*Thanks for reading!
-If you enjoyed this article you can like it by <strong>clicking on the👏 button</strong> (up to 50 times!), also you can **share *<em>this article to help others.</em></p>
-<p><em>Have you any feedback, feel free to reach me on <a href="https://twitter.com/krossovochkin">twitter</a>, <a href="https://www.facebook.com/vasya.drobushkov">facebook</a></em>
-<a href="https://twitter.com/krossovochkin"><strong>Vasya Drobushkov</strong>
-*The latest Tweets from Vasya Drobushkov (@krossovochkin). Android developer You want to see a miracle, son? Be the…*twitter.com</a></p>
 
       </div></div>
 
