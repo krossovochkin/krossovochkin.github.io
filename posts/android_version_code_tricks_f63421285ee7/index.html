@@ -163,21 +163,18 @@ Developers can use version code for example for doing specific tasks on updating
 <p>Version code is placed inside <em>AndroidManifest</em>, but usually it is inside *defaultConfig *in <em>build.gradle</em> (from where it is populated to *AndroidManifest *during assemble).
 Also it is possible to access version code from generated BuildConfig.VERSION_CODE.</p>
 <p>When using CI it is also common that version code is provided from outside via gradle parameter:</p>
-<pre><code>./gradlew assembleRelease -PversionCode=12
-</code></pre>
-<p>Though it might happen that one would like to add some custom version code logic inside build.gradle. The naive way is to do something like:</p>
-<pre><code>defaultConfig {
-    ...
-    versionCode calculateVersionCode()
-    ...
-}
-</code></pre>
-<p>But this version has limitation that this config is default and we don’t have any information on what was the actual assemble variant (i.e. we can’t say that for debug build we want to have one value and for release — another one, as variants are not yet available there).</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">./gradlew assembleRelease -PversionCode<span style="color:#f92672">=</span>12
+</code></pre></div><p>Though it might happen that one would like to add some custom version code logic inside build.gradle. The naive way is to do something like:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">defaultConfig <span style="color:#f92672">{</span>
+    <span style="color:#f92672">...</span>
+    versionCode <span style="color:#a6e22e">calculateVersionCode</span><span style="color:#f92672">()</span>
+    <span style="color:#f92672">...</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>But this version has limitation that this config is default and we don’t have any information on what was the actual assemble variant (i.e. we can’t say that for debug build we want to have one value and for release — another one, as variants are not yet available there).</p>
 <h2 id="variant-specific-version-code">Variant-specific Version code<a href="#variant-specific-version-code" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>Inside <em>android</em> section we have access to application variants:</p>
-<pre><code>android.applicationVariants
-</code></pre>
-<p>If we look inside Variant implementation we’ll see that in variant’s output there is method called setVersionCodeOverride:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">android<span style="color:#f92672">.</span><span style="color:#a6e22e">applicationVariants</span>
+</code></pre></div><p>If we look inside Variant implementation we’ll see that in variant’s output there is method called setVersionCodeOverride:</p>
 <p><img src="../../img/1_jYFt6AKQEEfLts8x_xWPkg.png" alt=""></p>
 <p><img src="../../img/1_r5siIglz84s-CAKkpbhACQ.png" alt=""></p>
 <p>Let’s try this option. First we’ll setup app and provide 1 as default versionCode and will override it to 2 for all variant outputs:</p>

@@ -183,172 +183,160 @@ With Test schedulers we can either provide blocking work in places where it was 
 <h3 id="simple-assert-on-stream">Simple assert on stream<a href="#simple-assert-on-stream" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>We’ll start from simple assertion of the stream values. We might want to verify that subscribing to some stream (e.g. repository method) provides required items and for example has no errors but completes in the end.</p>
 <p>Test for Rxjava in this case will look like the following:</p>
-<pre><code>Observable.just(1, 2, 3)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">Observable.just(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
     .test()
-    .assertValues(1, 2, 3)
+    .assertValues(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
     .assertNoErrors()
     .assertComplete()
-</code></pre>
-<p>Here we have simple observable which emits three values and then completes. We subscribe to it using test() method and receive TestObserver as a result. Then we can make assertions on that observer. For example check that we have all three values emitted and that stream completed without errors.</p>
+</code></pre></div><p>Here we have simple observable which emits three values and then completes. We subscribe to it using test() method and receive TestObserver as a result. Then we can make assertions on that observer. For example check that we have all three values emitted and that stream completed without errors.</p>
 <p>In Kotlin there is no TestObserver implementation yet. So in order to verify that our stream contains required items we’ll have to just collect into list and look at the results:</p>
-<pre><code>runBlockingTest {
-    val result = flowOf(1, 2, 3)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlockingTest {
+    <span style="color:#66d9ef">val</span> result = flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
         .toList(mutableListOf())
 
-    assertEquals(listOf(1, 2, 3), result)
+    assertEquals(listOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>), result)
 }
-</code></pre>
-<p>We could use runBlocking for our test, but it is better to always use runBlockingTest as it provides more features and specially designed for testing.</p>
+</code></pre></div><p>We could use runBlocking for our test, but it is better to always use runBlockingTest as it provides more features and specially designed for testing.</p>
 <p>Testing of Kotlin Flow seems more similar to general unit testing (as for example with Sequences). But don’t make a decision too early, let’s look at next examples.</p>
 <h3 id="assert-on-dynamic-stream">Assert on dynamic stream<a href="#assert-on-dynamic-stream" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>In the next example we’ll try to test dynamic stream. First let’s try to define what I mean here by dynamic stream. Usually we have some stream (say, Observable), which starts emitting items upon subscription. If we have such stream then the only thing we can do to test it — is to subscribe and see the results. But it is not always enough.
 Consider the case when you have some function which is triggered when user clicked on some button. Your function might be in one class and original stream of UI events be in a separate class (for example on view). In this case when you want to test your class you have Observable of streams as a dependency. And in test we won’t have any user, we even won’t have UI. So, we need a way to emulate user events. And we’ll do that using “dynamic stream”, where we can send events on demand.
 In RxJava for that we’ll use Subject. If we want to send some event to our class, we’ll just send event to that Subject. And we’ll provide that subject to the class we’re testing.</p>
 <p>Let’s see how it looks in test example:</p>
-<pre><code>val subject = PublishSubject.create&lt;Int&gt;()
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> subject = PublishSubject.create&lt;Int&gt;()
 
-val observer = subject.test()
+<span style="color:#66d9ef">val</span> observer = subject.test()
 
 observer
     .assertNoValues()
     .assertNoErrors()
     .assertNotComplete()
 
-subject.onNext(1)
+subject.onNext(<span style="color:#ae81ff">1</span>)
 
 observer
-    .assertValues(1)
+    .assertValues(<span style="color:#ae81ff">1</span>)
     .assertNoErrors()
     .assertNotComplete()
-</code></pre>
-<p>We create our test subject and subscribe to it with test.
+</code></pre></div><p>We create our test subject and subscribe to it with test.
 Then we assert that we don’t have any values in it.
 After that we send some event (say we send UI click event to our class) and verify that on the receiver side we received that event.</p>
 <p>In Kotlin Flow analog of Subject is Channel, so let’s do the following:</p>
-<pre><code>runBlockingTest {
-    val subject = Channel&lt;Int&gt;()
-    val values = mutableListOf&lt;Int&gt;()
-    val job = launch {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlockingTest {
+    <span style="color:#66d9ef">val</span> subject = Channel&lt;Int&gt;()
+    <span style="color:#66d9ef">val</span> values = mutableListOf&lt;Int&gt;()
+    <span style="color:#66d9ef">val</span> job = launch {
         subject.consumeAsFlow()
             .collect { values.add(it) }
     }
 
     assertEquals(emptyList&lt;Int&gt;(), values)
 
-    subject.send(1)
+    subject.send(<span style="color:#ae81ff">1</span>)
 
-    assertEquals(listOf(1), values)
+    assertEquals(listOf(<span style="color:#ae81ff">1</span>), values)
 
     job.cancel()
 }
-</code></pre>
-<p>We created our channel in which we’ll send events. But as Kotlin Flow doesn’t have any test observer, we have to store our list of values locally and add values to that list when we receive new item.
+</code></pre></div><p>We created our channel in which we’ll send events. But as Kotlin Flow doesn’t have any test observer, we have to store our list of values locally and add values to that list when we receive new item.
 The issue with such approach is that it is verbose and we have to do that in each test. Also we have to wrap collecting of the items in flow inside separate coroutine (started with launch) because our channel won’t be closed till the end of test and if any work is not completed before test ended, we’ll get an exception from runBlockingTest. So it is important to store reference to job and cancel it in the end of test.
 Sounds too complex. Let’s try to make it a bit better by writing our own implementation of TestObserver for Kotlin Flow:</p>
-<pre><code>fun &lt;T&gt; Flow&lt;T&gt;.test(scope: CoroutineScope): TestObserver&lt;T&gt; {
-    return TestObserver(scope, this)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">Flow</span>&lt;T&gt;.test(scope: CoroutineScope): TestObserver&lt;T&gt; {
+    <span style="color:#66d9ef">return</span> TestObserver(scope, <span style="color:#66d9ef">this</span>)
 }
 
-class TestObserver&lt;T&gt;(
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TestObserver</span>&lt;T&gt;(
     scope: CoroutineScope,
     flow: Flow&lt;T&gt;
 ) {
 
-    private val values = mutableListOf&lt;T&gt;()
-    private val job: Job = scope.launch { 
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> values = mutableListOf&lt;T&gt;()
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> job: Job = scope.launch { 
         flow.collect { values.add(it) } 
     }
 
-    fun assertNoValues(): TestObserver&lt;T&gt; {
-        assertEquals(emptyList&lt;T&gt;(), this.values)
-        return this
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">assertNoValues</span>(): TestObserver&lt;T&gt; {
+        assertEquals(emptyList&lt;T&gt;(), <span style="color:#66d9ef">this</span>.values)
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>
     }
 
-    fun assertValues(vararg values: T): TestObserver&lt;T&gt; {
-        assertEquals(values.toList(), this.values)
-        return this
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">assertValues</span>(<span style="color:#66d9ef">vararg</span> values: T): TestObserver&lt;T&gt; {
+        assertEquals(values.toList(), <span style="color:#66d9ef">this</span>.values)
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>
     }
 
-    fun finish() {
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">finish</span>() {
         job.cancel()
     }
 }
-</code></pre>
-<p>We wrap that local list of values inside our observer and provide methods similar to what we have in RxJava.
+</code></pre></div><p>We wrap that local list of values inside our observer and provide methods similar to what we have in RxJava.
 After using our test observer we’ll have such a test:</p>
-<pre><code>runBlockingTest {
-    val subject = Channel&lt;Int&gt;()
-    val observer = subject.consumeAsFlow().test(this)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlockingTest {
+    <span style="color:#66d9ef">val</span> subject = Channel&lt;Int&gt;()
+    <span style="color:#66d9ef">val</span> observer = subject.consumeAsFlow().test(<span style="color:#66d9ef">this</span>)
 
     observer.assertNoValues()
 
-    subject.send(1)
+    subject.send(<span style="color:#ae81ff">1</span>)
 
-    observer.assertValues(1)
+    observer.assertValues(<span style="color:#ae81ff">1</span>)
 
     observer.finish()
 }
-</code></pre>
-<p>Looks better. But pay attention that we still have to finish our test observer in the end of test.</p>
+</code></pre></div><p>Looks better. But pay attention that we still have to finish our test observer in the end of test.</p>
 <p>Now let’s also re-write test for our first example using our test observer:</p>
-<pre><code>runBlockingTest {
-    flowOf(1, 2, 3)
-        .test(this)
-        .assertValues(1, 2, 3)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlockingTest {
+    flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
+        .test(<span style="color:#66d9ef">this</span>)
+        .assertValues(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
         .finish()
 }
-</code></pre>
-<p>Again, it now seems to look more declarative.</p>
+</code></pre></div><p>Again, it now seems to look more declarative.</p>
 <h3 id="custom-schedulerdispatcher">Custom Scheduler/Dispatcher<a href="#custom-schedulerdispatcher" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>In streams we usually subscribe/observe on some particular Scheduler, for example io or mainThread. Though in tests we don’t have main thread at all and using io thread might provide some latency and need to add logic to convert async code into blocking one.
 It is good pattern to provide dependencies instead of using singletons, so it can also be applied to schedulers.
 For example if we have some load function which works on some particular scheduler, to make it testable, we can provide that scheduler as a dependency:</p>
-<pre><code>private fun load(
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">load</span>(
     scheduler: Scheduler = Schedulers.computation()
 ): Observable&lt;Int&gt; {
-    return Observable.just(1)
-        .delay(1, TimeUnit.SECONDS, scheduler)
+    <span style="color:#66d9ef">return</span> Observable.just(<span style="color:#ae81ff">1</span>)
+        .delay(<span style="color:#ae81ff">1</span>, TimeUnit.SECONDS, scheduler)
 }
-</code></pre>
-<p>By default delay works on computation scheduler, which might make testing more difficult.
+</code></pre></div><p>By default delay works on computation scheduler, which might make testing more difficult.
 For example if we write such a test:</p>
-<pre><code>load()
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">load()
     .test()
-    .assertValues(1)
+    .assertValues(<span style="color:#ae81ff">1</span>)
     .assertNoErrors()
     .assertComplete()
-</code></pre>
-<p>It will fail, because test will be completed before separate computation thread finished.
+</code></pre></div><p>It will fail, because test will be completed before separate computation thread finished.
 In tests we can provide separate scheduler and one option is to use trampoline.</p>
-<pre><code>load(Schedulers.trampoline())
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">load(Schedulers.trampoline())
     .test()
-    .assertValues(1)
+    .assertValues(<span style="color:#ae81ff">1</span>)
     .assertComplete()
     .assertNoErrors()
-</code></pre>
-<p>Now our test passes, as now we basically run our code in a blocking manner.
+</code></pre></div><p>Now our test passes, as now we basically run our code in a blocking manner.
 Note that we’ll wait for the whole delay to expire, so this test will be quite long (more than a second), which is not that good for unit testing.</p>
 <p>In Kotlin Flow I haven’t found any alternative to trampoline. Coroutines are suspending and not blocking, so trying to make them work on single thread seems not a good option. But there is a way to workaround that in a following way:</p>
-<pre><code>runBlockingTest {
-    val observer = load(coroutineContext.minusKey(Job))
-        .test(this)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlockingTest {
+    <span style="color:#66d9ef">val</span> observer = load(coroutineContext.minusKey(Job))
+        .test(<span style="color:#66d9ef">this</span>)
 
     advanceUntilIdle()
 
     observer
-        .assertValues(1)
+        .assertValues(<span style="color:#ae81ff">1</span>)
         .finish()
 }
-</code></pre>
-<p>And our test load function is:</p>
-<pre><code>private fun load(context: CoroutineContext): Flow&lt;Int&gt; {
-    return flow {
-        delay(1000)
-        emit(1)
+</code></pre></div><p>And our test load function is:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">load</span>(context: CoroutineContext): Flow&lt;Int&gt; {
+    <span style="color:#66d9ef">return</span> flow {
+        delay(<span style="color:#ae81ff">1000</span>)
+        emit(<span style="color:#ae81ff">1</span>)
     }.flowOn(context)
 }
-</code></pre>
-<p>What we do here is provide separate context (it is still good approach to provide context/dispatcher as a dependency, so we can use separate one in tests).
+</code></pre></div><p>What we do here is provide separate context (it is still good approach to provide context/dispatcher as a dependency, so we can use separate one in tests).
 We have to do small trick by removing Job from context, because flow context can’t have a job.
 And we use advanceUntilIdle method to wait until our delay expired.
 Note that advancing clock changes virtual time, so that we don’t have to wait for a second and test will be pretty fast.</p>
@@ -358,11 +346,11 @@ The idea is simple — when we have some streams which emit values with some del
 For that there is virtual clock which can be advanced on demand by requested amount of time.</p>
 <p>In RxJava such ability has TestScheduler. It has function advanceTimeBy where we can skip some time.
 Let’s look at the final example where we’ll test debounce operator with our TestScheduler:</p>
-<pre><code>val scheduler = TestScheduler()
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> scheduler = TestScheduler()
 
-val subject = PublishSubject.create&lt;Int&gt;()
-val observer = subject
-    .debounce(1, TimeUnit.SECONDS, scheduler)
+<span style="color:#66d9ef">val</span> subject = PublishSubject.create&lt;Int&gt;()
+<span style="color:#66d9ef">val</span> observer = subject
+    .debounce(<span style="color:#ae81ff">1</span>, TimeUnit.SECONDS, scheduler)
     .test()
 
 observer
@@ -370,28 +358,27 @@ observer
     .assertNotComplete()
     .assertNoErrors()
 
-    subject.onNext(1)
+    subject.onNext(<span style="color:#ae81ff">1</span>)
 
 observer
     .assertNoValues()
     .assertNotComplete()
     .assertNoErrors()
 
-    scheduler.advanceTimeBy(500, TimeUnit.MILLISECONDS)
+    scheduler.advanceTimeBy(<span style="color:#ae81ff">500</span>, TimeUnit.MILLISECONDS)
 
 observer
     .assertNoValues()
     .assertNotComplete()
     .assertNoErrors()
 
-    scheduler.advanceTimeBy(500, TimeUnit.MILLISECONDS)
+    scheduler.advanceTimeBy(<span style="color:#ae81ff">500</span>, TimeUnit.MILLISECONDS)
 
 observer
-    .assertValues(1)
+    .assertValues(<span style="color:#ae81ff">1</span>)
     .assertNotComplete()
     .assertNoErrors()
-</code></pre>
-<p>This test is much longer than previous ones, though pretty simple, let’s look what we have here.
+</code></pre></div><p>This test is much longer than previous ones, though pretty simple, let’s look what we have here.
 First we create our test scheduler and subject which we’ll throttle with debounce.
 Inside debounce we provide our test scheduler so now we’ll be able to control timing.
 After setup is done we just verify that we don’t have any values emitted.
@@ -401,57 +388,55 @@ Then we advance time by 500ms — half time of timer — and verify that no valu
 And finally we advance time by 500ms which should expire timer and emit value. And we verify that exactly this happened.</p>
 <p>Pretty powerful.</p>
 <p>In Kotlin Flow there is TestCoroutineDispatcher which is inherited in runBlockingTest. The test will be similar to what we have in Rx (and of course we add our TestObserver implementation to make it more concise):</p>
-<pre><code>runBlockingTest {
-    val subject = Channel&lt;Int&gt;()
-    val observer = subject.consumeAsFlow()
-        .debounce(1000)
-        .test(this)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlockingTest {
+    <span style="color:#66d9ef">val</span> subject = Channel&lt;Int&gt;()
+    <span style="color:#66d9ef">val</span> observer = subject.consumeAsFlow()
+        .debounce(<span style="color:#ae81ff">1000</span>)
+        .test(<span style="color:#66d9ef">this</span>)
 
     observer.assertNoValues()
 
-    subject.send(1)
+    subject.send(<span style="color:#ae81ff">1</span>)
 
     observer.assertNoValues()
 
-    advanceTimeBy(500)
+    advanceTimeBy(<span style="color:#ae81ff">500</span>)
 
     observer.assertNoValues()
 
-    advanceTimeBy(500)
+    advanceTimeBy(<span style="color:#ae81ff">500</span>)
 
     observer
-        .assertValues(1)
+        .assertValues(<span style="color:#ae81ff">1</span>)
         .finish()
 }
-</code></pre>
-<h2 id="bonus">Bonus<a href="#bonus" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+</code></pre></div><h2 id="bonus">Bonus<a href="#bonus" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>If we took a look at how tests are written in sources of kotlin coroutines, we could find something interesting: there is a TestBase class which has some powerful API (<a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/kotlinx-coroutines-core/jvm/test/TestBase.kt">link</a>).
 One of that API is expect, which declares order in which code expected to be invoked.</p>
 <p>Let’s look at one test for debounce operator:</p>
-<pre><code>@Test
-public fun testBasic() = withVirtualTime {
-    expect(1)
-    val flow = flow {
-        expect(3)
-        emit(&quot;A&quot;)
-        delay(1500)
-        emit(&quot;B&quot;)
-        delay(500)
-        emit(&quot;C&quot;)
-        delay(250)
-        emit(&quot;D&quot;)
-        delay(2000)
-        emit(&quot;E&quot;)
-        expect(4)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Test
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">testBasic</span>() = withVirtualTime {
+    <span style="color:#66d9ef">expect</span>(<span style="color:#ae81ff">1</span>)
+    <span style="color:#66d9ef">val</span> flow = flow {
+        <span style="color:#66d9ef">expect</span>(<span style="color:#ae81ff">3</span>)
+        emit(<span style="color:#e6db74">&#34;A&#34;</span>)
+        delay(<span style="color:#ae81ff">1500</span>)
+        emit(<span style="color:#e6db74">&#34;B&#34;</span>)
+        delay(<span style="color:#ae81ff">500</span>)
+        emit(<span style="color:#e6db74">&#34;C&#34;</span>)
+        delay(<span style="color:#ae81ff">250</span>)
+        emit(<span style="color:#e6db74">&#34;D&#34;</span>)
+        delay(<span style="color:#ae81ff">2000</span>)
+        emit(<span style="color:#e6db74">&#34;E&#34;</span>)
+        <span style="color:#66d9ef">expect</span>(<span style="color:#ae81ff">4</span>)
     }
 
-    expect(2)
-    val result = flow.debounce(1000).toList()
-    assertEquals(listOf(&quot;A&quot;, &quot;D&quot;, &quot;E&quot;), result)
-    finish(5)
+    <span style="color:#66d9ef">expect</span>(<span style="color:#ae81ff">2</span>)
+    <span style="color:#66d9ef">val</span> result = flow.debounce(<span style="color:#ae81ff">1000</span>).toList()
+    assertEquals(listOf(<span style="color:#e6db74">&#34;A&#34;</span>, <span style="color:#e6db74">&#34;D&#34;</span>, <span style="color:#e6db74">&#34;E&#34;</span>), result)
+    finish(<span style="color:#ae81ff">5</span>)
 }
-</code></pre>
-<p>To understand what is the expected order of execution one should just look at indexes inside expect.
+</code></pre></div><p>To understand what is the expected order of execution one should just look at indexes inside expect.
 Also it uses auto-incremental virtual time — whenever execution hits delay it automatically advances virtual time by that.
 Finally we collect result to list — something we’ve already encountered.</p>
 <p>But this TestBase implementation is not available, though looks pretty well. Hoping it to get into kotlin-coroutines-test package.</p>

@@ -277,22 +277,21 @@ Everything below is not “what it is” but mostly “how I understood that”.
 <p>i, j — injections</p>
 <p><img src="../../img/1_-jgL9B9Y4J3cC9MPjgKuqw.png" alt=""></p>
 <p>In programming it can be described as Either:</p>
-<pre><code>class Either&lt;A: Any, B: Any&gt; 
-private constructor(private val a: A?, private val b: B?) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Either</span>&lt;A: Any, B: Any&gt; 
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">constructor</span>(<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> a: A?, <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> b: B?) {
 
-companion object {
+<span style="color:#66d9ef">companion</span> <span style="color:#66d9ef">object</span> {
         
-        fun &lt;A: Any, B: Any&gt; left(a: A): Either&lt;A, B&gt; {
-            return Either(a, null)
+        <span style="color:#66d9ef">fun</span> &lt;A: Any, B: Any&gt; <span style="color:#a6e22e">left</span>(a: A): Either&lt;A, B&gt; {
+            <span style="color:#66d9ef">return</span> Either(a, <span style="color:#66d9ef">null</span>)
         }
         
-        fun &lt;A: Any, B: Any&gt; right(b: B): Either&lt;A, B&gt; {
-            return Either(null, b)
+        <span style="color:#66d9ef">fun</span> &lt;A: Any, B: Any&gt; <span style="color:#a6e22e">right</span>(b: B): Either&lt;A, B&gt; {
+            <span style="color:#66d9ef">return</span> Either(<span style="color:#66d9ef">null</span>, b)
         }
     }
 }
-</code></pre>
-<h2 id="algebraic-data-types">Algebraic Data Types<a href="#algebraic-data-types" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+</code></pre></div><h2 id="algebraic-data-types">Algebraic Data Types<a href="#algebraic-data-types" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <h3 id="product-1">Product<a href="#product-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <ul>
 <li>symmetry</li>
@@ -381,11 +380,10 @@ Preserving structure means that composition and identity is preserved.</p>
 </ul>
 <p><img src="../../img/1_0GRi_LQ2ZGuFyYj0ukE4rA.png" alt=""></p>
 <h3 id="functor-in-programming">Functor in programming<a href="#functor-in-programming" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
-<pre><code>interface Functor&lt;A&gt; {
-    fun &lt;B&gt; map(f: (A) -&gt; B): Functor&lt;B&gt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Functor</span>&lt;A&gt; {
+    <span style="color:#66d9ef">fun</span> &lt;B&gt; <span style="color:#a6e22e">map</span>(f: (A) -&gt; B): Functor&lt;B&gt;
 }
-</code></pre>
-<h2 id="bifunctor">BiFunctor<a href="#bifunctor" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+</code></pre></div><h2 id="bifunctor">BiFunctor<a href="#bifunctor" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <h3 id="cat">Cat<a href="#cat" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>Cat — category of categories</p>
 <ul>
@@ -403,63 +401,56 @@ Preserving structure means that composition and identity is preserved.</p>
 <p><img src="../../img/1_BFDOC6tf_MK5g-nv807qew.png" alt=""></p>
 <p>Sum is also a BiFunctor</p>
 <h3 id="bifunctor-in-programming">BiFunctor in programming<a href="#bifunctor-in-programming" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
-<pre><code>interface Bifunctor&lt;A : Any, B: Any&gt; {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Bifunctor</span>&lt;A : Any, B: Any&gt; {
     
-    fun &lt;C : Any&gt; first(f: (A) -&gt; C): Bifunctor&lt;C, B&gt;
+    <span style="color:#66d9ef">fun</span> &lt;C : Any&gt; <span style="color:#a6e22e">first</span>(f: (A) -&gt; C): Bifunctor&lt;C, B&gt;
     
-    fun &lt;D : Any&gt; second(f: (B) -&gt; D): Bifunctor&lt;A, D&gt;
+    <span style="color:#66d9ef">fun</span> &lt;D : Any&gt; <span style="color:#a6e22e">second</span>(f: (B) -&gt; D): Bifunctor&lt;A, D&gt;
     
-    fun &lt;C : Any, D : Any&gt; bimap(f: (A) -&gt; C, g: (B) -&gt; D): Bifunctor&lt;C, D&gt;
+    <span style="color:#66d9ef">fun</span> &lt;C : Any, D : Any&gt; <span style="color:#a6e22e">bimap</span>(f: (A) -&gt; C, g: (B) -&gt; D): Bifunctor&lt;C, D&gt;
 }
-</code></pre>
-<h2 id="profunctor">ProFunctor<a href="#profunctor" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+</code></pre></div><h2 id="profunctor">ProFunctor<a href="#profunctor" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <h3 id="adt-construction-via-composition">ADT construction via composition<a href="#adt-construction-via-composition" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>Constant Functor</p>
-<pre><code>data class Const&lt;C : Any, A : Any&gt;(val c: C): Functor&lt;A&gt; {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Const</span>&lt;C : Any, A : Any&gt;(<span style="color:#66d9ef">val</span> c: C): Functor&lt;A&gt; {
     
-    override fun &lt;B : Any&gt; fmap(f: (A) -&gt; B): Const&lt;C, B&gt; {
-        return Const&lt;C, B&gt;(c)
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> &lt;B : Any&gt; <span style="color:#a6e22e">fmap</span>(f: (A) -&gt; B): Const&lt;C, B&gt; {
+        <span style="color:#66d9ef">return</span> Const&lt;C, B&gt;(c)
     }
 }
-</code></pre>
-<p>Identity Functor</p>
-<pre><code>data class Just&lt;A : Any&gt;(val a: A) : Functor&lt;A&gt; {
+</code></pre></div><p>Identity Functor</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Just</span>&lt;A : Any&gt;(<span style="color:#66d9ef">val</span> a: A) : Functor&lt;A&gt; {
     
-    override fun &lt;B : Any&gt; fmap(f: (A) -&gt; B): Just&lt;B&gt; {
-        return Just(f(a))
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> &lt;B : Any&gt; <span style="color:#a6e22e">fmap</span>(f: (A) -&gt; B): Just&lt;B&gt; {
+        <span style="color:#66d9ef">return</span> Just(f(a))
     }
 }
-</code></pre>
-<p>Maybe via composition</p>
-<pre><code>class Maybe&lt;A&gt; = Either(Const&lt;Unit, A&gt;, Identity&lt;A&gt;)
-</code></pre>
-<p>Either is a BiFunctor, Const and Identity are Functors.</p>
+</code></pre></div><p>Maybe via composition</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Maybe</span>&lt;A&gt; = Either(Const&lt;Unit, A&gt;, Identity&lt;A&gt;)
+</code></pre></div><p>Either is a BiFunctor, Const and Identity are Functors.</p>
 <h3 id="profunctor-1">ProFunctor<a href="#profunctor-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>ProFunctor — mapping from product of category with its opposite category to that category.</p>
 <p><img src="../../img/1_Dx_0cWCqBxz0fOw0huWfaQ.png" alt=""></p>
-<pre><code>interface Contravariant&lt;A : Any&gt; {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Contravariant</span>&lt;A : Any&gt; {
     
-    fun &lt;B : Any&gt; contramap(f: (B) -&gt; A): Contravariant&lt;B&gt;
+    <span style="color:#66d9ef">fun</span> &lt;B : Any&gt; <span style="color:#a6e22e">contramap</span>(f: (B) -&gt; A): Contravariant&lt;B&gt;
 }
-</code></pre>
-<h3 id="profunctor-in-programming">ProFunctor in programming<a href="#profunctor-in-programming" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
-<pre><code>interface Profunctor&lt;A : Any, B : Any&gt; {
+</code></pre></div><h3 id="profunctor-in-programming">ProFunctor in programming<a href="#profunctor-in-programming" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Profunctor</span>&lt;A : Any, B : Any&gt; {
     
-    fun &lt;C : Any&gt; lmap(f: (C) -&gt; A): Profunctor&lt;C, B&gt;
+    <span style="color:#66d9ef">fun</span> &lt;C : Any&gt; <span style="color:#a6e22e">lmap</span>(f: (C) -&gt; A): Profunctor&lt;C, B&gt;
     
-    fun &lt;D : Any&gt; rmap(f: (B) -&gt; D): Profunctor&lt;A, D&gt;
+    <span style="color:#66d9ef">fun</span> &lt;D : Any&gt; <span style="color:#a6e22e">rmap</span>(f: (B) -&gt; D): Profunctor&lt;A, D&gt;
     
-    fun &lt;C : Any, D : Any&gt; dimap(f: (C) -&gt; A, g: (B) -&gt; D): Profunctor&lt;C, D&gt;
+    <span style="color:#66d9ef">fun</span> &lt;C : Any, D : Any&gt; <span style="color:#a6e22e">dimap</span>(f: (C) -&gt; A, g: (B) -&gt; D): Profunctor&lt;C, D&gt;
 }
-</code></pre>
-<h2 id="functionsexponentials">Functions/exponentials<a href="#functionsexponentials" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+</code></pre></div><h2 id="functionsexponentials">Functions/exponentials<a href="#functionsexponentials" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <h3 id="currying">Currying<a href="#currying" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p><img src="../../img/1_zmol75zV_8iq_yG9uefetw.png" alt=""></p>
 <p><img src="../../img/1_bMFEOWT0euDcq8PRCWUUdA.png" alt=""></p>
-<pre><code>fun &lt;A, B, C&gt; curry(f: (Pair&lt;A, B&gt;) -&gt; C): (A) -&gt; ((B) -&gt; C)
-fun &lt;A, B, C&gt; uncurry(f: (A) -&gt; ((B) -&gt; C)): (Pair&lt;A, B&gt;) -&gt; C
-</code></pre>
-<h3 id="cartesian-closed-category-ccc">Cartesian Closed Category (CCC)<a href="#cartesian-closed-category-ccc" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;A, B, C&gt; <span style="color:#a6e22e">curry</span>(f: (Pair&lt;A, B&gt;) -&gt; C): (A) -&gt; ((B) -&gt; C)
+<span style="color:#66d9ef">fun</span> &lt;A, B, C&gt; <span style="color:#a6e22e">uncurry</span>(f: (A) -&gt; ((B) -&gt; C)): (Pair&lt;A, B&gt;) -&gt; C
+</code></pre></div><h3 id="cartesian-closed-category-ccc">Cartesian Closed Category (CCC)<a href="#cartesian-closed-category-ccc" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>Category is CCC if it has:</p>
 <ul>
 <li>
@@ -489,13 +480,12 @@ fun &lt;A, B, C&gt; uncurry(f: (A) -&gt; ((B) -&gt; C)): (Pair&lt;A, B&gt;) -&gt
 <p>NT in programming is polymorphic function.</p>
 <p><img src="../../img/1_WvQdPvFVWl8gWzQPqoCHMg.png" alt=""></p>
 <h3 id="example">Example<a href="#example" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
-<pre><code>fun &lt;A&gt; List&lt;A&gt;.head(): Option&lt;A&gt; {
-    return if (this.isEmpty()) None else Just(this.first())
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;A&gt; <span style="color:#a6e22e">List</span>&lt;A&gt;.head(): Option&lt;A&gt; {
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">if</span> (<span style="color:#66d9ef">this</span>.isEmpty()) None <span style="color:#66d9ef">else</span> Just(<span style="color:#66d9ef">this</span>.first())
 } 
 
-// list.fmap().head() == list.head().fmap()
-</code></pre>
-<p>Reversing order of function application can be used in optimizations.</p>
+<span style="color:#75715e">// list.fmap().head() == list.head().fmap()
+</span></code></pre></div><p>Reversing order of function application can be used in optimizations.</p>
 <h3 id="intuition">Intuition<a href="#intuition" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>Functor — map container contents</p>
 <p>Natural transformation — map container</p>

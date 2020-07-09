@@ -263,8 +263,7 @@ collect: pool-1-thread-2 [@coroutine](http://twitter.com/coroutine)#2
 collect: pool-1-thread-2 [@coroutine](http://twitter.com/coroutine)#2
 collect: pool-1-thread-2 [@coroutine](http://twitter.com/coroutine)#2
 collect: pool-1-thread-2 [@coroutine](http://twitter.com/coroutine)#2
-</code></pre>
-<p>So, we see that unlike RxJava even when we’ve put flowOn outside (below) the inner flatMapMerge,flowOn anyway affected the inner code by running it in parallel on multiple threads.</p>
+</code></pre><p>So, we see that unlike RxJava even when we’ve put flowOn outside (below) the inner flatMapMerge,flowOn anyway affected the inner code by running it in parallel on multiple threads.</p>
 <p>If we put flowOn inside flatMapMerge:</p>
 <p><img src="../../img/1_sv6HwmwwsOufpc-00wZpCQ.png" alt=""></p>
 <p>we’ll see the following result:</p>
@@ -276,8 +275,7 @@ collect: pool-1-thread-3 [@coroutine](http://twitter.com/coroutine)#2
 collect: pool-1-thread-3 [@coroutine](http://twitter.com/coroutine)#2
 collect: pool-1-thread-3 [@coroutine](http://twitter.com/coroutine)#2
 collect: pool-1-thread-3 [@coroutine](http://twitter.com/coroutine)#2
-</code></pre>
-<p>Again each inner flow runs on its own thread from second pool. Therefore there seems no difference where we put flowOn.</p>
+</code></pre><p>Again each inner flow runs on its own thread from second pool. Therefore there seems no difference where we put flowOn.</p>
 <p>But there is a difference and let’s see what it is by adding onEach below first flowOf call:</p>
 <p><img src="../../img/1_isZ3b5z8Jg7f-V9tOqdFlw.png" alt=""></p>
 <p>The result will be:</p>
@@ -291,8 +289,7 @@ collect: pool-1-thread-2 [@coroutine](http://twitter.com/coroutine)#2
 collect: pool-1-thread-2 [@coroutine](http://twitter.com/coroutine)#2
 collect: pool-1-thread-2 [@coroutine](http://twitter.com/coroutine)#2
 collect: pool-1-thread-2 [@coroutine](http://twitter.com/coroutine)#2
-</code></pre>
-<p>That means that everything above flowOn is run on the second pool. Outer is on the first thread and each inner flow on its own (second and third):</p>
+</code></pre><p>That means that everything above flowOn is run on the second pool. Outer is on the first thread and each inner flow on its own (second and third):</p>
 <p><img src="../../img/1_dfWRpulMkYT_8aNiXJVCPA.png" alt=""></p>
 <p>In red it is shown running on d2, and in blue — on d1 .</p>
 <p>Now let’s see what would be if we put flowOn inside flatMapMerge:</p>
@@ -308,8 +305,7 @@ collect: pool-1-thread-3 [@coroutine](http://twitter.com/coroutine)#2
 collect: pool-1-thread-3 [@coroutine](http://twitter.com/coroutine)#2
 collect: pool-1-thread-3 [@coroutine](http://twitter.com/coroutine)#2
 collect: pool-1-thread-3 [@coroutine](http://twitter.com/coroutine)#2
-</code></pre>
-<p>We see that outer now runs on the d1 and therefore not affected by flowOn:</p>
+</code></pre><p>We see that outer now runs on the d1 and therefore not affected by flowOn:</p>
 <p><img src="../../img/1_5D5AHoF0nPJyD7lcMvp0cA.png" alt=""></p>
 <p>And that’s the difference.</p>
 <h2 id="comparison">Comparison<a href="#comparison" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
@@ -378,8 +374,7 @@ end: pool-6-thread-1
 end: pool-6-thread-1
 end: pool-6-thread-1
 end: pool-6-thread-1
-</code></pre>
-<p>It is pretty long, but should match our assumptions written before.
+</code></pre><p>It is pretty long, but should match our assumptions written before.
 Let’s visualize this:</p>
 <p><img src="../../img/1_VNsQnjyftFkMvtcPD8x_rQ.png" alt=""></p>
 <p>So here we see exactly what we’ve described above. The main trick is that “3” is run on the same scheduler as “inner 2”.
@@ -430,8 +425,7 @@ end: pool-5-thread-1 [@coroutine](http://twitter.com/coroutine)#2
 inner 2: pool-4-thread-1 [@coroutine](http://twitter.com/coroutine)#7
 3: pool-4-thread-1 [@coroutine](http://twitter.com/coroutine)#3
 end: pool-5-thread-1 [@coroutine](http://twitter.com/coroutine)#2
-</code></pre>
-<p>Besides logs look differently (because RxJava is not the same as coroutines) we still can see that all the logic still applies and we haven’t broken parallel execution.</p>
+</code></pre><p>Besides logs look differently (because RxJava is not the same as coroutines) we still can see that all the logic still applies and we haven’t broken parallel execution.</p>
 <p>Though we still can see some differences. For example our code which runs “3” in RxJava example was running on:</p>
 <pre><code>3: pool-5-thread-1
 ...

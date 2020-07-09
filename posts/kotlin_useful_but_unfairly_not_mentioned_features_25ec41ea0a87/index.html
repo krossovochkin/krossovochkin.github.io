@@ -174,8 +174,8 @@ That means that one can “replace” object on a given reference. To make it im
     void fooFinal(<span style="color:#66d9ef">final</span> String param) {
         param = <span style="color:#e6db74">&#34;hello&#34;</span>; <span style="color:#75715e">// Cannot assign a value to final variable &#39;param&#39;
 </span><span style="color:#75715e"></span>    }
-}</code></pre></div>
-<p>For example, as shown in a snippet, we get compilation error only if we add final keyword.</p>
+}
+</code></pre></div><p>For example, as shown in a snippet, we get compilation error only if we add final keyword.</p>
 <h3 id="kotlin">Kotlin<a href="#kotlin" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>Unlike Java, in Kotlin all the params are by default immutable. And there is no way to make them mutable. This follows general Kotlin idiom of restricting all the access unless explicitly declared (so instead of putting final one usually add open where needed). In this particular case, there is no way to make this parameter neither var nor open. And anyway there is no need for that.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">A</span> {
@@ -183,24 +183,24 @@ That means that one can “replace” object on a given reference. To make it im
     <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">foo</span>(param: String) {
        param = <span style="color:#e6db74">&#34;hello&#34;</span> <span style="color:#75715e">// Val cannot be reassigned
 </span><span style="color:#75715e"></span>    }
-}</code></pre></div>
-<h2 id="package-private-vs-protected">Package private vs protected<a href="#package-private-vs-protected" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+}
+</code></pre></div><h2 id="package-private-vs-protected">Package private vs protected<a href="#package-private-vs-protected" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>Kotlin and Java have different approaches to visibility access. Though they are well documented, there is at least one interesting case, which is worth mentioning. And it is about protected keyword.</p>
 <h3 id="java-1">Java<a href="#java-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>In Java there are four visibility modifiers: public, protected, package-private (default value, has no separate keyword), private.</p>
 <p>The rules are straightforward:</p>
 <ul>
 <li>
-<p>*private *is accessible from within a class</p>
+<p><em>private</em> is accessible from within a class</p>
 </li>
 <li>
 <p><em>package-private</em> is accessible as private (withing a class) plus within a package</p>
 </li>
 <li>
-<p>*protected *is accessible as package-private plus for all child classes</p>
+<p><em>protected</em> is accessible as package-private plus for all child classes</p>
 </li>
 <li>
-<p>*public *is accessible from everywhere</p>
+<p><em>public</em> is accessible from everywhere</p>
 </li>
 </ul>
 <p>Important thing here is to note that protected is accessible from the same package, not only by child classes.</p>
@@ -214,8 +214,8 @@ That means that one can “replace” object on a given reference. To make it im
     <span style="color:#66d9ef">protected</span> void protectedMethod() {
         System.<span style="color:#66d9ef">out</span>.println(<span style="color:#e6db74">&#34;protected method called&#34;</span>);
     }
-}</code></pre></div>
-<p>And we had class A in the same package, then that class A will be able to access both methods from class B:</p>
+}
+</code></pre></div><p>And we had class A in the same package, then that class A will be able to access both methods from class B:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">A</span> {
 
     void foo() {
@@ -223,21 +223,21 @@ That means that one can “replace” object on a given reference. To make it im
         b.packagePrivateMethod();
         b.protectedMethod();
     }
-}</code></pre></div>
-<h3 id="kotlin-1">Kotlin<a href="#kotlin-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+}
+</code></pre></div><h3 id="kotlin-1">Kotlin<a href="#kotlin-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>In Kotlin there are different visibility modifiers: public (default, can be omitted), protected, internal, private.</p>
 <ul>
 <li>
-<p>*public *is accessible from everywhere</p>
+<p><em>public</em> is accessible from everywhere</p>
 </li>
 <li>
-<p>*protected *is accessible from child classes only</p>
+<p><em>protected</em> is accessible from child classes only</p>
 </li>
 <li>
-<p>*internal *is accessible from all the module (not only package, this is effectively “public in a module”)</p>
+<p><em>internal</em> is accessible from all the module (not only package, this is effectively “public in a module”)</p>
 </li>
 <li>
-<p>*private *is accessible from within a file/class</p>
+<p><em>private</em> is accessible from within a file/class</p>
 </li>
 </ul>
 <p>So, if we had a class similar to the previous example:</p>
@@ -250,8 +250,8 @@ That means that one can “replace” object on a given reference. To make it im
     <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">open</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">internalMethod</span>() {
         println(<span style="color:#e6db74">&#34;internal method called&#34;</span>)
     }
-}</code></pre></div>
-<p>Then class A, while being in the same package, would not be able to access protected method:</p>
+}
+</code></pre></div><p>Then class A, while being in the same package, would not be able to access protected method:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">A</span> {
 
     <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">foo</span>() {
@@ -260,8 +260,8 @@ That means that one can “replace” object on a given reference. To make it im
         b.internalMethod()
         b.protectedMethod() <span style="color:#75715e">// Cannot access &#39;protectedMethod&#39;: it is protected in &#39;B&#39;
 </span><span style="color:#75715e"></span>    }
-}</code></pre></div>
-<p>And I personally found that really useful. Package-private thing is clunky and feels somewhat outdated. Having protected to be accessible from the same package feels like encapsulation hole. Glad that Kotlin has a more strict approach for protected keyword.</p>
+}
+</code></pre></div><p>And I personally found that really useful. Package-private thing is clunky and feels somewhat outdated. Having protected to be accessible from the same package feels like encapsulation hole. Glad that Kotlin has a more strict approach for protected keyword.</p>
 <p>But what if we would like to have something similar to package-private in Kotlin? In this case, we can consider putting two classes into same file with marking classes we’d like to hide as private. All the methods can remain public as class won’t be accessible from outside anyway:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">C</span> : B() {
 
@@ -276,8 +276,8 @@ That means that one can “replace” object on a given reference. To make it im
     <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">fooD</span>() {
         println(<span style="color:#e6db74">&#34;fooD called&#34;</span>)
     }
-}</code></pre></div>
-<p>One can read more on visibility modifiers in Kotlin <a href="https://kotlinlang.org/docs/reference/visibility-modifiers.html">here</a>.</p>
+}
+</code></pre></div><p>One can read more on visibility modifiers in Kotlin <a href="https://kotlinlang.org/docs/reference/visibility-modifiers.html">here</a>.</p>
 <h2 id="final-words">Final words<a href="#final-words" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>And that’s it for now. Hope this was interesting and useful. Kotlin is a great language and has a lot of cool features. But we can also look around and find also something else, not that impressive at first. Maybe there are some other features in Kotlin which are not highlighted that often in articles? Some features which save you time, make solutions clearer? Feel free to add your favorite features in comments.</p>
 <p>Happy coding!</p>

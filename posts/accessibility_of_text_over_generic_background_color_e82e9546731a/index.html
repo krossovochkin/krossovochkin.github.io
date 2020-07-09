@@ -172,33 +172,29 @@ This is how it might look like:</p>
 Also there is a way to add tint over images, so action icons in the toolbar can be tinted dynamically as well.</p>
 </blockquote>
 <p>We change the toolbar color with:</p>
-<pre><code>toolbar.setBackgroundColor(bgColor)
-</code></pre>
-<p>This looks good, but it is just because the background color is light so black text looks good. If we have a dark background color then it won’t look nice:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">toolbar.setBackgroundColor(bgColor)
+</code></pre></div><p>This looks good, but it is just because the background color is light so black text looks good. If we have a dark background color then it won’t look nice:</p>
 <p><img src="../../img/1__ij_lOFk75KPVOkrId0Qpg.png" alt=""></p>
 <h2 id="text-color">Text color<a href="#text-color" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>To fix this we need to apply simple logic.</p>
-<pre><code>if (bgColor.isDark) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">if</span> (bgColor.isDark) {
    toolbar.setTitleTextColor(Color.WHITE)
-} else {
+} <span style="color:#66d9ef">else</span> {
    toolbar.setTitleTextColor(Color.BLACK)
 }
-</code></pre>
-<p>The only thing left is to define how to understand whether bgColor is dark or light.</p>
+</code></pre></div><p>The only thing left is to define how to understand whether bgColor is dark or light.</p>
 <h3 id="alternative-color-models">Alternative color models<a href="#alternative-color-models" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>The most common color model is <a href="https://en.wikipedia.org/wiki/RGB_color_model">RGB</a>, I guess we all know it. It consists of three channels: one for red, second for green and third for blue. Changing values in channels result in a different color.
 But there are also other color models, among which there are <a href="https://en.wikipedia.org/wiki/HSL_and_HSV">HSL, HSV</a>, etc.
 Here we’re interested in <a href="https://en.wikipedia.org/wiki/Color_model#CIE_XYZ_color_space">XYZ</a>.
 Y parameter (which is luminance) is exactly the parameter we need to identify whether our color is dark or light. This value is defined in a range [0, 1], where 0 means the darkest color and 1 the lightest one.
 Luckily for us, we don’t need to do the color conversion ourselves, there is a handy utility method in the Android SDK already:</p>
-<pre><code>ColorUtils.calculateLuminance(bgColor)
-</code></pre>
-<p>It will return a float value between 0 and 1. The simplest logic of defining whether bgColor is dark or not is to compare with the middle value — 0.5:</p>
-<pre><code>fun isDarkColor(@ColorInt color: Int): Boolean {
-    return ColorUtils.calculateLuminance(color) &lt; *0.5
-*}
-</code></pre>
-<blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">ColorUtils.calculateLuminance(bgColor)
+</code></pre></div><p>It will return a float value between 0 and 1. The simplest logic of defining whether bgColor is dark or not is to compare with the middle value — 0.5:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">isDarkColor</span>(@ColorInt color: Int): Boolean {
+    <span style="color:#66d9ef">return</span> ColorUtils.calculateLuminance(color) &lt; <span style="color:#ae81ff">0.5</span>
+}
+</code></pre></div><blockquote>
 <p><strong>NOTE</strong>: this is exactly what <a href="https://stackoverflow.com/a/48267387">one can find on StackOverflow</a> after searching for dark color checking.</p>
 </blockquote>
 <p>And finally the result:</p>
@@ -209,15 +205,14 @@ Luckily for us, we don’t need to do the color conversion ourselves, there is a
 <p>Our toolbar looks too bright. And it is because of saturation of the color is too high. If we decide to follow <a href="https://www.material.io/design/color/dark-theme.html">design guidelines</a> for a dark theme we’ll see that we need to de-saturate our color to make it “softer” for eyes when dark mode is enabled.
 What it means that we need to convert our RGB color into HSL or HSV (translated as hue, saturation, value) and reduce the second parameter responsible for saturation. Then convert the color back to RGB and use it as the background of toolbar.
 This time we’ll do some manual work by creating a special method for de-saturation, which under the hood will convert our color to HSV (as there is ready method for that in the Android SDK):</p>
-<pre><code>@ColorInt
-fun getDesaturatedColor(@ColorInt color: Int): Int {
-    val result = FloatArray(size = 3)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@ColorInt
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getDesaturatedColor</span>(@ColorInt color: Int): Int {
+    <span style="color:#66d9ef">val</span> result = FloatArray(size = <span style="color:#ae81ff">3</span>)
     Color.colorToHSV(color, result)
-    result[1] *= *0.6
-    *return Color.HSVToColor(result)
+    result[<span style="color:#ae81ff">1</span>] *= *<span style="color:#ae81ff">0.6</span>
+    *<span style="color:#66d9ef">return</span> Color.HSVToColor(result)
 }
-</code></pre>
-<p>We’ll multiply saturation by 0.6. It is just the experimentally taken value.</p>
+</code></pre></div><p>We’ll multiply saturation by 0.6. It is just the experimentally taken value.</p>
 <blockquote>
 <p><strong>NOTE:</strong> probably an improvement to the approach could be to not only decrease ther saturation of all colors, but to also add some lower bound limit to not de-saturate already “de-saturated” colors that much</p>
 </blockquote>
@@ -234,9 +229,8 @@ This refers to <a href="https://www.w3.org/TR/WCAG20/">WCAG</a>, which says that
 <p><img src="../../img/1_3O_SRTd17NDUrhtvvdZAAg.png" alt=""></p>
 <p><img src="../../img/1_1i5UWjf4Avj6dNIa5hy-5g.png" alt=""></p>
 <p>But again, we don’t need to calculate them manually, as there is a ready to use method:</p>
-<pre><code>ColorUtils.calculateContrast(foreground, background)
-</code></pre>
-<p>Our background color which had an issue is: #7f6fad.
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">ColorUtils.calculateContrast(foreground, background)
+</code></pre></div><p>Our background color which had an issue is: #7f6fad.
 If we calculate its luminance, we’ll get 0.1889803503770053 which means that this color should be considered as dark.
 Let’s calculate contrast between white and this color, and black and this color.
 The result will be:</p>
@@ -248,14 +242,13 @@ The result will be:</p>
 <p><img src="../../img/1_A4yYwIMxkeqheHo75MCTCA.png" alt=""></p>
 <h3 id="final-touch">Final touch<a href="#final-touch" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>OK, so now we have a new idea on how to choose better color (white or black) — we’ll calculate contrasts between white and background color and black and background color and choose one with the highest value.</p>
-<pre><code>fun getContrastColor(@ColorInt color: Int): Int {
-    val whiteContrast = ColorUtils.calculateContrast(Color.*WHITE*, color)
-    val blackContrast = ColorUtils.calculateContrast(Color.*BLACK*, color)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getContrastColor</span>(@ColorInt color: Int): Int {
+    <span style="color:#66d9ef">val</span> whiteContrast = ColorUtils.calculateContrast(Color.WHITE, color)
+    <span style="color:#66d9ef">val</span> blackContrast = ColorUtils.calculateContrast(Color.BLACK, color)
 
-return if (whiteContrast &gt; blackContrast) Color.*WHITE *else Color.*BLACK
-*}
-</code></pre>
-<p>One question which is left is whether it is possible for both white and black colors to not meet contrast requirements of 4.5:1?
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">if</span> (whiteContrast &gt; blackContrast) Color.WHITE <span style="color:#66d9ef">else</span> Color.BLACK
+}
+</code></pre></div><p>One question which is left is whether it is possible for both white and black colors to not meet contrast requirements of 4.5:1?
 Let’s do some math. We’ll remember the formula from WSAG and check it.
 We’ll have three values of L (relative luminances):</p>
 <ul>
@@ -273,12 +266,10 @@ We’ll have three values of L (relative luminances):</p>
 So we’ll have two equations, and we’d like to check whether they both can hold. First will be for white (L1 will be substituted with Lw, L2 with Lt), second for black (L1 will be Lt, L2 will be Lb):</p>
 <pre><code>1.05 / (Lt + 0.05) &lt; 4.5
 (Lt + 0.05) / 0.05 &lt; 4.5
-</code></pre>
-<p>After a few manipulations we’ll get this:</p>
+</code></pre><p>After a few manipulations we’ll get this:</p>
 <pre><code>Lt &gt; 0.18(3)
 Lt &lt; 0.175
-</code></pre>
-<p>And both these equations can’t be true at the same time, therefore either black or white text will have good contrast over any background color!</p>
+</code></pre><p>And both these equations can’t be true at the same time, therefore either black or white text will have good contrast over any background color!</p>
 <p>So, finally, after adjustments Accessibility Scanner says that issue is resolved:</p>
 <p><img src="../../img/1_T3I6lfcIx2LGQSK4dqiWog.png" alt=""></p>
 <p>Though there are still other issues which need to be fixed :)</p>

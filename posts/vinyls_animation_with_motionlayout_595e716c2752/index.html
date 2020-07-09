@@ -161,8 +161,7 @@
 Though we’re waiting for MotionLayout for quite long time (and Android Studio 4.0) I took some time to play with it. And I should say that experience (even without Motion Editor) was much better than I expected.</p>
 <p>Instead of trying to come up with some simple animation example, or trying to invent something complex but not useful, I decided to go to dribbble and find something there.
 One animation which took my attention was animated Vinyls music player and especially pager-like animation of covers and vinyl disks on page scroll.
-<a href="https://dribbble.com/shots/10123436-Music-Player-Vinyls"><strong>Music Player - Vinyls</strong>
-*Howdy folks, happy weekend. 👋 Worked up this little music concept app to play around with more intuitive and…*dribbble.com</a></p>
+<a href="https://dribbble.com/shots/10123436-Music-Player-Vinyls"><strong>Music Player - Vinyls</strong></a></p>
 <p>As mentioned above, I’m not that good at animations, so I tried to make some simplified version without images, not exact animations, but keep the concept.</p>
 <h2 id="implementation">Implementation<a href="#implementation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>First of all we need to setup MotionLayout. For this I recommend to complete codelab:
@@ -170,29 +169,28 @@ One animation which took my attention was animated Vinyls music player and espec
 *This codelab is part of the Advanced Android in Kotlin course. You&rsquo;ll get the most value out of this course if you work…*codelabs.developers.google.com</a></p>
 <p>We’ll have ViewPager with many fragments inside. Each fragment will contain MotionLayout with two views: cover and disk.
 Xml for fragment will be as simple as:</p>
-<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-&lt;androidx.constraintlayout.motion.widget.MotionLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
-    xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
-    android:id=&quot;@+id/motionLayout&quot;
-    android:layout_width=&quot;match_parent&quot;
-    android:layout_height=&quot;match_parent&quot;
-    android:paddingTop=&quot;100dp&quot;
-    app:layoutDescription=&quot;@xml/motion_scene&quot;&gt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
+<span style="color:#f92672">&lt;androidx.constraintlayout.motion.widget.MotionLayout</span> <span style="color:#a6e22e">xmlns:android=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res/android&#34;</span>
+    <span style="color:#a6e22e">xmlns:app=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res-auto&#34;</span>
+    <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/motionLayout&#34;</span>
+    <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
+    <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
+    <span style="color:#a6e22e">android:paddingTop=</span><span style="color:#e6db74">&#34;100dp&#34;</span>
+    <span style="color:#a6e22e">app:layoutDescription=</span><span style="color:#e6db74">&#34;@xml/motion_scene&#34;</span><span style="color:#f92672">&gt;</span>
 
-    &lt;View
-        android:id=&quot;@+id/disk&quot;
-        android:layout_width=&quot;@dimen/disk_size&quot;
-        android:layout_height=&quot;@dimen/disk_size&quot;
-        android:background=&quot;@drawable/disk&quot; /&gt;
+    <span style="color:#f92672">&lt;View</span>
+        <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/disk&#34;</span>
+        <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;@dimen/disk_size&#34;</span>
+        <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;@dimen/disk_size&#34;</span>
+        <span style="color:#a6e22e">android:background=</span><span style="color:#e6db74">&#34;@drawable/disk&#34;</span> <span style="color:#f92672">/&gt;</span>
 
-    &lt;by.krossovochkin.vinylmotionlayoutsample.CoverView
-        android:id=&quot;@+id/cover&quot;
-        android:layout_width=&quot;@dimen/cover_size&quot;
-        android:layout_height=&quot;@dimen/cover_size&quot; /&gt;
+    <span style="color:#f92672">&lt;by.krossovochkin.vinylmotionlayoutsample.CoverView</span>
+        <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/cover&#34;</span>
+        <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;@dimen/cover_size&#34;</span>
+        <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;@dimen/cover_size&#34;</span> <span style="color:#f92672">/&gt;</span>
 
-&lt;/androidx.constraintlayout.motion.widget.MotionLayout&gt;
-</code></pre>
-<p>Next when we go to the motion scene we need to define our key points:</p>
+<span style="color:#f92672">&lt;/androidx.constraintlayout.motion.widget.MotionLayout&gt;</span>
+</code></pre></div><p>Next when we go to the motion scene we need to define our key points:</p>
 <ul>
 <li>
 <p><strong>start</strong>: this is frame 0, which will be related to the fully-opened fragment page. On this frame we’ll have disk which is partially visible from the cover</p>
@@ -205,83 +203,79 @@ Xml for fragment will be as simple as:</p>
 </li>
 </ul>
 <p>So, we define start as start constraint set:</p>
-<pre><code>&lt;ConstraintSet android:id=&quot;@+id/start&quot;&gt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;ConstraintSet</span> <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/start&#34;</span><span style="color:#f92672">&gt;</span>
 
-    &lt;Constraint
-        android:id=&quot;@+id/cover&quot;
-        android:layout_width=&quot;@dimen/cover_size&quot;
-        android:layout_height=&quot;@dimen/cover_size&quot;
-        android:translationX=&quot;@dimen/cover_offset_start&quot;
-        app:layout_constraintEnd_toEndOf=&quot;parent&quot;
-        app:layout_constraintStart_toStartOf=&quot;parent&quot;
-        app:layout_constraintTop_toTopOf=&quot;parent&quot; /&gt;
+    <span style="color:#f92672">&lt;Constraint</span>
+        <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/cover&#34;</span>
+        <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;@dimen/cover_size&#34;</span>
+        <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;@dimen/cover_size&#34;</span>
+        <span style="color:#a6e22e">android:translationX=</span><span style="color:#e6db74">&#34;@dimen/cover_offset_start&#34;</span>
+        <span style="color:#a6e22e">app:layout_constraintEnd_toEndOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+        <span style="color:#a6e22e">app:layout_constraintStart_toStartOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+        <span style="color:#a6e22e">app:layout_constraintTop_toTopOf=</span><span style="color:#e6db74">&#34;parent&#34;</span> <span style="color:#f92672">/&gt;</span>
 
-    &lt;Constraint
-        android:id=&quot;@+id/disk&quot;
-        android:layout_width=&quot;@dimen/disk_size&quot;
-        android:layout_height=&quot;@dimen/disk_size&quot;
-        android:translationX=&quot;@dimen/disk_offset_start&quot;
-        app:layout_constraintBottom_toBottomOf=&quot;@+id/cover&quot;
-        app:layout_constraintStart_toStartOf=&quot;@+id/cover&quot;
-        app:layout_constraintTop_toTopOf=&quot;@+id/cover&quot; /&gt;
+    <span style="color:#f92672">&lt;Constraint</span>
+        <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/disk&#34;</span>
+        <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;@dimen/disk_size&#34;</span>
+        <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;@dimen/disk_size&#34;</span>
+        <span style="color:#a6e22e">android:translationX=</span><span style="color:#e6db74">&#34;@dimen/disk_offset_start&#34;</span>
+        <span style="color:#a6e22e">app:layout_constraintBottom_toBottomOf=</span><span style="color:#e6db74">&#34;@+id/cover&#34;</span>
+        <span style="color:#a6e22e">app:layout_constraintStart_toStartOf=</span><span style="color:#e6db74">&#34;@+id/cover&#34;</span>
+        <span style="color:#a6e22e">app:layout_constraintTop_toTopOf=</span><span style="color:#e6db74">&#34;@+id/cover&#34;</span> <span style="color:#f92672">/&gt;</span>
 
-&lt;/ConstraintSet&gt;
-</code></pre>
-<p>For end we’ll define end constraint set:</p>
-<pre><code>&lt;ConstraintSet android:id=&quot;@+id/end&quot;&gt;
+<span style="color:#f92672">&lt;/ConstraintSet&gt;</span>
+</code></pre></div><p>For end we’ll define end constraint set:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;ConstraintSet</span> <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/end&#34;</span><span style="color:#f92672">&gt;</span>
 
-    &lt;Constraint
-        android:id=&quot;@+id/cover&quot;
-        android:layout_width=&quot;@dimen/cover_size&quot;
-        android:layout_height=&quot;@dimen/cover_size&quot;
-        android:translationX=&quot;@dimen/cover_offset_end&quot;
-        app:layout_constraintEnd_toEndOf=&quot;parent&quot;
-        app:layout_constraintStart_toStartOf=&quot;parent&quot;
-        app:layout_constraintTop_toTopOf=&quot;parent&quot; /&gt;
+    <span style="color:#f92672">&lt;Constraint</span>
+        <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/cover&#34;</span>
+        <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;@dimen/cover_size&#34;</span>
+        <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;@dimen/cover_size&#34;</span>
+        <span style="color:#a6e22e">android:translationX=</span><span style="color:#e6db74">&#34;@dimen/cover_offset_end&#34;</span>
+        <span style="color:#a6e22e">app:layout_constraintEnd_toEndOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+        <span style="color:#a6e22e">app:layout_constraintStart_toStartOf=</span><span style="color:#e6db74">&#34;parent&#34;</span>
+        <span style="color:#a6e22e">app:layout_constraintTop_toTopOf=</span><span style="color:#e6db74">&#34;parent&#34;</span> <span style="color:#f92672">/&gt;</span>
 
-    &lt;Constraint
-        android:id=&quot;@+id/disk&quot;
-        android:layout_width=&quot;@dimen/disk_size&quot;
-        android:layout_height=&quot;@dimen/disk_size&quot;
-        android:translationX=&quot;@dimen/disk_offset_end&quot;
-        app:layout_constraintBottom_toBottomOf=&quot;@+id/cover&quot;
-        app:layout_constraintStart_toStartOf=&quot;@+id/cover&quot;
-        app:layout_constraintTop_toTopOf=&quot;@+id/cover&quot; /&gt;
+    <span style="color:#f92672">&lt;Constraint</span>
+        <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/disk&#34;</span>
+        <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;@dimen/disk_size&#34;</span>
+        <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;@dimen/disk_size&#34;</span>
+        <span style="color:#a6e22e">android:translationX=</span><span style="color:#e6db74">&#34;@dimen/disk_offset_end&#34;</span>
+        <span style="color:#a6e22e">app:layout_constraintBottom_toBottomOf=</span><span style="color:#e6db74">&#34;@+id/cover&#34;</span>
+        <span style="color:#a6e22e">app:layout_constraintStart_toStartOf=</span><span style="color:#e6db74">&#34;@+id/cover&#34;</span>
+        <span style="color:#a6e22e">app:layout_constraintTop_toTopOf=</span><span style="color:#e6db74">&#34;@+id/cover&#34;</span> <span style="color:#f92672">/&gt;</span>
 
-&lt;/ConstraintSet&gt;
-</code></pre>
-<p>And inside Transition we’ll define mid key point:</p>
-<pre><code>&lt;Transition
-    app:constraintSetEnd=&quot;@+id/end&quot;
-    app:constraintSetStart=&quot;@+id/start&quot;
-    app:duration=&quot;1000&quot;&gt;
+<span style="color:#f92672">&lt;/ConstraintSet&gt;</span>
+</code></pre></div><p>And inside Transition we’ll define mid key point:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;Transition</span>
+    <span style="color:#a6e22e">app:constraintSetEnd=</span><span style="color:#e6db74">&#34;@+id/end&#34;</span>
+    <span style="color:#a6e22e">app:constraintSetStart=</span><span style="color:#e6db74">&#34;@+id/start&#34;</span>
+    <span style="color:#a6e22e">app:duration=</span><span style="color:#e6db74">&#34;1000&#34;</span><span style="color:#f92672">&gt;</span>
 
-    &lt;KeyFrameSet&gt;
+    <span style="color:#f92672">&lt;KeyFrameSet&gt;</span>
 
-        &lt;KeyAttribute
-            android:translationX=&quot;@dimen/disk_offset_mid&quot;
-            app:framePosition=&quot;20&quot;
-            app:motionTarget=&quot;@+id/disk&quot; /&gt;
+        <span style="color:#f92672">&lt;KeyAttribute</span>
+            <span style="color:#a6e22e">android:translationX=</span><span style="color:#e6db74">&#34;@dimen/disk_offset_mid&#34;</span>
+            <span style="color:#a6e22e">app:framePosition=</span><span style="color:#e6db74">&#34;20&#34;</span>
+            <span style="color:#a6e22e">app:motionTarget=</span><span style="color:#e6db74">&#34;@+id/disk&#34;</span> <span style="color:#f92672">/&gt;</span>
 
-        &lt;KeyAttribute
-            android:translationX=&quot;@dimen/cover_offset_mid&quot;
-            app:framePosition=&quot;20&quot;
-            app:motionTarget=&quot;@+id/cover&quot; /&gt;
-    &lt;/KeyFrameSet&gt;
+        <span style="color:#f92672">&lt;KeyAttribute</span>
+            <span style="color:#a6e22e">android:translationX=</span><span style="color:#e6db74">&#34;@dimen/cover_offset_mid&#34;</span>
+            <span style="color:#a6e22e">app:framePosition=</span><span style="color:#e6db74">&#34;20&#34;</span>
+            <span style="color:#a6e22e">app:motionTarget=</span><span style="color:#e6db74">&#34;@+id/cover&#34;</span> <span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/KeyFrameSet&gt;</span>
 
-&lt;/Transition&gt;
-</code></pre>
-<p>As simple as that. It requires some time to tweak some values to make it look good, but besides that it is pretty simple and straightforward.</p>
+<span style="color:#f92672">&lt;/Transition&gt;</span>
+</code></pre></div><p>As simple as that. It requires some time to tweak some values to make it look good, but besides that it is pretty simple and straightforward.</p>
 <p>Final thing is to connect MotionLayout with ViewPager. It would require some callbacks-magic, but essentially it ends up like:</p>
-<pre><code>override fun onPageScrolled(
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onPageScrolled</span>(
     position: Int,
     positionOffset: Float,
     positionOffsetPixels: Int
 ) {
-    **motionLayout.progress = positionOffset
-**}
-</code></pre>
-<h2 id="result">Result<a href="#result" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+    motionLayout.progress = positionOffset
+}
+</code></pre></div><h2 id="result">Result<a href="#result" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>And here is the result* (as usual, sorry for video-artifacts. Can’t make emulator to record video without them)*:</p>
 <p><img src="../../img/1_mJck8uBa1GefGrbS9X1nVg.gif" alt=""></p>
 <p>One can take a look at the <a href="https://github.com/krossovochkin/VinylMotionLayoutSample">Github repository</a> for full code.</p>

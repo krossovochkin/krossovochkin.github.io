@@ -174,29 +174,27 @@ As a consequence implementation of such interface should also have as less chang
 <p>Suppose we have screen in the app, where we have Profile information, such as first name, last name etc.</p>
 <p><img src="../../img/1_sog1e4-ONR1ndQOHeRAQSg.png" alt=""></p>
 <p>We query this data from server and the response could look like:</p>
-<pre><code>{
-    &quot;firstName&quot;: &quot;John&quot;,
-    &quot;lastName&quot;: &quot;Doe&quot;,
-    &quot;birthDate&quot;: &quot;2000-01-01&quot;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#f92672">&#34;firstName&#34;</span>: <span style="color:#e6db74">&#34;John&#34;</span>,
+    <span style="color:#f92672">&#34;lastName&#34;</span>: <span style="color:#e6db74">&#34;Doe&#34;</span>,
+    <span style="color:#f92672">&#34;birthDate&#34;</span>: <span style="color:#e6db74">&#34;2000-01-01&#34;</span>
 }
-</code></pre>
-<p>We convert this DTO to some Profile domain model, then to View model, which is pushed to View:</p>
-<pre><code>// ViewModel
-data class ProfileViewModel(
-    val firstName: String,
-    val lastName: String,
-    val birthDate: String
+</code></pre></div><p>We convert this DTO to some Profile domain model, then to View model, which is pushed to View:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// ViewModel
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ProfileViewModel</span>(
+    <span style="color:#66d9ef">val</span> firstName: String,
+    <span style="color:#66d9ef">val</span> lastName: String,
+    <span style="color:#66d9ef">val</span> birthDate: String
 )
 
-// Presenter
-view.bindViewModel(profileViewModel)
+<span style="color:#75715e">// Presenter
+</span><span style="color:#75715e"></span>view.bindViewModel(profileViewModel)
 
-// View
-firstNameTextView.text = profileViewModel.firstName
+<span style="color:#75715e">// View
+</span><span style="color:#75715e"></span>firstNameTextView.text = profileViewModel.firstName
 lastNameTextView.text = profileViewModel.lastName
 birthDateTextView.text = profileViewModel.birthDate
-</code></pre>
-<p>So far, so good. We have pretty clean interface between presenter and view which contains only one method bindViewModel(viewModel: ProfileViewModel) . But still it is way long to be flexible, because we missed view model’s interface.
+</code></pre></div><p>So far, so good. We have pretty clean interface between presenter and view which contains only one method bindViewModel(viewModel: ProfileViewModel) . But still it is way long to be flexible, because we missed view model’s interface.
 Though view model is just a data class, it still has its public interface which consists of getters (and optionally setters).</p>
 <p>What would happen if we decided to add one more field to Profile such as mobileNumber ?
 We will have to add new property to view model class (which is in principle changing view model’s interface) and add one additional bind on View (and add new TextView in the view hierarchy)
@@ -204,24 +202,23 @@ Not so many changes, looks like we’re good. And our interfaces work pretty wel
 Same will happen if we decide to remove some field (we just remove property from view model class and remove binding and corresponding view).</p>
 <p>Now suppose that we decided to relax our requirements and user might not have birth date. In this case response from server will not contain birth date field. And on UI in such case we should hide birth date section.
 Here is how the changes might look like:</p>
-<pre><code>// ViewModel
-data class ProfileViewModel(
-    val firstName: String,
-    val lastName: String,
-    val birthDate: String,
-    **val isBirthDateVisible: Boolean**
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#75715e">// ViewModel
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ProfileViewModel</span>(
+    <span style="color:#66d9ef">val</span> firstName: String,
+    <span style="color:#66d9ef">val</span> lastName: String,
+    <span style="color:#66d9ef">val</span> birthDate: String,
+    <span style="color:#66d9ef">val</span> isBirthDateVisible: Boolean
 )
 
-// Presenter
-view.bindViewModel(profileViewModel)
+<span style="color:#75715e">// Presenter
+</span><span style="color:#75715e"></span>view.bindViewModel(profileViewModel)
 
-// View
-firstNameTextView.text = profileViewModel.firstName
+<span style="color:#75715e">// View
+</span><span style="color:#75715e"></span>firstNameTextView.text = profileViewModel.firstName
 lastNameTextView.text = profileViewModel.lastName
 birthDateTextView.text = profileViewModel.birthDate
-**birthDateSection.isVisible = profileViewModel.isBirthDateVisible**
-</code></pre>
-<p>Again, not so many changes. Looks like everything is fine. We’re pretty flexible — we can change the screen according to new requirement pretty easy.</p>
+birthDateSection.isVisible = profileViewModel.isBirthDateVisible
+</code></pre></div><p>Again, not so many changes. Looks like everything is fine. We’re pretty flexible — we can change the screen according to new requirement pretty easy.</p>
 <p>But there is an issue with this.
 Each change requires some work on server and client.
 Doing such changes on a client is boring, because you just put new fields, bind them, code base becomes bigger with quite a lot of duplication (or similar code).
@@ -233,15 +230,14 @@ Server and clients become interconnected so that older client might not be compa
 We are intelligent, so we want to have our screen as generic as possible. So we define that it will contain some cute image, title, message and button which will lead user to Play Store to download newer version of the app.</p>
 <p><img src="../../img/1_0_w0V_eeCViX6bnsL5dqEQ.png" alt=""></p>
 <p>All the configuration will be provided by the server, and might look like:</p>
-<pre><code>{
-    &quot;image&quot;: &quot;https://...&quot;,
-    &quot;title&quot;: &quot;New version is ready!&quot;,
-    &quot;message&quot;: &quot;Please update your app&quot;,
-    &quot;buttonText&quot;: &quot;Update&quot;,
-    &quot;link&quot;: &quot;https://play.google.com/...&quot;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#f92672">&#34;image&#34;</span>: <span style="color:#e6db74">&#34;https://...&#34;</span>,
+    <span style="color:#f92672">&#34;title&#34;</span>: <span style="color:#e6db74">&#34;New version is ready!&#34;</span>,
+    <span style="color:#f92672">&#34;message&#34;</span>: <span style="color:#e6db74">&#34;Please update your app&#34;</span>,
+    <span style="color:#f92672">&#34;buttonText&#34;</span>: <span style="color:#e6db74">&#34;Update&#34;</span>,
+    <span style="color:#f92672">&#34;link&#34;</span>: <span style="color:#e6db74">&#34;https://play.google.com/...&#34;</span>
 }
-</code></pre>
-<p>Everything seems fine and generic.
+</code></pre></div><p>Everything seems fine and generic.
 The only issue is that we’ve designed this screen with some assumptions, which might not be correct in the future.
 Also we might want to reuse that same screen in different place — maybe to show to the user some important notification, which should not open play store but contain only “OK” button.</p>
 <p>What will happen if we decide to show two pieces of message, do not show image or show two buttons?
@@ -298,48 +294,46 @@ We might bind special keys to dynamic screens.</p>
 <p>Some components (e.g. on clicks) will produce actions to navigate to particular screen.</p>
 <p>So dynamic screen takes form server configuration of the screen and renders it accordingly.
 For example, for Profile screen we might have something like:</p>
-<pre><code>[
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">[
     {
-        &quot;type&quot;: &quot;label&quot;,
-        &quot;name&quot;: &quot;First Name&quot;,
-        &quot;value&quot;: &quot;John&quot;,
-        &quot;style&quot;: &quot;body&quot;
+        <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;label&#34;</span>,
+        <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;First Name&#34;</span>,
+        <span style="color:#f92672">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;John&#34;</span>,
+        <span style="color:#f92672">&#34;style&#34;</span>: <span style="color:#e6db74">&#34;body&#34;</span>
     },
     {
-        &quot;type&quot;: &quot;label&quot;,
-        &quot;name&quot;: &quot;Last Name&quot;,
-        &quot;value&quot;: &quot;Doe&quot;
-        &quot;style&quot;: &quot;body&quot;
+        <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;label&#34;</span>,
+        <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Last Name&#34;</span>,
+        <span style="color:#f92672">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;Doe&#34;</span>,
+        <span style="color:#f92672">&#34;style&#34;</span>: <span style="color:#e6db74">&#34;body&#34;</span>
     }
 ]
-</code></pre>
-<p>Or for blocking screen we might have:</p>
-<pre><code>[
+</code></pre></div><p>Or for blocking screen we might have:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">[
     {
-         &quot;type&quot;: &quot;image&quot;,
-         &quot;url&quot;: &quot;https://...&quot;
+         <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;image&#34;</span>,
+         <span style="color:#f92672">&#34;url&#34;</span>: <span style="color:#e6db74">&#34;https://...&#34;</span>
     },
     {
-         &quot;type&quot;: &quot;label&quot;,
-         &quot;name&quot;: &quot;Title&quot;,
-         &quot;value&quot;: &quot;some title&quot;,
+         <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;label&#34;</span>,
+         <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Title&#34;</span>,
+         <span style="color:#f92672">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;some title&#34;</span>,
      },
      {
-         &quot;type&quot;: &quot;label&quot;,
-         &quot;name&quot;: &quot;Message&quot;,
-         &quot;value&quot;: &quot;some message&quot;,
+         <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;label&#34;</span>,
+         <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Message&#34;</span>,
+         <span style="color:#f92672">&#34;value&#34;</span>: <span style="color:#e6db74">&#34;some message&#34;</span>,
      },
      {
-         &quot;type&quot;: &quot;button&quot;,
-         &quot;name&quot;: &quot;action button&quot;,
-         &quot;action&quot;: {
-              &quot;type&quot;: &quot;open_browser&quot;,
-              &quot;url&quot;: &quot;https://...&quot;
+         <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;button&#34;</span>,
+         <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;action button&#34;</span>,
+         <span style="color:#f92672">&#34;action&#34;</span>: {
+              <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;open_browser&#34;</span>,
+              <span style="color:#f92672">&#34;url&#34;</span>: <span style="color:#e6db74">&#34;https://...&#34;</span>
          }
       }
 ]
-</code></pre>
-<p>Looks more generic and flexible, right?</p>
+</code></pre></div><p>Looks more generic and flexible, right?</p>
 <p>In principle mobile application becomes just a kernel to do some work provided with configurations by server.
 And application itself is stored on a server, which can be easily and quickly updated (together with the mobile app if configuration of core parts — components, styles, actions, screen keys etc. — were not changed).</p>
 <h2 id="offline-mode">Offline mode<a href="#offline-mode" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>

@@ -167,17 +167,15 @@ fun method(callback: (Input) -&amp;gt; Output) { ." />
 <h3 id="function-reference">Function reference<a href="#function-reference" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>Function reference is a good way to pass function as a parameter without explicitly using lambdas.</p>
 <p>For example, if we have function:</p>
-<pre><code>fun method(callback: (Input) -&gt; Output) { ... }
-</code></pre>
-<p>then we can pass our function as a lambda with function call or as a function reference:</p>
-<pre><code>fun callback(input: Input): Output { ... }
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">method</span>(callback: (Input) -&gt; Output) { ... }
+</code></pre></div><p>then we can pass our function as a lambda with function call or as a function reference:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">callback</span>(input: Input): Output { ... }
 
 ...
 
-method { input -&gt; callback(input) } // lambda
-method(::callback) // function reference
-</code></pre>
-<p>I really like to use function references where possible, because it is a bit more concise, you do not create wrapper for “callback”, code is shorter and even easier to read (most of the time).
+method { input -&gt; callback(input) } <span style="color:#75715e">// lambda
+</span><span style="color:#75715e"></span>method(<span style="color:#f92672">::</span>callback) <span style="color:#75715e">// function reference
+</span></code></pre></div><p>I really like to use function references where possible, because it is a bit more concise, you do not create wrapper for “callback”, code is shorter and even easier to read (most of the time).
 And this article is about issues function references can produce when they touch Java.</p>
 <h3 id="sam-conversions"><strong>SAM conversions</strong><a href="#sam-conversions" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <blockquote>
@@ -186,70 +184,67 @@ And this article is about issues function references can produce when they touch
 </blockquote>
 <p>That means that when you call some Java method from Kotlin, and that method satisfies conditions described above, you can pass lambda or method reference instead.</p>
 <p>So example (from the same reference):</p>
-<pre><code>Executor.java:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// Executor.java:
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span>Runnable command<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> <span style="color:#f92672">...</span> <span style="color:#f92672">}</span>
 
-void execute(Runnable command) { ... }
-
-Kotlin:
-
-executor.execute { doSomething() }
-</code></pre>
-<h3 id="issue-description">Issue description<a href="#issue-description" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<span style="color:#75715e">// Kotlin:
+</span><span style="color:#75715e"></span>
+executor<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span> <span style="color:#f92672">{</span> doSomething<span style="color:#f92672">()</span> <span style="color:#f92672">}</span>
+</code></pre></div><h3 id="issue-description">Issue description<a href="#issue-description" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>So, let’s take a look at the example, which shows the issue.
 Consider we have some ThirdParty Java class with some listeners inside.
 One can register some listeners in ThirdParty class and have updates passed through them.
 Later on you can unregister listeners.
 ThirdParty class might look like this (code with business logic of calculating some data and passing it through listeners is not presented in the code as it doesn’t matter):</p>
-<pre><code>public class ThirdParty {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ThirdParty</span> <span style="color:#f92672">{</span>
 
-    public static final String *TAG *= &quot;ThirdParty&quot;;
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String <span style="color:#f92672">*</span>TAG <span style="color:#f92672">*=</span> <span style="color:#e6db74">&#34;ThirdParty&#34;</span><span style="color:#f92672">;</span>
 
-    private List&lt;Callback&gt; callbacks = new ArrayList&lt;&gt;();
+    <span style="color:#66d9ef">private</span> List<span style="color:#f92672">&lt;</span>Callback<span style="color:#f92672">&gt;</span> callbacks <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;();</span>
 
-    public void addCallback(Callback callback) {
-        Log.*d*(*TAG*, &quot;addCallback: &quot; + callback);
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">addCallback</span><span style="color:#f92672">(</span>Callback callback<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        Log<span style="color:#f92672">.*</span>d<span style="color:#f92672">*(*</span>TAG<span style="color:#f92672">*,</span> <span style="color:#e6db74">&#34;addCallback: &#34;</span> <span style="color:#f92672">+</span> callback<span style="color:#f92672">);</span>
 
-        callbacks.add(callback);
-    }
+        callbacks<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>callback<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
 
-    public void removeCallback(Callback callback) {
-        Log.*d*(*TAG*, &quot;removeCallback: &quot; + callback);
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">removeCallback</span><span style="color:#f92672">(</span>Callback callback<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        Log<span style="color:#f92672">.*</span>d<span style="color:#f92672">*(*</span>TAG<span style="color:#f92672">*,</span> <span style="color:#e6db74">&#34;removeCallback: &#34;</span> <span style="color:#f92672">+</span> callback<span style="color:#f92672">);</span>
 
-        callbacks.remove(callback);
-    }
+        callbacks<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>callback<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
 
-    public void printState() {
-        Log.*d*(&quot;ThirdParty&quot;, &quot;Callbacks count&quot; + callbacks.size());
-    }
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">printState</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        Log<span style="color:#f92672">.*</span>d<span style="color:#f92672">*(</span><span style="color:#e6db74">&#34;ThirdParty&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Callbacks count&#34;</span> <span style="color:#f92672">+</span> callbacks<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">());</span>
+    <span style="color:#f92672">}</span>
 
-    interface Callback {
-        void onValueChanged(int value);
-    }
-}
-</code></pre>
-<p>So we have <strong>Callback</strong> interface which satisfied SAM conversion rules, so as a result we can pass lambdas and method references to **addCallback **and **removeCallback **methods from Kotlin code.</p>
+    <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Callback</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onValueChanged</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> value<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>So we have <strong>Callback</strong> interface which satisfied SAM conversion rules, so as a result we can pass lambdas and method references to **addCallback **and **removeCallback **methods from Kotlin code.</p>
 <p>Then let’s look at the client code.
 We will create callback, register it in the ThirdParty class and then immediately unregister it.
 After each step we’ll look at the state of ThirdParty class (using logs).</p>
-<pre><code>fun main() {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">main</span>() {
 
-    **val callback = ::onValueChanged**
-    Log.d(ThirdParty.*TAG*, &quot;callback created: $callback&quot;)
+    <span style="color:#66d9ef">val</span> callback = <span style="color:#f92672">::</span>onValueChanged
+    Log.d(ThirdParty.*TAG*, <span style="color:#e6db74">&#34;callback created: $callback&#34;</span>)
 
-    val thirdParty = ThirdParty()
+    <span style="color:#66d9ef">val</span> thirdParty = ThirdParty()
 
     thirdParty.printState()
-**    thirdParty.addCallback(callback)**
+    thirdParty.addCallback(callback)
     thirdParty.printState()
-**    thirdParty.removeCallback(callback)**
+    thirdParty.removeCallback(callback)
     thirdParty.printState()
 }
 
-private fun onValueChanged(value: Int) {
-    // do something
-}
-</code></pre>
-<p>So, here we’ve created callback (we store value in the property, so that we can unregister that callback later).</p>
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onValueChanged</span>(value: Int) {
+    <span style="color:#75715e">// do something
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>So, here we’ve created callback (we store value in the property, so that we can unregister that callback later).</p>
 <p>Let’s look at logs:</p>
 <pre><code>D/ThirdParty: callback created: function onValueChanged (Kotlin reflection is not available)
 E/ThirdParty: Callbacks count0
@@ -257,8 +252,7 @@ D/ThirdParty: **addCallback**: $sam$ThirdParty_Callback$0@**6a2e0a7**
 E/ThirdParty: Callbacks **count1**
 D/ThirdParty: **removeCallback**: $sam$ThirdParty_Callback$0@**bf6b954**
 E/ThirdParty: Callbacks **count1**
-</code></pre>
-<p>So what we see:</p>
+</code></pre><p>So what we see:</p>
 <ul>
 <li>
 <p>addCallback was called with one instance of callback and removeCallback was called with another instance (though we passed same function reference to both methods)</p>
@@ -271,41 +265,37 @@ E/ThirdParty: Callbacks **count1**
 <h3 id="how-to-fix">How to fix<a href="#how-to-fix" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>To fix this issue (and leak) we should have our callback to be ThirdParty.Callback from the beginning and not a function reference.
 There are few ways to do that:</p>
-<pre><code>val callback = object : ThirdParty.Callback {
-    override fun onValueChanged(value: Int) {
-        this@App.onValueChanged(value)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> callback = <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">: </span><span style="color:#a6e22e">ThirdParty</span>.Callback {
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onValueChanged</span>(value: Int) {
+        <span style="color:#66d9ef">this</span>@App.onValueChanged(value)
     }
 }
 
-val callback = ThirdParty.Callback **{ **value **-&gt; **onValueChanged(value) **}**
+<span style="color:#66d9ef">val</span> callback = ThirdParty.Callback { value -&gt; onValueChanged(value) }
 
-val callback = ThirdParty.Callback(::onValueChanged)
-</code></pre>
-<p>All of them are the same, though third one again looks a bit better.</p>
+<span style="color:#66d9ef">val</span> callback = ThirdParty.Callback(<span style="color:#f92672">::</span>onValueChanged)
+</code></pre></div><p>All of them are the same, though third one again looks a bit better.</p>
 <p>Let’s look at resulting logs:</p>
-<pre><code>D/ThirdParty: callback created: $sam$ThirdParty_Callback$0@**6a2e0a7**
+<pre><code>D/ThirdParty: callback created: $sam$ThirdParty_Callback$0@6a2e0a7
 D/ThirdParty: Callbacks count0
-D/ThirdParty: addCallback: $sam$ThirdParty_Callback$0@**6a2e0a7**
-D/ThirdParty: Callbacks **count1**
-D/ThirdParty: removeCallback: $sam$ThirdParty_Callback$0@**6a2e0a7**
-D/ThirdParty: Callbacks **count0**
-</code></pre>
-<p>So all instances are the same and we successfully removed callback from ThirdParty class.</p>
+D/ThirdParty: addCallback: $sam$ThirdParty_Callback$0@6a2e0a7
+D/ThirdParty: Callbacks count1
+D/ThirdParty: removeCallback: $sam$ThirdParty_Callback$0@6a2e0a7
+D/ThirdParty: Callbacks count0
+</code></pre><p>So all instances are the same and we successfully removed callback from ThirdParty class.</p>
 <p>Looks pretty obvious and clear, though such small improvements from Kotlin side to predict how things can be used in Java can provide weird issues which are difficult to track (especially when it comes to memory leaks).</p>
 <h3 id="what-happens-if-there-is-no-java-code">What happens if there is no Java code<a href="#what-happens-if-there-is-no-java-code" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>One important thing to know is that such issues can happen only between Kotlin and Java.
 If we had ThirdParty class written in Kotlin (or just converted from Java to Kotlin), then our previously written code wouldn’t compile:</p>
 <pre><code>Type mismatch: inferred type is KFunction1&lt;[@ParameterName](http://twitter.com/ParameterName) Int, Unit&gt; but ThirdParty.Callback was expected
-</code></pre>
-<p>That’s because SAM conversion works only with Java and not with Kotlin. So in this case we’re pretty much safe and won’t make such errors.</p>
+</code></pre><p>That’s because SAM conversion works only with Java and not with Kotlin. So in this case we’re pretty much safe and won’t make such errors.</p>
 <p>But at the same time we have only one option to create callback:</p>
-<pre><code>val callback = object : ThirdParty.Callback {
-    override fun onValueChanged(value: Int) {
-        this@App.onValueChanged(value)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> callback = <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">: </span><span style="color:#a6e22e">ThirdParty</span>.Callback {
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onValueChanged</span>(value: Int) {
+        <span style="color:#66d9ef">this</span>@App.onValueChanged(value)
     }
 }
-</code></pre>
-<p>Other ways won’t work, because SAM conversion is not available and interfaces don’t have constructors.
+</code></pre></div><p>Other ways won’t work, because SAM conversion is not available and interfaces don’t have constructors.
 So there are some drawbacks in readability for the sake of correctness.</p>
 <h3 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>The only conclusion from this article is that one should be pretty attentive when dealing with things where Kotlin and Java touch each other.</p>

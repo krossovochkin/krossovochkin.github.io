@@ -112,8 +112,8 @@ These points might be subjective, you might have other opinions or have more ite
       <description>Source
  This post is part of series of comparing RxJava to Kotlin Flow. Previous articles were about Threading, Backpressure, Error Handling, Stream Types
    
- It is advised to take a look at the overview of Throttling operators in RxJava before reading this article: Throttling in RxJava 2 Review of different throttling operators in RxJava2proandroiddev.com
-Introduction Throttling is also one of the essential features of reactive programming.</description>
+ It is advised to take a look at the overview of Throttling operators in RxJava before reading this article: Throttling in RxJava 2
+Introduction Throttling is also one of the essential features of reactive programming. Streams might emit more values than we’re expecting to receive, so ability to limit number of events in a stream is very important.</description>
     </item>
     
     <item>
@@ -157,7 +157,7 @@ Introduction Throttling is also one of the essential features of reactive progra
       <pubDate>Thu, 06 Feb 2020 00:00:00 +0000</pubDate>
       
       <guid>https://krossovochkin.github.io/posts/from_rxjava_to_kotlin_flow_backpressure_d1fb91e6dea8/</guid>
-      <description>**Disclaimer **This article unfortunately is not that dive deep (because of complexity of internals of coroutines), but instead trying to compare RxJava and Kotlin Flow mostly as black box with trying to find out differences in behavior and how to migrate from RxJava with its backpressure solution to Kotlin Flow. Hopefully this article will give you direction on where to look at if you decide to migrate to Kotlin Flow.</description>
+      <description>Disclaimer This article unfortunately is not that dive deep (because of complexity of internals of coroutines), but instead trying to compare RxJava and Kotlin Flow mostly as black box with trying to find out differences in behavior and how to migrate from RxJava with its backpressure solution to Kotlin Flow. Hopefully this article will give you direction on where to look at if you decide to migrate to Kotlin Flow.</description>
     </item>
     
     <item>
@@ -240,7 +240,7 @@ In this article we’ll try to understand Handler and Looper in Android. What, h
       
       <guid>https://krossovochkin.github.io/posts/simmmmplllledateformat_6bd326d17012/</guid>
       <description>Introduction Using SimpleDateFormat to format dates and times is a common thing (as Java 8 Time API is not that available on Android yet). Usually it looks like:
-val formatter = SimpleDateFormat(&amp;quot;dd MMMM yyyy&amp;quot;, Locale.ENGLISH)formatter.format(date) We can use different formats and locales with not only providing correct translations, but also some additional locale-specific formatting rules.
+val formatter = SimpleDateFormat(&amp;#34;dd MMMM yyyy&amp;#34;, Locale.ENGLISH)formatter.format(date)We can use different formats and locales with not only providing correct translations, but also some additional locale-specific formatting rules.
 One tricky thing about SimpleDateFormat formats is why we have M and L when they look identical?</description>
     </item>
     
@@ -351,7 +351,7 @@ One of the main challenges in mobile development is to be in sync with server. S
       
       <guid>https://krossovochkin.github.io/posts/android_notifications_overview_and_pitfalls_517d1118ec83/</guid>
       <description>Introduction Notifications are widely used in Android applications. Though API is pretty straightforward, there are some key things that one should know and understand. This article will try to be first step into understanding Notifications API.
-Sending Single Notification Notification singleNotification = new NotificationCompat.Builder(this).setContentTitle(&amp;quot;Title&amp;quot;).setContentText(&amp;quot;Text&amp;quot;).setSmallIcon(R.drawable.ic_notification).build();NotificationManagerCompat notificationManager = NotificationManagerCompat.*from*(context);notificationManager.notify(notificationId, singleNotification); Key things here:
+Sending Single Notification Notification singleNotification = new NotificationCompat.Builder(this).setContentTitle(&amp;#34;Title&amp;#34;).setContentText(&amp;#34;Text&amp;#34;).setSmallIcon(R.drawable.ic_notification).build();NotificationManagerCompat notificationManager = NotificationManagerCompat.*from*(context);notificationManager.notify(notificationId, singleNotification);Key things here:
   We use NotificationCompat.Builder to have single interface for creating notifications and let Support Library do all compatibility tricks;</description>
     </item>
     

@@ -290,34 +290,33 @@ Classes can be of generic types as functions can. But Function in Dart has no ty
 <p>In any object-oriented programming language there is a basic type. In Java it is Object, in Kotlin it is Any, in Dart it is <strong>dynamic</strong>.
 The difference is that in Java/Kotlin base type has limited number of supported methods (and if you would like to call some method which is not part of base type interface you have to make a downcast first), but in Dart on dynamic type one can call any property/function by name.
 That means that code like this is purely valid (for true/false value passed to a function):</p>
-<pre><code>void main() {
-  dynamic c = get(false);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dart" data-lang="dart"><span style="color:#66d9ef">void</span> main() {
+  <span style="color:#66d9ef">dynamic</span> c <span style="color:#f92672">=</span> <span style="color:#66d9ef">get</span>(<span style="color:#66d9ef">false</span>);
   print(c.a());
 }
 
-dynamic get(bool flag) {
-  if (flag) {
-    return A();
-  } else {
-    return B();
+<span style="color:#66d9ef">dynamic</span> <span style="color:#66d9ef">get</span>(<span style="color:#66d9ef">bool</span> flag) {
+  <span style="color:#66d9ef">if</span> (flag) {
+    <span style="color:#66d9ef">return</span> A();
+  } <span style="color:#66d9ef">else</span> {
+    <span style="color:#66d9ef">return</span> B();
   }
 }
 
-class A {
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">A</span> {
   
-  dynamic a() {
-    return &quot;a&quot;;
+  <span style="color:#66d9ef">dynamic</span> a() {
+    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;a&#34;</span>;
   }
 }
 
-class B {
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">B</span> {
   
-  dynamic a() {
-    return &quot;b&quot;;
+  <span style="color:#66d9ef">dynamic</span> a() {
+    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;b&#34;</span>;
   }
 }
-</code></pre>
-<p>This means that Dart is more like JavaScript and is less like Java.</p>
+</code></pre></div><p>This means that Dart is more like JavaScript and is less like Java.</p>
 <p>When you decide to have more dynamic things than statically typed things (which can be verified by compiler), you will get JavaScript-like language.</p>
 <p>Considering that in web development TypeScript with some types support is favorited by developers more than vanilla JavaScript is not a surprise.
 Developers like to delegate some checks to tests and compiler because it allows to concentrate on what matters.</p>
@@ -332,18 +331,17 @@ Dart’s type system, like the type systems in Java and C#, is sound.
 <a href="https://www.dartlang.org/guides/language/sound-dart#what-is-soundness">Reference</a></p>
 </blockquote>
 <p>Let’s create simple test:</p>
-<pre><code>void main() {
-  String s = null;
-  if (s is String) {
-    print(&quot;string&quot;);
-  } else if (s is Null) {
-    print(&quot;null&quot;);
-  } else {
-    print (&quot;none&quot;);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dart" data-lang="dart"><span style="color:#66d9ef">void</span> main() {
+  <span style="color:#66d9ef">String</span> s <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
+  <span style="color:#66d9ef">if</span> (s <span style="color:#66d9ef">is</span> <span style="color:#66d9ef">String</span>) {
+    print(<span style="color:#e6db74">&#34;string&#34;</span>);
+  } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (s <span style="color:#66d9ef">is</span> Null) {
+    print(<span style="color:#e6db74">&#34;null&#34;</span>);
+  } <span style="color:#66d9ef">else</span> {
+    print (<span style="color:#e6db74">&#34;none&#34;</span>);
   }
 }
-</code></pre>
-<p>We assign null (which is instance of Null class: <a href="https://api.dartlang.org/stable/2.2.0/dart-core/Null-class.html">Reference</a>) to a String variable.
+</code></pre></div><p>We assign null (which is instance of Null class: <a href="https://api.dartlang.org/stable/2.2.0/dart-core/Null-class.html">Reference</a>) to a String variable.
 As stated in documentation each expression can return only value of expected static type.
 In an example above we expect value to be of type String, but program will print “null”.</p>
 <p>As Null is a type in Dart and Null is not a String, but we can assign null to String variable without errors even in runtime – there is inconsistency in Dart type system.</p>

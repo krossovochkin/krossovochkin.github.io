@@ -177,12 +177,11 @@ But anyway such tasks are pretty common so one should be prepared for them.</p>
 </ul>
 <h2 id="prerequisites">Prerequisites<a href="#prerequisites" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>List is described as a Node:</p>
-<pre><code>class Node&lt;T&gt;(
-    val value: T,
-    var next: Node&lt;T&gt;?
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Node</span>&lt;T&gt;(
+    <span style="color:#66d9ef">val</span> value: T,
+    <span style="color:#66d9ef">var</span> next: Node&lt;T&gt;?
 )
-</code></pre>
-<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+</code></pre></div><h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <h3 id="before-start">Before start<a href="#before-start" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>We’ll start from clarifying some questions:</p>
 <ul>
@@ -202,80 +201,77 @@ But anyway such tasks are pretty common so one should be prepared for them.</p>
 <h3 id="construction">Construction<a href="#construction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>Before reversing the list we should be able to construct it first.
 We’ll do it the following way:</p>
-<pre><code>Node(1, Node(2, Node(3, Node(4, Node(5, Node(6, Node(7, Node(8, Node(9, Node(10, null))))))))))
-</code></pre>
-<p>It will describe the list of 10 items.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">Node(<span style="color:#ae81ff">1</span>, Node(<span style="color:#ae81ff">2</span>, Node(<span style="color:#ae81ff">3</span>, Node(<span style="color:#ae81ff">4</span>, Node(<span style="color:#ae81ff">5</span>, Node(<span style="color:#ae81ff">6</span>, Node(<span style="color:#ae81ff">7</span>, Node(<span style="color:#ae81ff">8</span>, Node(<span style="color:#ae81ff">9</span>, Node(<span style="color:#ae81ff">10</span>, <span style="color:#66d9ef">null</span>))))))))))
+</code></pre></div><p>It will describe the list of 10 items.</p>
 <p>For test and debug purposes we might want to print our list to console, for that following function will be helpful:</p>
-<pre><code>private fun &lt;T&gt; println(list: Node&lt;T&gt;) {
-    var currentNode: Node&lt;T&gt;? = list
-    while (currentNode != null) {
-        print(&quot;${currentNode.value} &quot;)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">println</span>(list: Node&lt;T&gt;) {
+    <span style="color:#66d9ef">var</span> currentNode: Node&lt;T&gt;? = list
+    <span style="color:#66d9ef">while</span> (currentNode != <span style="color:#66d9ef">null</span>) {
+        print(<span style="color:#e6db74">&#34;${currentNode.value} &#34;</span>)
         currentNode = currentNode.next
     }
     println()
 }
-</code></pre>
-<p>The output for our created list will be:</p>
+</code></pre></div><p>The output for our created list will be:</p>
 <pre><code>1 2 3 4 5 6 7 8 9 10
-</code></pre>
-<h3 id="method-signature">Method signature<a href="#method-signature" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+</code></pre><h3 id="method-signature">Method signature<a href="#method-signature" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>The method we’ll implement will have the following signature:</p>
-<pre><code>fun &lt;T&gt; Node&lt;T&gt;.reverse(): Node&lt;T&gt;
-</code></pre>
-<p>It will modify existing list, not create new one.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">Node</span>&lt;T&gt;.reverse(): Node&lt;T&gt;
+</code></pre></div><p>It will modify existing list, not create new one.</p>
 <h3 id="tests">Tests<a href="#tests" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>In order to verify our solution, we should have some tests.
 This task will be split into two parts.
 First of all we need to be able to compare two lists, for this we’ll create method assertEquals, it will throw exception if lists don’t have equal content:</p>
-<pre><code>fun &lt;T&gt; assertEquals(expected: Node&lt;T&gt;, actual: Node&lt;T&gt;) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">assertEquals</span>(expected: Node&lt;T&gt;, <span style="color:#66d9ef">actual</span>: Node&lt;T&gt;) {
 
-    var first: Node&lt;T&gt;? = expected
-    var second: Node&lt;T&gt;? = actual
+    <span style="color:#66d9ef">var</span> first: Node&lt;T&gt;? = expected
+    <span style="color:#66d9ef">var</span> second: Node&lt;T&gt;? = <span style="color:#66d9ef">actual</span>
 
-    while (first != null &amp;&amp; second != null) {
-        if (first.value != second.value) {
-            throw RuntimeException()
+    <span style="color:#66d9ef">while</span> (first != <span style="color:#66d9ef">null</span> &amp;&amp; second != <span style="color:#66d9ef">null</span>) {
+        <span style="color:#66d9ef">if</span> (first.value != second.value) {
+            <span style="color:#66d9ef">throw</span> RuntimeException()
         }
         first = first.next
         second = second.next
     }
 
-    if (first?.value != second?.value) {
-        throw RuntimeException()
+    <span style="color:#66d9ef">if</span> (first<span style="color:#f92672">?.</span>value != second<span style="color:#f92672">?.</span>value) {
+        <span style="color:#66d9ef">throw</span> RuntimeException()
     }
 
-    println(&quot;OK&quot;)
+    println(<span style="color:#e6db74">&#34;OK&#34;</span>)
 }
-</code></pre>
-<p>The tests we’ll make are:</p>
+</code></pre></div><p>The tests we’ll make are:</p>
 <ul>
 <li>
 <p>If list has one item, then reversed list is same as original</p>
 </li>
 <li>
 <p>If list has more than one item, then reversed list is reversed correctly</p>
-<p>assertEquals(
-Node(1, null),
-Node(1, null).reverse()
-)</p>
-<p>assertEquals(
-Node(10, Node(9, Node(8, Node(7, Node(6, Node(5, Node(4, Node(3, Node(2, Node(1, null)))))))))),
-Node(1, Node(2, Node(3, Node(4, Node(5, Node(6, Node(7, Node(8, Node(9, Node(10, null))))))))))
-.reverse()
-)</p>
 </li>
 </ul>
-<p>Now we have our list implementation ready, algorithm is clear and tests are ready as well.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">assertEquals(
+    Node(<span style="color:#ae81ff">1</span>, <span style="color:#66d9ef">null</span>),
+    Node(<span style="color:#ae81ff">1</span>, <span style="color:#66d9ef">null</span>).reverse()
+)
+
+
+assertEquals(
+    Node(<span style="color:#ae81ff">10</span>, Node(<span style="color:#ae81ff">9</span>, Node(<span style="color:#ae81ff">8</span>, Node(<span style="color:#ae81ff">7</span>, Node(<span style="color:#ae81ff">6</span>, Node(<span style="color:#ae81ff">5</span>, Node(<span style="color:#ae81ff">4</span>, Node(<span style="color:#ae81ff">3</span>, Node(<span style="color:#ae81ff">2</span>, Node(<span style="color:#ae81ff">1</span>, <span style="color:#66d9ef">null</span>)))))))))),
+    Node(<span style="color:#ae81ff">1</span>, Node(<span style="color:#ae81ff">2</span>, Node(<span style="color:#ae81ff">3</span>, Node(<span style="color:#ae81ff">4</span>, Node(<span style="color:#ae81ff">5</span>, Node(<span style="color:#ae81ff">6</span>, Node(<span style="color:#ae81ff">7</span>, Node(<span style="color:#ae81ff">8</span>, Node(<span style="color:#ae81ff">9</span>, Node(<span style="color:#ae81ff">10</span>, <span style="color:#66d9ef">null</span>))))))))))
+        .reverse()
+)
+</code></pre></div><p>Now we have our list implementation ready, algorithm is clear and tests are ready as well.</p>
 <h3 id="first-implementation">First implementation<a href="#first-implementation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>The main challenge in this task is that when we change links (current node should point to previous one and next one should point to current one) is that we should not loose the track of Node which is next for our next node. We’ll solve that by keeping reference to the node which is next of the next node.
 The implementation will be like this:</p>
-<pre><code>fun &lt;T&gt; Node&lt;T&gt;.reverse(): Node&lt;T&gt; {
-    var previousNode: Node&lt;T&gt;? = null
-    var currentNode: Node&lt;T&gt; = this
-    var nextNode: Node&lt;T&gt;? = currentNode.next
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">Node</span>&lt;T&gt;.reverse(): Node&lt;T&gt; {
+    <span style="color:#66d9ef">var</span> previousNode: Node&lt;T&gt;? = <span style="color:#66d9ef">null</span>
+    <span style="color:#66d9ef">var</span> currentNode: Node&lt;T&gt; = <span style="color:#66d9ef">this</span>
+    <span style="color:#66d9ef">var</span> nextNode: Node&lt;T&gt;? = currentNode.next
 
-    while (nextNode != null) {
-        val afterNextNode = nextNode.next
+    <span style="color:#66d9ef">while</span> (nextNode != <span style="color:#66d9ef">null</span>) {
+        <span style="color:#66d9ef">val</span> afterNextNode = nextNode.next
 
         nextNode.next = currentNode
         currentNode.next = previousNode
@@ -285,22 +281,21 @@ The implementation will be like this:</p>
         nextNode = afterNextNode
     }
 
-    return currentNode
+    <span style="color:#66d9ef">return</span> currentNode
 }
-</code></pre>
-<p>We run our tests and they pass! So we solve the problem.
+</code></pre></div><p>We run our tests and they pass! So we solve the problem.
 But can we do better?</p>
 <h3 id="second-implementation">Second implementation<a href="#second-implementation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>The issue with current implementation is that we actually use 4 pointers to the list (previous, current, next, afterNext) to reverse the list. But can we do same with only 3 pointers?</p>
 <p>If we look carefully at our implementation we’ll see that we basically look one item ahead. And we can use 3 pointers by moving our pointers 1 step behind.
 We’ll get rid of afterNextNode pointer and replace references of nextNode to currentNode and currentNode to previousNode.</p>
 <p>The solution will be like:</p>
-<pre><code>fun &lt;T&gt; Node&lt;T&gt;.reverse(): Node&lt;T&gt; {
-    var previousNode: Node&lt;T&gt;? = null
-    var currentNode: Node&lt;T&gt;? = this
-    var nextNode: Node&lt;T&gt;?
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">Node</span>&lt;T&gt;.reverse(): Node&lt;T&gt; {
+    <span style="color:#66d9ef">var</span> previousNode: Node&lt;T&gt;? = <span style="color:#66d9ef">null</span>
+    <span style="color:#66d9ef">var</span> currentNode: Node&lt;T&gt;? = <span style="color:#66d9ef">this</span>
+    <span style="color:#66d9ef">var</span> nextNode: Node&lt;T&gt;?
 
-    while (currentNode != null) {
+    <span style="color:#66d9ef">while</span> (currentNode != <span style="color:#66d9ef">null</span>) {
         nextNode = currentNode.next
         currentNode.next = previousNode
 
@@ -309,10 +304,9 @@ We’ll get rid of afterNextNode pointer and replace references of nextNode to c
 
     }
 
-    return previousNode!!
+    <span style="color:#66d9ef">return</span> previousNode<span style="color:#f92672">!!</span>
 }
-</code></pre>
-<blockquote>
+</code></pre></div><blockquote>
 <p>NOTE: we use !! in the return, because actually we know that result will be non-null and we don’t want to make our implementation more complex by using unnecessary safe calls</p>
 </blockquote>
 <p>So we used only three pointers and the implementation is quite short. Tests are passed. So seems we’re fine.
@@ -320,16 +314,16 @@ But can we do better?</p>
 <h3 id="final-implementation">Final implementation<a href="#final-implementation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>The last improvement we might do is to handle special case when list contains only one item. Currently if list has one item then we’ll still enter while loop and use few references.
 Let’s add additional check at the beginning:</p>
-<pre><code>fun &lt;T&gt; Node&lt;T&gt;.reverse(): Node&lt;T&gt; {
-    if (this.next == null) {
-        return this
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">Node</span>&lt;T&gt;.reverse(): Node&lt;T&gt; {
+    <span style="color:#66d9ef">if</span> (<span style="color:#66d9ef">this</span>.next == <span style="color:#66d9ef">null</span>) {
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>
     }
 
-    var previousNode: Node&lt;T&gt;? = null
-    var currentNode: Node&lt;T&gt;? = this
-    var nextNode: Node&lt;T&gt;?
+    <span style="color:#66d9ef">var</span> previousNode: Node&lt;T&gt;? = <span style="color:#66d9ef">null</span>
+    <span style="color:#66d9ef">var</span> currentNode: Node&lt;T&gt;? = <span style="color:#66d9ef">this</span>
+    <span style="color:#66d9ef">var</span> nextNode: Node&lt;T&gt;?
 
-    while (currentNode != null) {
+    <span style="color:#66d9ef">while</span> (currentNode != <span style="color:#66d9ef">null</span>) {
         nextNode = currentNode.next
         currentNode.next = previousNode
 
@@ -338,10 +332,9 @@ Let’s add additional check at the beginning:</p>
 
     }
 
-    return previousNode!!
+    <span style="color:#66d9ef">return</span> previousNode<span style="color:#f92672">!!</span>
 }
-</code></pre>
-<p>And it is our final solution.</p>
+</code></pre></div><p>And it is our final solution.</p>
 <h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>Interviews are difficult and always stressful. One can easily make some weird mistakes, not answer some questions or not solve some problems and one can be not prepared enough.
 But it is not that embarrassing to not answer/know something. It is embarrassing to not draw conclusions and not try to revisit the questions/tasks you’ve failed and learn from your mistakes.</p>

@@ -19,7 +19,7 @@
       
       <guid>https://krossovochkin.github.io/posts/simmmmplllledateformat_6bd326d17012/</guid>
       <description>Introduction Using SimpleDateFormat to format dates and times is a common thing (as Java 8 Time API is not that available on Android yet). Usually it looks like:
-val formatter = SimpleDateFormat(&amp;quot;dd MMMM yyyy&amp;quot;, Locale.ENGLISH)formatter.format(date) We can use different formats and locales with not only providing correct translations, but also some additional locale-specific formatting rules.
+val formatter = SimpleDateFormat(&amp;#34;dd MMMM yyyy&amp;#34;, Locale.ENGLISH)formatter.format(date)We can use different formats and locales with not only providing correct translations, but also some additional locale-specific formatting rules.
 One tricky thing about SimpleDateFormat formats is why we have M and L when they look identical?</description>
     </item>
     

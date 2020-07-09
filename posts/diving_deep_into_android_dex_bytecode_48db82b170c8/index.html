@@ -196,36 +196,31 @@ Jar files which we’ll use will be under /build/libs folder.</p>
 <h3 id="commands">Commands<a href="#commands" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>These are the commands which we’ll use throughout the article.</p>
 <p>Compile all the kotlin files in the current directory:</p>
-<pre><code>kotlinc *.kt
-</code></pre>
-<p>Package all the .class files into dex file (with r8 optimizations):</p>
-<pre><code>java -jar r8.jar --lib $ANDROID_HOME/platforms/android-29/android.jar --release --output . --pg-conf rules.txt *.class
-</code></pre>
-<p>Provided &ndash;pg-conf is a proguard rules file, in which we’ll add to keep main function and skip obfuscation (for our readability):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kotlinc *.kt
+</code></pre></div><p>Package all the .class files into dex file (with r8 optimizations):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">java -jar r8.jar --lib $ANDROID_HOME/platforms/android-29/android.jar --release --output . --pg-conf rules.txt *.class
+</code></pre></div><p>Provided &ndash;pg-conf is a proguard rules file, in which we’ll add to keep main function and skip obfuscation (for our readability):</p>
 <pre><code>-keepclasseswithmembers class * {
     public static void main(java.lang.String[]);
 }
 -dontobfuscate
-</code></pre>
-<p>Dump content of .dex file to see its contents.</p>
+</code></pre><p>Dump content of .dex file to see its contents.</p>
 <pre><code>$ANDROID_HOME/build-tools/29.0.2/dexdump -d classes.dex
-</code></pre>
-<h2 id="verify-setup">Verify setup<a href="#verify-setup" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+</code></pre><h2 id="verify-setup">Verify setup<a href="#verify-setup" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>In order to verify your setup works, you can go through <a href="https://jakewharton.com/r8-optimization-staticization/">this article</a> and see whether you get similar results. Or try to follow examples below.</p>
 <h2 id="example-1-where-no-class-is-instantiated">Example 1 (where no class is instantiated)<a href="#example-1-where-no-class-is-instantiated" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>In first our example let’s look at following program:</p>
-<pre><code>fun main() {
-    print(Runner().run(5))
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">main</span>() {
+    print(Runner().run(<span style="color:#ae81ff">5</span>))
 }
 
-private class Runner {
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Runner</span> {
 
-    fun run(x: Int): Int {
-        return x + 1
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">run</span>(x: Int): Int {
+        <span style="color:#66d9ef">return</span> x + <span style="color:#ae81ff">1</span>
     }
 }
-</code></pre>
-<p>Here we basically provide input and print incremented value of it.</p>
+</code></pre></div><p>Here we basically provide input and print incremented value of it.</p>
 <blockquote>
 <p><strong>NOTE</strong>: this is a template which we’ll use. We’ll have main function and some Runner class in which there will be some logic we’ll try to test.</p>
 </blockquote>
@@ -261,8 +256,7 @@ Class #0            -
 
 Virtual methods   -
   source_file_idx   : 0 ()
-</code></pre>
-<p>It is not very long file (later we won’t paste whole listing as it might be too long).
+</code></pre><p>It is not very long file (later we won’t paste whole listing as it might be too long).
 Here we have two interesting things:</p>
 <ul>
 <li>
@@ -279,8 +273,7 @@ For this let’s look at the content of the main function:</p>
 0001: sget-object v0, Ljava/lang/System;.out:Ljava/io/PrintStream; // field@0000
 0003: invoke-virtual {v0, v1}, Ljava/io/PrintStream;.print:(I)V // method@0001
 0006: return-void
-</code></pre>
-<p>Looking at bytecode one by one:</p>
+</code></pre><p>Looking at bytecode one by one:</p>
 <ul>
 <li>
 <p>[000114] — declaring our main function</p>
@@ -301,21 +294,19 @@ For this let’s look at the content of the main function:</p>
 <p>Not that difficult right? Next let’s look at some other examples.</p>
 <h2 id="example-2-where-extension-function-is-not-called-almost">Example 2 (where extension function is not called… almost)<a href="#example-2-where-extension-function-is-not-called-almost" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>Next example looks the following way:</p>
-<pre><code>fun main() {
-    println(&quot;Hello world&quot;.calculate())
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">main</span>() {
+    println(<span style="color:#e6db74">&#34;Hello world&#34;</span>.calculate())
 }
 
-fun String.calculate(): Int {
-    return this.length * 2
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">String</span>.calculate(): Int {
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>.length * <span style="color:#ae81ff">2</span>
 }
-</code></pre>
-<p>We have extension function on String, which we call on some “Hello World” and print result.</p>
+</code></pre></div><p>We have extension function on String, which we call on some “Hello World” and print result.</p>
 <p>During r8 work we’ll see the warning:</p>
 <pre><code>Warning in MainKt.class:
 
 Type `kotlin.jvm.internal.Intrinsics` was not found, it is required for default or static interface methods desugaring of `int MainKt.calculate(java.lang.String)`
-</code></pre>
-<p>And in resulting dex file we’ll see that our extension function is still in the bytecode:</p>
+</code></pre><p>And in resulting dex file we’ll see that our extension function is still in the bytecode:</p>
 <pre><code>...
 [00017c] MainKt.calculate:(Ljava/lang/String;)I
 0000: const-string v0, &quot;$this$calculate&quot; // string@0001
@@ -333,13 +324,11 @@ Type `kotlin.jvm.internal.Intrinsics` was not found, it is required for default 
 0008: invoke-virtual {v0, v1}, Ljava/io/PrintStream;.println:(I)V // method@0002
 000b: return-void
 ...
-</code></pre>
-<p>First we see that there is our calculate method and inside main function that method is called with invoke-static.
+</code></pre><p>First we see that there is our calculate method and inside main function that method is called with invoke-static.
 That happens because kotlin adds Intrinsics checks (to verify that params are not null) and because implementation of Intrinsics wasn’t found by r8 it won’t be able to optimize this code.</p>
 <p>If we provided Intrinsics implementation, then there will be some optimization. But instead of doing that (as it will require some additional mangling of our setup) we’ll ask kotlin to not generate Intrinsics code by running:</p>
-<pre><code>kotlinc *.kt -Xno-param-assertions
-</code></pre>
-<blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kotlinc *.kt -Xno-param-assertions
+</code></pre></div><blockquote>
 <p><strong>NOTE</strong>: think carefully before doing same in production</p>
 </blockquote>
 <p>After that we’ll see the following bytecode:</p>
@@ -348,32 +337,28 @@ That happens because kotlin adds Intrinsics checks (to verify that params are no
 0002: sget-object v0, Ljava/lang/System;.out:Ljava/io/PrintStream; // field@0000
 0004: invoke-virtual {v0, v1}, Ljava/io/PrintStream;.println:(I)V // method@0001
 0007: return-void
-</code></pre>
-<p>Again we have everything optimized and final value is calculated at compile time.</p>
+</code></pre><p>Again we have everything optimized and final value is calculated at compile time.</p>
 <h2 id="example-3-where-we-encounter-overhead">Example 3 (where we encounter overhead)<a href="#example-3-where-we-encounter-overhead" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>Next program is the following:</p>
-<pre><code>fun main() {
-    println(Runner().run(5))
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">main</span>() {
+    println(Runner().run(<span style="color:#ae81ff">5</span>))
 }
 
-private class Runner {
-    fun run(x: Int): Int {
-        return (0..x).sum()
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Runner</span> {
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">run</span>(x: Int): Int {
+        <span style="color:#66d9ef">return</span> (<span style="color:#ae81ff">0.</span>.x).sum()
     }
 }
-</code></pre>
-<p>Basically we’d like to calculate sum of arithmetic progression from 0 and step 1.</p>
+</code></pre></div><p>Basically we’d like to calculate sum of arithmetic progression from 0 and step 1.</p>
 <p>When we run R8 we’ll see the following warning:</p>
 <pre><code>Warning in Runner.class:
 
 Type `kotlin.collections.CollectionsKt` was not found, it is required for default or static interface methods desugaring of `int Runner.run(int)`
-</code></pre>
-<p>This time as we’ve used sum function which is part of kotlin stdlib in order to have r8 work correctly we’ll need to add kotlin stdlib to classpath.</p>
+</code></pre><p>This time as we’ve used sum function which is part of kotlin stdlib in order to have r8 work correctly we’ll need to add kotlin stdlib to classpath.</p>
 <p>Download latest kotlin stdlib jar version from <a href="https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib/1.3.61">maven</a>.
 And add it to classpath when r8 works:</p>
-<pre><code>$ java -jar r8/build/libs/r8.jar --lib $ANDROID_HOME/platforms/android-29/android.jar **--lib kotlin-stdlib-1.3.61.jar** --release --output . --pg-conf rules.txt *.class
-</code></pre>
-<p>Then after compilation we’ll see no warnings. Let’s find our what will be inside our bytecode. Unfortunately the result won’t be that great:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ java -jar r8/build/libs/r8.jar --lib $ANDROID_HOME/platforms/android-29/android.jar **--lib kotlin-stdlib-1.3.61.jar** --release --output . --pg-conf rules.txt *.class
+</code></pre></div><p>Then after compilation we’ll see no warnings. Let’s find our what will be inside our bytecode. Unfortunately the result won’t be that great:</p>
 <pre><code>...
 [0001c4] MainKt.main:([Ljava/lang/String;)V
 0000: new-instance v1, LRunner; // type@0002
@@ -393,29 +378,27 @@ And add it to classpath when r8 works:</p>
 0009: move-result v3
 000a: return v3
 ...
-</code></pre>
-<p>We see that we still have our Runner instantiated, inside we create separate IntRange instance, on which we invoke static method CollectionsKt.sumOfInt.
+</code></pre><p>We see that we still have our Runner instantiated, inside we create separate IntRange instance, on which we invoke static method CollectionsKt.sumOfInt.
 So in this example we didn’t get precalculated result inlined.</p>
 <blockquote>
 <p>If anyone knows why exactly that happened or what can be added during compilation or r8 to make it work feel free to leave a comment.</p>
 </blockquote>
 <h2 id="example-4-where-we-fix-overhead-from-example-3">Example 4 (where we fix overhead from Example 3)<a href="#example-4-where-we-fix-overhead-from-example-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>As we’ve analyzed particular use case in Example 3 and see that there is some room for improvements, let’s try to utilize this:</p>
-<pre><code>fun main() {
-    println(Runner().run(5))
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">main</span>() {
+    println(Runner().run(<span style="color:#ae81ff">5</span>))
 }
 
-private class Runner {
-    fun run(x: Int): Int {
-        var result = 0
-        for (i in 0..x) {
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Runner</span> {
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">run</span>(x: Int): Int {
+        <span style="color:#66d9ef">var</span> result = <span style="color:#ae81ff">0</span>
+        <span style="color:#66d9ef">for</span> (i <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">0.</span>.x) {
             result += i
         }
-        return result
+        <span style="color:#66d9ef">return</span> result
     }
 }
-</code></pre>
-<p>This is equivalent code to calculate arithmetic sum as in Example 3. Note, that here we also use range inside for-loop.</p>
+</code></pre></div><p>This is equivalent code to calculate arithmetic sum as in Example 3. Note, that here we also use range inside for-loop.</p>
 <p>And here is the result:</p>
 <pre><code>[000114] MainKt.main:([Ljava/lang/String;)V
 0000: const/4 v2, #int 0 // #0
@@ -428,8 +411,7 @@ private class Runner {
 0009: sget-object v0, Ljava/lang/System;.out:Ljava/io/PrintStream; // field@0000
 000b: invoke-virtual {v0, v2}, Ljava/io/PrintStream;.println:(I)V // method@0001
 000e: return-void
-</code></pre>
-<p>What we see is that:</p>
+</code></pre><p>What we see is that:</p>
 <ul>
 <li>
 <p>there is no Runner class instantiated</p>

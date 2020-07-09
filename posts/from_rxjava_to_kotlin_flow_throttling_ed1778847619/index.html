@@ -9,8 +9,8 @@
 <meta name="description" content="Source
  This post is part of series of comparing RxJava to Kotlin Flow. Previous articles were about Threading, Backpressure, Error Handling, Stream Types
    
- It is advised to take a look at the overview of Throttling operators in RxJava before reading this article: Throttling in RxJava 2 Review of different throttling operators in RxJava2proandroiddev.com
-Introduction Throttling is also one of the essential features of reactive programming." />
+ It is advised to take a look at the overview of Throttling operators in RxJava before reading this article: Throttling in RxJava 2
+Introduction Throttling is also one of the essential features of reactive programming. Streams might emit more values than we’re expecting to receive, so ability to limit number of events in a stream is very important." />
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
 <link rel="canonical" href="https://krossovochkin.github.io/posts/from_rxjava_to_kotlin_flow_throttling_ed1778847619/" />
@@ -171,8 +171,7 @@ Introduction Throttling is also one of the essential features of reactive progra
 <a href="https://proandroiddev.com/proandroiddev-digest-17-d52bc575edb6"><img src="https://img.shields.io/badge/proandroiddevdigest-17-green" alt=""></a></p>
 </blockquote>
 <p>It is advised to take a look at the overview of Throttling operators in RxJava before reading this article:
-<a href="https://proandroiddev.com/throttling-in-rxjava-2-d640ea5f7bf1"><strong>Throttling in RxJava 2</strong>
-<em>Review of different throttling operators in RxJava2</em>proandroiddev.com</a></p>
+<a href="https://proandroiddev.com/throttling-in-rxjava-2-d640ea5f7bf1"><strong>Throttling in RxJava 2</strong></a></p>
 <h2 id="introduction">Introduction<a href="#introduction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>Throttling is also one of the essential features of reactive programming. Streams might emit more values than we’re expecting to receive, so ability to limit number of events in a stream is very important.
 Most common place where it applies is handling UI events. Examples of usage might be handling button clicks (to not allow double clicks), usage with search view when we’d like to wait for user to stop typing before querying some data and so on.
@@ -184,87 +183,83 @@ We’ll have stream with many events, which are emitted with delays (after previ
 It might be shown as such (scale doesn’t apply):</p>
 <p><img src="../../img/1__IwO2_7swxHkAaKBq-Z2NQ.png" alt=""></p>
 <p>For RxJava we’ll have the following observable:</p>
-<pre><code>private fun observable(): Observable&lt;Int&gt; {
-    return Observable.create **{ **emitter **-&gt;
-        **emitter.onNext(1)
-        Thread.sleep(90)
-        emitter.onNext(2)
-        Thread.sleep(90)
-        emitter.onNext(3)
-        Thread.sleep(1010)
-        emitter.onNext(4)
-        Thread.sleep(1010)
-        emitter.onNext(5)
-        Thread.sleep(2000)
-        emitter.onNext(6)
-        Thread.sleep(90)
-        emitter.onNext(7)
-        Thread.sleep(1010)
-        emitter.onNext(8)
-        Thread.sleep(80)
-        emitter.onNext(9)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">observable</span>(): Observable&lt;Int&gt; {
+    <span style="color:#66d9ef">return</span> Observable.create { emitter -&gt;
+        emitter.onNext(<span style="color:#ae81ff">1</span>)
+        Thread.sleep(<span style="color:#ae81ff">90</span>)
+        emitter.onNext(<span style="color:#ae81ff">2</span>)
+        Thread.sleep(<span style="color:#ae81ff">90</span>)
+        emitter.onNext(<span style="color:#ae81ff">3</span>)
+        Thread.sleep(<span style="color:#ae81ff">1010</span>)
+        emitter.onNext(<span style="color:#ae81ff">4</span>)
+        Thread.sleep(<span style="color:#ae81ff">1010</span>)
+        emitter.onNext(<span style="color:#ae81ff">5</span>)
+        Thread.sleep(<span style="color:#ae81ff">2000</span>)
+        emitter.onNext(<span style="color:#ae81ff">6</span>)
+        Thread.sleep(<span style="color:#ae81ff">90</span>)
+        emitter.onNext(<span style="color:#ae81ff">7</span>)
+        Thread.sleep(<span style="color:#ae81ff">1010</span>)
+        emitter.onNext(<span style="color:#ae81ff">8</span>)
+        Thread.sleep(<span style="color:#ae81ff">80</span>)
+        emitter.onNext(<span style="color:#ae81ff">9</span>)
         emitter.onComplete()
-    **}
-**}
-</code></pre>
-<p>And for Kotlin Flow:</p>
-<pre><code>private fun myFlow(): Flow&lt;Int&gt; {
-    return *flow ***{
-        **emit(1)
-        *delay*(90)
-        emit(2)
-        *delay*(90)
-        emit(3)
-        *delay*(1010)
-        emit(4)
-        *delay*(1010)
-        emit(5)
-        *delay*(2000)
-        emit(6)
-        *delay*(90)
-        emit(7)
-        *delay*(1010)
-        emit(8)
-        *delay*(80)
-        emit(9)
-    **}
-**}
-</code></pre>
-<p>In order to test various throttling strategies we’ll have the following test functions parametrized by operators.</p>
+    }
+}
+</code></pre></div><p>And for Kotlin Flow:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">myFlow</span>(): Flow&lt;Int&gt; {
+    <span style="color:#66d9ef">return</span> flow {
+        emit(<span style="color:#ae81ff">1</span>)
+        delay(<span style="color:#ae81ff">90</span>)
+        emit(<span style="color:#ae81ff">2</span>)
+        delay(<span style="color:#ae81ff">90</span>)
+        emit(<span style="color:#ae81ff">3</span>)
+        delay(<span style="color:#ae81ff">1010</span>)
+        emit(<span style="color:#ae81ff">4</span>)
+        delay(<span style="color:#ae81ff">1010</span>)
+        emit(<span style="color:#ae81ff">5</span>)
+        delay(<span style="color:#ae81ff">2000</span>)
+        emit(<span style="color:#ae81ff">6</span>)
+        delay(<span style="color:#ae81ff">90</span>)
+        emit(<span style="color:#ae81ff">7</span>)
+        delay(<span style="color:#ae81ff">1010</span>)
+        emit(<span style="color:#ae81ff">8</span>)
+        delay(<span style="color:#ae81ff">80</span>)
+        emit(<span style="color:#ae81ff">9</span>)
+    }
+}
+</code></pre></div><p>In order to test various throttling strategies we’ll have the following test functions parametrized by operators.</p>
 <p>For RxJava:</p>
-<pre><code>private fun testObservable(operator: Observable&lt;Int&gt;.() -&gt; Observable&lt;Int&gt;) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">testObservable</span>(<span style="color:#66d9ef">operator</span>: Observable&lt;Int&gt;.() -&gt; Observable&lt;Int&gt;) {
 
-    val latch = CountDownLatch(1)
-    val result = StringBuffer()
+    <span style="color:#66d9ef">val</span> latch = CountDownLatch(<span style="color:#ae81ff">1</span>)
+    <span style="color:#66d9ef">val</span> result = StringBuffer()
 
     observable()
-        .operator()
-        .doOnComplete **{ **latch.countDown() **}
-        **.subscribeOn(computation())
-        .subscribe **{ **result.append(**it**).append(&quot; &quot;) **}
+        .<span style="color:#66d9ef">operator</span>()
+        .doOnComplete { latch.countDown() }
+        .subscribeOn(computation())
+        .subscribe { result.append(it).append(<span style="color:#e6db74">&#34; &#34;</span>) }
 
-    **latch.await()
-    *println*(&quot;$result&quot;)
+    latch.await()
+    println(<span style="color:#e6db74">&#34;$result&#34;</span>)
 }
-</code></pre>
-<p>And for Kotlin Flow:</p>
-<pre><code>private fun testFlow(operator: Flow&lt;Int&gt;.() -&gt; Flow&lt;Int&gt;) {
+</code></pre></div><p>And for Kotlin Flow:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">testFlow</span>(<span style="color:#66d9ef">operator</span>: Flow&lt;Int&gt;.() -&gt; Flow&lt;Int&gt;) {
 
-    val latch = CountDownLatch(1)
-    val result = StringBuffer()
+    <span style="color:#66d9ef">val</span> latch = CountDownLatch(<span style="color:#ae81ff">1</span>)
+    <span style="color:#66d9ef">val</span> result = StringBuffer()
 
-    *CoroutineScope*(*Job*() + Dispatchers.Default).*launch ***{
-        **myFlow()
-            .operator()
-            .*onCompletion ***{ **latch.countDown() **}
-            **.*collect ***{ **result.append(**it**).append(&quot; &quot;) **}
+    CoroutineScope(Job() + Dispatchers.Default).launch {
+        myFlow()
+            .<span style="color:#66d9ef">operator</span>()
+            .onCompletion { latch.countDown() }
+            .collect { result.append(it).append(<span style="color:#e6db74">&#34; &#34;</span>) }
     }
 
-    **latch.await()
-    *println*(&quot;$result&quot;)
+    latch.await()
+    println(<span style="color:#e6db74">&#34;$result&#34;</span>)
 }
-</code></pre>
-<p>In all the examples we’ll use timeout of 1000 milliseconds.</p>
+</code></pre></div><p>In all the examples we’ll use timeout of 1000 milliseconds.</p>
 <h3 id="debounce">Debounce<a href="#debounce" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>First throttling operator which is useful for search queries (waits until some timeout expired before emitting value) is debounce.
 If we show expected result on a plot we’ll see the following:</p>
@@ -272,170 +267,159 @@ If we show expected result on a plot we’ll see the following:</p>
 <p>So, in short after event received we start timer. If new event comes when timer is active, we restart timer. If timer expired then we emit latest item emitted.</p>
 <p>So, we expect here to get events from 3, 4, 5, 7 and 9 events (with all other events throttled).</p>
 <p>To achieve such result in RxJava we’ll need to use debounce operator:</p>
-<pre><code>testObservable **{ **debounce(1000, TimeUnit.MILLISECONDS) **}**
-</code></pre>
-<p>With Kotlin Flow we’ll have to use same operator:</p>
-<pre><code>testFlow **{ ***debounce*(1000) **}**
-</code></pre>
-<h3 id="throttlelast">ThrottleLast<a href="#throttlelast" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">testObservable { debounce(<span style="color:#ae81ff">1000</span>, TimeUnit.MILLISECONDS) }
+</code></pre></div><p>With Kotlin Flow we’ll have to use same operator:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">testFlow { debounce(<span style="color:#ae81ff">1000</span>) }
+</code></pre></div><h3 id="throttlelast">ThrottleLast<a href="#throttlelast" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>This mode starts timer with predefined interval and emit last emitted value when timer expires. After that it will restart timer.</p>
 <p><img src="../../img/1_lLXqIZ9_Tysd1V3z3i9hsg.png" alt=""></p>
 <p>Here we expect values of 3, 4, 5 and 7 to be emitted.
 Value 9 won’t be emitted in this case because stream would be finished before timer expired.</p>
 <p>To get such behavior we’ll have to use throttleLast in RxJava and sample in Kotlin Flow:</p>
-<pre><code>testObservable **{ **throttleLast(1000, TimeUnit.MILLISECONDS) **}
-**testFlow **{ ***sample*(1000) **}**
-</code></pre>
-<h3 id="throttlefirst">ThrottleFirst<a href="#throttlefirst" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">testObservable { throttleLast(<span style="color:#ae81ff">1000</span>, TimeUnit.MILLISECONDS) }
+testFlow { sample(<span style="color:#ae81ff">1000</span>) }
+</code></pre></div><h3 id="throttlefirst">ThrottleFirst<a href="#throttlefirst" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>This operator is useful to avoid double-clicks on buttons. It emits very first item and starts timer. All items which will come before timer expired will be discarded.</p>
 <p><img src="../../img/1_x66TBAX2--F3XtxX54MfJQ.png" alt=""></p>
 <p>Here we would expect to receive events 1, 4, 5, 6, 8.</p>
 <p>In RxJava we’ll use throttleFirst operator:</p>
-<pre><code>testObservable **{ **throttleFirst(1000, TimeUnit.MILLISECONDS) **}**
-</code></pre>
-<p>In Kotlin Flow though there is no such operator, so we’ll have to write some implementation by our own. The implementation might look like this:</p>
-<pre><code>fun &lt;T&gt; Flow&lt;T&gt;.throttleFirstJava(periodMillis: Long): Flow&lt;T&gt; {
-    *require*(periodMillis &gt; 0) **{ **&quot;period should be positive&quot; **}
-    **return *flow ***{
-        **var lastTime = 0L
-        *collect ***{ **value **-&gt;
-            **val currentTime = System.currentTimeMillis()
-            if (currentTime - lastTime &gt;= periodMillis) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">testObservable { throttleFirst(<span style="color:#ae81ff">1000</span>, TimeUnit.MILLISECONDS) }
+</code></pre></div><p>In Kotlin Flow though there is no such operator, so we’ll have to write some implementation by our own. The implementation might look like this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">Flow</span>&lt;T&gt;.throttleFirstJava(periodMillis: Long): Flow&lt;T&gt; {
+    require(periodMillis &gt; <span style="color:#ae81ff">0</span>) { <span style="color:#e6db74">&#34;period should be positive&#34;</span> }
+    <span style="color:#66d9ef">return</span> flow {
+        <span style="color:#66d9ef">var</span> lastTime = <span style="color:#ae81ff">0L</span>
+        collect { value -&gt;
+            <span style="color:#66d9ef">val</span> currentTime = System.currentTimeMillis()
+            <span style="color:#66d9ef">if</span> (currentTime - lastTime &gt;= periodMillis) {
                 lastTime = currentTime
                 emit(value)
             }
-        **}
+        }
     }
-**}
-</code></pre>
-<p>And the usage will be:</p>
-<pre><code>testFlow **{ ***throttleFirstJava*(1000) **}**
-</code></pre>
-<h3 id="throttlelatest">ThrottleLatest<a href="#throttlelatest" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+}
+</code></pre></div><p>And the usage will be:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">testFlow { throttleFirstJava(<span style="color:#ae81ff">1000</span>) }
+</code></pre></div><h3 id="throttlelatest">ThrottleLatest<a href="#throttlelatest" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>ThrottleLatest can be seen as some combination of throttleFirst and throttleLast. It will emit first item and start timer. Then when timer expires it would emit latest emitted value. But it won’t restart timer before new item emitted.</p>
 <p><img src="../../img/1_rQUZS4HK-o5WtTut555gsA.png" alt=""></p>
 <p>Here we expect values of 1, 3, 4, 5, 6, 7 to be emitted. Here value of 8 won’t be emitted because timer hasn’t expired after 7. And 9 won’t be emitted because stream completed before timer expired.</p>
 <p>In RxJava we’ll use throttleLatest operator:</p>
-<pre><code>testObservable **{ **throttleLatest(1000, TimeUnit.MILLISECONDS) **}**
-</code></pre>
-<p>In Kotlin Flow again there is no such operator, but we can try to write implementation by our own.
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">testObservable { throttleLatest(<span style="color:#ae81ff">1000</span>, TimeUnit.MILLISECONDS) }
+</code></pre></div><p>In Kotlin Flow again there is no such operator, but we can try to write implementation by our own.
 Some java version which uses Timer can look like this:</p>
-<pre><code>fun &lt;T&gt; Flow&lt;T&gt;.throttleLatestJava(periodMillis: Long): Flow&lt;T&gt; {
-    return *channelFlow ***{
-        **var lastValue: T?
-        var timer: Timer? = null
-        *onCompletion ***{ **timer?.cancel() **}
-        ***collect ***{ **value **-&gt;
-            **lastValue = value
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">Flow</span>&lt;T&gt;.throttleLatestJava(periodMillis: Long): Flow&lt;T&gt; {
+    <span style="color:#66d9ef">return</span> channelFlow {
+        <span style="color:#66d9ef">var</span> lastValue: T?
+        <span style="color:#66d9ef">var</span> timer: Timer? = <span style="color:#66d9ef">null</span>
+        onCompletion { timer<span style="color:#f92672">?.</span>cancel() }
+        collect { value -&gt;
+            lastValue = value
 
-            if (timer == null) {
+            <span style="color:#66d9ef">if</span> (timer == <span style="color:#66d9ef">null</span>) {
                 timer = Timer()
-                timer?.scheduleAtFixedRate(
-                    object : TimerTask() {
-                        override fun run() {
-                            val value = lastValue
-                            lastValue = null
-                            if (value != null) {
-                                *launch ***{
-                                    **send(value as T)
-                                **}
-                            **} else {
-                                timer?.cancel()
-                                timer = null
+                timer<span style="color:#f92672">?.</span>scheduleAtFixedRate(
+                    <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">: </span><span style="color:#a6e22e">TimerTask</span>() {
+                        <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">run</span>() {
+                            <span style="color:#66d9ef">val</span> value = lastValue
+                            lastValue = <span style="color:#66d9ef">null</span>
+                            <span style="color:#66d9ef">if</span> (value != <span style="color:#66d9ef">null</span>) {
+                                launch {
+                                    send(value <span style="color:#66d9ef">as</span> T)
+                                }
+                            } <span style="color:#66d9ef">else</span> {
+                                timer<span style="color:#f92672">?.</span>cancel()
+                                timer = <span style="color:#66d9ef">null</span>
                             }
                         }
                     },
-                    0,
+                    <span style="color:#ae81ff">0</span>,
                     periodMillis
                 )
             }
-        **}
+        }
     }
-**}
-</code></pre>
-<p>It is quite big and uses Timer, which is based on Thread, so might not be good to be used in conjunction with coroutines.</p>
+}
+</code></pre></div><p>It is quite big and uses Timer, which is based on Thread, so might not be good to be used in conjunction with coroutines.</p>
 <p>We might want to write some version which uses coroutines only (similar to debounce):</p>
-<pre><code>@ExperimentalCoroutinesApi
-fun &lt;T&gt; Flow&lt;T&gt;.throttleLatestKotlin(periodMillis: Long): Flow&lt;T&gt; {
-    *require*(periodMillis &gt; 0) **{ **&quot;period should be positive&quot; **}
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@ExperimentalCoroutinesApi
+<span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">Flow</span>&lt;T&gt;.throttleLatestKotlin(periodMillis: Long): Flow&lt;T&gt; {
+    require(periodMillis &gt; <span style="color:#ae81ff">0</span>) { <span style="color:#e6db74">&#34;period should be positive&#34;</span> }
 
-    **return *channelFlow ***{
-        **val done = Any()
-        val values = *produce*(capacity = Channel.CONFLATED) **{
-            ***collect ***{ **value **-&gt; **send(value) **}
+    <span style="color:#66d9ef">return</span> channelFlow {
+        <span style="color:#66d9ef">val</span> done = Any()
+        <span style="color:#66d9ef">val</span> values = produce(capacity = Channel.CONFLATED) {
+            collect { value -&gt; send(value) }
         }
 
-        **var lastValue: Any? = null
-        val ticker = Ticker(periodMillis)
-        while (lastValue !== done) {
-            *select*&lt;Unit&gt; **{
-                **values.onReceiveOrNull **{
-                    **if (**it **== null) {
+        <span style="color:#66d9ef">var</span> lastValue: Any? = <span style="color:#66d9ef">null</span>
+        <span style="color:#66d9ef">val</span> ticker = Ticker(periodMillis)
+        <span style="color:#66d9ef">while</span> (lastValue !== done) {
+            select&lt;Unit&gt; {
+                values.onReceiveOrNull {
+                    <span style="color:#66d9ef">if</span> (it == <span style="color:#66d9ef">null</span>) {
                         ticker.cancel()
                         lastValue = done
-                    } else {
-                        lastValue = **it
-                        **if (!ticker.isStarted) {
-                            ticker.start(this@channelFlow)
+                    } <span style="color:#66d9ef">else</span> {
+                        lastValue = it
+                        <span style="color:#66d9ef">if</span> (!ticker.isStarted) {
+                            ticker.start(<span style="color:#66d9ef">this</span>@channelFlow)
                         }
                     }
 
-                **}
+                }
 
-                **ticker.getTicker().onReceive **{
-                    **if (lastValue !== null) {
-                        val value = lastValue
-                        lastValue = null
-                        send(value as T)
-                    } else {
+                ticker.getTicker().onReceive {
+                    <span style="color:#66d9ef">if</span> (lastValue !== <span style="color:#66d9ef">null</span>) {
+                        <span style="color:#66d9ef">val</span> value = lastValue
+                        lastValue = <span style="color:#66d9ef">null</span>
+                        send(value <span style="color:#66d9ef">as</span> T)
+                    } <span style="color:#66d9ef">else</span> {
                         ticker.stop()
                     }
-                **}
+                }
             }
-        **}
-    **}
-**}
-</code></pre>
-<p>And here we’ll have to create special Ticker implementation:</p>
-<pre><code>class Ticker(private val delay: Long) {
+        }
+    }
+}
+</code></pre></div><p>And here we’ll have to create special Ticker implementation:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Ticker</span>(<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> delay: Long) {
 
-    private var channel: ReceiveChannel&lt;Unit&gt; = *Channel*()
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">var</span> channel: ReceiveChannel&lt;Unit&gt; = Channel()
 
-    var isStarted: Boolean = false
-        private set
+    <span style="color:#66d9ef">var</span> isStarted: Boolean = <span style="color:#66d9ef">false</span>
+        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">set</span>
 
-    fun getTicker(): ReceiveChannel&lt;Unit&gt; {
-        return channel
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getTicker</span>(): ReceiveChannel&lt;Unit&gt; {
+        <span style="color:#66d9ef">return</span> channel
     }
 
-    fun start(scope: CoroutineScope) {
-        isStarted = true
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">start</span>(scope: CoroutineScope) {
+        isStarted = <span style="color:#66d9ef">true</span>
         channel.cancel()
-        channel = scope.*produce*(capacity = 0) **{
-            **while (true) {
+        channel = scope.produce(capacity = <span style="color:#ae81ff">0</span>) {
+            <span style="color:#66d9ef">while</span> (<span style="color:#66d9ef">true</span>) {
                 channel.send(Unit)
-                *delay*(delay)
+                delay(delay)
             }
-        **}
-    **}
-
-    fun stop() {
-        isStarted = false
-        channel.cancel()
-        channel = *Channel*()
+        }
     }
 
-    fun cancel() {
-        isStarted = false
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">stop</span>() {
+        isStarted = <span style="color:#66d9ef">false</span>
+        channel.cancel()
+        channel = Channel()
+    }
+
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">cancel</span>() {
+        isStarted = <span style="color:#66d9ef">false</span>
         channel.cancel()
     }
 }
-</code></pre>
-<p>Usages of such operators will look like this:</p>
-<pre><code>testFlow **{ ***throttleLatestKotlin*(1000) **}
-**testFlow **{ ***throttleLatestJava*(1000) **}**
-</code></pre>
-<p>Though because of complexity and possible issues with threading I’d not recommend to use such operators in production code. I hope we’ll have some operators which will be inside standard library.</p>
+</code></pre></div><p>Usages of such operators will look like this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">testFlow { throttleLatestKotlin(<span style="color:#ae81ff">1000</span>) }
+testFlow { throttleLatestJava(<span style="color:#ae81ff">1000</span>) }
+</code></pre></div><p>Though because of complexity and possible issues with threading I’d not recommend to use such operators in production code. I hope we’ll have some operators which will be inside standard library.</p>
 <h2 id="conslusion">Conslusion<a href="#conslusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>As seen above in Kotlin Flow we have only 2 out of 4 operators for throttling. Though throttleFirst implementation is simple and straightforward, implementation of throttleLatest might be error-prone and it is better to wait until implementation is added to standard library.</p>
 <p>Also need to draw attention that our own throttleFirst implementation would not respect TestCoroutineScope.</p>

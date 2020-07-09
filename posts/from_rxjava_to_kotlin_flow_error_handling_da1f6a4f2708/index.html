@@ -194,13 +194,12 @@ As in previous articles, we’ll try to compare RxJava and Kotlin Flow error han
 </li>
 </ul>
 <p>A basic example of error handling is:</p>
-<pre><code>observeChanges()
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">observeChanges()
     .subscribe(
-        { value -&gt; println(&quot;value: $value&quot;) },
-        { error -&gt; println(&quot;error: $error&quot;) }
+        { value -&gt; println(<span style="color:#e6db74">&#34;value: $value&#34;</span>) },
+        { error -&gt; println(<span style="color:#e6db74">&#34;error: $error&#34;</span>) }
     )
-</code></pre>
-<h2 id="kotlin-flow-error-handling">Kotlin Flow Error Handling<a href="#kotlin-flow-error-handling" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+</code></pre></div><h2 id="kotlin-flow-error-handling">Kotlin Flow Error Handling<a href="#kotlin-flow-error-handling" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>As Kotlin Flow is essentially based on coroutines, the following applies:</p>
 <ul>
 <li>
@@ -223,192 +222,173 @@ As in previous articles, we’ll try to compare RxJava and Kotlin Flow error han
 <h3 id="setup">Setup<a href="#setup" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>First of all, for our comparison, we’ll create helper functions of Flow and Observable, which emit a value and then throw an exception.</p>
 <p>For Observable:</p>
-<pre><code>private fun observable(
-    value: Int = 1
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">observable</span>(
+    value: Int = <span style="color:#ae81ff">1</span>
 ): Observable&lt;Int&gt; {
-    return Observable.create { emitter -&gt;
+    <span style="color:#66d9ef">return</span> Observable.create { emitter -&gt;
         emitter.onNext(value)
         emitter.onError(RuntimeException())
     }
 }
-</code></pre>
-<p>And for Kotlin Flow (due to clash of names have to name it with “my” prefix):</p>
-<pre><code>private fun myFlow(
-    value: Int = 1
+</code></pre></div><p>And for Kotlin Flow (due to clash of names have to name it with “my” prefix):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">myFlow</span>(
+    value: Int = <span style="color:#ae81ff">1</span>
 ): Flow&lt;Int&gt; {
-    return flow {
+    <span style="color:#66d9ef">return</span> flow {
         emit(value)
-        throw RuntimeException()
+        <span style="color:#66d9ef">throw</span> RuntimeException()
     }
 }
-</code></pre>
-<p>Next, we’ll set up short tests, which will be parametrized by operators. In that test we’ll take our test streams, subscribe to them on the io thread pool, then optionally will apply some operator and then print values and errors which will happen in the chain.</p>
+</code></pre></div><p>Next, we’ll set up short tests, which will be parametrized by operators. In that test we’ll take our test streams, subscribe to them on the io thread pool, then optionally will apply some operator and then print values and errors which will happen in the chain.</p>
 <p>For Observable:</p>
-<pre><code>private fun testObservable(
-    operator: Observable&lt;Int&gt;.() -&gt; Observable&lt;Int&gt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">testObservable</span>(
+    <span style="color:#66d9ef">operator</span>: Observable&lt;Int&gt;.() -&gt; Observable&lt;Int&gt;
 ) {
-    val latch = CountDownLatch(1)
-    val result = StringBuffer()
+    <span style="color:#66d9ef">val</span> latch = CountDownLatch(<span style="color:#ae81ff">1</span>)
+    <span style="color:#66d9ef">val</span> result = StringBuffer()
 
 observable()
         .subscribeOn(Schedulers.io())
-        .operator()
+        .<span style="color:#66d9ef">operator</span>()
         .doOnTerminate { latch.countDown() }
         .subscribe(
-            { result.append(&quot;next $it, &quot;) },
-            { result.append(&quot;error $it&quot;) }
+            { result.append(<span style="color:#e6db74">&#34;next $it, &#34;</span>) },
+            { result.append(<span style="color:#e6db74">&#34;error $it&#34;</span>) }
         )
 
 latch.await()
     println(result)
 }
-</code></pre>
-<p>For Kotlin Flow (note, that here we wrapped all the flow into the try-catch):</p>
-<pre><code>private fun testFlow(
-    operator: Flow&lt;Int&gt;.() -&gt; Flow&lt;Int&gt;
+</code></pre></div><p>For Kotlin Flow (note, that here we wrapped all the flow into the try-catch):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">testFlow</span>(
+    <span style="color:#66d9ef">operator</span>: Flow&lt;Int&gt;.() -&gt; Flow&lt;Int&gt;
 ) {
-    val latch = CountDownLatch(1)
-    val result = StringBuffer()
+    <span style="color:#66d9ef">val</span> latch = CountDownLatch(<span style="color:#ae81ff">1</span>)
+    <span style="color:#66d9ef">val</span> result = StringBuffer()
 
     CoroutineScope(Job() + Dispatchers.IO).launch {
-        try {
+        <span style="color:#66d9ef">try</span> {
             myFlow()
-                .operator()
+                .<span style="color:#66d9ef">operator</span>()
                 .onCompletion { latch.countDown() }
                 .collect {
-                    result.append(&quot;next $it, &quot;)
+                    result.append(<span style="color:#e6db74">&#34;next $it, &#34;</span>)
                 }
-        } catch (e: Exception) {
-            result.append(&quot;error $e&quot;)
+        } <span style="color:#66d9ef">catch</span> (e: Exception) {
+            result.append(<span style="color:#e6db74">&#34;error $e&#34;</span>)
         }
     }
 
     latch.await()
     println(result)
 }
-</code></pre>
-<h3 id="basic-error-handling">Basic Error Handling<a href="#basic-error-handling" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+</code></pre></div><h3 id="basic-error-handling">Basic Error Handling<a href="#basic-error-handling" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>First, our test will be to see what is the default behavior without additional changes. In this case, we’ll provide an identity operator:</p>
-<pre><code>testObservable { this }
-testFlow { this }
-</code></pre>
-<p>In both cases in logs it will be printed:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">testObservable { <span style="color:#66d9ef">this</span> }
+testFlow { <span style="color:#66d9ef">this</span> }
+</code></pre></div><p>In both cases in logs it will be printed:</p>
 <pre><code>next 1, error java.lang.RuntimeException
-</code></pre>
-<p>So, as we already discussed, our test streams emit one value and then terminate with an exception.</p>
+</code></pre><p>So, as we already discussed, our test streams emit one value and then terminate with an exception.</p>
 <h3 id="catching-errors-with-an-emitting-default-value">Catching Errors with an emitting default value<a href="#catching-errors-with-an-emitting-default-value" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>What if we don’t want our stream to be terminated (as error event terminates the stream)? One of the options is to emit some default value if we encounter an exception.</p>
 <p>In RxJava for that, there is a special operator called onErrorReturn:</p>
-<pre><code>testObservable { onErrorReturn { 5 } }
-</code></pre>
-<p>If we run this example we’ll see that in logs it will be printed:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">testObservable { onErrorReturn { <span style="color:#ae81ff">5</span> } }
+</code></pre></div><p>If we run this example we’ll see that in logs it will be printed:</p>
 <pre><code>next 1, next 5,
-</code></pre>
-<p>So the first item in the stream (1) was emitted as before, but then instead of an error, we have a default value (5) emitted as well.</p>
+</code></pre><p>So the first item in the stream (1) was emitted as before, but then instead of an error, we have a default value (5) emitted as well.</p>
 <p>In Kotlin Flow for the same use case, there is an operator catch, and the usage is the following:</p>
-<pre><code>testFlow { catch { emit(5) } }
-</code></pre>
-<p>Operator catch catches all the exceptions from the upstream and can do some work, such as emitting default value. And result in logs will be the same.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">testFlow { <span style="color:#66d9ef">catch</span> { emit(<span style="color:#ae81ff">5</span>) } }
+</code></pre></div><p>Operator catch catches all the exceptions from the upstream and can do some work, such as emitting default value. And result in logs will be the same.</p>
 <h3 id="catching-errors-by-switching-to-another-stream">Catching Errors by switching to another stream<a href="#catching-errors-by-switching-to-another-stream" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>Another option with not failing our stream on error is to switch to another stream. In RxJava for that, there is a special operator onErrorResumeNext:</p>
-<pre><code>testObservable { onErrorResumeNext(Observable.just(1, 2, 3)) }
-</code></pre>
-<p>After running the code the result will be:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">testObservable { onErrorResumeNext(Observable.just(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)) }
+</code></pre></div><p>After running the code the result will be:</p>
 <pre><code>next 1, next 1, next 2, next 3,
-</code></pre>
-<p>First, we have the value of 1 emitted (this is from the initial stream), then after error happened we switch to the new stream and all its values are emitted (and we won’t have an exception thrown).</p>
+</code></pre><p>First, we have the value of 1 emitted (this is from the initial stream), then after error happened we switch to the new stream and all its values are emitted (and we won’t have an exception thrown).</p>
 <blockquote>
 <p><strong>NOTE</strong>: Essentially it is possible to achieve onErrorReturn with onErrorResumeNext by using onErrorResumeNext(Observable.just(5)), though usage of onErrorResumeNext has bigger overhead, so use it only when new stream is really needed.</p>
 </blockquote>
 <p>In Kotlin Flow for such a case we use that same operator catch:</p>
-<pre><code>testFlow { catch { emitAll(flowOf(1, 2, 3)) } }
-</code></pre>
-<p>Instead of emitting a single value on error, we emitAll values from the stream with the same expected result.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">testFlow { <span style="color:#66d9ef">catch</span> { emitAll(flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)) } }
+</code></pre></div><p>Instead of emitting a single value on error, we emitAll values from the stream with the same expected result.</p>
 <h3 id="intercepting-errors">Intercepting Errors<a href="#intercepting-errors" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>The next thing which we’ll do is intercepting errors. When we intercept errors we can do some side effects without actually handling that error, for example, logging.</p>
 <p>In RxJava for this case, we can use the doOnError operator:</p>
-<pre><code>testObservable { doOnError { print(&quot;INTERCEPTED $it, &quot;) } }
-</code></pre>
-<p>The result will be:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">testObservable { doOnError { print(<span style="color:#e6db74">&#34;INTERCEPTED $it, &#34;</span>) } }
+</code></pre></div><p>The result will be:</p>
 <pre><code>INTERCEPTED java.lang.RuntimeException, next 1, error java.lang.RuntimeException
-</code></pre>
-<p>So, first, we intercepted our exception, printed some logs, and then as in the case with basic error handling, we got the first item emitted with error followed.</p>
+</code></pre><p>So, first, we intercepted our exception, printed some logs, and then as in the case with basic error handling, we got the first item emitted with error followed.</p>
 <p>In Kotlin Flow though there is no special operator for that case, but we can write our own:</p>
-<pre><code>fun &lt;T&gt; Flow&lt;T&gt;.doOnError(onError: (Throwable) -&gt; Unit): Flow&lt;T&gt; {
-    return flow {
-        try {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">Flow</span>&lt;T&gt;.doOnError(onError: (Throwable) -&gt; Unit): Flow&lt;T&gt; {
+    <span style="color:#66d9ef">return</span> flow {
+        <span style="color:#66d9ef">try</span> {
             collect { value -&gt;
                 emit(value)
             }
-        } catch (e: Exception) {
+        } <span style="color:#66d9ef">catch</span> (e: Exception) {
             onError(e)
-            throw e
+            <span style="color:#66d9ef">throw</span> e
         }
     }
 }
-</code></pre>
-<p>Here we just create new Flow, inside it, we start collecting all the values. We wrap everything in try-catch and if an error happens — we’ll execute the callback and re-throw exception.</p>
+</code></pre></div><p>Here we just create new Flow, inside it, we start collecting all the values. We wrap everything in try-catch and if an error happens — we’ll execute the callback and re-throw exception.</p>
 <p>The usage will be the following:</p>
-<pre><code>testFlow { doOnError { print(&quot;INTERCEPTED $it, &quot;) } }
-</code></pre>
-<p>And as before, results in logs will be the same.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">testFlow { doOnError { print(<span style="color:#e6db74">&#34;INTERCEPTED $it, &#34;</span>) } }
+</code></pre></div><p>And as before, results in logs will be the same.</p>
 <p>That’s all with the handling errors in the chain, but there is another topic of handling errors in inner streams.</p>
 <h3 id="inner-streams-errors-handling">Inner streams errors handling<a href="#inner-streams-errors-handling" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>As we know we can have inner streams by using flatMap in RxJava or flatMapMerge in Flow (or other xMap operators in RxJava or flatMapX operators in Kotlin Flow).
 We can apply directly what we’ve learned to our inner streams, though sometimes there is a need to control error handling from the parent stream perspective.</p>
 <p>We’ll modify our test samples a bit to better show that.</p>
 <p>For Observable our new example will be:</p>
-<pre><code>private fun testInnerObservable(
-    operator: Observable&lt;Int&gt;.() -&gt; Observable&lt;Int&gt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">testInnerObservable</span>(
+    <span style="color:#66d9ef">operator</span>: Observable&lt;Int&gt;.() -&gt; Observable&lt;Int&gt;
 ) {
-    val latch = CountDownLatch(1)
-    val result = StringBuffer()
+    <span style="color:#66d9ef">val</span> latch = CountDownLatch(<span style="color:#ae81ff">1</span>)
+    <span style="color:#66d9ef">val</span> result = StringBuffer()
 
-    Observable.just(10, 11, 12)
+    Observable.just(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">11</span>, <span style="color:#ae81ff">12</span>)
         .subscribeOn(Schedulers.io())
-        .operator()
+        .<span style="color:#66d9ef">operator</span>()
         .doOnTerminate { latch.countDown() }
         .subscribe(
-            { result.append(&quot;next $it, &quot;) },
-            { result.append(&quot;error $it&quot;) }
+            { result.append(<span style="color:#e6db74">&#34;next $it, &#34;</span>) },
+            { result.append(<span style="color:#e6db74">&#34;error $it&#34;</span>) }
         )
 
     latch.await()
     println(result)
 }
-</code></pre>
-<p>The difference is that now our parent observable won’t throw an exception, instead it will emit three items and complete. Inside operator we’ll be able to add our inner streams.</p>
+</code></pre></div><p>The difference is that now our parent observable won’t throw an exception, instead it will emit three items and complete. Inside operator we’ll be able to add our inner streams.</p>
 <p>For Kotlin Flow we’ll have the following sample:</p>
-<pre><code>private fun testInnerFlow(
-    operator: Flow&lt;Int&gt;.() -&gt; Flow&lt;Int&gt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">testInnerFlow</span>(
+    <span style="color:#66d9ef">operator</span>: Flow&lt;Int&gt;.() -&gt; Flow&lt;Int&gt;
 ) {
-    val latch = CountDownLatch(1)
-    val result = StringBuffer()
+    <span style="color:#66d9ef">val</span> latch = CountDownLatch(<span style="color:#ae81ff">1</span>)
+    <span style="color:#66d9ef">val</span> result = StringBuffer()
 
     CoroutineScope(Job() + Dispatchers.IO).launch {
-        try {
-            flowOf(10, 11, 12)
-                .operator()
+        <span style="color:#66d9ef">try</span> {
+            flowOf(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">11</span>, <span style="color:#ae81ff">12</span>)
+                .<span style="color:#66d9ef">operator</span>()
                 .onCompletion { latch.countDown() }
                 .collect {
-                    result.append(&quot;next $it, &quot;)
+                    result.append(<span style="color:#e6db74">&#34;next $it, &#34;</span>)
                 }
-        } catch (e: Exception) {
-            result.append(&quot;error $e&quot;)
+        } <span style="color:#66d9ef">catch</span> (e: Exception) {
+            result.append(<span style="color:#e6db74">&#34;error $e&#34;</span>)
         }
     }
 
     latch.await()
     println(result)
 }
-</code></pre>
-<p>There are many different operators in RxJava, but we’ll take a look only at one: concatMapDelayError.
+</code></pre></div><p>There are many different operators in RxJava, but we’ll take a look only at one: concatMapDelayError.
 In order to understand how it works, let’s first look at the concatMap and flatMapConcat operators. Both these operators start subscribing to the inner streams one by one. And subscription to the next inner stream happens only when previous was completed.</p>
 <p>For RxJava and Kotlin Flow it will look like:</p>
-<pre><code>testInnerObservable { concatMap { observable(it) } }
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">testInnerObservable { concatMap { observable(it) } }
 testInnerFlow { flatMapConcat { myFlow(it) } }
-</code></pre>
-<p>What happens here:</p>
+</code></pre></div><p>What happens here:</p>
 <ul>
 <li>
 <p>Our parent stream has three values</p>
@@ -422,116 +402,103 @@ testInnerFlow { flatMapConcat { myFlow(it) } }
 </ul>
 <p>Result of executing for RxJava and Kotlin Flow will be the same:</p>
 <pre><code>next 10, error java.lang.RuntimeException
-</code></pre>
-<p>We have first item emitted followed by an error and no more values are emitted. This happens because the first item (10) triggered a subscription of the inner stream, which emitted that value (10) and then failed with an exception. Because of that, the whole stream failed and the next item from parent (11) hasn’t been switched to the new inner stream.</p>
+</code></pre><p>We have first item emitted followed by an error and no more values are emitted. This happens because the first item (10) triggered a subscription of the inner stream, which emitted that value (10) and then failed with an exception. Because of that, the whole stream failed and the next item from parent (11) hasn’t been switched to the new inner stream.</p>
 <p>What if we want to have all the values emitted and emit error only in the end (if it happened)? For such a case there is concatMapDelayError in RxJava. It will delay all the errors until the stream completes and throw CompositeException with all the exceptions which happened in the stream.</p>
 <p>If we run the following code:</p>
-<pre><code>testInnerObservable { concatMapDelayError { observable(it) } }
-</code></pre>
-<p>We see the result:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">testInnerObservable { concatMapDelayError { observable(it) } }
+</code></pre></div><p>We see the result:</p>
 <pre><code>next 10, next 11, next 12, error io.reactivex.exceptions.CompositeException: 3 exceptions occurred.
-</code></pre>
-<p>All three items were emitted followed by a single composite exception (which has three exceptions inside — one per each inner stream).</p>
+</code></pre><p>All three items were emitted followed by a single composite exception (which has three exceptions inside — one per each inner stream).</p>
 <p>What about Kotlin Flow? It doesn’t have any operator with delaying errors. But we can try to write our own. We’ll start by copy-pasting sources of flatMapConcat operator and add some error handling there:</p>
-<pre><code>fun &lt;T, R&gt; Flow&lt;T&gt;.flatMapConcatDelayError(
-    transform: suspend (value: T) -&gt; Flow&lt;R&gt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;T, R&gt; <span style="color:#a6e22e">Flow</span>&lt;T&gt;.flatMapConcatDelayError(
+    transform: <span style="color:#66d9ef">suspend</span> (value: T) -&gt; Flow&lt;R&gt;
 ): Flow&lt;R&gt; = map(transform).flattenConcatDelayError()
-</code></pre>
-<p>We’ll start from defining our operator flatMapConcatDelayError as combination of map and flatten (yep, map + flatten == flatMap).
+</code></pre></div><p>We’ll start from defining our operator flatMapConcatDelayError as combination of map and flatten (yep, map + flatten == flatMap).
 Then we’ll define our flattenConcatDelayError:</p>
-<pre><code>fun &lt;T&gt; Flow&lt;Flow&lt;T&gt;&gt;.flattenConcatDelayError(): Flow&lt;T&gt; {
-    val list = CopyOnWriteArrayList&lt;Exception&gt;()
-    return flow&lt;T&gt; {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">Flow</span>&lt;Flow&lt;T&gt;&gt;.flattenConcatDelayError(): Flow&lt;T&gt; {
+    <span style="color:#66d9ef">val</span> list = CopyOnWriteArrayList&lt;Exception&gt;()
+    <span style="color:#66d9ef">return</span> flow&lt;T&gt; {
         collect { value -&gt;
-            try {
+            <span style="color:#66d9ef">try</span> {
                 emitAll(value)
-            } catch (e: Exception) {
+            } <span style="color:#66d9ef">catch</span> (e: Exception) {
                 list.add(e)
             }
         }
     }.onCompletion {
-        if (list.isNotEmpty()) {
-            throw CompositeException(list)
+        <span style="color:#66d9ef">if</span> (list.isNotEmpty()) {
+            <span style="color:#66d9ef">throw</span> CompositeException(list)
         }
     }
 }
-</code></pre>
-<p>What we do here is wrap our emits into try-catch with saving all the exceptions (note that we need to use thread-safe list). And throw a composite exception at the end if there were some exceptions.</p>
+</code></pre></div><p>What we do here is wrap our emits into try-catch with saving all the exceptions (note that we need to use thread-safe list). And throw a composite exception at the end if there were some exceptions.</p>
 <p>Final call for Kotlin Flow will be:</p>
-<pre><code>testInnerFlow { flatMapConcatDelayError { myFlow(it) } }
-</code></pre>
-<h3 id="rxjava-like-subscribe-for-kotlin-flow">RxJava-like subscribe for Kotlin Flow<a href="#rxjava-like-subscribe-for-kotlin-flow" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">testInnerFlow { flatMapConcatDelayError { myFlow(it) } }
+</code></pre></div><h3 id="rxjava-like-subscribe-for-kotlin-flow">RxJava-like subscribe for Kotlin Flow<a href="#rxjava-like-subscribe-for-kotlin-flow" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>Do I need to always use either catch at the bottom of each chain or wrap everything into try-catch? I’d say yes, but probably it could be useful to have similar API as in RxJava and have single subscribe with three lambdas.</p>
 <p>We can try to implement such:</p>
-<pre><code>suspend fun &lt;T&gt; Flow&lt;T&gt;.subscribe(
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">Flow</span>&lt;T&gt;.subscribe(
     onNext: (T) -&gt; Unit,
     onError: (Throwable) -&gt; Unit,
     onComplete: () -&gt; Unit
 ) {
-    this
-        .onEach **{ **onNext(**it**) **}
-        **.onCompletion **{ **error: Throwable? **-&gt;
-            **if (error == null) {
+    <span style="color:#66d9ef">this</span>
+        .onEach { onNext(it) }
+        .onCompletion { error: Throwable? -&gt;
+            <span style="color:#66d9ef">if</span> (error == <span style="color:#66d9ef">null</span>) {
                 onComplete()
             }
-        **}
-        **.catch **{ **onError(**it**) **}
-        **.collect()
+        }
+        .<span style="color:#66d9ef">catch</span> { onError(it) }
+        .collect()
 }
-</code></pre>
-<p>What we do here is instead of terminal collect method, we’ll use our own subscribe, which takes three lambdas.
+</code></pre></div><p>What we do here is instead of terminal collect method, we’ll use our own subscribe, which takes three lambdas.
 In onEach we’ll get all the values emitted. In onCompletion we’ll see that we track our onComplete (note that we need to check that we completed without error). And in catch we catch all the exceptions.</p>
 <blockquote>
 <p><strong>NOTE</strong>: we could move onError inside onCompletion if we wish and make catch clause empty. Say it is matter of taste.</p>
 </blockquote>
 <p><strong>But did anyone spot the issue?</strong></p>
 <p>Let’s run few tests:</p>
-<pre><code>runBlocking {
-    flowOf(1, 2, 3)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlocking {
+    flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
         .subscribe(
-            { print(&quot;next $it, &quot;) },
-            { print(&quot;error $it, &quot;) },
-            { print(&quot;complete &quot;) }
+            { print(<span style="color:#e6db74">&#34;next $it, &#34;</span>) },
+            { print(<span style="color:#e6db74">&#34;error $it, &#34;</span>) },
+            { print(<span style="color:#e6db74">&#34;complete &#34;</span>) }
         )
 }
-</code></pre>
-<p>It prints:</p>
+</code></pre></div><p>It prints:</p>
 <pre><code>next 1, next 2, next 3, complete
-</code></pre>
-<p>So far so good. We have all three values emitted following by completion event.</p>
+</code></pre><p>So far so good. We have all three values emitted following by completion event.</p>
 <p>Next test will be with error:</p>
-<pre><code>runBlocking {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlocking {
     flow {
-        emit(1)
-        throw RuntimeException()
+        emit(<span style="color:#ae81ff">1</span>)
+        <span style="color:#66d9ef">throw</span> RuntimeException()
     }
         .subscribe(
-            { print(&quot;next $it, &quot;) },
-            { print(&quot;error $it, &quot;) },
-            { print(&quot;complete &quot;) }
+            { print(<span style="color:#e6db74">&#34;next $it, &#34;</span>) },
+            { print(<span style="color:#e6db74">&#34;error $it, &#34;</span>) },
+            { print(<span style="color:#e6db74">&#34;complete &#34;</span>) }
         )
 }
-</code></pre>
-<p>It prints:</p>
+</code></pre></div><p>It prints:</p>
 <pre><code>next 1, complete error java.lang.RuntimeException,
-</code></pre>
-<p>Also good, we have one value followed by error event. And we don’t have a completion event.</p>
+</code></pre><p>Also good, we have one value followed by error event. And we don’t have a completion event.</p>
 <p>Let’s check the final test — we throw exception in a callback:</p>
-<pre><code>runBlocking {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlocking {
     flow {
-        emit(1)
+        emit(<span style="color:#ae81ff">1</span>)
     }
         .subscribe(
-            { print(&quot;next $it, &quot;) },
-            { print(&quot;error $it, &quot;) },
-            { throw RuntimeException() }
+            { print(<span style="color:#e6db74">&#34;next $it, &#34;</span>) },
+            { print(<span style="color:#e6db74">&#34;error $it, &#34;</span>) },
+            { <span style="color:#66d9ef">throw</span> RuntimeException() }
         )
 }
-</code></pre>
-<p>The result will be:</p>
+</code></pre></div><p>The result will be:</p>
 <pre><code>next 1, error java.lang.RuntimeException,
-</code></pre>
-<p>And this is not what we’ve expected. If we have an exception in a callback, then it should be thrown and should not pass to our error handler. Error handler should catch all the errors in the chain and callback is not essentially part of that chain.</p>
+</code></pre><p>And this is not what we’ve expected. If we have an exception in a callback, then it should be thrown and should not pass to our error handler. Error handler should catch all the errors in the chain and callback is not essentially part of that chain.</p>
 <p>Why it happens so? Because catch is the last operator in the chain and it handles everything which is above. Including what is inside onEach and onCompletion operators.</p>
 <p>This is the difference which is needed to keep in mind. If anyone would be able to create an identical implementation of subscribe method, feel free to post it in comments.</p>
 <h2 id="upd-retry">UPD: retry<a href="#upd-retry" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>

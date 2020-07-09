@@ -303,15 +303,13 @@ It might be easier to describe this by example, so imagine that you have a searc
 <p><img src="../../img/0_5RrVwRw0MyrqkqsQ.png" alt="Source"><em><a href="http://reactivex.io/documentation/operators/images/debounce.png">Source</a></em></p>
 <p>What this image shows is that if between events (on the top) there is enough time (i.e. user stopped typing for some time) we receive event, otherwise if there are a lot of events in some short period of time — we discard old ones and wait for timeout to expire.</p>
 <p>In code before adding debounce it might look the following way:</p>
-<pre><code>textInput.onTextChanged { text -&gt; process(text) }
-</code></pre>
-<p>We just trigger processing on each character typed. With adding debounce it might look somewhat like:</p>
-<pre><code>val debouncer = Debouncer(200, TimeUnit.MILLISECONDS) { text -&gt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">textInput.onTextChanged { text -&gt; process(text) }
+</code></pre></div><p>We just trigger processing on each character typed. With adding debounce it might look somewhat like:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> debouncer = Debouncer(<span style="color:#ae81ff">200</span>, TimeUnit.MILLISECONDS) { text -&gt;
     process(text)
 }
 textInput.onTextChanged { text -&gt; debouncer.process(text) }
-</code></pre>
-<p>So, we just redirect all the text changes to debouncer and then it sends us events on some given rate (basically filtering our stream of events).
+</code></pre></div><p>So, we just redirect all the text changes to debouncer and then it sends us events on some given rate (basically filtering our stream of events).
 But how this is related to Handlers and Loopers?</p>
 <p>The answer is that from diagram we can see that what debouncer is doing is:</p>
 <ol>
@@ -326,33 +324,32 @@ But how this is related to Handlers and Loopers?</p>
 </li>
 </ol>
 <p>We see that it looks exactly like something Handler can help us with, we just need to write Debouncer implementation.</p>
-<pre><code>class Debouncer(
-    private val timeout: Long,
-    private val unit: TimeUnit,
-    private val callback: (String) -&gt; Unit
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Debouncer</span>(
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> timeout: Long,
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> unit: TimeUnit,
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> callback: (String) -&gt; Unit
 ) {
 
-    private val handler = Handler(Looper.getMainLooper()) { 
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> handler = Handler(Looper.getMainLooper()) { 
         message -&gt;
-        if (message.what != MESSAGE_WHAT) {
-            return@Handler false
+        <span style="color:#66d9ef">if</span> (message.what != MESSAGE_WHAT) {
+            <span style="color:#66d9ef">return</span>@Handler <span style="color:#66d9ef">false</span>
         }
 
-        callback(message.obj as String)
+        callback(message.obj <span style="color:#66d9ef">as</span> String)
 
-        true
+        <span style="color:#66d9ef">true</span>
     }
 
-    fun process(text: String) {
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">process</span>(text: String) {
         handler.removeMessages(MESSAGE_WHAT)
 
-        val message = handler.obtainMessage(MESSAGE_WHAT, text)
+        <span style="color:#66d9ef">val</span> message = handler.obtainMessage(MESSAGE_WHAT, text)
 
         handler.sendMessageDelayed(message, unit.toMillis(timeout))
     }
 }
-</code></pre>
-<p>First, we create Handler for main looper inside our Debouncer. That means that we’ll use event loop from main thread instead of running some background thread.
+</code></pre></div><p>First, we create Handler for main looper inside our Debouncer. That means that we’ll use event loop from main thread instead of running some background thread.
 Inside process method we do exactly what we wrote above: first we remove any pending message, then we create new message to be post in the future and then we send that message with delay.
 In Handler’s callback we’ll get every message which passes through debouncer. We extract payload from that message and redirect it to initial callback.
 Pretty simple, so let’s move on to next example.</p>
@@ -360,35 +357,32 @@ Pretty simple, so let’s move on to next example.</p>
 <p>Now when we have created our Debouncer, let’s look at the different but similar example — Throttler.
 Throttler again will reduce our stream with events, but instead of sending us latest value it will trigger as soon as first event comes and then prevent events triggering for some period of time.</p>
 <p>It might be useful in cases when we have a button, which we’d like to not be clicked twice in a short period of time. So without throttler our code would look like:</p>
-<pre><code>button.setOnClickListener { doAction() }
-</code></pre>
-<p>With throttler our code would look like:</p>
-<pre><code>val throttler = Throttler(100, TimeUnit.MILLISECONDS) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">button.setOnClickListener { doAction() }
+</code></pre></div><p>With throttler our code would look like:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> throttler = Throttler(<span style="color:#ae81ff">100</span>, TimeUnit.MILLISECONDS) {
     doAction()
 }
 button.setOnClickListener { throttler.onAction() }
-</code></pre>
-<p>Let’s look at Throttler implementation:</p>
-<pre><code>class Throttler(
-    private val timeout: Long,
-    private val unit: TimeUnit,
-    private val callback: () -&gt; Unit
+</code></pre></div><p>Let’s look at Throttler implementation:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Throttler</span>(
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> timeout: Long,
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> unit: TimeUnit,
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> callback: () -&gt; Unit
 ) {
-    private val handler = Handler(Looper.getMainLooper())
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> handler = Handler(Looper.getMainLooper())
 
-    fun onAction() {
-        if (handler.hasMessages(MESSAGE_WHAT)) {
-            return
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onAction</span>() {
+        <span style="color:#66d9ef">if</span> (handler.hasMessages(MESSAGE_WHAT)) {
+            <span style="color:#66d9ef">return</span>
         }
 
-        val message = handler.obtainMessage(MESSAGE_WHAT)
+        <span style="color:#66d9ef">val</span> message = handler.obtainMessage(MESSAGE_WHAT)
         handler.sendMessageDelayed(message, unit.toMillis(timeout))
 
         callback()
     }
 }
-</code></pre>
-<p>One can see that it is similar to what we had with Debouncer. The first difference is that in Handler we don’t need callback any more, because we’ll trigger client’s callback directly as soon as action happened. If handler has some messages in a queue — then that means that action should not pass through. If there are no messages in a queue — then we just trigger click and send delayed message to skip any other action in such interval.</p>
+</code></pre></div><p>One can see that it is similar to what we had with Debouncer. The first difference is that in Handler we don’t need callback any more, because we’ll trigger client’s callback directly as soon as action happened. If handler has some messages in a queue — then that means that action should not pass through. If there are no messages in a queue — then we just trigger click and send delayed message to skip any other action in such interval.</p>
 <blockquote>
 <p>Yes, throttling to avoid double-click on button could be done without Handler. We could just store current timestamp into variable and onAction compare current timestamp with timestamp from previous action occurrence. So, consider this just as a training example.</p>
 </blockquote>
@@ -398,23 +392,23 @@ button.setOnClickListener { throttler.onAction() }
 To schedule some background work to separate thread one can just create new thread and make e.g. new network call. But in order to retrieve result on caller’s thread (main thread) one should be able to send it somehow back to main thread, for example using main thread’s Handler.</p>
 <p>But let’s go one step back and look at the example of handling sequential network requests on separate background thread (using HandlerThread).</p>
 <p>We’ll just create HandlerThread and new Handler. Using that Handler we’ll post new network requests to queue and then retrieve results using Callback.</p>
-<pre><code>val messageWhat = 9898
-val uiHandler = Handler(Looper.getMainLooper()) { message -&gt;
-    if (message.what == messageWhat) {
-        println(&quot;Result: ${message.obj}&quot;)
-        true
-    } else {
-        false
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> messageWhat = <span style="color:#ae81ff">9898</span>
+<span style="color:#66d9ef">val</span> uiHandler = Handler(Looper.getMainLooper()) { message -&gt;
+    <span style="color:#66d9ef">if</span> (message.what == messageWhat) {
+        println(<span style="color:#e6db74">&#34;Result: ${message.obj}&#34;</span>)
+        <span style="color:#66d9ef">true</span>
+    } <span style="color:#66d9ef">else</span> {
+        <span style="color:#66d9ef">false</span>
     }
 }
 
-val workerThread = HandlerThread(&quot;network&quot;).apply { start() }
-val workerHandler = Handler(workerThread.looper)
+<span style="color:#66d9ef">val</span> workerThread = HandlerThread(<span style="color:#e6db74">&#34;network&#34;</span>).apply { start() }
+<span style="color:#66d9ef">val</span> workerHandler = Handler(workerThread.looper)
 workerHandler.post {
-    URL(&quot;[https://google.com](https://google.com)&quot;).openStream().use {
+    URL(<span style="color:#e6db74">&#34;[https://google.com](https://google.com)&#34;</span>).openStream().use {
         uiHandler.sendMessage(
             uiHandler.obtainMessage(
-                messageWhat, &quot;data ${it.read()}&quot;
+                messageWhat, <span style="color:#e6db74">&#34;data ${it.read()}&#34;</span>
             )
         )
     }
@@ -423,8 +417,7 @@ workerHandler.post {
 }
 
 workerThread.join()
-</code></pre>
-<p>Here we create first Handler uiHandler as a receiver and workerHandler as producer of some message. Then in workerHandler we post runnable to send some network request and on success we send message back to uiHandler.
+</code></pre></div><p>Here we create first Handler uiHandler as a receiver and workerHandler as producer of some message. Then in workerHandler we post runnable to send some network request and on success we send message back to uiHandler.
 And that’s it.</p>
 <p>One might say that this implementation is far away from being production ready — that’s true, though there might be some cases when it might be possible. And if we look at the source code of IntentService we’ll see quite similar stuff.</p>
 <h3 id="example-4-ipc">Example #4 IPC<a href="#example-4-ipc" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
@@ -448,41 +441,39 @@ Important note that IMessenger is serializable, so we can send it to other proce
 </li>
 </ol>
 <p>Let’s look at the code of how it is implemented. First we’ll start from AndroidManifest.xml, where we register all components our app has. Here we’ll have MainActivity — our UI which will receive messages, and MyService — background worker which will post some messages from background to UI. Pay attention that for our service we’ve added explicitly note that it should run in a separate process:</p>
-<pre><code>&lt;service
-    android:name=&quot;.MyService&quot;
-    android:enabled=&quot;true&quot;
-    android:exported=&quot;false&quot;
-    **android:process=&quot;:second&quot;** /&gt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;service</span>
+    <span style="color:#a6e22e">android:name=</span><span style="color:#e6db74">&#34;.MyService&#34;</span>
+    <span style="color:#a6e22e">android:enabled=</span><span style="color:#e6db74">&#34;true&#34;</span>
+    <span style="color:#a6e22e">android:exported=</span><span style="color:#e6db74">&#34;false&#34;</span>
+    <span style="color:#a6e22e">android:process=</span><span style="color:#e6db74">&#34;:second&#34;</span> <span style="color:#f92672">/&gt;</span>
 
-&lt;activity android:name=&quot;.MainActivity&quot;&gt;
-    &lt;intent-filter&gt;
-        &lt;category android:name=&quot;android.intent.category.LAUNCHER&quot; /&gt;
+<span style="color:#f92672">&lt;activity</span> <span style="color:#a6e22e">android:name=</span><span style="color:#e6db74">&#34;.MainActivity&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;intent-filter&gt;</span>
+        <span style="color:#f92672">&lt;category</span> <span style="color:#a6e22e">android:name=</span><span style="color:#e6db74">&#34;android.intent.category.LAUNCHER&#34;</span> <span style="color:#f92672">/&gt;</span>
 
-        &lt;action android:name=&quot;android.intent.action.MAIN&quot; /&gt;
-    &lt;/intent-filter&gt;
-&lt;/activity&gt;
-</code></pre>
-<p>Next let’s look at MainActivity:</p>
-<pre><code>class MainActivity : AppCompatActivity() {
+        <span style="color:#f92672">&lt;action</span> <span style="color:#a6e22e">android:name=</span><span style="color:#e6db74">&#34;android.intent.action.MAIN&#34;</span> <span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/intent-filter&gt;</span>
+<span style="color:#f92672">&lt;/activity&gt;</span>
+</code></pre></div><p>Next let’s look at MainActivity:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : AppCompatActivity() {
 
-    private val handler = Handler(Looper.getMainLooper()) {
-        Log.e(&quot;TAG&quot;, &quot;Value received: ${it.arg1}&quot;)
-        true
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> handler = Handler(Looper.getMainLooper()) {
+        Log.e(<span style="color:#e6db74">&#34;TAG&#34;</span>, <span style="color:#e6db74">&#34;Value received: ${it.arg1}&#34;</span>)
+        <span style="color:#66d9ef">true</span>
     }
-    private val messenger = Messenger(handler)
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> messenger = Messenger(handler)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
+        <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Log.e(&quot;TAG&quot;, &quot;Activity: ${android.os.Process.myPid()}&quot;)
+        Log.e(<span style="color:#e6db74">&#34;TAG&#34;</span>, <span style="color:#e6db74">&#34;Activity: ${android.os.Process.myPid()}&#34;</span>)
 
-        startService(Intent(this, MyService::class.java).apply {
-            putExtra(&quot;KEY_MESSENGER&quot;, messenger)
+        startService(Intent(<span style="color:#66d9ef">this</span>, MyService<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java).apply {
+            putExtra(<span style="color:#e6db74">&#34;KEY_MESSENGER&#34;</span>, messenger)
         })
     }
 }
-</code></pre>
-<p>Let’s look in details what we have here:</p>
+</code></pre></div><p>Let’s look in details what we have here:</p>
 <ul>
 <li>
 <p>first, we create new handler for our main looper — this is where we’ll receive messages</p>
@@ -496,20 +487,20 @@ Important note that IMessenger is serializable, so we can send it to other proce
 </ul>
 <p>So, basically we were able to wrap our Handler into parcelable Messenger, which we now can send via Intent to other processes (and threads), so that receiver of that messenger can send messages to us.</p>
 <p>Now let’s look at MyService:</p>
-<pre><code>class MyService : Service() {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyService</span> : Service() {
 
-    override fun onStartCommand(
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onStartCommand</span>(
         intent: Intent?, 
         flags: Int, 
         startId: Int
     ): Int {
-        Log.e(&quot;TAG&quot;, &quot;Service: ${android.os.Process.myPid()}&quot;)
-        intent?.getParcelableExtra&lt;Messenger&gt;(&quot;KEY_MESSENGER&quot;)
-            ?.let { messenger -&gt;
+        Log.e(<span style="color:#e6db74">&#34;TAG&#34;</span>, <span style="color:#e6db74">&#34;Service: ${android.os.Process.myPid()}&#34;</span>)
+        intent<span style="color:#f92672">?.</span>getParcelableExtra&lt;Messenger&gt;(<span style="color:#e6db74">&#34;KEY_MESSENGER&#34;</span>)
+            <span style="color:#f92672">?.</span>let { messenger -&gt;
                 Thread {
-                    for (i in 1..10) {
+                    <span style="color:#66d9ef">for</span> (i <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">1.</span>.<span style="color:#ae81ff">10</span>) {
                         messenger.send(createMessage(i))
-                        Thread.sleep(2000)
+                        Thread.sleep(<span style="color:#ae81ff">2000</span>)
                     }
                 }.apply {
                     start()
@@ -517,30 +508,27 @@ Important note that IMessenger is serializable, so we can send it to other proce
                 }
             }
 
-        return START_NOT_STICKY
+        <span style="color:#66d9ef">return</span> START_NOT_STICKY
     }
 
-    private fun createMessage(value: Int): Message {
-        return Message.obtain().apply {
-            what = 1
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">createMessage</span>(value: Int): Message {
+        <span style="color:#66d9ef">return</span> Message.obtain().apply {
+            what = <span style="color:#ae81ff">1</span>
             arg1 = value
             arg2 = value
         }
     }
 
-    override fun onBind(intent: Intent): IBinder? = null
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onBind</span>(intent: Intent): IBinder? = <span style="color:#66d9ef">null</span>
 }
-</code></pre>
-<p>Here in onStartCommand we extract Messenger instance from intent, create new Thread and inside it start sending messages to our MainActivity.
+</code></pre></div><p>Here in onStartCommand we extract Messenger instance from intent, create new Thread and inside it start sending messages to our MainActivity.
 When we run our program, we’ll see that messages are successfully delivered from background process to our MainActivity.</p>
 <h2 id="conslusion">Conslusion<a href="#conslusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>Hopefully after that article one can get an idea of some low-level OS tools for event scheduling, processes/threads communication without using some popular third party solutions.</p>
 <p>It doesn’t mean that you should start using such tools directly, but still it is important to know what happens inside the platform and what possibilities it has.</p>
 <p>Don’t forget to read documentation on Handler and Looper, on working in background and on inter-process communication.
-<a href="https://developer.android.com/training/best-background"><strong>Background Tasks | Android Developers</strong>
-<em>Create multiple APKs for different screen sizes</em>developer.android.com</a>
-<a href="https://developer.android.com/guide/components/aidl"><strong>Android Interface Definition Language (AIDL) | Android Developers</strong>
-*The Android Interface Definition Language (AIDL) is similar to other IDLs you might have worked with. It allows you to…*developer.android.com</a></p>
+<a href="https://developer.android.com/training/best-background"><strong>Background Tasks | Android Developers</strong></a>
+<a href="https://developer.android.com/guide/components/aidl"><strong>Android Interface Definition Language (AIDL) | Android Developers</strong></a></p>
 <p>Happy coding.</p>
 
       </div></div>

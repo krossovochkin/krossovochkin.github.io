@@ -21,8 +21,8 @@
       <description>Source
  This post is part of series of comparing RxJava to Kotlin Flow. Previous articles were about Threading, Backpressure, Error Handling, Stream Types
    
- It is advised to take a look at the overview of Throttling operators in RxJava before reading this article: Throttling in RxJava 2 Review of different throttling operators in RxJava2proandroiddev.com
-Introduction Throttling is also one of the essential features of reactive programming.</description>
+ It is advised to take a look at the overview of Throttling operators in RxJava before reading this article: Throttling in RxJava 2
+Introduction Throttling is also one of the essential features of reactive programming. Streams might emit more values than we’re expecting to receive, so ability to limit number of events in a stream is very important.</description>
     </item>
     
     <item>

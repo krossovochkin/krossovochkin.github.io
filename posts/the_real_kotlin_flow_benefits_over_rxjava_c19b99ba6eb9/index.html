@@ -197,12 +197,10 @@ So, yes, now you will face fewer ExperimentalCoroutinesApi methods, but still ma
 That’s it. You don’t have to deal with different methods to create a stream as we have in Rx. You don’t have to think if you have to use <em>just</em> , <em>create,</em> <em>defer</em> or whichever of the <a href="https://github.com/ReactiveX/RxJava/wiki/Creating-Observables">multiple operators</a> they have.</p>
 </blockquote>
 <p>🚨 Let’s be honest. Kotlin Flow also has flowOf(&hellip;), which is essentially same as just in RxJava and might be misused in the same way:</p>
-<pre><code>flowOf(makeNetworkRequest())
-</code></pre>
-<p>🆗 Other than that I agree that writing custom flows (and flow builder is basically the same as using create in RxJava) is simple. But at the same time I think that RxJava version, being probably a bit more verbose, is the same:</p>
-<pre><code>create { it.onNext(&quot;whatever&quot;) }
-</code></pre>
-<p>Wait, but could one spot the difference? RxJava’s version will remain not completed when Kotlin Flow version will complete at the end.
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">flowOf(makeNetworkRequest())
+</code></pre></div><p>🆗 Other than that I agree that writing custom flows (and flow builder is basically the same as using create in RxJava) is simple. But at the same time I think that RxJava version, being probably a bit more verbose, is the same:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">create { it.onNext(<span style="color:#e6db74">&#34;whatever&#34;</span>) }
+</code></pre></div><p>Wait, but could one spot the difference? RxJava’s version will remain not completed when Kotlin Flow version will complete at the end.
 Everything is simple when you know the details</p>
 <blockquote>
 <p>Also, flows are always <strong>cold observables</strong> (If you don’t know the difference between a cold and a hot observable you can read it <a href="https://github.com/Reactive-Extensions/RxJS/blob/master/doc/gettingstarted/creating.md#cold-vs-hot-observables">here</a>). So, you just create a flow and at the moment there is someone observing, it starts to emit.</p>
@@ -217,9 +215,8 @@ Everything is simple when you know the details</p>
 <h1 id="flatmap-to-transform-stream">FlatMap to transform stream.<a href="#flatmap-to-transform-stream" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
 </blockquote>
 <p>The most interesting thing is that in opposite it is possible to always use flatMap and not use map, because:</p>
-<pre><code>map(f: (A) -&gt; B) = flatMap { a -&gt; just(f(a)) }
-</code></pre>
-<p>Though in reality flatMap implementation provides more overhead, so use whichever operator is needed in your particular situation. If you want to transform content of the stream — use map.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">map(f: (A) -&gt; B) = flatMap { a -&gt; just(f(a)) }
+</code></pre></div><p>Though in reality flatMap implementation provides more overhead, so use whichever operator is needed in your particular situation. If you want to transform content of the stream — use map.</p>
 <p>This is in theory, referencing some functional programming stuff.</p>
 <p>🚨 Yes, body of map method in RxJava is called synchronously, but synchronously **on a scheduler **on which current part of the chain is working. So, I see no issue with that.</p>
 <p>🚨 In RxJava there are multiple stream types: Single, Completable, Observable etc. So flatMap (with other versions like flatMapSingle) are used to convert some streams to other ones.
@@ -240,8 +237,8 @@ Also flatMap allows concurrency (by merging various streams), when map is for di
             .flowOn(Dispatchers.IO)
             .collect { println(it) }
     }
-}</code></pre></div>
-<p>In RxJava we would do something like:</p>
+}
+</code></pre></div><p>In RxJava we would do something like:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">hiThere</span>(): Single&lt;Int&gt; {
     <span style="color:#66d9ef">return</span> Completable.timer(<span style="color:#ae81ff">1</span>, TimeUnit.SECONDS)
         .andThen(Single.just(<span style="color:#ae81ff">40</span>))
@@ -252,8 +249,8 @@ Also flatMap allows concurrency (by merging various streams), when map is for di
         .flatMapSingle { hiThere() }
         .subscribeOn(io())
         .subscribe { println(it) }
-}</code></pre></div>
-<p>One might say that RxJava is too verbose. Maybe, but not that is important. In RxJava we have clearly defined that our function hiThere provides a new stream. And like any other stream, it might be subscribed on some different scheduler. This is huge knowledge because from the usage I already know what function can do.
+}
+</code></pre></div><p>One might say that RxJava is too verbose. Maybe, but not that is important. In RxJava we have clearly defined that our function hiThere provides a new stream. And like any other stream, it might be subscribed on some different scheduler. This is huge knowledge because from the usage I already know what function can do.
 If there would be map — then I’ll understand that there will be just transformation of values (which will be done on the particular scheduler in the chain).</p>
 <p>With Kotlin Flow and map accepting suspend it is not that clear. By looking at usage I don’t know whether it is just a stream content transformation or “flatMapping” some suspending “stream type”. I will have to look at the implementation and for me it is a downside.</p>
 <p>So, it might be convenient to write code with map accepting suspend, but it should be more difficult to read. And readability is important.
@@ -272,12 +269,11 @@ Common operators in the standard library is a good thing. It unifies behaviors, 
 </blockquote>
 <p>🆗 Half-point goes to Kotlin Flow. Basically as with map/flatMap it is possible to use onErrorResumeNext always. But it provides more overhead, so one can decide. The advantage of Kotlin Flow is that the same operator for different implementations is somewhat equal.</p>
 <p>Same time, Kotlin Flow doesn’t have doOnError and one will have to write either own method or do something like:</p>
-<pre><code>.catch { 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">.<span style="color:#66d9ef">catch</span> { 
     doSomething(it)
-    throw it
+    <span style="color:#66d9ef">throw</span> it
 }
-</code></pre>
-<blockquote>
+</code></pre></div><blockquote>
 <p>Backpressure handling</p>
 </blockquote>
 <p>✅ Good thing is that in Kotlin Flow there is no need to use separate stream type to handle backpressure. Flow by itself supports backpressure.
@@ -361,8 +357,8 @@ More info on the threading in the article:
 
 <span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">Observable</span>&lt;T&gt;.launchIn(scope: MyScope) {
     <span style="color:#66d9ef">return</span> scope.launch(<span style="color:#66d9ef">this</span>.subscribe())
-}</code></pre></div>
-<p>Of course, this won’t enforce you to add all your subscriptions that way. One might set up custom lint rule for that or so, though it wouldn’t be trivial.</p>
+}
+</code></pre></div><p>Of course, this won’t enforce you to add all your subscriptions that way. One might set up custom lint rule for that or so, though it wouldn’t be trivial.</p>
 <blockquote>
 <p>According to this <a href="https://github.com/Kotlin/kotlinx.coroutines/tree/master/benchmarks/src/jmh/kotlin/benchmarks/flow/scrabble">github project</a> Flow is a little bit <strong>faster</strong> than Rx</p>
 </blockquote>

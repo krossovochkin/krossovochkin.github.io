@@ -7,7 +7,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <meta name="description" content="Introduction Using SimpleDateFormat to format dates and times is a common thing (as Java 8 Time API is not that available on Android yet). Usually it looks like:
-val formatter = SimpleDateFormat(&amp;quot;dd MMMM yyyy&amp;quot;, Locale.ENGLISH)formatter.format(date) We can use different formats and locales with not only providing correct translations, but also some additional locale-specific formatting rules.
+val formatter = SimpleDateFormat(&amp;#34;dd MMMM yyyy&amp;#34;, Locale.ENGLISH)formatter.format(date)We can use different formats and locales with not only providing correct translations, but also some additional locale-specific formatting rules.
 One tricky thing about SimpleDateFormat formats is why we have M and L when they look identical?" />
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
@@ -42,7 +42,7 @@ One tricky thing about SimpleDateFormat formats is why we have M and L when they
 <meta property="og:type" content="article" />
 <meta property="og:title" content="SiMMMMpLLLLeDateFormat :: Krossovochkin">
 <meta property="og:description" content="Introduction Using SimpleDateFormat to format dates and times is a common thing (as Java 8 Time API is not that available on Android yet). Usually it looks like:
-val formatter = SimpleDateFormat(&amp;quot;dd MMMM yyyy&amp;quot;, Locale.ENGLISH)formatter.format(date) We can use different formats and locales with not only providing correct translations, but also some additional locale-specific formatting rules.
+val formatter = SimpleDateFormat(&amp;#34;dd MMMM yyyy&amp;#34;, Locale.ENGLISH)formatter.format(date)We can use different formats and locales with not only providing correct translations, but also some additional locale-specific formatting rules.
 One tricky thing about SimpleDateFormat formats is why we have M and L when they look identical?" />
 <meta property="og:url" content="https://krossovochkin.github.io/posts/simmmmplllledateformat_6bd326d17012/" />
 <meta property="og:site_name" content="SiMMMMpLLLLeDateFormat" />
@@ -161,33 +161,31 @@ One tricky thing about SimpleDateFormat formats is why we have M and L when they
 </blockquote>
 <h2 id="introduction">Introduction<a href="#introduction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>Using SimpleDateFormat to format dates and times is a common thing (as Java 8 Time API is not that available on Android yet). Usually it looks like:</p>
-<pre><code>val formatter = SimpleDateFormat(&quot;dd MMMM yyyy&quot;, Locale.ENGLISH)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> formatter = SimpleDateFormat(<span style="color:#e6db74">&#34;dd MMMM yyyy&#34;</span>, Locale.ENGLISH)
 formatter.format(date)
-</code></pre>
-<p>We can use different formats and locales with not only providing correct translations, but also some additional locale-specific formatting rules.</p>
+</code></pre></div><p>We can use different formats and locales with not only providing correct translations, but also some additional locale-specific formatting rules.</p>
 <p>One tricky thing about SimpleDateFormat formats is why we have M and L when they look identical?</p>
 <p><img src="../../img/1_HDmye25KvfxWmmpmxTmxew.png" alt=""></p>
 <p>As it is stated in documentation M means “context sensitive” and L — “standalone form”. To better understand what does it mean let’s run few tests.</p>
 <h2 id="m-vs-l">M vs L<a href="#m-vs-l" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>In this article we’ll use this list of formats:</p>
-<pre><code>final String[] formats = {
-    &quot;MMMM&quot;,
-    &quot;LLLL&quot;,
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">final</span> String[] formats = {
+    <span style="color:#e6db74">&#34;MMMM&#34;</span>,
+    <span style="color:#e6db74">&#34;LLLL&#34;</span>,
             
-    &quot;dd MMMM&quot;,
-    &quot;dd LLLL&quot;,
+    <span style="color:#e6db74">&#34;dd MMMM&#34;</span>,
+    <span style="color:#e6db74">&#34;dd LLLL&#34;</span>,
             
-    &quot;MMMM yyyy&quot;,
-    &quot;LLLL yyyy&quot;,
+    <span style="color:#e6db74">&#34;MMMM yyyy&#34;</span>,
+    <span style="color:#e6db74">&#34;LLLL yyyy&#34;</span>,
             
-    &quot;dd MMMM yyyy&quot;,
-    &quot;dd LLLL yyyy&quot;,
+    <span style="color:#e6db74">&#34;dd MMMM yyyy&#34;</span>,
+    <span style="color:#e6db74">&#34;dd LLLL yyyy&#34;</span>,
             
-    &quot;dd MMM&quot;,
-    &quot;dd LLL&quot;
+    <span style="color:#e6db74">&#34;dd MMM&#34;</span>,
+    <span style="color:#e6db74">&#34;dd LLL&#34;</span>
 };
-</code></pre>
-<p>If we check Locale.ENGLISH for these formats we’ll get the following results:</p>
+</code></pre></div><p>If we check Locale.ENGLISH for these formats we’ll get the following results:</p>
 <pre><code>locale: en
 ==================
 MMMM        : July
@@ -204,8 +202,7 @@ dd LLLL yyyy: 20 July 2019
 
 dd MMM      : 20 Jul
 dd LLL      : 20 Jul
-</code></pre>
-<p>No difference between M and L!</p>
+</code></pre><p>No difference between M and L!</p>
 <p>If we check another locale, for example, Locale.GERMAN we again won’t see any difference:</p>
 <pre><code>locale: de
 ==================
@@ -223,8 +220,7 @@ dd LLLL yyyy: 20 Juli 2019
 
 dd MMM      : 20 Jul
 dd LLL      : 20 Jul
-</code></pre>
-<p>Does it mean that we can use M and L in formats interchangeably?</p>
+</code></pre><p>Does it mean that we can use M and L in formats interchangeably?</p>
 <p>Not really. It just happens so that on English and German we get same results. Let’s check other locales from different language groups, for example Russian:</p>
 <pre><code>locale: ru
 ==================
@@ -242,8 +238,7 @@ dd LLLL yyyy: 20 Июль 2019
 
 dd MMM      : 20 июл
 dd LLL      : 20 Июль
-</code></pre>
-<p>And we now see different results, though they are in Russian and we need some additional explanation on what we’ve got. Let’s check examples one by one.</p>
+</code></pre><p>And we now see different results, though they are in Russian and we need some additional explanation on what we’ve got. Let’s check examples one by one.</p>
 <ol>
 <li>
 <p>When using MMMM and LLLL we got same result, so nothing interesting here.</p>
@@ -266,22 +261,21 @@ In contrary LLLL yyyy : Июль 2019 is month name followed by year July 2019 a
 <p>So if we look at examples and add ticks to correctly formatted dates, we’ll figure out the idea:</p>
 <pre><code>locale: ru
 ==================
-MMMM        : Июль **(+)**
-LLLL        : Июль **(+)**
+MMMM        : Июль (+)
+LLLL        : Июль (+)
 
-dd MMMM     : 20 июля **(+)**
+dd MMMM     : 20 июля (+)
 dd LLLL     : 20 Июль
 
 MMMM yyyy   : июля 2019
-LLLL yyyy   : Июль 2019 **(+)**
+LLLL yyyy   : Июль 2019 (+)
 
-dd MMMM yyyy: 20 июля 2019 **(+)**
+dd MMMM yyyy: 20 июля 2019 (+)
 dd LLLL yyyy: 20 Июль 2019
 
-dd MMM      : 20 июл **(+)**
+dd MMM      : 20 июл (+)
 dd LLL      : 20 Июль
-</code></pre>
-<p>The rule is basically the following:</p>
+</code></pre><p>The rule is basically the following:</p>
 <ul>
 <li>
 <p>if you want to format date to have day and month (i.e. format with context) — then you should use M.</p>
