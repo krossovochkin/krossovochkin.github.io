@@ -331,8 +331,7 @@ I’ve asked on Stackoverflow and with help of <a href="undefined">Dávid Karnok
 } 
 </code></pre></div><p>This is a combination of offer method over channel which drops values if there is suspension, and buffer with capacity of 0, which suspends on each item received.</p>
 <p>See answers here:
-<a href="https://stackoverflow.com/a/59917873/1533933">Kotlin Flow onBackpressureDrop RxJava2 analog
-is there a straightforward way to implement something like this Depends on your measure of straightforward. Here is how…stackoverflow.com</a></p>
+<a href="https://stackoverflow.com/a/59917873/1533933">Kotlin Flow onBackpressureDrop RxJava2 analog</a></p>
 <p>With that answer in mind we can write something like:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">testFlow { onBackpressureDrop() }
 </code></pre></div><p>And the result will be:</p>

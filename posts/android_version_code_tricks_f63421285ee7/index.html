@@ -200,8 +200,7 @@ Bug or feature? Let’s find out what is happening.</p>
 <h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>Be careful if you use setVersionCodeOverride as you might have different version codes in *BuildConfig *and <em>AndroidManifest</em>.</p>
 <p>Also according to documentation the recommended way to check version code is to access it via <em>PackageManager</em>, not via <em>BuildConfig</em>:
-<a href="https://developer.android.com/studio/publish/versioning"><strong>Version your app | Android Developers</strong>
-*The Android system uses your app&rsquo;s version information to protect against downgrades.The system does not use app…*developer.android.com</a></p>
+<a href="https://developer.android.com/studio/publish/versioning"><strong>Version your app | Android Developers</strong></a></p>
 <p>Even better is to have versioning logic outside of <em>build.gradle</em> and provide it via gradle parameter by your CI.</p>
 <p>Also it is wise choice to not rely much in your codebase on BuildConfig.VERSION_CODE. For migration cases you’d better to introduce your own local versioning (as it is done with SQL databases).</p>
 <p>Happy coding!</p>
