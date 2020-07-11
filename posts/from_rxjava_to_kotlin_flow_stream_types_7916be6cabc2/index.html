@@ -371,7 +371,7 @@ complete
         .collect { println(<span style="color:#e6db74">&#34;next: $it&#34;</span>) }
 }
 </code></pre></div><p>Other than that everything is similar, though wrapping suspending function into flow in each usage looks too verbose.
-We could wrap it once and provide it as a function, but then we&rsquo;ll loose expressivenes, because now our function will return Flow<!-- raw HTML omitted --> and from looking at method signature we&rsquo;re no longer can say whether we have actually Maybe under the hood or some general Flow.</p>
+We could wrap it once and provide it as a function, but then we&rsquo;ll loose expressivenes, because now our function will return Flow<T> and from looking at method signature we&rsquo;re no longer can say whether we have actually Maybe under the hood or some general Flow.</p>
 <h3 id="switching-from-reactive-stream-to-non-reactive">Switching from reactive stream to non-reactive<a href="#switching-from-reactive-stream-to-non-reactive" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>Now let&rsquo;s look at example where we&rsquo;d like to switch from reactive stream to non-reactive*.
 The example will be the following: we&rsquo;ll have stream of values and on each emit we&rsquo;ll query network. First time we&rsquo;ll do that sequentially and the second concurrently.</p>

@@ -221,7 +221,7 @@ The usage is pretty straightforward, e.g. if we want to obtain Message with what
 </blockquote>
 <ol>
 <li>It should be clear that running Looper before it was attached to a thread will lead to exceptions. Ensure that prepare method was called inside a thread and only then call loop.</li>
-<li>Each thread can have only one Looper. This is controlled by the ThreadLocal<!-- raw HTML omitted --> object inside Looper class. So calling prepare method twice inside same thread will also lead to an exception.</li>
+<li>Each thread can have only one Looper. This is controlled by the ThreadLocal<Looper> object inside Looper class. So calling prepare method twice inside same thread will also lead to an exception.</li>
 </ol>
 <p>The last methods which are interesting to us in Looper class are quit and quitSafely. These methods are used to stop event loop. The first one is not safe as it will terminate processing the queue and some events might be left unprocessed. The second waits until all the messages are processed and then terminates, therefore it is called safe.</p>
 <h3 id="handler">Handler<a href="#handler" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>

@@ -191,7 +191,7 @@ To look at the generated code we’ll use javap:javap -v Main$Child.class</p>
          0: aload_0
          1: invokespecial #1   // Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V
          4: return
-</code></pre><p>What we see here is our class declared with default constructor (<!-- raw HTML omitted -->). No any reference to Main class is kept by Child class (because it is static).</p>
+</code></pre><p>What we see here is our class declared with default constructor (<init>). No any reference to Main class is kept by Child class (because it is static).</p>
 <p>If we remove static modifier and repeat the procedure, that’s what we’ll see:</p>
 <pre><code>class Main$Child
 ...
@@ -334,7 +334,7 @@ Also pay attention that that field has ACC_SYNTHETIC flag, which shows that fiel
 </code></pre><p>Here we see same picture: anonymous class keeps reference to parent class in a synthetic field.</p>
 <h3 id="type-erasure-and-bridge-methods">Type erasure and bridge methods<a href="#type-erasure-and-bridge-methods" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>In Java when using generics there is one important limitation: generics are not available at runtime. The process of removing all the information about generics at compile time is called type erasure.
-That means that if you use in code List<!-- raw HTML omitted --> in resulting bytecode it will become just List without any generic.
+That means that if you use in code List<String> in resulting bytecode it will become just List without any generic.
 Applying that let’s imagine what could happen in the following case. We’ll create some class and make it comparable with classes of same type.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyInt</span> <span style="color:#66d9ef">implements</span> Comparable<span style="color:#f92672">&lt;</span>MyInt<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
 
