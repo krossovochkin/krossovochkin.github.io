@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Accessibility of text over generic background color :: Krossovochkin — Android Developer</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content="Source
+ 
+Introduction One of the important parts of application development is to make it accessible to as many users as possible. This includes people with impaired vision, color blindness, impaired hearing, impaired dexterity, cognitive disabilities, and many other disabilities. Making an app accessible is challenging but rewarding. The difficulty is because the development team should pay attention to some details which often might be overlooked. Though besides some advanced accessibility support might be too expensive to add, there are still some basic best practices to ensure that your app development is heading in the right direction (and can be improved later over time)." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://krossovochkin.github.io/posts/2020_03_29_accessibility_of_text_over_generic_background_color/" />
+
+
+
+
+<link rel="stylesheet" href="https://krossovochkin.github.io/assets/style.css">
+
+  <link rel="stylesheet" href="https://krossovochkin.github.io/assets/yellow.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://krossovochkin.github.io/img/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="https://krossovochkin.github.io/img/favicon/yellow.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  <meta name="twitter:site" content="krossovochkin" />
+
+<meta name="twitter:creator" content="krossovochkin" />
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Accessibility of text over generic background color :: Krossovochkin">
+<meta property="og:description" content="Investigating issues which might result in poor accessibility with text drawn over a random background color" />
+<meta property="og:url" content="https://krossovochkin.github.io/posts/2020_03_29_accessibility_of_text_over_generic_background_color/" />
+<meta property="og:site_name" content="Accessibility of text over generic background color" />
+
+  <meta property="og:image" content="https://krossovochkin.github.io/">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2020-03-29 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Krossovochkin
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About me</a></li>
+        
+      
+        
+          <li><a href="/">Posts</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About me</a></li>
+      
+    
+      
+        <li><a href="/">Posts</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://krossovochkin.github.io/posts/2020_03_29_accessibility_of_text_over_generic_background_color/">Accessibility of text over generic background color</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2020-03-29 
+      </span>
+    
+    
+    <span class="post-author">::
+      Vasya Drobushkov
+    </span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="https://krossovochkin.github.io/tags/android/">android</a>&nbsp;
+    
+    #<a href="https://krossovochkin.github.io/tags/accessibility/">accessibility</a>&nbsp;
+    
+  </span>
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <p><img src="https://images.unsplash.com/photo-1465403843003-b277b46a1120?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1357&amp;q=80" alt="Source"><em><a href="https://unsplash.com/photos/Jky9coxzeHI">Source</a></em></p>
+<p><a href="https://proandroiddev.com/accessibility-of-text-over-generic-background-color-e82e9546731a"><img src="https://img.shields.io/badge/original-proandroiddev-green#badge" alt=""></a> <a href="https://proandroiddev.com/proandroiddev-digest-18-4c6a096fc7e8"><img src="https://img.shields.io/badge/proandroiddevdigest-18-green#badge" alt=""></a></p>
+<h2 id="introduction">Introduction<a href="#introduction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>One of the important parts of application development is to make it accessible to as many users as possible. This includes people with impaired vision, color blindness, impaired hearing, impaired dexterity, cognitive disabilities, and many other disabilities.
+Making an app accessible is challenging but rewarding. The difficulty is because the development team should pay attention to some details which often might be overlooked. Though besides some advanced accessibility support might be too expensive to add, there are still some basic best practices to ensure that your app development is heading in the right direction (and can be improved later over time).
+Basic accessibility support includes providing content descriptions, large enough touchable areas and ensuring good color contrast between foreground and background components.
+In this article, we’ll go in detail on the latest — color contrast. We’ll take a look at one specific situation I faced while developing <a href="https://github.com/krossovochkin/FiberyUnofficial">FiberyUnofficial</a> — my pet project, Android companion app for <a href="https://fibery.io">https://fibery.io</a>.</p>
+<h2 id="toolbar-background">Toolbar background<a href="#toolbar-background" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>In Fibery (as in I guess any other similar tool) each entity has its color. The system generates one by default when a new entity type is created and then the user is free to change it. There is a screen on the web and in the app to see details of some particular entity (i.e. view all the fields).
+Of course, the best way to add “entity personality” to the entity details screen is to color it with the entity’s color. So, we’ll have a toolbar on top of the screen with the entity color background and text (with entity type name and id) on top.
+This is how it might look like:</p>
+<p><img src="../../img/1_VgvPZhLj2MdzQ2XZvj7C5g.png" alt=""></p>
+<blockquote>
+<p><strong>NOTE</strong>: as Android theming doesn’t support dynamic creation, we’ll have to create everything manually. The good news is that for the toolbar we have all the needed methods to change the background and text colors dynamically.
+Also there is a way to add tint over images, so action icons in the toolbar can be tinted dynamically as well.</p>
+</blockquote>
+<p>We change the toolbar color with:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">toolbar.setBackgroundColor(bgColor)
+</code></pre></div><p>This looks good, but it is just because the background color is light so black text looks good. If we have a dark background color then it won’t look nice:</p>
+<p><img src="../../img/1__ij_lOFk75KPVOkrId0Qpg.png" alt=""></p>
+<h2 id="text-color">Text color<a href="#text-color" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>To fix this we need to apply simple logic.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">if</span> (bgColor.isDark) {
+   toolbar.setTitleTextColor(Color.WHITE)
+} <span style="color:#66d9ef">else</span> {
+   toolbar.setTitleTextColor(Color.BLACK)
+}
+</code></pre></div><p>The only thing left is to define how to understand whether bgColor is dark or light.</p>
+<h3 id="alternative-color-models">Alternative color models<a href="#alternative-color-models" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>The most common color model is <a href="https://en.wikipedia.org/wiki/RGB_color_model">RGB</a>, I guess we all know it. It consists of three channels: one for red, second for green and third for blue. Changing values in channels result in a different color.
+But there are also other color models, among which there are <a href="https://en.wikipedia.org/wiki/HSL_and_HSV">HSL, HSV</a>, etc.
+Here we’re interested in <a href="https://en.wikipedia.org/wiki/Color_model#CIE_XYZ_color_space">XYZ</a>.
+Y parameter (which is luminance) is exactly the parameter we need to identify whether our color is dark or light. This value is defined in a range [0, 1], where 0 means the darkest color and 1 the lightest one.
+Luckily for us, we don’t need to do the color conversion ourselves, there is a handy utility method in the Android SDK already:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">ColorUtils.calculateLuminance(bgColor)
+</code></pre></div><p>It will return a float value between 0 and 1. The simplest logic of defining whether bgColor is dark or not is to compare with the middle value — 0.5:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">isDarkColor</span>(@ColorInt color: Int): Boolean {
+    <span style="color:#66d9ef">return</span> ColorUtils.calculateLuminance(color) &lt; <span style="color:#ae81ff">0.5</span>
+}
+</code></pre></div><blockquote>
+<p><strong>NOTE</strong>: this is exactly what <a href="https://stackoverflow.com/a/48267387">one can find on StackOverflow</a> after searching for dark color checking.</p>
+</blockquote>
+<p>And finally the result:</p>
+<p><img src="../../img/1_-Nk405bsOPb4N6Rg7N8lHw.png" alt=""></p>
+<h3 id="dark-theme-support">Dark theme support<a href="#dark-theme-support" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>What we have already looks good, but at the same time we still have an issue if we decide to add support for dark theming, check it out:</p>
+<p><img src="../../img/1_c_monitArNC0x-XtaqCOOQ.png" alt=""></p>
+<p>Our toolbar looks too bright. And it is because of saturation of the color is too high. If we decide to follow <a href="https://www.material.io/design/color/dark-theme.html">design guidelines</a> for a dark theme we’ll see that we need to de-saturate our color to make it “softer” for eyes when dark mode is enabled.
+What it means that we need to convert our RGB color into HSL or HSV (translated as hue, saturation, value) and reduce the second parameter responsible for saturation. Then convert the color back to RGB and use it as the background of toolbar.
+This time we’ll do some manual work by creating a special method for de-saturation, which under the hood will convert our color to HSV (as there is ready method for that in the Android SDK):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@ColorInt
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getDesaturatedColor</span>(@ColorInt color: Int): Int {
+    <span style="color:#66d9ef">val</span> result = FloatArray(size = <span style="color:#ae81ff">3</span>)
+    Color.colorToHSV(color, result)
+    result[<span style="color:#ae81ff">1</span>] *= *<span style="color:#ae81ff">0.6</span>
+    *<span style="color:#66d9ef">return</span> Color.HSVToColor(result)
+}
+</code></pre></div><p>We’ll multiply saturation by 0.6. It is just the experimentally taken value.</p>
+<blockquote>
+<p><strong>NOTE:</strong> probably an improvement to the approach could be to not only decrease ther saturation of all colors, but to also add some lower bound limit to not de-saturate already “de-saturated” colors that much</p>
+</blockquote>
+<p>And here is the result (with comparison: original on the left and de-saturated on the right):</p>
+<p><img src="../../img/1_ENCwzThDlmZVKxEXy6ga1g.png" alt=""></p>
+<p>This looks better.</p>
+<h3 id="color-contrast">Color contrast<a href="#color-contrast" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>But still, there is an issue. But this time it might be quite surprising.
+In the Play Store, there is an app “<a href="https://play.google.com/store/apps/details?id=com.google.android.apps.accessibility.auditor&amp;hl=en_US">Accessibility Scanner</a>” developed by Google, which allows you to make some screenshot testing of your screen to meet accessibility guidelines.
+If we run this check on the screen:</p>
+<p><img src="../../img/1_U_B0WxvfUIIjuvvEnmtnAw.png" alt=""></p>
+<p>We see that we have an issue: contrast between toolbar background and text on top of it is not sufficient!
+This refers to <a href="https://www.w3.org/TR/WCAG20/">WCAG</a>, which says that contrast between text and background should be at least 4.5:1. Numbers are a bit abstract, but a lot of investigations and math is behind that. There are formulas in the guidelines describing how to calculate these values:</p>
+<p><img src="../../img/1_3O_SRTd17NDUrhtvvdZAAg.png" alt=""></p>
+<p><img src="../../img/1_1i5UWjf4Avj6dNIa5hy-5g.png" alt=""></p>
+<p>But again, we don’t need to calculate them manually, as there is a ready to use method:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">ColorUtils.calculateContrast(foreground, background)
+</code></pre></div><p>Our background color which had an issue is: #7f6fad.
+If we calculate its luminance, we’ll get 0.1889803503770053 which means that this color should be considered as dark.
+Let’s calculate contrast between white and this color, and black and this color.
+The result will be:</p>
+<pre><code>- White: 4.393666669010922
+- Black: 4.779607007540106
+</code></pre>
+<p>So, though our previously created method detects background color as dark, it turns out that black text would have better contrast than white! And contrast which white gives is not enough!</p>
+<p>Let’s see the difference. It seems black is more readable.</p>
+<p><img src="../../img/1_A4yYwIMxkeqheHo75MCTCA.png" alt=""></p>
+<h3 id="final-touch">Final touch<a href="#final-touch" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>OK, so now we have a new idea on how to choose better color (white or black) — we’ll calculate contrasts between white and background color and black and background color and choose one with the highest value.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getContrastColor</span>(@ColorInt color: Int): Int {
+    <span style="color:#66d9ef">val</span> whiteContrast = ColorUtils.calculateContrast(Color.WHITE, color)
+    <span style="color:#66d9ef">val</span> blackContrast = ColorUtils.calculateContrast(Color.BLACK, color)
+
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">if</span> (whiteContrast &gt; blackContrast) Color.WHITE <span style="color:#66d9ef">else</span> Color.BLACK
+}
+</code></pre></div><p>One question which is left is whether it is possible for both white and black colors to not meet contrast requirements of 4.5:1?
+Let’s do some math. We’ll remember the formula from WSAG and check it.
+We’ll have three values of L (relative luminances):</p>
+<ul>
+<li>
+<p>Lw — relative luminance for white, which is 1</p>
+</li>
+<li>
+<p>Lb — relative luminance of black, which is 0</p>
+</li>
+<li>
+<p>Lt — which we’ll be our target color’s luminance.</p>
+</li>
+</ul>
+<p>The contrast is calculated by the formula:(L1 + 0.05) / (L2 + 0.05) (where L1 &gt; L2).
+So we’ll have two equations, and we’d like to check whether they both can hold. First will be for white (L1 will be substituted with Lw, L2 with Lt), second for black (L1 will be Lt, L2 will be Lb):</p>
+<pre><code>1.05 / (Lt + 0.05) &lt; 4.5
+(Lt + 0.05) / 0.05 &lt; 4.5
+</code></pre><p>After a few manipulations we’ll get this:</p>
+<pre><code>Lt &gt; 0.18(3)
+Lt &lt; 0.175
+</code></pre><p>And both these equations can’t be true at the same time, therefore either black or white text will have good contrast over any background color!</p>
+<p>So, finally, after adjustments Accessibility Scanner says that issue is resolved:</p>
+<p><img src="../../img/1_T3I6lfcIx2LGQSK4dqiWog.png" alt=""></p>
+<p>Though there are still other issues which need to be fixed :)</p>
+<h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Accessibility is difficult. Working with colors is also difficult.
+But it should not scare you.</p>
+<p>Following best practices, guidelines and using tools such as “Accessibility Scanner” allows you to make your app more accessible with ease. Don’t wait to make your app more accessible, review it with a tool and make needed changes.</p>
+<p>Additionally, I would like to point out how important it is to craft good requirements. “If the background color is dark then display white text, otherwise use black” is an example of bad requirements. It doesn’t describe what actually “dark” means and it doesn’t say why we want to display exactly white over dark. “Text should be readable and meet accessibility requirements” is better, because it shows intention and clearer describes the problem we’d like to solve. Mentioning accessibility requirements, after all, will guide you to official guidelines and it will make the right decision to not create your implementation of “dart vs. light” based on some experimental thresholds, but instead follow best practices.</p>
+<p>Happy coding!</p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="https://krossovochkin.github.io/posts/2020_04_26_category_theory/">
+                <span class="button__icon">←</span>
+                <span class="button__text">Category theory</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="https://krossovochkin.github.io/posts/2020_03_19_compiler_generated_classes_methods_and_fields_in_java/">
+                <span class="button__text">Compiler-generated classes, methods and fields in Java</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>© 2020 Vasya Drobushkov</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+  <div class="footer__inner">
+    <div class="copyright copyright--user">
+      <a href="https://www.facebook.com/vasya.drobushkov">Facebook</a><a href="https://twitter.com/krossovochkin">Twitter</a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://krossovochkin.github.io/assets/main.js"></script>
+<script src="https://krossovochkin.github.io/assets/prism.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

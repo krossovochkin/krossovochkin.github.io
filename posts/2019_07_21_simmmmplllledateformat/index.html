@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>SiMMMMpLLLLeDateFormat :: Krossovochkin — Android Developer</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content="Introduction Using SimpleDateFormat to format dates and times is a common thing (as Java 8 Time API is not that available on Android yet). Usually it looks like:
+val formatter = SimpleDateFormat(&amp;#34;dd MMMM yyyy&amp;#34;, Locale.ENGLISH)formatter.format(date)We can use different formats and locales with not only providing correct translations, but also some additional locale-specific formatting rules.
+One tricky thing about SimpleDateFormat formats is why we have M and L when they look identical?" />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://krossovochkin.github.io/posts/2019_07_21_simmmmplllledateformat/" />
+
+
+
+
+<link rel="stylesheet" href="https://krossovochkin.github.io/assets/style.css">
+
+  <link rel="stylesheet" href="https://krossovochkin.github.io/assets/yellow.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://krossovochkin.github.io/img/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="https://krossovochkin.github.io/img/favicon/yellow.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  <meta name="twitter:site" content="krossovochkin" />
+
+<meta name="twitter:creator" content="krossovochkin" />
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="SiMMMMpLLLLeDateFormat :: Krossovochkin">
+<meta property="og:description" content="Introduction Using SimpleDateFormat to format dates and times is a common thing (as Java 8 Time API is not that available on Android yet). Usually it looks like:
+val formatter = SimpleDateFormat(&amp;#34;dd MMMM yyyy&amp;#34;, Locale.ENGLISH)formatter.format(date)We can use different formats and locales with not only providing correct translations, but also some additional locale-specific formatting rules.
+One tricky thing about SimpleDateFormat formats is why we have M and L when they look identical?" />
+<meta property="og:url" content="https://krossovochkin.github.io/posts/2019_07_21_simmmmplllledateformat/" />
+<meta property="og:site_name" content="SiMMMMpLLLLeDateFormat" />
+
+  <meta property="og:image" content="https://krossovochkin.github.io/">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2019-07-21 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Krossovochkin
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About me</a></li>
+        
+      
+        
+          <li><a href="/">Posts</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About me</a></li>
+      
+    
+      
+        <li><a href="/">Posts</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://krossovochkin.github.io/posts/2019_07_21_simmmmplllledateformat/">SiMMMMpLLLLeDateFormat</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2019-07-21 
+      </span>
+    
+    
+    <span class="post-author">::
+      Vasya Drobushkov
+    </span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="https://krossovochkin.github.io/tags/android/">android</a>&nbsp;
+    
+    #<a href="https://krossovochkin.github.io/tags/java/">java</a>&nbsp;
+    
+    #<a href="https://krossovochkin.github.io/tags/dateformat/">dateformat</a>&nbsp;
+    
+  </span>
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <p><a href="https://proandroiddev.com/simmmmplllledateformat-6bd326d17012"><img src="https://img.shields.io/badge/original-proandroiddev-green#badge" alt=""></a></p>
+<h2 id="introduction">Introduction<a href="#introduction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Using SimpleDateFormat to format dates and times is a common thing (as Java 8 Time API is not that available on Android yet). Usually it looks like:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> formatter = SimpleDateFormat(<span style="color:#e6db74">&#34;dd MMMM yyyy&#34;</span>, Locale.ENGLISH)
+formatter.format(date)
+</code></pre></div><p>We can use different formats and locales with not only providing correct translations, but also some additional locale-specific formatting rules.</p>
+<p>One tricky thing about SimpleDateFormat formats is why we have M and L when they look identical?</p>
+<p><img src="../../img/1_HDmye25KvfxWmmpmxTmxew.png" alt=""></p>
+<p>As it is stated in documentation M means “context sensitive” and L — “standalone form”. To better understand what does it mean let’s run few tests.</p>
+<h2 id="m-vs-l">M vs L<a href="#m-vs-l" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>In this article we’ll use this list of formats:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">final</span> String[] formats = {
+    <span style="color:#e6db74">&#34;MMMM&#34;</span>,
+    <span style="color:#e6db74">&#34;LLLL&#34;</span>,
+            
+    <span style="color:#e6db74">&#34;dd MMMM&#34;</span>,
+    <span style="color:#e6db74">&#34;dd LLLL&#34;</span>,
+            
+    <span style="color:#e6db74">&#34;MMMM yyyy&#34;</span>,
+    <span style="color:#e6db74">&#34;LLLL yyyy&#34;</span>,
+            
+    <span style="color:#e6db74">&#34;dd MMMM yyyy&#34;</span>,
+    <span style="color:#e6db74">&#34;dd LLLL yyyy&#34;</span>,
+            
+    <span style="color:#e6db74">&#34;dd MMM&#34;</span>,
+    <span style="color:#e6db74">&#34;dd LLL&#34;</span>
+};
+</code></pre></div><p>If we check Locale.ENGLISH for these formats we’ll get the following results:</p>
+<pre><code>locale: en
+==================
+MMMM        : July
+LLLL        : July
+
+dd MMMM     : 20 July
+dd LLLL     : 20 July
+
+MMMM yyyy   : July 2019
+LLLL yyyy   : July 2019
+
+dd MMMM yyyy: 20 July 2019
+dd LLLL yyyy: 20 July 2019
+
+dd MMM      : 20 Jul
+dd LLL      : 20 Jul
+</code></pre><p>No difference between M and L!</p>
+<p>If we check another locale, for example, Locale.GERMAN we again won’t see any difference:</p>
+<pre><code>locale: de
+==================
+MMMM        : Juli
+LLLL        : Juli
+
+dd MMMM     : 20 Juli
+dd LLLL     : 20 Juli
+
+MMMM yyyy   : Juli 2019
+LLLL yyyy   : Juli 2019
+
+dd MMMM yyyy: 20 Juli 2019
+dd LLLL yyyy: 20 Juli 2019
+
+dd MMM      : 20 Jul
+dd LLL      : 20 Jul
+</code></pre><p>Does it mean that we can use M and L in formats interchangeably?</p>
+<p>Not really. It just happens so that on English and German we get same results. Let’s check other locales from different language groups, for example Russian:</p>
+<pre><code>locale: ru
+==================
+MMMM        : Июль
+LLLL        : Июль
+
+dd MMMM     : 20 июля
+dd LLLL     : 20 Июль
+
+MMMM yyyy   : июля 2019
+LLLL yyyy   : Июль 2019
+
+dd MMMM yyyy: 20 июля 2019
+dd LLLL yyyy: 20 Июль 2019
+
+dd MMM      : 20 июл
+dd LLL      : 20 Июль
+</code></pre><p>And we now see different results, though they are in Russian and we need some additional explanation on what we’ve got. Let’s check examples one by one.</p>
+<ol>
+<li>
+<p>When using MMMM and LLLL we got same result, so nothing interesting here.</p>
+</li>
+<li>
+<p>The result of dd MMMM : 20 июля actually can be translated to English as 20th of July. And it is correct form.
+And dd LLLL : 20 Июль can be translated as 20. July.. It sounds weird and not correct grammatically.</p>
+</li>
+<li>
+<p>The result of MMMM yyyy : июля 2019 is something like of July 2019 which is not correct.
+In contrary LLLL yyyy : Июль 2019 is month name followed by year July 2019 and it is good.</p>
+</li>
+<li>
+<p>dd MMMM yyyy case is basically same as second case.</p>
+</li>
+<li>
+<p>The last example is similar to the second case, the difference only that with MMM we got correct shortened month name, while with LLL we got the full name of the month and it again looks weird.</p>
+</li>
+</ol>
+<p>So if we look at examples and add ticks to correctly formatted dates, we’ll figure out the idea:</p>
+<pre><code>locale: ru
+==================
+MMMM        : Июль (+)
+LLLL        : Июль (+)
+
+dd MMMM     : 20 июля (+)
+dd LLLL     : 20 Июль
+
+MMMM yyyy   : июля 2019
+LLLL yyyy   : Июль 2019 (+)
+
+dd MMMM yyyy: 20 июля 2019 (+)
+dd LLLL yyyy: 20 Июль 2019
+
+dd MMM      : 20 июл (+)
+dd LLL      : 20 Июль
+</code></pre><p>The rule is basically the following:</p>
+<ul>
+<li>
+<p>if you want to format date to have day and month (i.e. format with context) — then you should use M.</p>
+</li>
+<li>
+<p>if you want to format month only or month without day (i.e. format standalone form) — then you should use L.</p>
+</li>
+</ul>
+<h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Of course if your app supports only English locale you might not think about such a things. But still it is good to know what exactly should be used in which case so that if one day you decide to add e.g. Russian locale support — everything will be fine.</p>
+<p>Such behavior actually applicable not only to Russian locale, but for most of the Slavic languages at least.</p>
+<p>Keep that in mind and keep your translations clean.</p>
+<p>Happy coding</p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="https://krossovochkin.github.io/posts/2019_09_27_random_interview_coding_task_retrospective/">
+                <span class="button__icon">←</span>
+                <span class="button__text">Random interview coding task retrospective</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="https://krossovochkin.github.io/posts/2019_07_07_3x3x3_rubiks_cube_world_gif_alert/">
+                <span class="button__text">3x3x3 Rubik’s cube world (GIF alert)</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>© 2020 Vasya Drobushkov</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+  <div class="footer__inner">
+    <div class="copyright copyright--user">
+      <a href="https://www.facebook.com/vasya.drobushkov">Facebook</a><a href="https://twitter.com/krossovochkin">Twitter</a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://krossovochkin.github.io/assets/main.js"></script>
+<script src="https://krossovochkin.github.io/assets/prism.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

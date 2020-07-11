@@ -14,10 +14,10 @@
     
     <item>
       <title>Kotlin-Java interop: function references and SAM conversions</title>
-      <link>https://krossovochkin.github.io/posts/kotlin_java_interop_function_references_and_sam_conversions_3d0cd36f7967/</link>
+      <link>https://krossovochkin.github.io/posts/2018_09_13_kotlin_java_interop_function_references_and_sam_conversions/</link>
       <pubDate>Thu, 13 Sep 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/kotlin_java_interop_function_references_and_sam_conversions_3d0cd36f7967/</guid>
+      <guid>https://krossovochkin.github.io/posts/2018_09_13_kotlin_java_interop_function_references_and_sam_conversions/</guid>
       <description>Though all the things below are pretty obvious if being careful while dealing with Kotlin-Java interop, I decided still to write short note about one particular issue with function references (from Kotlin side) and SAM conversions (from Java side).
 Function reference Function reference is a good way to pass function as a parameter without explicitly using lambdas.
 For example, if we have function:

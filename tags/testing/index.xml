@@ -14,10 +14,10 @@
     
     <item>
       <title>From RxJava to Kotlin Flow: Testing</title>
-      <link>https://krossovochkin.github.io/posts/from_rxjava_to_kotlin_flow_testing_42f1641d8433/</link>
+      <link>https://krossovochkin.github.io/posts/2020_03_05_from_rxjava_to_kotlin_flow_testing/</link>
       <pubDate>Thu, 05 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/from_rxjava_to_kotlin_flow_testing_42f1641d8433/</guid>
+      <guid>https://krossovochkin.github.io/posts/2020_03_05_from_rxjava_to_kotlin_flow_testing/</guid>
       <description>Source
  This post is part of series of comparing RxJava to Kotlin Flow. Previous articles were about Threading, Backpressure, Error Handling, Stream Types, Throttling
  

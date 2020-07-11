@@ -14,10 +14,10 @@
     
     <item>
       <title>Dart language bad design choices</title>
-      <link>https://krossovochkin.github.io/posts/dart_language_bad_design_choices_6e35987dc693/</link>
+      <link>https://krossovochkin.github.io/posts/2019_04_08_dart_language_bad_design_choices/</link>
       <pubDate>Mon, 08 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/dart_language_bad_design_choices_6e35987dc693/</guid>
+      <guid>https://krossovochkin.github.io/posts/2019_04_08_dart_language_bad_design_choices/</guid>
       <description>Introduction Before raising a point about some design choices we need to define some criteria.
   Intent/Declaration &amp;gt; Usage/Implementation Code one write should clearly state the intent. Implementation is not that important than an intent.
   Implicit is bad Implicit things do not share the intention, therefore from the first point it means that any implicit thing hides true intent. If anything hides intention — it can be considered bad.</description>

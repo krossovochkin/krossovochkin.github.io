@@ -14,10 +14,10 @@
     
     <item>
       <title>From RxJava to Kotlin Flow: Stream Types</title>
-      <link>https://krossovochkin.github.io/posts/from_rxjava_to_kotlin_flow_stream_types_7916be6cabc2/</link>
+      <link>https://krossovochkin.github.io/posts/2020_02_26_from_rxjava_to_kotlin_flow_stream_types/</link>
       <pubDate>Wed, 26 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/from_rxjava_to_kotlin_flow_stream_types_7916be6cabc2/</guid>
+      <guid>https://krossovochkin.github.io/posts/2020_02_26_from_rxjava_to_kotlin_flow_stream_types/</guid>
       <description>Source
  This post is part of series of comparing RxJava to Kotlin Flow. Previous articles were about Threading, Backpressure, Error Handling
   

@@ -14,10 +14,10 @@
     
     <item>
       <title>From RxJava to Kotlin Flow: Throttling</title>
-      <link>https://krossovochkin.github.io/posts/from_rxjava_to_kotlin_flow_throttling_ed1778847619/</link>
+      <link>https://krossovochkin.github.io/posts/2020_03_02_from_rxjava_to_kotlin_flow_throttling/</link>
       <pubDate>Mon, 02 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/from_rxjava_to_kotlin_flow_throttling_ed1778847619/</guid>
+      <guid>https://krossovochkin.github.io/posts/2020_03_02_from_rxjava_to_kotlin_flow_throttling/</guid>
       <description>Source
  This post is part of series of comparing RxJava to Kotlin Flow. Previous articles were about Threading, Backpressure, Error Handling, Stream Types
   
@@ -27,10 +27,10 @@ Introduction Throttling is also one of the essential features of reactive progra
     
     <item>
       <title>Throttling in RxJava 2</title>
-      <link>https://krossovochkin.github.io/posts/throttling_in_rxjava_2_d640ea5f7bf1/</link>
+      <link>https://krossovochkin.github.io/posts/2019_06_24_throttling_in_rxjava_2/</link>
       <pubDate>Mon, 24 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/throttling_in_rxjava_2_d640ea5f7bf1/</guid>
+      <guid>https://krossovochkin.github.io/posts/2019_06_24_throttling_in_rxjava_2/</guid>
       <description>Introduction I don’t know for what reason but I see from time to time same misunderstanding on different throttle operators in RxJava. Usually nobody says about throttle, instead by default everyone says that debounce can be used. Especially using debounce to avoid multiple clicks on buttons is commonly suggested, which I believe is a bad UX (some examples here and here). Let’s finally look at available options in RxJava and find out when it is better to use what.</description>
     </item>
     

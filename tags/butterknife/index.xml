@@ -14,10 +14,10 @@
     
     <item>
       <title>Kotlin-android-synthetics performance analysis (with ButterKnife)</title>
-      <link>https://krossovochkin.github.io/posts/kotlin_android_synthetics_performance_analysis_with_butterknife_90a54ca4325d/</link>
+      <link>https://krossovochkin.github.io/posts/2019_02_18_kotlin_android_synthetics_performance_analysis_with_butterknife/</link>
       <pubDate>Mon, 18 Feb 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/kotlin_android_synthetics_performance_analysis_with_butterknife_90a54ca4325d/</guid>
+      <guid>https://krossovochkin.github.io/posts/2019_02_18_kotlin_android_synthetics_performance_analysis_with_butterknife/</guid>
       <description>Introduction After comment that synthetic is no longer recommended practice and some arguments I decided to go deeper into issue with performance of kotlin-android-synthetics by analyzing generated Java and byte code and comparing to other approaches (such as vanilla-*findViewById *and ButterKnife).
 Vanilla-findViewById This is sample Activity we’ll work with throughout the article. Approach with *findViewById *will be our baseline.
 Sample consists of:

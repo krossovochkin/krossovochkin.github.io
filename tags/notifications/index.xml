@@ -14,10 +14,10 @@
     
     <item>
       <title>[Android] Notifications Overview and Pitfalls</title>
-      <link>https://krossovochkin.github.io/posts/android_notifications_overview_and_pitfalls_517d1118ec83/</link>
+      <link>https://krossovochkin.github.io/posts/2017_02_11android_notifications_overview_and_pitfalls/</link>
       <pubDate>Sat, 11 Feb 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/android_notifications_overview_and_pitfalls_517d1118ec83/</guid>
+      <guid>https://krossovochkin.github.io/posts/2017_02_11android_notifications_overview_and_pitfalls/</guid>
       <description>Introduction Notifications are widely used in Android applications. Though API is pretty straightforward, there are some key things that one should know and understand. This article will try to be first step into understanding Notifications API.
 Sending Single Notification Notification singleNotification = new NotificationCompat.Builder(this).setContentTitle(&amp;#34;Title&amp;#34;).setContentText(&amp;#34;Text&amp;#34;).setSmallIcon(R.drawable.ic_notification).build();NotificationManagerCompat notificationManager = NotificationManagerCompat.*from*(context);notificationManager.notify(notificationId, singleNotification);Key things here:
   We use NotificationCompat.Builder to have single interface for creating notifications and let Support Library do all compatibility tricks;</description>

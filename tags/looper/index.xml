@@ -14,10 +14,10 @@
     
     <item>
       <title>Decoding Handler and Looper in Android</title>
-      <link>https://krossovochkin.github.io/posts/decoding_handler_and_looper_in_android_d4f3f2449513/</link>
+      <link>https://krossovochkin.github.io/posts/2019_12_24_decoding_handler_and_looper_in_android/</link>
       <pubDate>Tue, 24 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/decoding_handler_and_looper_in_android_d4f3f2449513/</guid>
+      <guid>https://krossovochkin.github.io/posts/2019_12_24_decoding_handler_and_looper_in_android/</guid>
       <description>Introduction Handler and Looper are one of the main low-level Android OS things, which almost nobody uses directly (at least nowadays). But they are at the core, so many other high-level solutions are based on them. Therefore one should know what Handler and Looper are, what and how they are doing.
 In this article we’ll try to understand Handler and Looper in Android. What, how and why we might need them.</description>
     </item>

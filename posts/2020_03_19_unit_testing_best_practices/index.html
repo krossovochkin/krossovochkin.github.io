@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Unit Testing Best Practices :: Krossovochkin — Android Developer</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content="Source
+
+Disclaimer: This is a set of things I consider very useful when writing unit tests. I call them best practices because they allow me to write good, quality tests that are easier to read, more maintainable, and better describe business needs.
+These points might be subjective, you might have other opinions or have more items. That’s fine. Do not hesitate to put your opinions in the comments.
+Tests in the Development Process Tests are very important in the development process." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://krossovochkin.github.io/posts/2020_03_19_unit_testing_best_practices/" />
+
+
+
+
+<link rel="stylesheet" href="https://krossovochkin.github.io/assets/style.css">
+
+  <link rel="stylesheet" href="https://krossovochkin.github.io/assets/yellow.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://krossovochkin.github.io/img/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="https://krossovochkin.github.io/img/favicon/yellow.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  <meta name="twitter:site" content="krossovochkin" />
+
+<meta name="twitter:creator" content="krossovochkin" />
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Unit Testing Best Practices :: Krossovochkin">
+<meta property="og:description" content="A list of practical suggestions that can help you write better tests" />
+<meta property="og:url" content="https://krossovochkin.github.io/posts/2020_03_19_unit_testing_best_practices/" />
+<meta property="og:site_name" content="Unit Testing Best Practices" />
+
+  <meta property="og:image" content="https://krossovochkin.github.io/">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2020-03-19 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Krossovochkin
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About me</a></li>
+        
+      
+        
+          <li><a href="/">Posts</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About me</a></li>
+      
+    
+      
+        <li><a href="/">Posts</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://krossovochkin.github.io/posts/2020_03_19_unit_testing_best_practices/">Unit Testing Best Practices</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2020-03-19 
+      </span>
+    
+    
+    <span class="post-author">::
+      Vasya Drobushkov
+    </span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="https://krossovochkin.github.io/tags/programming/">programming</a>&nbsp;
+    
+    #<a href="https://krossovochkin.github.io/tags/unit-testing/">unit testing</a>&nbsp;
+    
+    #<a href="https://krossovochkin.github.io/tags/unit/">unit</a>&nbsp;
+    
+    #<a href="https://krossovochkin.github.io/tags/test/">test</a>&nbsp;
+    
+  </span>
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <p><img src="https://images.unsplash.com/photo-1547637589-f54c34f5d7a4?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1357&amp;q=80" alt="Source"><em><a href="https://unsplash.com/photos/IiEFmIXZWSw">Source</a></em></p>
+<p><a href="https://medium.com/better-programming/unit-testing-best-practices-9bceeafe6edf"><img src="https://img.shields.io/badge/original-medium-green#badge" alt=""></a></p>
+<p><strong>Disclaimer</strong>: This is a set of things I consider very useful when writing unit tests. I call them <em>best practices</em> because they allow me to write good, quality tests that are easier to read, more maintainable, and better describe business needs.</p>
+<p>These points might be subjective, you might have other opinions or have more items. That’s fine. Do not hesitate to put your opinions in the comments.</p>
+<h2 id="tests-in-the-development-process">Tests in the Development Process<a href="#tests-in-the-development-process" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Tests are very important in the development process. They give you a lot of benefits:</p>
+<ul>
+<li>
+<p>Tests validate requirements. This shows you that your implementation correctly solved the problem.</p>
+</li>
+<li>
+<p>They identify defects in the early stages. It is always better to find issues earlier as it will be faster and cheaper to fix. Finding a defect during development by writing tests is perfect timing.</p>
+</li>
+<li>
+<p>Improve maintainability. To write tests, the source code should be testable, which means that it would be more maintainable. Testable code is usually well-decoupled which adds more readability. This also forces better architecture.</p>
+</li>
+<li>
+<p>Make refactoring safer. Tests allow big changes, with validation that no regressions were introduced.</p>
+</li>
+<li>
+<p>Helps in code review. As tests clearly show the intention of the author, it is easier to first verify that tests do what the solution should. This will give more insight into what was actually done, making it simpler to review.</p>
+</li>
+</ul>
+<h2 id="good-test">Good Test<a href="#good-test" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>We’ll start by defining what can be considered a “good test”.</p>
+<p>Usually, a good test is:</p>
+<ul>
+<li>
+<p>Trustworthy. That means that it fails only if it is broken. If tests can sometimes fail then it is flaky and can’t be called a good test.</p>
+</li>
+<li>
+<p>Readable/maintainable. From reading a test, it should be clear what it tests and how it is done. It should have no boilerplate or tricky tweaks of state or control.</p>
+</li>
+<li>
+<p>Should verify a single use case. This is related to the single responsibility principle. If a test verifies multiple cases then if it fails, we can’t say why exactly. A good test verifies a single use case and when it fails, we immediately know what went wrong.</p>
+</li>
+<li>
+<p>Isolated. The test should not be able to influence other tests. This particularly implies that tests should not share a global state. If tests are not isolated, then the order in which they are executed can lead to unexpected results.</p>
+</li>
+</ul>
+<h2 id="best-practices-for-a-good-test-process">Best Practices for a Good Test Process<a href="#best-practices-for-a-good-test-process" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>The second set of best practices is about a good test process.</p>
+<p>A test process is good if:</p>
+<h3 id="it-is-automated-on-ci">It is automated (on CI)<a href="#it-is-automated-on-ci" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Tests are only useful if they are executed in a timely manner. The best option is to use continuous integration which will constantly run your tests, for example, on each commit. Otherwise, it is easy to forget to run tests, which makes them useless.</p>
+<h3 id="tests-are-written-during-development-not-after">Tests are written during development, not after<a href="#tests-are-written-during-development-not-after" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>TDD (when you write tests before writing code) is great, but from the beginning, it might not be that easy to foresee what your module should look like, what the structure of the classes will be, and so on.</p>
+<p>So, if one can’t write tests first — that’s OK. What is important is to set up tests as early in the development as possible and to not delay them until the end.</p>
+<p>The reason is that tests help you to write clean code. Separate concerns, use interfaces to hide implementation details or some platform-specifics. If you delay writing tests, you can find yourself in a position where some code is not testable and it would be very tempting to hack it around.</p>
+<h3 id="tests-are-added-for-each-defectcase-found"><strong>Tests are added for each defect/case found</strong><a href="#tests-are-added-for-each-defectcase-found" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>When write tests, you don’t need to take care of all the situations that might theoretically happen (we’ll talk about it in detail below).</p>
+<p>The most important thing is to reflect business use cases and add tests continuously for any other requirement or defect found. Especially for defects. Because this way, you can verify before fixing that there is a case failing and check that after the fix, the test actually passed.</p>
+<h2 id="testing-best-practices">Testing Best Practices<a href="#testing-best-practices" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>These were some theoretical practices that are general to writing unit tests. They are good to get a general feeling about the test process.</p>
+<p>In this article though, I’d like to go more into some practical points which might make your tests better.</p>
+<h3 id="write-a-good-test-name">Write a good test name<a href="#write-a-good-test-name" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>It should describe what is under test, under what conditions the test happens, and what is expected as a test result.</p>
+<p>If there is a test case for a given test, provide a link to it in a test Javadoc.
+If the test name becomes big, use abbreviations. Describe the meaning of abbreviations in the test Javadoc.</p>
+<p>A bad test name makes it less maintainable.</p>
+<h3 id="test-the-public-interface">Test the public interface<a href="#test-the-public-interface" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Everything that is not public should not be tested.</p>
+<p>Do not break encapsulation (by providing <a href="http://twitter.com/VisibleForTesting">@VisibleForTesting</a> or something like that) to test a functionality.</p>
+<p>If there is a method you’d like to test thoroughly and separately, that means that it most likely should be part of a public interface of some other class (or utility method, or extension).</p>
+<p>Each class under test should have a public interface (to make it explicit what should be tested).</p>
+<p>Testing non-public stuff makes a test less-maintainable. Breaking encapsulation ruins architecture.</p>
+<h3 id="verify-one-use-case-per-test">Verify one use case per test<a href="#verify-one-use-case-per-test" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>A test should check one thing. Particularly, that means that each test should have only one assertion.</p>
+<p>There are exceptions here though: if you want to check that a set up for a test was actually set correctly then you can use assumed checks.</p>
+<p>If you want to verify what methods in mocks were called (or not called) during the test, then it is fine to have multiple verifications.
+Though for assertions it is important to assert only once per test.</p>
+<p>Testing multiple things in a single test doesn’t allow you, when such a test fails, to clearly say why exactly it failed.</p>
+<h3 id="group-the-test-body-into-logical-sections">Group the test body into logical sections<a href="#group-the-test-body-into-logical-sections" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>In the case of a simple unit test that asserts on returning a value, there should be a section with setup and a section with assertion.</p>
+<p>In the case of a complex test (closer to an integration test), there should be a setup section (given), a trigger section (when), and a result section (then).</p>
+<p>A test with no logical grouping essentially is more difficult to read, therefore, it is less-maintainable.</p>
+<h3 id="use-dependency-inversion">Use dependency inversion<a href="#use-dependency-inversion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Provide dependencies to classes under test in the constructor or via the public interface. Do not create some third-party dependencies inside the class. Don’t get a singleton instance from inside the class.</p>
+<p>Wrap some system/platform classes with your own interfaces and provide these interfaces instead of real platform classes as a dependency. This includes providing the interface to work with calendar/time.</p>
+<p>Not using DI makes your code less testable.</p>
+<h3 id="mocks-vs-stubs">Mocks vs. stubs<a href="#mocks-vs-stubs" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Use real classes where possible. If that is not possible, then provide a stub. If providing a stub is not possible, provide a mock.</p>
+<p>That usually translates into that entities and value objects should be real, some first-party services should be either real or stubbed, third-party services should be stubs or mocks.</p>
+<p>Excessive usage of mocks in tests might lead to you testing the mock implementation and not the actual implementation.</p>
+<h3 id="entityvalue-object-default-builders">Entity/value object default builders<a href="#entityvalue-object-default-builders" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>When using real classes for entities or value objects, it is handy to have builders with default values to construct them.</p>
+<p>Basically, it would be a default implementation of the entity/value object, in which one can change properties that are important for a given test.</p>
+<p>Not having such builders leads to code duplication and makes tests less maintainable.</p>
+<h3 id="group-tests-that-are-coupled-into-sub-classes">Group tests that are coupled into sub-classes<a href="#group-tests-that-are-coupled-into-sub-classes" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Create an abstract base test class with a common setup and extend it with sub-classes that test a particular part of the functionality.</p>
+<p>This will group tightly coupled test cases in one place. This way, it is possible to extract part of the test names (the repeating part) into an enclosing class name.</p>
+<p>Having all the tests inside a single class reduces readability.</p>
+<h3 id="the-initial-state-for-tests-should-be-generated-via-the-public-api-of-the-class-under-test-and-its-dependencies-only">The initial state for tests should be generated via the public API of the class under test and its dependencies only<a href="#the-initial-state-for-tests-should-be-generated-via-the-public-api-of-the-class-under-test-and-its-dependencies-only" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>There should be no internal modifications of classes to make a test setup. No @VisibleForTesting with breaking encapsulation.</p>
+<p>Changing the internal state via a non-public API might create an impossible case. Also, it breaks encapsulation.</p>
+<h3 id="set-up-tests-early">Set up tests early<a href="#set-up-tests-early" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Write a few tests that cover basic functionality. Add more tests over time when the architecture establishes itself and more information is learned.</p>
+<p>Writing a lot of tests early on requires skill (if going with TDD). TDD is great but without enough experience, one might need to re-write tests quite a lot of times when the structure changes significantly.</p>
+<p>Postponing writing tests until the end of development might lead to non-testable code.</p>
+<h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Writing tests is not an easy task. It requires discipline.</p>
+<p>Also, tests are also code, which should be written with that same care as your general production code. But, when you invest time into tests then over time, you gain more and more value from them.</p>
+<p>Don’t fear writing tests. Do not wait. Start today. And keep working on tests.</p>
+<p>Happy coding!</p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="https://krossovochkin.github.io/posts/2020_03_19_compiler_generated_classes_methods_and_fields_in_java/">
+                <span class="button__icon">←</span>
+                <span class="button__text">Compiler-generated classes, methods and fields in Java</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="https://krossovochkin.github.io/posts/2020_03_05_from_rxjava_to_kotlin_flow_testing/">
+                <span class="button__text">From RxJava to Kotlin Flow: Testing</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>© 2020 Vasya Drobushkov</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+  <div class="footer__inner">
+    <div class="copyright copyright--user">
+      <a href="https://www.facebook.com/vasya.drobushkov">Facebook</a><a href="https://twitter.com/krossovochkin">Twitter</a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://krossovochkin.github.io/assets/main.js"></script>
+<script src="https://krossovochkin.github.io/assets/prism.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

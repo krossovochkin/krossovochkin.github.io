@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Category theory :: Krossovochkin — Android Developer</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content="Source
+
+Disclaimer This is short synopsis of great set of lectures. What is written here is by no means true, one should refer to original lectures or some books etc. This is written mostly for myself in case I wanted to revisit the topic in the future. Everything below is not “what it is” but mostly “how I understood that”. So, there might be mistakes and so on.
+Category Category consists of:" />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://krossovochkin.github.io/posts/2020_04_26_category_theory/" />
+
+
+
+
+<link rel="stylesheet" href="https://krossovochkin.github.io/assets/style.css">
+
+  <link rel="stylesheet" href="https://krossovochkin.github.io/assets/yellow.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://krossovochkin.github.io/img/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="https://krossovochkin.github.io/img/favicon/yellow.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  <meta name="twitter:site" content="krossovochkin" />
+
+<meta name="twitter:creator" content="krossovochkin" />
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Category theory :: Krossovochkin">
+<meta property="og:description" content="Short synopsis on lectures about Category theory and programming" />
+<meta property="og:url" content="https://krossovochkin.github.io/posts/2020_04_26_category_theory/" />
+<meta property="og:site_name" content="Category theory" />
+
+  <meta property="og:image" content="https://krossovochkin.github.io/">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2020-04-26 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Krossovochkin
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About me</a></li>
+        
+      
+        
+          <li><a href="/">Posts</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About me</a></li>
+      
+    
+      
+        <li><a href="/">Posts</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://krossovochkin.github.io/posts/2020_04_26_category_theory/">Category theory</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2020-04-26 
+      </span>
+    
+    
+    <span class="post-author">::
+      Vasya Drobushkov
+    </span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="https://krossovochkin.github.io/tags/category-theory/">category theory</a>&nbsp;
+    
+    #<a href="https://krossovochkin.github.io/tags/functional-programming/">functional programming</a>&nbsp;
+    
+  </span>
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <p><img src="https://images.unsplash.com/photo-1453733190371-0a9bedd82893?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1357&amp;q=80" alt="Source"><em><a href="https://unsplash.com/photos/5mZ_M06Fc9g">Source</a></em></p>
+<p><a href="https://medium.com/@krossovochkin/category-theory-90b89ec9f2ab"><img src="https://img.shields.io/badge/original-medium-green#badge" alt=""></a></p>
+<h2 id="disclaimer">Disclaimer<a href="#disclaimer" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>This is short synopsis of great <a href="https://www.youtube.com/playlist?list=PLbgaMIhjbmEnaH_LTkxLI7FMa2HsnawM_">set of lectures</a>. What is written here is by no means true, one should refer to original lectures or some books etc. This is written mostly for myself in case I wanted to revisit the topic in the future.
+Everything below is not “what it is” but mostly “how I understood that”. So, there might be mistakes and so on.</p>
+<h2 id="category">Category<a href="#category" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Category consists of:</p>
+<ul>
+<li>
+<p>objects / dots (a, b, c, …)</p>
+</li>
+<li>
+<p>morphisims / arrows (f, g, …).</p>
+</li>
+</ul>
+<p><img src="../../img/1_vxo6VwCrQFO4MCF-BkvWBg.png" alt="morphism from a into b, connects two objects"><em>morphism from a into b, connects two objects</em></p>
+<ul>
+<li>composition</li>
+</ul>
+<p><img src="../../img/1_UaMI_UNLIcE_3IqSPLl9Gw.png" alt="apply g after f"><em>apply g after f</em></p>
+<p>And should:</p>
+<ul>
+<li>be associative:</li>
+</ul>
+<p><img src="../../img/1_YMnV0zJ_i4hGz3xV-x-A0w.png" alt="Order of composition doesn’t matter"><em>Order of composition doesn’t matter</em></p>
+<ul>
+<li>have identity morphism</li>
+</ul>
+<p><img src="../../img/1_qAsvwgQvdeNyK5Mw8l2g-Q.png" alt="There is an arrow to itself"><em>There is an arrow to itself</em></p>
+<h2 id="category-examples">Category examples<a href="#category-examples" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="category-0-empty">Category 0 (empty)<a href="#category-0-empty" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>
+<p>no objects</p>
+</li>
+<li>
+<p>no morphisms</p>
+</li>
+</ul>
+<h3 id="category-1-singleton">Category 1 (singleton)<a href="#category-1-singleton" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>
+<p>1 object</p>
+</li>
+<li>
+<p>1 identity morphism</p>
+</li>
+</ul>
+<p><img src="../../img/1_cXZ14CRmpPql2jnBe2MTkw.png" alt=""></p>
+<h3 id="category-with-2-objects-and-1-morphism">Category with 2 objects and 1 morphism<a href="#category-with-2-objects-and-1-morphism" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>
+<p>2 objects</p>
+</li>
+<li>
+<p>1 morphism from one object to another</p>
+</li>
+<li>
+<p>2 identity morphisms</p>
+</li>
+</ul>
+<p><img src="../../img/1_L-hA-0ipk7CDsbqxmNp7Aw.png" alt="Applying identity morphisms to any morphism is equivalent to that morphism itself"><em>Applying identity morphisms to any morphism is equivalent to that morphism itself</em></p>
+<p><img src="../../img/1_tmd5NfDhrt4A39vQVHJ1_Q.png" alt=""></p>
+<h2 id="universal-construction">Universal construction<a href="#universal-construction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<ul>
+<li>
+<p>identify pattern</p>
+</li>
+<li>
+<p>define ranking</p>
+</li>
+<li>
+<p>define best</p>
+</li>
+</ul>
+<h2 id="iso---mono---epi--morphisms">Iso- / mono- / epi- morphisms<a href="#iso---mono---epi--morphisms" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="isomorphism">Isomorphism<a href="#isomorphism" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p><img src="../../img/1_1FkUip712csmYoyqAH779g.png" alt="f is isomorfism"><em>f is isomorfism</em></p>
+<p><img src="../../img/1_k-3eIAYBfxFITeTcXa-FSw.png" alt="Isomorphic implies inverse morphism"><em>Isomorphic implies inverse morphism</em></p>
+<h3 id="injective--monic--monomorphism">Injective / monic / monomorphism<a href="#injective--monic--monomorphism" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p><img src="../../img/1_U72imb-phjN9Kh2bfWs6Xg.png" alt="f is monomorphism"><em>f is monomorphism</em></p>
+<p><img src="../../img/1_Z69JE9wP87ac7jPrHLYaHQ.png" alt=""></p>
+<p><img src="../../img/1_-w2j8iV2FxqYycpq9niEEg.png" alt=""></p>
+<h3 id="surjective--epic--epimorphism">Surjective / epic / epimorphism<a href="#surjective--epic--epimorphism" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p><img src="../../img/1__xSRGNDwNWxxAnY3XT-YiA.png" alt=""></p>
+<p><img src="../../img/1_9FxzzjrfAIVIjBKzVzNOHw.png" alt=""></p>
+<h2 id="order-relation">Order relation<a href="#order-relation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p><img src="../../img/1_eqC3PHe39Ipv4j6xMSnmSw.png" alt=""></p>
+<p><strong>Hom-set</strong> — set of all arrows from a to b.</p>
+<h3 id="pre-order">Pre-order<a href="#pre-order" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Hom-set is either empty or singleton. Can contain loops.</p>
+<p><strong>Example</strong>: “less or equal” order relation.</p>
+<p><img src="../../img/1_rQqZFEhGVYHSlT4dwGdRyQ.png" alt="All these arrows can hold, and there is a loop between a and b"><em>All these arrows can hold, and there is a loop between a and b</em></p>
+<h3 id="partial-order">Partial order<a href="#partial-order" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Pre-order without loops.</p>
+<p><strong>Example</strong>: “less” order relation.</p>
+<h3 id="total-order">Total order<a href="#total-order" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>All objects have relations</p>
+<h2 id="monoid">Monoid<a href="#monoid" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Category with 1 object and many morphisms from that object to itself.</p>
+<p>Hom-set: M(m, m) — set of all arrows.</p>
+<h2 id="terminal-and-initial-objects">Terminal and initial objects<a href="#terminal-and-initial-objects" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Terminal object — object to which there is arrow from any other object in category.</p>
+<p>Initial object — object from which there is an arrow to any other object in category.</p>
+<p>Opposite category is a category with “reversed arrows”. Terminal object is initial in opposite category.</p>
+<p><img src="../../img/1_Ik063rWKn83MKf5DtNaW6g.png" alt=""></p>
+<h2 id="product">Product<a href="#product" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p><img src="../../img/1_nQYjIeS4F1U6khncbA_iPg.png" alt=""></p>
+<p><img src="../../img/1_eBLG2zNefFPGruaVzt5feg.png" alt=""></p>
+<p>c is a better product than c’ (in terms of order relation)</p>
+<p>p, q — projections</p>
+<p>Product in programming is a Pair:</p>
+<pre><code>data class Pair&lt;A : Any, B : Any&gt;(
+    val fst: A,
+    val snd: B
+)
+</code></pre>
+<h2 id="sum-co-product">Sum (Co-Product)<a href="#sum-co-product" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Similar to Product, with reversing arrows</p>
+<p><img src="../../img/1_B_rc892rxarA_1LngmY2Tg.png" alt=""></p>
+<p>i, j — injections</p>
+<p><img src="../../img/1_-jgL9B9Y4J3cC9MPjgKuqw.png" alt=""></p>
+<p>In programming it can be described as Either:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Either</span>&lt;A: Any, B: Any&gt; 
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">constructor</span>(<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> a: A?, <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> b: B?) {
+
+<span style="color:#66d9ef">companion</span> <span style="color:#66d9ef">object</span> {
+        
+        <span style="color:#66d9ef">fun</span> &lt;A: Any, B: Any&gt; <span style="color:#a6e22e">left</span>(a: A): Either&lt;A, B&gt; {
+            <span style="color:#66d9ef">return</span> Either(a, <span style="color:#66d9ef">null</span>)
+        }
+        
+        <span style="color:#66d9ef">fun</span> &lt;A: Any, B: Any&gt; <span style="color:#a6e22e">right</span>(b: B): Either&lt;A, B&gt; {
+            <span style="color:#66d9ef">return</span> Either(<span style="color:#66d9ef">null</span>, b)
+        }
+    }
+}
+</code></pre></div><h2 id="algebraic-data-types">Algebraic Data Types<a href="#algebraic-data-types" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="product-1">Product<a href="#product-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>symmetry</li>
+</ul>
+<p><img src="../../img/1_mGiselFmo3hhlQJ3TWzIZg.png" alt=""></p>
+<ul>
+<li>associativity</li>
+</ul>
+<p><img src="../../img/1_NuZzCT3r5HEYTScfq_dOQQ.png" alt=""></p>
+<ul>
+<li>identity</li>
+</ul>
+<p><img src="../../img/1_-IP6AA2YJcjsCIzz9KYYuQ.png" alt=""></p>
+<h3 id="sum">Sum<a href="#sum" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>symmetry</li>
+</ul>
+<p><img src="../../img/1_tyv7Db85iHciV4bnG-_ewA.png" alt=""></p>
+<ul>
+<li>associativity</li>
+</ul>
+<p><img src="../../img/1_hrTRzIIRUv7xoYlD5cAS_g.png" alt=""></p>
+<ul>
+<li>identity</li>
+</ul>
+<p><img src="../../img/1_bBiqTfo1TLdwJyQ_tTo3pw.png" alt=""></p>
+<h3 id="product-and-sum">Product and Sum<a href="#product-and-sum" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>distribution</li>
+</ul>
+<p><img src="../../img/1_D8HH32BNRWFqUPEk4cazwQ.png" alt=""></p>
+<ul>
+<li>annihilation</li>
+</ul>
+<p><img src="../../img/1_EpM_l4OkrNu0mNp071plIg.png" alt=""></p>
+<h3 id="semiring">Semiring<a href="#semiring" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>With defined product and sum (without inverse operations) we get Semiring.</p>
+<h3 id="example-1-boolean">Example 1 Boolean<a href="#example-1-boolean" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p><img src="../../img/1_rlkMkqjrELV5sjgwNCRwtQ.png" alt=""></p>
+<h3 id="example-2-option">Example 2 Option<a href="#example-2-option" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p><img src="../../img/1_z1K17gzrVlgKA2UTxaPnfA.png" alt=""></p>
+<h3 id="example-3-list">Example 3 List<a href="#example-3-list" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p><img src="../../img/1_XcLRCi2JXfhWbCKi08Y0Bg.png" alt=""></p>
+<h2 id="functor">Functor<a href="#functor" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Functor — mapping from one category to another with preserving structure.
+Objects are mapped into objects, morphisms into morphisms.
+Preserving structure means that composition and identity is preserved.</p>
+<p>Functor can be though as a container.</p>
+<p><img src="../../img/1_LhJ2EuXv-tfhns2OJV1qcg.png" alt=""></p>
+<p><img src="../../img/1_38gKpYfFSCtJ9zpNx7Ih0Q.png" alt=""></p>
+<h3 id="special-types-of-functors">Special Types of Functors<a href="#special-types-of-functors" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>
+<p>Faithful — injective on all hom-sets</p>
+</li>
+<li>
+<p>Full — surjective on all hom-sets</p>
+</li>
+<li>
+<p>Constant Δc — functor which maps all objects into single object c and all morphisms into single morphism idc</p>
+</li>
+<li>
+<p>Endofunctor — functor from one category to the same category</p>
+</li>
+</ul>
+<h3 id="example-1-option">Example 1 Option<a href="#example-1-option" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>mapping objects</li>
+</ul>
+<p><img src="../../img/1_-IhkVFu-BkEMZb8Q3zNuPw.png" alt=""></p>
+<ul>
+<li>mapping morphisms</li>
+</ul>
+<p><img src="../../img/1__3YXmXq5buqzlT02364u9A.png" alt=""></p>
+<ul>
+<li>preserve identity</li>
+</ul>
+<p><img src="../../img/1_uj1n7ybjBxLl-WToWWcrrg.png" alt=""></p>
+<ul>
+<li>preserve composition</li>
+</ul>
+<p><img src="../../img/1_-j4to1UPQXEq1u_37_Am5A.png" alt=""></p>
+<h3 id="example-2-list">Example 2 List<a href="#example-2-list" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ul>
+<li>mapping objects</li>
+</ul>
+<p><img src="../../img/1_0GRi_LQ2ZGuFyYj0ukE4rA.png" alt=""></p>
+<h3 id="functor-in-programming">Functor in programming<a href="#functor-in-programming" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Functor</span>&lt;A&gt; {
+    <span style="color:#66d9ef">fun</span> &lt;B&gt; <span style="color:#a6e22e">map</span>(f: (A) -&gt; B): Functor&lt;B&gt;
+}
+</code></pre></div><h2 id="bifunctor">BiFunctor<a href="#bifunctor" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="cat">Cat<a href="#cat" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Cat — category of categories</p>
+<ul>
+<li>
+<p>objects are categories</p>
+</li>
+<li>
+<p>morphisms are functors</p>
+</li>
+</ul>
+<h3 id="product-category">Product Category<a href="#product-category" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p><img src="../../img/1_MLfp45tqd4MpxVHgU9llzA.png" alt=""></p>
+<h3 id="bifunctor-1">BiFunctor<a href="#bifunctor-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>BiFunctor is mapping from product category into another category.</p>
+<p><img src="../../img/1_BFDOC6tf_MK5g-nv807qew.png" alt=""></p>
+<p>Sum is also a BiFunctor</p>
+<h3 id="bifunctor-in-programming">BiFunctor in programming<a href="#bifunctor-in-programming" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Bifunctor</span>&lt;A : Any, B: Any&gt; {
+    
+    <span style="color:#66d9ef">fun</span> &lt;C : Any&gt; <span style="color:#a6e22e">first</span>(f: (A) -&gt; C): Bifunctor&lt;C, B&gt;
+    
+    <span style="color:#66d9ef">fun</span> &lt;D : Any&gt; <span style="color:#a6e22e">second</span>(f: (B) -&gt; D): Bifunctor&lt;A, D&gt;
+    
+    <span style="color:#66d9ef">fun</span> &lt;C : Any, D : Any&gt; <span style="color:#a6e22e">bimap</span>(f: (A) -&gt; C, g: (B) -&gt; D): Bifunctor&lt;C, D&gt;
+}
+</code></pre></div><h2 id="profunctor">ProFunctor<a href="#profunctor" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="adt-construction-via-composition">ADT construction via composition<a href="#adt-construction-via-composition" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Constant Functor</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Const</span>&lt;C : Any, A : Any&gt;(<span style="color:#66d9ef">val</span> c: C): Functor&lt;A&gt; {
+    
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> &lt;B : Any&gt; <span style="color:#a6e22e">fmap</span>(f: (A) -&gt; B): Const&lt;C, B&gt; {
+        <span style="color:#66d9ef">return</span> Const&lt;C, B&gt;(c)
+    }
+}
+</code></pre></div><p>Identity Functor</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Just</span>&lt;A : Any&gt;(<span style="color:#66d9ef">val</span> a: A) : Functor&lt;A&gt; {
+    
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> &lt;B : Any&gt; <span style="color:#a6e22e">fmap</span>(f: (A) -&gt; B): Just&lt;B&gt; {
+        <span style="color:#66d9ef">return</span> Just(f(a))
+    }
+}
+</code></pre></div><p>Maybe via composition</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Maybe</span>&lt;A&gt; = Either(Const&lt;Unit, A&gt;, Identity&lt;A&gt;)
+</code></pre></div><p>Either is a BiFunctor, Const and Identity are Functors.</p>
+<h3 id="profunctor-1">ProFunctor<a href="#profunctor-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>ProFunctor — mapping from product of category with its opposite category to that category.</p>
+<p><img src="../../img/1_Dx_0cWCqBxz0fOw0huWfaQ.png" alt=""></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Contravariant</span>&lt;A : Any&gt; {
+    
+    <span style="color:#66d9ef">fun</span> &lt;B : Any&gt; <span style="color:#a6e22e">contramap</span>(f: (B) -&gt; A): Contravariant&lt;B&gt;
+}
+</code></pre></div><h3 id="profunctor-in-programming">ProFunctor in programming<a href="#profunctor-in-programming" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Profunctor</span>&lt;A : Any, B : Any&gt; {
+    
+    <span style="color:#66d9ef">fun</span> &lt;C : Any&gt; <span style="color:#a6e22e">lmap</span>(f: (C) -&gt; A): Profunctor&lt;C, B&gt;
+    
+    <span style="color:#66d9ef">fun</span> &lt;D : Any&gt; <span style="color:#a6e22e">rmap</span>(f: (B) -&gt; D): Profunctor&lt;A, D&gt;
+    
+    <span style="color:#66d9ef">fun</span> &lt;C : Any, D : Any&gt; <span style="color:#a6e22e">dimap</span>(f: (C) -&gt; A, g: (B) -&gt; D): Profunctor&lt;C, D&gt;
+}
+</code></pre></div><h2 id="functionsexponentials">Functions/exponentials<a href="#functionsexponentials" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="currying">Currying<a href="#currying" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p><img src="../../img/1_zmol75zV_8iq_yG9uefetw.png" alt=""></p>
+<p><img src="../../img/1_bMFEOWT0euDcq8PRCWUUdA.png" alt=""></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;A, B, C&gt; <span style="color:#a6e22e">curry</span>(f: (Pair&lt;A, B&gt;) -&gt; C): (A) -&gt; ((B) -&gt; C)
+<span style="color:#66d9ef">fun</span> &lt;A, B, C&gt; <span style="color:#a6e22e">uncurry</span>(f: (A) -&gt; ((B) -&gt; C)): (Pair&lt;A, B&gt;) -&gt; C
+</code></pre></div><h3 id="cartesian-closed-category-ccc">Cartesian Closed Category (CCC)<a href="#cartesian-closed-category-ccc" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Category is CCC if it has:</p>
+<ul>
+<li>
+<p>product</p>
+</li>
+<li>
+<p>exponential</p>
+</li>
+<li>
+<p>terminal object</p>
+</li>
+</ul>
+<h3 id="exponential">Exponential<a href="#exponential" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p><img src="../../img/1_dX6fZ7x_nL4KDbb_7449rg.png" alt=""></p>
+<h3 id="examples">Examples<a href="#examples" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p><img src="../../img/1_LoSOZ8oAa51jc0klrbBnnw.png" alt=""></p>
+<h3 id="proposition-of-types--curry-howard-lambok-isomorphism">Proposition of types / Curry-Howard-Lambok isomorphism<a href="#proposition-of-types--curry-howard-lambok-isomorphism" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p><img src="../../img/1_HISxOm1Nypn56xnFgFkb9Q.png" alt=""></p>
+<h2 id="natural-transformation">Natural transformation<a href="#natural-transformation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Natural transformation — mapping between Functors (or objects to morphisms).</p>
+<p><img src="../../img/1_l7KSKBY2E53yM6cDx6J1Uw.png" alt="Naturality square"><em>Naturality square</em></p>
+<p><img src="../../img/1_spc7KLqoTT47SYMTE510RQ.png" alt=""></p>
+<p>Natural transformation is isomorphic if all components are isomorphic.</p>
+<h3 id="naturatlity-condition">Naturatlity condition<a href="#naturatlity-condition" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p><img src="../../img/1_NUaWfQeR_x7N5rav-XW7BA.png" alt=""></p>
+<h3 id="natural-transformation-in-programming">Natural transformation in programming<a href="#natural-transformation-in-programming" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>NT in programming is polymorphic function.</p>
+<p><img src="../../img/1_WvQdPvFVWl8gWzQPqoCHMg.png" alt=""></p>
+<h3 id="example">Example<a href="#example" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;A&gt; <span style="color:#a6e22e">List</span>&lt;A&gt;.head(): Option&lt;A&gt; {
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">if</span> (<span style="color:#66d9ef">this</span>.isEmpty()) None <span style="color:#66d9ef">else</span> Just(<span style="color:#66d9ef">this</span>.first())
+} 
+
+<span style="color:#75715e">// list.fmap().head() == list.head().fmap()
+</span></code></pre></div><p>Reversing order of function application can be used in optimizations.</p>
+<h3 id="intuition">Intuition<a href="#intuition" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Functor — map container contents</p>
+<p>Natural transformation — map container</p>
+<p>Naturality condition says that it doesn’t matter what to do first and what second: map container or map container contents.</p>
+<h3 id="examples-of-natural-transformations">Examples of Natural Transformations<a href="#examples-of-natural-transformations" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p><img src="../../img/1_ScDfgCatepNBBNzq_vFgEg.png" alt=""></p>
+<h2 id="monad">Monad<a href="#monad" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Monad — Monoid in category of endofunctors</p>
+<p><img src="../../img/1_La-_GvI2mi1try-RMfyCPg.png" alt="Monoid"><em>Monoid</em></p>
+<p>Monoid object in category [C, C] (category of endofunctors) is a Monad</p>
+<h3 id="applicative">Applicative<a href="#applicative" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Applicative is a functor with:</p>
+<p><img src="../../img/1_zex6hPwux56glKfvjFgRXA.png" alt=""></p>
+<h3 id="monad-1">Monad<a href="#monad-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Monad is Applicative with:</p>
+<p><img src="../../img/1_IQu5N_RXM5U0EW-HdJcuVw.png" alt=""></p>
+<p>Other functions:</p>
+<p><img src="../../img/1_cQQ5OHPsG08Ua8uUUjsVoA.png" alt=""></p>
+<h2 id="final-words">Final words<a href="#final-words" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Lectures were great, a lot of insides on the how world is constructed, how other math disciplines are based on these very high-level thoughts. And how all of this is related to programming, which is for sure a computer <strong>science</strong>.</p>
+<p>To make a bit of a practice <a href="https://github.com/krossovochkin/CategoryTheoryExamples">made few implementations </a>of things which were an examples throughout the course. For sure, implementation is not that great, but it is in Kotlin which is more functional than Java (but not that as Scala or Haskell). Implementations are just examples and have no real usage. If one is interested in better implementations I think it is good to take a look at <a href="https://arrow-kt.io/">arrow-kt</a>.</p>
+<p>Happy coding</p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="https://krossovochkin.github.io/posts/2020_05_03_kotlin_useful_but_unfairly_not_mentioned_features/">
+                <span class="button__icon">←</span>
+                <span class="button__text">Kotlin useful but unfairly not mentioned features</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="https://krossovochkin.github.io/posts/2020_03_29_accessibility_of_text_over_generic_background_color/">
+                <span class="button__text">Accessibility of text over generic background color</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>© 2020 Vasya Drobushkov</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+  <div class="footer__inner">
+    <div class="copyright copyright--user">
+      <a href="https://www.facebook.com/vasya.drobushkov">Facebook</a><a href="https://twitter.com/krossovochkin">Twitter</a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://krossovochkin.github.io/assets/main.js"></script>
+<script src="https://krossovochkin.github.io/assets/prism.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

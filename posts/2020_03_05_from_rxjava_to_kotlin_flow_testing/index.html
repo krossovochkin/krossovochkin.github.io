@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>From RxJava to Kotlin Flow: Testing :: Krossovochkin — Android Developer</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content="Source
+ This post is part of series of comparing RxJava to Kotlin Flow. Previous articles were about Threading, Backpressure, Error Handling, Stream Types, Throttling
+ 
+Introduction Testing is a crucial part of whole development. Testing allows you to write programs in a reliable fashion, prevent regressions and have many other goodies. I won’t go through the list of advantages of writing tests in this article though. In testing it is important to have tools which allow you to write reliable tests and also tools which allow you to test your business logic." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://krossovochkin.github.io/posts/2020_03_05_from_rxjava_to_kotlin_flow_testing/" />
+
+
+
+
+<link rel="stylesheet" href="https://krossovochkin.github.io/assets/style.css">
+
+  <link rel="stylesheet" href="https://krossovochkin.github.io/assets/yellow.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://krossovochkin.github.io/img/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="https://krossovochkin.github.io/img/favicon/yellow.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  <meta name="twitter:site" content="krossovochkin" />
+
+<meta name="twitter:creator" content="krossovochkin" />
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="From RxJava to Kotlin Flow: Testing :: Krossovochkin">
+<meta property="og:description" content="Comparing approaches to testing in RxJava and Kotlin Flow" />
+<meta property="og:url" content="https://krossovochkin.github.io/posts/2020_03_05_from_rxjava_to_kotlin_flow_testing/" />
+<meta property="og:site_name" content="From RxJava to Kotlin Flow: Testing" />
+
+  <meta property="og:image" content="https://krossovochkin.github.io/">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2020-03-05 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Krossovochkin
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About me</a></li>
+        
+      
+        
+          <li><a href="/">Posts</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About me</a></li>
+      
+    
+      
+        <li><a href="/">Posts</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://krossovochkin.github.io/posts/2020_03_05_from_rxjava_to_kotlin_flow_testing/">From RxJava to Kotlin Flow: Testing</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2020-03-05 
+      </span>
+    
+    
+    <span class="post-author">::
+      Vasya Drobushkov
+    </span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="https://krossovochkin.github.io/tags/rxjava/">rxjava</a>&nbsp;
+    
+    #<a href="https://krossovochkin.github.io/tags/rxjava2/">rxjava2</a>&nbsp;
+    
+    #<a href="https://krossovochkin.github.io/tags/kotlin/">kotlin</a>&nbsp;
+    
+    #<a href="https://krossovochkin.github.io/tags/kotlin-flow/">kotlin flow</a>&nbsp;
+    
+    #<a href="https://krossovochkin.github.io/tags/flow/">flow</a>&nbsp;
+    
+    #<a href="https://krossovochkin.github.io/tags/testing/">testing</a>&nbsp;
+    
+  </span>
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <p><img src="https://images.unsplash.com/photo-1574170609519-d1d8d4b71f60?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1357&amp;q=80" alt="Source"><em><a href="https://unsplash.com/photos/9kSTF9PvETM">Source</a></em></p>
+<blockquote>
+<p>This post is part of series of comparing RxJava to Kotlin Flow. Previous articles were about <a href="https://proandroiddev.com/from-rxjava-2-to-kotlin-flow-threading-8618867e1955">Threading</a>, <a href="https://proandroiddev.com/from-rxjava-to-kotlin-flow-backpressure-d1fb91e6dea8">Backpressure</a>, <a href="https://proandroiddev.com/from-rxjava-to-kotlin-flow-error-handling-da1f6a4f2708">Error Handling,</a> <a href="https://proandroiddev.com/from-rxjava-to-kotlin-flow-stream-types-7916be6cabc2">Stream Types</a>, <a href="https://proandroiddev.com/from-rxjava-to-kotlin-flow-throttling-ed1778847619">Throttling</a></p>
+</blockquote>
+<p><a href="https://proandroiddev.com/from-rxjava-to-kotlin-flow-testing-42f1641d8433"><img src="https://img.shields.io/badge/original-proandroiddev-green#badge" alt=""></a></p>
+<h2 id="introduction">Introduction<a href="#introduction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Testing is a crucial part of whole development. Testing allows you to write programs in a reliable fashion, prevent regressions and have many other goodies. I won’t go through the list of advantages of writing tests in this article though.
+In testing it is important to have tools which allow you to write reliable tests and also tools which allow you to test your business logic.
+Business logic might be inside some function which calculates data and returns result, but also it might be some loading of data from network or doing some work in reaction to UI events. In places where we might have RxJava integrated. So it is very important to be able to test our rx-chains.
+In this article we’ll go through the most important concepts in RxJava testing and compare it with what we have in Kotlin Flow.</p>
+<h2 id="testing-in-rxjava">Testing in RxJava<a href="#testing-in-rxjava" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>General arsenal of testing tools in RxJava consist of TestObserver and TestScheduler.
+We can subscribe to any stream with special test observer and then assert events which happen inside the stream over time.
+With Test schedulers we can either provide blocking work in places where it was designed to be concurrent and also work with virtual clock.</p>
+<h2 id="testing-in-kotlin-flow">Testing in Kotlin Flow<a href="#testing-in-kotlin-flow" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>In Kotlin Flow main components are TestCoroutineScope and TestCoroutineDispatcher. Running tests in test coroutine scope allows you to verify that no job leaked test execution and gives you access to test dispatcher which allows you to work with virtual clock.</p>
+<h2 id="comparison">Comparison<a href="#comparison" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="simple-assert-on-stream">Simple assert on stream<a href="#simple-assert-on-stream" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>We’ll start from simple assertion of the stream values. We might want to verify that subscribing to some stream (e.g. repository method) provides required items and for example has no errors but completes in the end.</p>
+<p>Test for Rxjava in this case will look like the following:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">Observable.just(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
+    .test()
+    .assertValues(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
+    .assertNoErrors()
+    .assertComplete()
+</code></pre></div><p>Here we have simple observable which emits three values and then completes. We subscribe to it using test() method and receive TestObserver as a result. Then we can make assertions on that observer. For example check that we have all three values emitted and that stream completed without errors.</p>
+<p>In Kotlin there is no TestObserver implementation yet. So in order to verify that our stream contains required items we’ll have to just collect into list and look at the results:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlockingTest {
+    <span style="color:#66d9ef">val</span> result = flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
+        .toList(mutableListOf())
+
+    assertEquals(listOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>), result)
+}
+</code></pre></div><p>We could use runBlocking for our test, but it is better to always use runBlockingTest as it provides more features and specially designed for testing.</p>
+<p>Testing of Kotlin Flow seems more similar to general unit testing (as for example with Sequences). But don’t make a decision too early, let’s look at next examples.</p>
+<h3 id="assert-on-dynamic-stream">Assert on dynamic stream<a href="#assert-on-dynamic-stream" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>In the next example we’ll try to test dynamic stream. First let’s try to define what I mean here by dynamic stream. Usually we have some stream (say, Observable), which starts emitting items upon subscription. If we have such stream then the only thing we can do to test it — is to subscribe and see the results. But it is not always enough.
+Consider the case when you have some function which is triggered when user clicked on some button. Your function might be in one class and original stream of UI events be in a separate class (for example on view). In this case when you want to test your class you have Observable of streams as a dependency. And in test we won’t have any user, we even won’t have UI. So, we need a way to emulate user events. And we’ll do that using “dynamic stream”, where we can send events on demand.
+In RxJava for that we’ll use Subject. If we want to send some event to our class, we’ll just send event to that Subject. And we’ll provide that subject to the class we’re testing.</p>
+<p>Let’s see how it looks in test example:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> subject = PublishSubject.create&lt;Int&gt;()
+
+<span style="color:#66d9ef">val</span> observer = subject.test()
+
+observer
+    .assertNoValues()
+    .assertNoErrors()
+    .assertNotComplete()
+
+subject.onNext(<span style="color:#ae81ff">1</span>)
+
+observer
+    .assertValues(<span style="color:#ae81ff">1</span>)
+    .assertNoErrors()
+    .assertNotComplete()
+</code></pre></div><p>We create our test subject and subscribe to it with test.
+Then we assert that we don’t have any values in it.
+After that we send some event (say we send UI click event to our class) and verify that on the receiver side we received that event.</p>
+<p>In Kotlin Flow analog of Subject is Channel, so let’s do the following:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlockingTest {
+    <span style="color:#66d9ef">val</span> subject = Channel&lt;Int&gt;()
+    <span style="color:#66d9ef">val</span> values = mutableListOf&lt;Int&gt;()
+    <span style="color:#66d9ef">val</span> job = launch {
+        subject.consumeAsFlow()
+            .collect { values.add(it) }
+    }
+
+    assertEquals(emptyList&lt;Int&gt;(), values)
+
+    subject.send(<span style="color:#ae81ff">1</span>)
+
+    assertEquals(listOf(<span style="color:#ae81ff">1</span>), values)
+
+    job.cancel()
+}
+</code></pre></div><p>We created our channel in which we’ll send events. But as Kotlin Flow doesn’t have any test observer, we have to store our list of values locally and add values to that list when we receive new item.
+The issue with such approach is that it is verbose and we have to do that in each test. Also we have to wrap collecting of the items in flow inside separate coroutine (started with launch) because our channel won’t be closed till the end of test and if any work is not completed before test ended, we’ll get an exception from runBlockingTest. So it is important to store reference to job and cancel it in the end of test.
+Sounds too complex. Let’s try to make it a bit better by writing our own implementation of TestObserver for Kotlin Flow:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">Flow</span>&lt;T&gt;.test(scope: CoroutineScope): TestObserver&lt;T&gt; {
+    <span style="color:#66d9ef">return</span> TestObserver(scope, <span style="color:#66d9ef">this</span>)
+}
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TestObserver</span>&lt;T&gt;(
+    scope: CoroutineScope,
+    flow: Flow&lt;T&gt;
+) {
+
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> values = mutableListOf&lt;T&gt;()
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> job: Job = scope.launch { 
+        flow.collect { values.add(it) } 
+    }
+
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">assertNoValues</span>(): TestObserver&lt;T&gt; {
+        assertEquals(emptyList&lt;T&gt;(), <span style="color:#66d9ef">this</span>.values)
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>
+    }
+
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">assertValues</span>(<span style="color:#66d9ef">vararg</span> values: T): TestObserver&lt;T&gt; {
+        assertEquals(values.toList(), <span style="color:#66d9ef">this</span>.values)
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>
+    }
+
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">finish</span>() {
+        job.cancel()
+    }
+}
+</code></pre></div><p>We wrap that local list of values inside our observer and provide methods similar to what we have in RxJava.
+After using our test observer we’ll have such a test:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlockingTest {
+    <span style="color:#66d9ef">val</span> subject = Channel&lt;Int&gt;()
+    <span style="color:#66d9ef">val</span> observer = subject.consumeAsFlow().test(<span style="color:#66d9ef">this</span>)
+
+    observer.assertNoValues()
+
+    subject.send(<span style="color:#ae81ff">1</span>)
+
+    observer.assertValues(<span style="color:#ae81ff">1</span>)
+
+    observer.finish()
+}
+</code></pre></div><p>Looks better. But pay attention that we still have to finish our test observer in the end of test.</p>
+<p>Now let’s also re-write test for our first example using our test observer:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlockingTest {
+    flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
+        .test(<span style="color:#66d9ef">this</span>)
+        .assertValues(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
+        .finish()
+}
+</code></pre></div><p>Again, it now seems to look more declarative.</p>
+<h3 id="custom-schedulerdispatcher">Custom Scheduler/Dispatcher<a href="#custom-schedulerdispatcher" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>In streams we usually subscribe/observe on some particular Scheduler, for example io or mainThread. Though in tests we don’t have main thread at all and using io thread might provide some latency and need to add logic to convert async code into blocking one.
+It is good pattern to provide dependencies instead of using singletons, so it can also be applied to schedulers.
+For example if we have some load function which works on some particular scheduler, to make it testable, we can provide that scheduler as a dependency:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">load</span>(
+    scheduler: Scheduler = Schedulers.computation()
+): Observable&lt;Int&gt; {
+    <span style="color:#66d9ef">return</span> Observable.just(<span style="color:#ae81ff">1</span>)
+        .delay(<span style="color:#ae81ff">1</span>, TimeUnit.SECONDS, scheduler)
+}
+</code></pre></div><p>By default delay works on computation scheduler, which might make testing more difficult.
+For example if we write such a test:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">load()
+    .test()
+    .assertValues(<span style="color:#ae81ff">1</span>)
+    .assertNoErrors()
+    .assertComplete()
+</code></pre></div><p>It will fail, because test will be completed before separate computation thread finished.
+In tests we can provide separate scheduler and one option is to use trampoline.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">load(Schedulers.trampoline())
+    .test()
+    .assertValues(<span style="color:#ae81ff">1</span>)
+    .assertComplete()
+    .assertNoErrors()
+</code></pre></div><p>Now our test passes, as now we basically run our code in a blocking manner.
+Note that we’ll wait for the whole delay to expire, so this test will be quite long (more than a second), which is not that good for unit testing.</p>
+<p>In Kotlin Flow I haven’t found any alternative to trampoline. Coroutines are suspending and not blocking, so trying to make them work on single thread seems not a good option. But there is a way to workaround that in a following way:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlockingTest {
+    <span style="color:#66d9ef">val</span> observer = load(coroutineContext.minusKey(Job))
+        .test(<span style="color:#66d9ef">this</span>)
+
+    advanceUntilIdle()
+
+    observer
+        .assertValues(<span style="color:#ae81ff">1</span>)
+        .finish()
+}
+</code></pre></div><p>And our test load function is:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">load</span>(context: CoroutineContext): Flow&lt;Int&gt; {
+    <span style="color:#66d9ef">return</span> flow {
+        delay(<span style="color:#ae81ff">1000</span>)
+        emit(<span style="color:#ae81ff">1</span>)
+    }.flowOn(context)
+}
+</code></pre></div><p>What we do here is provide separate context (it is still good approach to provide context/dispatcher as a dependency, so we can use separate one in tests).
+We have to do small trick by removing Job from context, because flow context can’t have a job.
+And we use advanceUntilIdle method to wait until our delay expired.
+Note that advancing clock changes virtual time, so that we don’t have to wait for a second and test will be pretty fast.</p>
+<h3 id="work-with-virtual-clock">Work with virtual clock<a href="#work-with-virtual-clock" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Last but not least let’s see how to have a full power of controlling the stream by working with virtual clock.
+The idea is simple — when we have some streams which emit values with some delays or with some throttling we might encounter issues in testing, because usually these operators work on a background threads (or suspending) and because any time-bound work is pretty difficult to test in real-time.
+For that there is virtual clock which can be advanced on demand by requested amount of time.</p>
+<p>In RxJava such ability has TestScheduler. It has function advanceTimeBy where we can skip some time.
+Let’s look at the final example where we’ll test debounce operator with our TestScheduler:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> scheduler = TestScheduler()
+
+<span style="color:#66d9ef">val</span> subject = PublishSubject.create&lt;Int&gt;()
+<span style="color:#66d9ef">val</span> observer = subject
+    .debounce(<span style="color:#ae81ff">1</span>, TimeUnit.SECONDS, scheduler)
+    .test()
+
+observer
+    .assertNoValues()
+    .assertNotComplete()
+    .assertNoErrors()
+
+    subject.onNext(<span style="color:#ae81ff">1</span>)
+
+observer
+    .assertNoValues()
+    .assertNotComplete()
+    .assertNoErrors()
+
+    scheduler.advanceTimeBy(<span style="color:#ae81ff">500</span>, TimeUnit.MILLISECONDS)
+
+observer
+    .assertNoValues()
+    .assertNotComplete()
+    .assertNoErrors()
+
+    scheduler.advanceTimeBy(<span style="color:#ae81ff">500</span>, TimeUnit.MILLISECONDS)
+
+observer
+    .assertValues(<span style="color:#ae81ff">1</span>)
+    .assertNotComplete()
+    .assertNoErrors()
+</code></pre></div><p>This test is much longer than previous ones, though pretty simple, let’s look what we have here.
+First we create our test scheduler and subject which we’ll throttle with debounce.
+Inside debounce we provide our test scheduler so now we’ll be able to control timing.
+After setup is done we just verify that we don’t have any values emitted.
+As we have debounce of 1 second, first emitted value should be emitted after that timeout expired (if there won’t be any more emitted values).
+We send event to our subject and verify that it hasn’t been emitted.
+Then we advance time by 500ms — half time of timer — and verify that no value is emitted.
+And finally we advance time by 500ms which should expire timer and emit value. And we verify that exactly this happened.</p>
+<p>Pretty powerful.</p>
+<p>In Kotlin Flow there is TestCoroutineDispatcher which is inherited in runBlockingTest. The test will be similar to what we have in Rx (and of course we add our TestObserver implementation to make it more concise):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlockingTest {
+    <span style="color:#66d9ef">val</span> subject = Channel&lt;Int&gt;()
+    <span style="color:#66d9ef">val</span> observer = subject.consumeAsFlow()
+        .debounce(<span style="color:#ae81ff">1000</span>)
+        .test(<span style="color:#66d9ef">this</span>)
+
+    observer.assertNoValues()
+
+    subject.send(<span style="color:#ae81ff">1</span>)
+
+    observer.assertNoValues()
+
+    advanceTimeBy(<span style="color:#ae81ff">500</span>)
+
+    observer.assertNoValues()
+
+    advanceTimeBy(<span style="color:#ae81ff">500</span>)
+
+    observer
+        .assertValues(<span style="color:#ae81ff">1</span>)
+        .finish()
+}
+</code></pre></div><h2 id="bonus">Bonus<a href="#bonus" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>If we took a look at how tests are written in sources of kotlin coroutines, we could find something interesting: there is a TestBase class which has some powerful API (<a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/kotlinx-coroutines-core/jvm/test/TestBase.kt">link</a>).
+One of that API is expect, which declares order in which code expected to be invoked.</p>
+<p>Let’s look at one test for debounce operator:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Test
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">testBasic</span>() = withVirtualTime {
+    <span style="color:#66d9ef">expect</span>(<span style="color:#ae81ff">1</span>)
+    <span style="color:#66d9ef">val</span> flow = flow {
+        <span style="color:#66d9ef">expect</span>(<span style="color:#ae81ff">3</span>)
+        emit(<span style="color:#e6db74">&#34;A&#34;</span>)
+        delay(<span style="color:#ae81ff">1500</span>)
+        emit(<span style="color:#e6db74">&#34;B&#34;</span>)
+        delay(<span style="color:#ae81ff">500</span>)
+        emit(<span style="color:#e6db74">&#34;C&#34;</span>)
+        delay(<span style="color:#ae81ff">250</span>)
+        emit(<span style="color:#e6db74">&#34;D&#34;</span>)
+        delay(<span style="color:#ae81ff">2000</span>)
+        emit(<span style="color:#e6db74">&#34;E&#34;</span>)
+        <span style="color:#66d9ef">expect</span>(<span style="color:#ae81ff">4</span>)
+    }
+
+    <span style="color:#66d9ef">expect</span>(<span style="color:#ae81ff">2</span>)
+    <span style="color:#66d9ef">val</span> result = flow.debounce(<span style="color:#ae81ff">1000</span>).toList()
+    assertEquals(listOf(<span style="color:#e6db74">&#34;A&#34;</span>, <span style="color:#e6db74">&#34;D&#34;</span>, <span style="color:#e6db74">&#34;E&#34;</span>), result)
+    finish(<span style="color:#ae81ff">5</span>)
+}
+</code></pre></div><p>To understand what is the expected order of execution one should just look at indexes inside expect.
+Also it uses auto-incremental virtual time — whenever execution hits delay it automatically advances virtual time by that.
+Finally we collect result to list — something we’ve already encountered.</p>
+<p>But this TestBase implementation is not available, though looks pretty well. Hoping it to get into kotlin-coroutines-test package.</p>
+<h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Testing of RxJava and Kotlin Flow is similar, though kotlin library still seems to miss important concepts such as TestObserver to simplify testing. Other than that it is possible to verify same behaviors in a similar fashion. And the most important is abililty to work with virtual clock.
+Testing is imporant and it is good that Kotlin coroutines have built-in testing support.</p>
+<p>Happy coding!</p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="https://krossovochkin.github.io/posts/2020_03_19_unit_testing_best_practices/">
+                <span class="button__icon">←</span>
+                <span class="button__text">Unit Testing Best Practices</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="https://krossovochkin.github.io/posts/2020_03_02_from_rxjava_to_kotlin_flow_throttling/">
+                <span class="button__text">From RxJava to Kotlin Flow: Throttling</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>© 2020 Vasya Drobushkov</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+  <div class="footer__inner">
+    <div class="copyright copyright--user">
+      <a href="https://www.facebook.com/vasya.drobushkov">Facebook</a><a href="https://twitter.com/krossovochkin">Twitter</a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://krossovochkin.github.io/assets/main.js"></script>
+<script src="https://krossovochkin.github.io/assets/prism.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

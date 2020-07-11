@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Change Theme Dynamically with Circular Reveal Animation on Android :: Krossovochkin — Android Developer</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content="Introduction Dark theme on Android is on a hype at the moment. More and more apps add support for Dark theme over time allowing users to customize their phones, save battery and provide better accessibility. Though another trend which grows today is animated theme changes. First app I saw support of this was Telegram:
+Source
+After that in different modifications such feature started to appear in other apps, for example VK." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://krossovochkin.github.io/posts/2020_01_19_change_theme_dynamically_with_circular_reveal_animation_on_android/" />
+
+
+
+
+<link rel="stylesheet" href="https://krossovochkin.github.io/assets/style.css">
+
+  <link rel="stylesheet" href="https://krossovochkin.github.io/assets/yellow.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://krossovochkin.github.io/img/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="https://krossovochkin.github.io/img/favicon/yellow.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  <meta name="twitter:site" content="krossovochkin" />
+
+<meta name="twitter:creator" content="krossovochkin" />
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Change Theme Dynamically with Circular Reveal Animation on Android :: Krossovochkin">
+<meta property="og:description" content="Introduction Dark theme on Android is on a hype at the moment. More and more apps add support for Dark theme over time allowing users to customize their phones, save battery and provide better accessibility. Though another trend which grows today is animated theme changes. First app I saw support of this was Telegram:
+Source
+After that in different modifications such feature started to appear in other apps, for example VK." />
+<meta property="og:url" content="https://krossovochkin.github.io/posts/2020_01_19_change_theme_dynamically_with_circular_reveal_animation_on_android/" />
+<meta property="og:site_name" content="Change Theme Dynamically with Circular Reveal Animation on Android" />
+
+  <meta property="og:image" content="https://krossovochkin.github.io/">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2020-01-19 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Krossovochkin
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About me</a></li>
+        
+      
+        
+          <li><a href="/">Posts</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About me</a></li>
+      
+    
+      
+        <li><a href="/">Posts</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://krossovochkin.github.io/posts/2020_01_19_change_theme_dynamically_with_circular_reveal_animation_on_android/">Change Theme Dynamically with Circular Reveal Animation on Android</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2020-01-19 
+      </span>
+    
+    
+    <span class="post-author">::
+      Vasya Drobushkov
+    </span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="https://krossovochkin.github.io/tags/android/">android</a>&nbsp;
+    
+    #<a href="https://krossovochkin.github.io/tags/theme/">theme</a>&nbsp;
+    
+  </span>
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <p><a href="https://proandroiddev.com/change-theme-dynamically-with-circular-reveal-animation-on-android-8cd574f5f0d8"><img src="https://img.shields.io/badge/original-proandroiddev-green#badge" alt=""></a> <a href="https://proandroiddev.com/proandroiddev-digest-14-b7247f25292f"><img src="https://img.shields.io/badge/proandroiddevdigest-14-green#badge" alt=""></a></p>
+<h2 id="introduction">Introduction<a href="#introduction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Dark theme on Android is on a hype at the moment. More and more apps add support for Dark theme over time allowing users to customize their phones, save battery and provide better accessibility. Though another trend which grows today is animated theme changes. First app I saw support of this was Telegram:</p>
+<p><img src="../../img/1_JKZ-OapISQlTMhX8Y-VmcA.gif" alt="Source"><em><a href="https://telegram.org/blog#switch-to-night-mode-faster">Source</a></em></p>
+<p>After that in different modifications such feature started to appear in other apps, for example VK.
+The effect is amazing. And in this article we’ll go into how to implement such functionality in your app.</p>
+<blockquote>
+<p><strong>Disclaimer:</strong> Android UI Toolkit currently is pretty bad, especially in dynamic styling. To implement such a feature one need to have custom views with custom theming support in the app. If your app is small, then there is no actual need for investing time into implementing your custom views. Hopefully with help of Jetpack Compose we’ll get more adequate dynamic theming and implementation of such a feature will be more straightforward. Though in this article we’ll try to get some simple solution for dynamic customization.</p>
+</blockquote>
+<h2 id="basics">Basics<a href="#basics" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Thanks to developers of Telegram app for making code open sourced, so we can take a look at how developers implemented this feature in the <a href="https://github.com/DrKLO/Telegram/blob/1eea3ab6f7fa8ff5b90282a2bb0e919aabea7d35/TMessagesProj/src/main/java/org/telegram/ui/LaunchActivity.java#L3142-L3181">repository</a> (lines highlighted).
+There is a lot of code, so let’s get the idea of the whole algorithm.</p>
+<p>In Android 9 we have native Dark Theme support. The issue is that it is part of configuration and Android UI Toolkit doesn’t allow to change configuration dynamically and to change theme it is needed to restart all the activities in the app. That is clearly not the solution we are looking for.
+Basic support for Dark Theme with app restart is fine and is better than only providing just light theme. But to provide a really good UX it seems without custom theming we’ll not be able to achieve what we want.</p>
+<p>The main algorithm is the following:</p>
+<ul>
+<li>
+<p>we have some hidden ImageView on the screen</p>
+</li>
+<li>
+<p>on request to change theme we draw all the content of the screen on the Canvas</p>
+</li>
+<li>
+<p>convert content of Canvas into Bitmap and put it into ImageView</p>
+</li>
+<li>
+<p>change theme on all views</p>
+</li>
+<li>
+<p>start circular reveal animation for our **content **of the screen (from 0 radius to full size)</p>
+</li>
+</ul>
+<p>This will create animation when new theme reveals with animation over old theme.
+Sounds hacky, though pretty working solution.</p>
+<p>Also with such a technique we can implement other different effects, for example we can implement old theme to disappear with revealing new theme underneath. For such we’ll have:</p>
+<ul>
+<li>
+<p>hidden ImageView as in previous case with setting content of screen as Bitmap into it</p>
+</li>
+<li>
+<p>change theme on all views</p>
+</li>
+<li>
+<p>start circular reveal animation for our **image **(from full size to 0 radius)</p>
+</li>
+</ul>
+<p>Let’s dive into how this can be implemented</p>
+<h2 id="implementation">Implementation<a href="#implementation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="layout">Layout<a href="#layout" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>We’ll start from describing our test layout:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
+<span style="color:#f92672">&lt;androidx.constraintlayout.widget.ConstraintLayout</span> <span style="color:#a6e22e">xmlns:android=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res/android&#34;</span>
+    <span style="color:#a6e22e">xmlns:tools=</span><span style="color:#e6db74">&#34;http://schemas.android.com/tools&#34;</span>
+    <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
+    <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
+    <span style="color:#a6e22e">tools:context=</span><span style="color:#e6db74">&#34;.MainActivity&#34;</span>
+    <span style="color:#a6e22e">tools:ignore=</span><span style="color:#e6db74">&#34;HardcodedText&#34;</span><span style="color:#f92672">&gt;</span>
+
+    <span style="color:#f92672">&lt;ImageView</span>
+        <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/imageView&#34;</span>
+        <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
+        <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
+        <span style="color:#a6e22e">android:visibility=</span><span style="color:#e6db74">&#34;gone&#34;</span> <span style="color:#f92672">/&gt;</span>
+
+    <span style="color:#f92672">&lt;LinearLayout</span>
+        <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/container&#34;</span>
+        <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
+        <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
+        <span style="color:#a6e22e">android:orientation=</span><span style="color:#e6db74">&#34;vertical&#34;</span>
+        <span style="color:#a6e22e">android:padding=</span><span style="color:#e6db74">&#34;16dp&#34;</span><span style="color:#f92672">&gt;</span>
+
+        <span style="color:#f92672">&lt;TextView</span>
+            <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
+            <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span>
+            <span style="color:#a6e22e">android:layout_marginBottom=</span><span style="color:#e6db74">&#34;100dp&#34;</span>
+            <span style="color:#a6e22e">android:text=</span><span style="color:#e6db74">&#34;Hello world!&#34;</span>
+            <span style="color:#a6e22e">android:textSize=</span><span style="color:#e6db74">&#34;24sp&#34;</span> <span style="color:#f92672">/&gt;</span>
+
+        <span style="color:#f92672">&lt;Button</span>
+            <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/button&#34;</span>
+            <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
+            <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span>
+            <span style="color:#a6e22e">android:text=</span><span style="color:#e6db74">&#34;Button&#34;</span> <span style="color:#f92672">/&gt;</span>
+
+    <span style="color:#f92672">&lt;/LinearLayout&gt;</span>
+
+<span style="color:#f92672">&lt;/androidx.constraintlayout.widget.ConstraintLayout&gt;</span>
+</code></pre></div><p>Here we’ll have our hidden ImageView and container (LinearLayout containing out test TextView and Button which we’ll use in our test).</p>
+<h3 id="change-theme">Change Theme<a href="#change-theme" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Here is our code which is responsible to change theme with animation:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">setTheme</span>(theme: Theme) {
+    <span style="color:#66d9ef">if</span> (imageView.isVisible) {
+        <span style="color:#66d9ef">return</span>
+    }
+
+    <span style="color:#66d9ef">val</span> w = container.measuredWidth
+    <span style="color:#66d9ef">val</span> h = container.measuredHeight
+
+    <span style="color:#66d9ef">val</span> bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+    <span style="color:#66d9ef">val</span> canvas = Canvas(bitmap)
+    container.draw(canvas)
+
+    imageView.setImageBitmap(bitmap)
+    imageView.isVisible = <span style="color:#66d9ef">true</span>
+
+    <span style="color:#66d9ef">val</span> finalRadius = hypot(w.toFloat(), h.toFloat())
+
+    TODO(<span style="color:#e6db74">&#34;Change theme over all views&#34;</span>)
+
+    <span style="color:#66d9ef">val</span> anim = ViewAnimationUtils.createCircularReveal(container, w / <span style="color:#ae81ff">2</span>, h / <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">0f</span>, finalRadius)
+    anim.duration = <span style="color:#ae81ff">400L</span>
+    anim.doOnEnd {
+        imageView.setImageDrawable(<span style="color:#66d9ef">null</span>)
+        imageView.isVisible = <span style="color:#66d9ef">false</span>
+    }
+    anim.start()
+}
+</code></pre></div><p>Let’s look in details what we do here:</p>
+<ul>
+<li>
+<p>first of all we make a defensive check to not start new animation when previous is still in progress</p>
+</li>
+<li>
+<p>then we get the dimensions of the container with content to create bitmap, draw all the content into that bitmap and set that bitmap into ImageView</p>
+</li>
+<li>
+<p>we have left TODO in the code, where we’ll need to change theme for all views. We’ll get back to that later</p>
+</li>
+<li>
+<p>finally we start reveal animation for container, which will actually reveal our new theme</p>
+</li>
+</ul>
+<p>Next we should somehow make our views to support dynamic theming.</p>
+<h3 id="thememanager">ThemeManager<a href="#thememanager" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>We’ll create single place for managing application theme — ThemeManager, and object which describes the Theme itself.
+Theme will contain different sub-Themes for each design component — TextView, Button etc.</p>
+<p>For example for TextView we can create the following Theme description:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TextViewTheme</span>(
+    @ColorRes
+    <span style="color:#66d9ef">val</span> textColor: Int
+)
+</code></pre></div><p>Similarly for container (e.g. LinearLayout) we can create:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ViewGroupTheme</span>(
+    @ColorRes
+    <span style="color:#66d9ef">val</span> backgroundColor: Int
+)
+</code></pre></div><p>And the Theme itself will be enum containing different combinations mapped over some finite number of themes — for example LIGHT and DARK:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">enum</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Theme</span>(
+    <span style="color:#66d9ef">val</span> buttonTheme: ButtonTheme,
+    <span style="color:#66d9ef">val</span> textViewTheme: TextViewTheme,
+    <span style="color:#66d9ef">val</span> viewGroupTheme: ViewGroupTheme
+) {
+    DARK(
+        buttonTheme = ButtonTheme(
+            backgroundTint = android.R.color.holo_green_dark,
+            textColor = android.R.color.white
+        ),
+        textViewTheme = TextViewTheme(
+            textColor = android.R.color.white
+        ),
+        viewGroupTheme = ViewGroupTheme(
+            backgroundColor = android.R.color.background_dark
+        )
+    ),
+    LIGHT(
+        buttonTheme = ButtonTheme(
+            backgroundTint = android.R.color.holo_green_light,
+            textColor = android.R.color.black
+        ),
+        textViewTheme = TextViewTheme(
+            textColor = android.R.color.black
+        ),
+        viewGroupTheme = ViewGroupTheme(
+            backgroundColor = android.R.color.background_light
+        )
+    )
+}
+</code></pre></div><p>And our ThemeManager will just provide single instance of current theme:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">object</span> <span style="color:#a6e22e">ThemeManager</span> {
+    
+    <span style="color:#66d9ef">var</span> theme = Theme.LIGHT
+
+}
+</code></pre></div><h3 id="custom-views">Custom Views<a href="#custom-views" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Next we need to create our own wrappers for views to support changes of dynamic theme changing.
+Let’s make our own custom TextView as example:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyTextView</span>
+@JvmOverloads
+<span style="color:#66d9ef">constructor</span>(
+    context: Context,
+    attrs: AttributeSet? = <span style="color:#66d9ef">null</span>,
+    defStyleAttr: Int = <span style="color:#ae81ff">0</span>
+) : AppCompatTextView(context, attrs, defStyleAttr) {
+
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">setTheme</span>(theme: ThemeManager.Theme) {
+        setTextColor(
+            ContextCompat.getColor(
+                context,
+                theme.textViewTheme.textColor
+            )
+        )
+    }
+}
+</code></pre></div><p>We just create our view with setTheme method, where we apply all the required fields to be styled.</p>
+<p>Then we replace in xml our TextView with com.MyTextView and in our TODO access that view and set theme.
+Such approach would work, but the issue is that it doesn’t scale and it requires layout files changes. But there is a way to fix all the issues, let’s see how.</p>
+<h3 id="dynamic-theme-changes">Dynamic theme changes<a href="#dynamic-theme-changes" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Instead of explicitly setting themes on each view it would be better if views subscribed to theme changes and reactively updated by themselves.
+For this we’ll add a bit more functionality into ThemeManager — we’ll add ability to add listeners. Yes, listeners in 2020 :) One can use RxJava or kotlin Flow, it actually doesn’t matter. Listeners will be enough, so, we’ll use them.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">object</span> <span style="color:#a6e22e">ThemeManager</span> {
+
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> listeners = mutableSetOf&lt;ThemeChangedListener&gt;()
+    <span style="color:#66d9ef">var</span> theme = Theme.LIGHT
+        <span style="color:#66d9ef">set</span>(value) {
+            field = value
+            listeners.forEach { listener -&gt; listener.onThemeChanged(value) }
+        }
+        
+    <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ThemeChangedListener</span> {
+
+        <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onThemeChanged</span>(theme: Theme)
+    }
+    
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">addListener</span>(listener: ThemeChangedListener) {
+        listeners.add(listener)
+    }
+
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">removeListener</span>(listener: ThemeChangedListener) {
+        listeners.remove(listener)
+    }
+  
+  <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>Nothing really interesting, just added listeners, ability to add and remove them and we update listeners on each change of theme.</p>
+<h3 id="views-with-reactive-theme-changes-support">Views with reactive theme changes support<a href="#views-with-reactive-theme-changes-support" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Using these listeners we update our MyTextView to trigger update on theme changed:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyTextView</span>
+@JvmOverloads
+<span style="color:#66d9ef">constructor</span>(
+    context: Context,
+    attrs: AttributeSet? = <span style="color:#66d9ef">null</span>,
+    defStyleAttr: Int = <span style="color:#ae81ff">0</span>
+) : AppCompatTextView(context, attrs, defStyleAttr),
+    ThemeManager.ThemeChangedListener {
+
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onFinishInflate</span>() {
+        <span style="color:#66d9ef">super</span>.onFinishInflate()
+        ThemeManager.addListener(<span style="color:#66d9ef">this</span>)
+    }
+
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onAttachedToWindow</span>() {
+        <span style="color:#66d9ef">super</span>.onAttachedToWindow()
+        ThemeManager.addListener(<span style="color:#66d9ef">this</span>)
+    }
+
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onDetachedFromWindow</span>() {
+        <span style="color:#66d9ef">super</span>.onDetachedFromWindow()
+        ThemeManager.removeListener(<span style="color:#66d9ef">this</span>)
+    }
+
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onThemeChanged</span>(theme: ThemeManager.Theme) {
+        setTextColor(
+            ContextCompat.getColor(
+                context,
+                theme.textViewTheme.textColor
+            )
+        )
+    }
+}
+</code></pre></div><p>Instead of setTheme method we now have onThemeChanged. And in different callbacks of View lifecycle we subscribe and unsubscribe from ThemeManager.</p>
+<h3 id="custom-layoutinflater">Custom LayoutInflater<a href="#custom-layoutinflater" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>In order to not change our layouts we can use custom layout inflater factories. The idea is that we can intercept inflating views based on the names (“TextView”, “Button”, “com.MyTextView” etc.). And we can provide our own implementations for base views. Same approach is done in AppCompat.</p>
+<p>Basic implementation of the LayoutInflater.Factory2 looks like this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyLayoutInflater</span>(
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> delegate: AppCompatDelegate
+) : LayoutInflater.Factory2 {
+
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreateView</span>(
+        parent: View?,
+        name: String,
+        context: Context,
+        attrs: AttributeSet
+    ): View? {
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">when</span> (name) {
+            <span style="color:#e6db74">&#34;TextView&#34;</span> -&gt; MyTextView(context, attrs)
+            <span style="color:#e6db74">&#34;LinearLayout&#34;</span> -&gt; MyLinearLayout(context, attrs)
+            <span style="color:#e6db74">&#34;Button&#34;</span> -&gt; MyButton(context, attrs, R.attr.buttonStyle)
+            <span style="color:#66d9ef">else</span> -&gt; delegate.createView(parent, name, context, attrs)
+        }
+    }
+
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreateView</span>(name: String, context: Context, attrs: AttributeSet): View? {
+        <span style="color:#66d9ef">return</span> onCreateView(<span style="color:#66d9ef">null</span>, name, context, attrs)
+    }
+}
+</code></pre></div><p>We intercept in onCreateView some views which support our dynamic theme changes and other views we ask for AppCompatDelegate to create.</p>
+<p>But there is one trick with setting this factory — it should be done before super.onCreate(&hellip;):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : AppCompatActivity() {
+
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
+        LayoutInflaterCompat.setFactory2(
+            LayoutInflater.from(<span style="color:#66d9ef">this</span>),
+            MyLayoutInflater(delegate)
+        )
+
+        <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+    }
+}
+</code></pre></div><h3 id="finally">Finally<a href="#finally" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>And we’re good! Let’s look at the results <em>(sorry, for artifacts in gif, unfortunately video recorder in Android Studio didn’t want to record without them :( )</em>:</p>
+<p><img src="../../img/1_npozBlc942NNDJXmr4Zhrg.gif" alt=""></p>
+<p>Also if we change our setTheme method we can implement another version:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">setTheme</span>(theme: ThemeManager.Theme, animate: Boolean = <span style="color:#66d9ef">true</span>) {
+    <span style="color:#66d9ef">if</span> (!animate) {
+        ThemeManager.theme = theme
+        <span style="color:#66d9ef">return</span>
+    }
+
+    <span style="color:#66d9ef">if</span> (imageView.isVisible) {
+        <span style="color:#66d9ef">return</span>
+    }
+
+    <span style="color:#66d9ef">val</span> w = container.measuredWidth
+    <span style="color:#66d9ef">val</span> h = container.measuredHeight
+
+    <span style="color:#66d9ef">val</span> bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+    <span style="color:#66d9ef">val</span> canvas = Canvas(bitmap)
+    container.draw(canvas)
+
+    imageView.setImageBitmap(bitmap)
+    imageView.isVisible = <span style="color:#66d9ef">true</span>
+
+    <span style="color:#66d9ef">val</span> finalRadius = hypot(w.toFloat(), h.toFloat())
+
+    ThemeManager.theme = theme
+
+    <span style="color:#66d9ef">val</span> anim = ViewAnimationUtils.createCircularReveal(imageView, w / <span style="color:#ae81ff">2</span>, h / <span style="color:#ae81ff">2</span>, finalRadius, <span style="color:#ae81ff">0f</span>)
+    anim.duration = <span style="color:#ae81ff">400L</span>
+    anim.doOnEnd {
+        imageView.setImageDrawable(<span style="color:#66d9ef">null</span>)
+        imageView.isVisible = <span style="color:#66d9ef">false</span>
+    }
+    anim.start()
+}
+</code></pre></div><p><img src="../../img/1_BdwF64uCz_vNlva9BXO9Ww.gif" alt=""></p>
+<p>Awesome results, it works pretty smooth and provides a good UX with not that huge effort so far.</p>
+<h3 id="what-next">What next<a href="#what-next" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>You can find code for these in this <a href="https://gist.github.com/krossovochkin/57ce2d57e23d0a598d016473c4bf4642">gist</a>.
+Also if you’d like to play with this as an exercise you can change place where reveal animation starts. Currently we use center for simplicity, but you can use for example Switch (which changes theme) as a pivot.</p>
+<p>One can take a look at sample project <a href="https://github.com/krossovochkin/DynamicChangeThemeSample">here</a>.
+But, please, take it as inspiration and don’t copy paste as is into production.
+Thank you</p>
+<h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>I hope you found this article useful and maybe some ideas will help you to implement new cool features in your apps.
+Don’t forget to try new things, read code written by others, add animations to your app for better UX.</p>
+<p>Happy coding!</p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        <span class="button previous">
+            <a href="https://krossovochkin.github.io/posts/2020_01_25_from_rxjava_2_to_kotlin_flow_threading/">
+                <span class="button__icon">←</span>
+                <span class="button__text">From RxJava 2 to Kotlin Flow: Threading</span>
+            </a>
+        </span>
+        
+        
+        <span class="button next">
+            <a href="https://krossovochkin.github.io/posts/2020_01_17_sqlite_triggers_android_room/">
+                <span class="button__text">SQLite Triggers (&#43; Android Room)</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>© 2020 Vasya Drobushkov</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+  <div class="footer__inner">
+    <div class="copyright copyright--user">
+      <a href="https://www.facebook.com/vasya.drobushkov">Facebook</a><a href="https://twitter.com/krossovochkin">Twitter</a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://krossovochkin.github.io/assets/main.js"></script>
+<script src="https://krossovochkin.github.io/assets/prism.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

@@ -14,10 +14,10 @@
     
     <item>
       <title>Compiler-generated classes, methods and fields in Java</title>
-      <link>https://krossovochkin.github.io/posts/compiler_generated_classes_methods_and_fields_in_java_343dde2cce61/</link>
+      <link>https://krossovochkin.github.io/posts/2020_03_19_compiler_generated_classes_methods_and_fields_in_java/</link>
       <pubDate>Thu, 19 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/compiler_generated_classes_methods_and_fields_in_java_343dde2cce61/</guid>
+      <guid>https://krossovochkin.github.io/posts/2020_03_19_compiler_generated_classes_methods_and_fields_in_java/</guid>
       <description>Source
 
 Introduction When we write program in Java we create some classes, methods, fields and put all of this into our source code — .java files. After these files are compiled with javac (Java Compiler) into .class files we got a bunch of Java bytecode. It turns out that not only we create classes, methods and fields in our source code, but also compiler by itself can create them when needed.</description>
@@ -25,19 +25,19 @@ Introduction When we write program in Java we create some classes, methods, fiel
     
     <item>
       <title>Random interview coding task retrospective</title>
-      <link>https://krossovochkin.github.io/posts/random_interview_coding_task_retrospective_befa1b399f0d/</link>
+      <link>https://krossovochkin.github.io/posts/2019_09_27_random_interview_coding_task_retrospective/</link>
       <pubDate>Fri, 27 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/random_interview_coding_task_retrospective_befa1b399f0d/</guid>
+      <guid>https://krossovochkin.github.io/posts/2019_09_27_random_interview_coding_task_retrospective/</guid>
       <description>Introduction It happens often that on interviews you’ve asked to perform some coding task. For unknown reason most of the times you’ve asked to write some code not in the IDE, but on piece of paper. I don’t like such tasks on an interview, because in real life one won’t write any kind of code on a paper. If you need to write something not in IDE you face issues like you can’t quickly change something or write new code in between the lines.</description>
     </item>
     
     <item>
       <title>SiMMMMpLLLLeDateFormat</title>
-      <link>https://krossovochkin.github.io/posts/simmmmplllledateformat_6bd326d17012/</link>
+      <link>https://krossovochkin.github.io/posts/2019_07_21_simmmmplllledateformat/</link>
       <pubDate>Sun, 21 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/simmmmplllledateformat_6bd326d17012/</guid>
+      <guid>https://krossovochkin.github.io/posts/2019_07_21_simmmmplllledateformat/</guid>
       <description>Introduction Using SimpleDateFormat to format dates and times is a common thing (as Java 8 Time API is not that available on Android yet). Usually it looks like:
 val formatter = SimpleDateFormat(&amp;#34;dd MMMM yyyy&amp;#34;, Locale.ENGLISH)formatter.format(date)We can use different formats and locales with not only providing correct translations, but also some additional locale-specific formatting rules.
 One tricky thing about SimpleDateFormat formats is why we have M and L when they look identical?</description>
@@ -45,10 +45,10 @@ One tricky thing about SimpleDateFormat formats is why we have M and L when they
     
     <item>
       <title>Kotlin-Java interop: function references and SAM conversions</title>
-      <link>https://krossovochkin.github.io/posts/kotlin_java_interop_function_references_and_sam_conversions_3d0cd36f7967/</link>
+      <link>https://krossovochkin.github.io/posts/2018_09_13_kotlin_java_interop_function_references_and_sam_conversions/</link>
       <pubDate>Thu, 13 Sep 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/kotlin_java_interop_function_references_and_sam_conversions_3d0cd36f7967/</guid>
+      <guid>https://krossovochkin.github.io/posts/2018_09_13_kotlin_java_interop_function_references_and_sam_conversions/</guid>
       <description>Though all the things below are pretty obvious if being careful while dealing with Kotlin-Java interop, I decided still to write short note about one particular issue with function references (from Kotlin side) and SAM conversions (from Java side).
 Function reference Function reference is a good way to pass function as a parameter without explicitly using lambdas.
 For example, if we have function:
