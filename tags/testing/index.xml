@@ -20,8 +20,8 @@
       <guid>https://krossovochkin.github.io/posts/from_rxjava_to_kotlin_flow_testing_42f1641d8433/</guid>
       <description>Source
  This post is part of series of comparing RxJava to Kotlin Flow. Previous articles were about Threading, Backpressure, Error Handling, Stream Types, Throttling
-  
- Introduction Testing is a crucial part of whole development. Testing allows you to write programs in a reliable fashion, prevent regressions and have many other goodies. I won’t go through the list of advantages of writing tests in this article though. In testing it is important to have tools which allow you to write reliable tests and also tools which allow you to test your business logic.</description>
+ 
+Introduction Testing is a crucial part of whole development. Testing allows you to write programs in a reliable fashion, prevent regressions and have many other goodies. I won’t go through the list of advantages of writing tests in this article though. In testing it is important to have tools which allow you to write reliable tests and also tools which allow you to test your business logic.</description>
     </item>
     
   </channel>

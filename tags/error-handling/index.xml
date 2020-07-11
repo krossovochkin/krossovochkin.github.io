@@ -20,8 +20,8 @@
       <guid>https://krossovochkin.github.io/posts/from_rxjava_to_kotlin_flow_error_handling_da1f6a4f2708/</guid>
       <description>Source
  This post is part of series of comparing RxJava to Kotlin Flow. Previous articles were about Threading and Backpressure.
-  
- Introduction Error handling is fundamental in reactive programming. Reactive streams might fail with exception and propagate it as an event downstream notifying consumers on the error that happened. As in previous articles, we’ll try to compare RxJava and Kotlin Flow error handling mechanisms. This might help us to migrate existing code from RxJava to Kotlin Flow and also understand how to properly use Kotlin Flow.</description>
+ 
+Introduction Error handling is fundamental in reactive programming. Reactive streams might fail with exception and propagate it as an event downstream notifying consumers on the error that happened. As in previous articles, we’ll try to compare RxJava and Kotlin Flow error handling mechanisms. This might help us to migrate existing code from RxJava to Kotlin Flow and also understand how to properly use Kotlin Flow.</description>
     </item>
     
   </channel>

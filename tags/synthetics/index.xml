@@ -19,8 +19,8 @@
       
       <guid>https://krossovochkin.github.io/posts/compiler_generated_classes_methods_and_fields_in_java_343dde2cce61/</guid>
       <description>Source
- 
- Introduction When we write program in Java we create some classes, methods, fields and put all of this into our source code — .java files. After these files are compiled with javac (Java Compiler) into .class files we got a bunch of Java bytecode. It turns out that not only we create classes, methods and fields in our source code, but also compiler by itself can create them when needed.</description>
+
+Introduction When we write program in Java we create some classes, methods, fields and put all of this into our source code — .java files. After these files are compiled with javac (Java Compiler) into .class files we got a bunch of Java bytecode. It turns out that not only we create classes, methods and fields in our source code, but also compiler by itself can create them when needed.</description>
     </item>
     
     <item>

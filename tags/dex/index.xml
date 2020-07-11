@@ -19,8 +19,8 @@
       
       <guid>https://krossovochkin.github.io/posts/diving_deep_into_android_dex_bytecode_48db82b170c8/</guid>
       <description>Source
-  
- Introduction Modern Android development is based on Kotlin, which is interoperable with Java. Whenever we use some cool feature from Kotlin (say High-order functions) under the hood (when running on JVM) the feature is implemented in terms of Java bytecode. This might lead to some overheads in memory and performance if used without caution (for example excessive usage of lambdas with parameters without inlining might produce a lot of anonymous classes and put additional pressure on GC).</description>
+ 
+Introduction Modern Android development is based on Kotlin, which is interoperable with Java. Whenever we use some cool feature from Kotlin (say High-order functions) under the hood (when running on JVM) the feature is implemented in terms of Java bytecode. This might lead to some overheads in memory and performance if used without caution (for example excessive usage of lambdas with parameters without inlining might produce a lot of anonymous classes and put additional pressure on GC).</description>
     </item>
     
   </channel>
