@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ru on Krossovochkin</title>
+    <link>https://krossovochkin.github.io/tags/ru/</link>
+    <description>Recent content in ru on Krossovochkin</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© 2020 Vasya Drobushkov</copyright>
+    <lastBuildDate>Sun, 07 Jul 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://krossovochkin.github.io/tags/ru/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Программирование и музыка</title>
+      <link>https://krossovochkin.github.io/posts/2018_06_24_programming_and_music/</link>
+      <pubDate>Sun, 24 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.github.io/posts/2018_06_24_programming_and_music/</guid>
+      <description>Предисловие Наушники — лучший друг разработчика (спасибо открытым пространствам и людям вокруг). Шум и разговоры отвлекают от работы и не дают сосредоточиться. Решением являются отдельные комнаты для небольших команд (что встречается редко и все равно не является стопроцентным, потому что отвлекать может и просто клацание коллегами по клавиатуре) либо наушники плюс музыка в них. Также у музыки на работе есть и другие преимущества. Например, она может выступать в роли якоря.</description>
+    </item>
+    
+    <item>
+      <title>Сказки</title>
+      <link>https://krossovochkin.github.io/posts/2018_06_17_fairytales/</link>
+      <pubDate>Sun, 17 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.github.io/posts/2018_06_17_fairytales/</guid>
+      <description>В детстве я читал много сказок, и я думаю, что это оказало некоторое влияние на развитие моего мировоззрения. По крайней мере неявно. Конечно, не факт, что в лучшую сторону. У меня было несколько книг, зачитанных до дыр, и собственно ими я хотел сейчас поделиться.
+Прежде всего: Да, я читал и знаю большинство популярных русских народных сказок вроде Колобка, различных вариаций сказок про Бабу Ягу и Кощея Бессмертного, всяких Красных Шапочек и Волков с козлятами Братьев Гримм и Гадких утят, Дюймовочек (хотя “Новое платье короля” — это очень сильная сказка) Андерсена и прочих известных сказок.</description>
+    </item>
+    
+  </channel>
+</rss>

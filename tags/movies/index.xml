@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>movies on Krossovochkin</title>
+    <link>https://krossovochkin.github.io/tags/movies/</link>
+    <description>Recent content in movies on Krossovochkin</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>© 2020 Vasya Drobushkov</copyright>
+    <lastBuildDate>Mon, 15 Oct 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://krossovochkin.github.io/tags/movies/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Scary movies</title>
+      <link>https://krossovochkin.github.io/posts/2019_10_15_scary_movies/</link>
+      <pubDate>Mon, 15 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.github.io/posts/2019_10_15_scary_movies/</guid>
+      <description>I don’t like horror movies. But this short story is not about that particularly. Horror movies are different: murders, ghosts, fantasy etc.
+I don’t like horror movies of any kind. But I still can watch them. 1408, final destination, the saw etc.
+The only thing that scares me in horror movies are people. Not blood, not ghosts.
+Here I’d like to share few movies, which traumatized my psyche in the childhood (and not only).</description>
+    </item>
+    
+  </channel>
+</rss>
