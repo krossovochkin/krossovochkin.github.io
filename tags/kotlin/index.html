@@ -133,7 +133,49 @@
   
   <div class="post on-list">
     <h1 class="post-title">
-      <a href="https://krossovochkin.github.io/posts/2020_08_14_kotlin_nitpickers_guide/">Kotlin Nitpicker&rsquo;s guide</a></h1>
+      <a href="https://krossovochkin.github.io/posts/2020_10_17_kotlin_functional_interfaces_function_references_and_sam_conversion/">Kotlin Functional Interfaces: Function reference and SAM conversion</a></h1>
+    <div class="post-meta">
+      <span class="post-date">
+        2020-10-17
+      </span>
+      <span class="post-author">::
+        Vasya Drobushkov</span>
+    </div>
+
+    
+    <span class="post-tags">
+      
+      #<a href="https://krossovochkin.github.io/tags/kotlin/">kotlin</a>&nbsp;
+      
+      #<a href="https://krossovochkin.github.io/tags/sam/">sam</a>&nbsp;
+      
+      #<a href="https://krossovochkin.github.io/tags/functional-interface/">functional interface</a>&nbsp;
+      
+    </span>
+    
+
+    
+
+    <div class="post-content">
+      
+      
+      Introduction About two years ago I made a post about a tricky case in Kotlin-Java interop related to the usage of function references and SAM conversion. One of the points there was that in Kotlin, if interface is declared instead of a function, one has to explicitly create an object, therefore no caveats as with interop:
+val callback = object : ThirdParty.Callback {override fun onValueChanged(value: Int) {this@App.onValueChanged(value)}}With Kotlin 1.
+      
+      
+    </div>
+
+    
+    <div>
+      <a class="read-more button"
+        href="/posts/2020_10_17_kotlin_functional_interfaces_function_references_and_sam_conversion/">Read more →</a>
+    </div>
+    
+  </div>
+  
+  <div class="post on-list">
+    <h1 class="post-title">
+      <a href="https://krossovochkin.github.io/posts/2020_10_14_kotlin_nitpickers_guide/">Kotlin Nitpicker&rsquo;s guide</a></h1>
     <div class="post-meta">
       <span class="post-date">
         2020-10-14
@@ -167,7 +209,7 @@
     
     <div>
       <a class="read-more button"
-        href="/posts/2020_08_14_kotlin_nitpickers_guide/">Read more →</a>
+        href="/posts/2020_10_14_kotlin_nitpickers_guide/">Read more →</a>
     </div>
     
   </div>
@@ -524,55 +566,16 @@
     
   </div>
   
-  <div class="post on-list">
-    <h1 class="post-title">
-      <a href="https://krossovochkin.github.io/posts/2018_09_13_kotlin_java_interop_function_references_and_sam_conversions/">Kotlin-Java interop: function references and SAM conversions</a></h1>
-    <div class="post-meta">
-      <span class="post-date">
-        2018-09-13
-      </span>
-      <span class="post-author">::
-        Vasya Drobushkov</span>
-    </div>
-
-    
-    <span class="post-tags">
-      
-      #<a href="https://krossovochkin.github.io/tags/kotlin/">kotlin</a>&nbsp;
-      
-      #<a href="https://krossovochkin.github.io/tags/java/">java</a>&nbsp;
-      
-      #<a href="https://krossovochkin.github.io/tags/interop/">interop</a>&nbsp;
-      
-      #<a href="https://krossovochkin.github.io/tags/interoperability/">interoperability</a>&nbsp;
-      
-    </span>
-    
-
-    
-
-    <div class="post-content">
-      
-      
-      Though all the things below are pretty obvious if being careful while dealing with Kotlin-Java interop, I decided still to write short note about one particular issue with function references (from Kotlin side) and SAM conversions (from Java side).
-Function reference Function reference is a good way to pass function as a parameter without explicitly using lambdas.
-For example, if we have function:
-fun method(callback: (Input) -&gt; Output) { .
-      
-      
-    </div>
-
-    
-    <div>
-      <a class="read-more button"
-        href="/posts/2018_09_13_kotlin_java_interop_function_references_and_sam_conversions/">Read more →</a>
-    </div>
-    
-  </div>
-  
   <div class="pagination">
   <div class="pagination__buttons">
     
+    
+      <span class="button next">
+        <a href="/tags/kotlin/page/2/">
+          <span class="button__text">Older posts</span>
+          <span class="button__icon">→</span>
+        </a>
+      </span>
     
   </div>
 </div>

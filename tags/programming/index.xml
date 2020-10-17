@@ -14,10 +14,10 @@
     
     <item>
       <title>Kotlin Nitpicker&#39;s guide</title>
-      <link>https://krossovochkin.github.io/posts/2020_08_14_kotlin_nitpickers_guide/</link>
+      <link>https://krossovochkin.github.io/posts/2020_10_14_kotlin_nitpickers_guide/</link>
       <pubDate>Wed, 14 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2020_08_14_kotlin_nitpickers_guide/</guid>
+      <guid>https://krossovochkin.github.io/posts/2020_10_14_kotlin_nitpickers_guide/</guid>
       <description>Introduction Code review is an essential tool for a development team, which helps ensure high-quality standards of code. While reviewing others&amp;rsquo; code one might find bugs, design issues, and so on. One another part of reviewing is getting used to the codebase and following team&amp;rsquo;s code style for better maintenance. Though it is pretty cool in theory, in practice team might face few issues, one of which is nitpicking. When review is bloated with dozens of similar comments related to e.</description>
     </item>
     

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Kotlin Functional Interfaces: Function reference and SAM conversion :: Krossovochkin — Android Developer</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content="Introduction About two years ago I made a post about a tricky case in Kotlin-Java interop related to the usage of function references and SAM conversion. One of the points there was that in Kotlin, if interface is declared instead of a function, one has to explicitly create an object, therefore no caveats as with interop:
+val callback = object : ThirdParty.Callback {override fun onValueChanged(value: Int) {this@App.onValueChanged(value)}}With Kotlin 1." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://krossovochkin.github.io/posts/2020_10_17_kotlin_functional_interfaces_function_references_and_sam_conversion/" />
+
+
+
+
+<link rel="stylesheet" href="https://krossovochkin.github.io/assets/style.css">
+
+  <link rel="stylesheet" href="https://krossovochkin.github.io/assets/yellow.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://krossovochkin.github.io/img/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="https://krossovochkin.github.io/img/favicon/yellow.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  <meta name="twitter:site" content="krossovochkin" />
+
+<meta name="twitter:creator" content="krossovochkin" />
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Kotlin Functional Interfaces: Function reference and SAM conversion :: Krossovochkin">
+<meta property="og:description" content="Introduction About two years ago I made a post about a tricky case in Kotlin-Java interop related to the usage of function references and SAM conversion. One of the points there was that in Kotlin, if interface is declared instead of a function, one has to explicitly create an object, therefore no caveats as with interop:
+val callback = object : ThirdParty.Callback {override fun onValueChanged(value: Int) {this@App.onValueChanged(value)}}With Kotlin 1." />
+<meta property="og:url" content="https://krossovochkin.github.io/posts/2020_10_17_kotlin_functional_interfaces_function_references_and_sam_conversion/" />
+<meta property="og:site_name" content="Kotlin Functional Interfaces: Function reference and SAM conversion" />
+
+  <meta property="og:image" content="https://krossovochkin.github.io/">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2020-10-17 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Krossovochkin
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About me</a></li>
+        
+      
+        
+          <li><a href="/">Posts</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About me</a></li>
+      
+    
+      
+        <li><a href="/">Posts</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://krossovochkin.github.io/posts/2020_10_17_kotlin_functional_interfaces_function_references_and_sam_conversion/">Kotlin Functional Interfaces: Function reference and SAM conversion</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2020-10-17 
+      </span>
+    
+    
+    <span class="post-author">::
+      Vasya Drobushkov
+    </span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="https://krossovochkin.github.io/tags/kotlin/">kotlin</a>&nbsp;
+    
+    #<a href="https://krossovochkin.github.io/tags/sam/">sam</a>&nbsp;
+    
+    #<a href="https://krossovochkin.github.io/tags/functional-interface/">functional interface</a>&nbsp;
+    
+  </span>
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <h3 id="introduction">Introduction<a href="#introduction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>About two years ago I <a href="https://medium.com/@krossovochkin/kotlin-java-interop-function-references-and-sam-conversions-3d0cd36f7967">made a post</a> about a tricky case in Kotlin-Java interop related to the usage of function references and SAM conversion.
+One of the points there was that in Kotlin, if interface is declared instead of a function, one has to explicitly create an object, therefore no caveats as with interop:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> callback = <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">: </span><span style="color:#a6e22e">ThirdParty</span>.Callback {
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onValueChanged</span>(value: Int) {
+        <span style="color:#66d9ef">this</span>@App.onValueChanged(value)
+    }
+}
+</code></pre></div><p>With Kotlin 1.4 there is now a &ldquo;Functional interface&rdquo; which supports SAM conversion. And <a href="https://medium.com/@mwolfe38/does-the-new-kotlin-1-4-sam-interfaces-using-fun-interface-declaration-have-similar-issues-1b08fa65a096">I&rsquo;ve been asked</a> on how it works in a similar situation.<br>
+Let&rsquo;s find out.</p>
+<h3 id="setup">Setup<a href="#setup" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>First, let&rsquo;s make our setup with Kotlin. We have our ThirdParty class which manages the callbacks:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ThirdParty</span> {
+
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> callbacks = mutableListOf&lt;Callback&gt;()
+
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">addCallback</span>(callback: Callback) {
+        println(<span style="color:#e6db74">&#34;addCallback: $callback&#34;</span>)
+        callbacks += callback
+    }
+
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">removeCallback</span>(callback: Callback) {
+        println(<span style="color:#e6db74">&#34;removeCallback: $callback&#34;</span>)
+        callbacks -= callback
+    }
+
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">printState</span>() {
+        println(<span style="color:#e6db74">&#34;Callbacks count: ${callbacks.size}&#34;</span>)
+    }
+
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">interface</span> Callback {
+
+        <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onValueChanged</span>(value: Int)
+    }
+}
+</code></pre></div><p>And our client code in which we&rsquo;ll add and remove our callback:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#66d9ef">val</span> callback: (Int) -&gt; Unit = <span style="color:#f92672">::</span>onValueChanged
+    println(<span style="color:#e6db74">&#34;callback created: $callback&#34;</span>)
+
+    <span style="color:#66d9ef">val</span> thirdParty = ThirdParty()
+
+    thirdParty.printState()
+    thirdParty.addCallback(callback)
+    thirdParty.printState()
+    thirdParty.removeCallback(callback)
+    thirdParty.printState()
+}
+
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onValueChanged</span>(value: Int) {
+
+}
+</code></pre></div><p>We create a function (from a private member) with a help of method reference. Then add and remove it printing state of our ThirdParty class (how many callbacks are registered).<br>
+If you look at the original story about Kotlin-Java interop, for add and remove separate Java objects are created therefore after removal there still will be 1 callback registered.</p>
+<p>Let&rsquo;s run our program:</p>
+<pre><code>Callbacks count: 0
+addCallback: TestKt$sam$ThirdParty_Callback$0@47ef8be8
+Callbacks count: 1
+removeCallback: TestKt$sam$ThirdParty_Callback$0@47ef8be8
+Callbacks count: 0
+</code></pre><p>Here we see that our program worked correctly. Seems callback objects are the same.</p>
+<h3 id="bytecode">Bytecode<a href="#bytecode" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Let&rsquo;s look on how that is achieved in the bytecode. For <code>addCallback</code> line we have:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">  L7
+    LINENUMBER <span style="color:#ae81ff">8</span> L7
+    ALOAD <span style="color:#ae81ff">1</span>
+    ALOAD <span style="color:#ae81ff">0</span>
+    DUP
+    IFNULL L8
+    ASTORE <span style="color:#ae81ff">2</span>
+    NEW TestKt<span style="color:#960050;background-color:#1e0010">$</span>sam<span style="color:#960050;background-color:#1e0010">$</span>ThirdParty_Callback<span style="color:#960050;background-color:#1e0010">$</span><span style="color:#ae81ff">0</span>
+    DUP
+    ALOAD <span style="color:#ae81ff">2</span>
+    INVOKESPECIAL TestKt<span style="color:#960050;background-color:#1e0010">$</span>sam<span style="color:#960050;background-color:#1e0010">$</span>ThirdParty_Callback<span style="color:#960050;background-color:#1e0010">$</span><span style="color:#ae81ff">0.</span>&lt;init&gt; (Lkotlin/jvm/functions/Function1;)V
+   L8
+    CHECKCAST ThirdParty<span style="color:#960050;background-color:#1e0010">$</span>Callback
+    INVOKEVIRTUAL ThirdParty.addCallback (LThirdParty<span style="color:#960050;background-color:#1e0010">$</span>Callback;)V
+   L9
+</code></pre></div><p>We create a callback object and pass it to the <code>addCallback</code> method.</p>
+<p>What about <code>removeCallback</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">  L10
+    LINENUMBER <span style="color:#ae81ff">10</span> L10
+    ALOAD <span style="color:#ae81ff">1</span>
+    ALOAD <span style="color:#ae81ff">0</span>
+    DUP
+    IFNULL L11
+    ASTORE <span style="color:#ae81ff">2</span>
+    NEW TestKt<span style="color:#960050;background-color:#1e0010">$</span>sam<span style="color:#960050;background-color:#1e0010">$</span>ThirdParty_Callback<span style="color:#960050;background-color:#1e0010">$</span><span style="color:#ae81ff">0</span>
+    DUP
+    ALOAD <span style="color:#ae81ff">2</span>
+    INVOKESPECIAL TestKt<span style="color:#960050;background-color:#1e0010">$</span>sam<span style="color:#960050;background-color:#1e0010">$</span>ThirdParty_Callback<span style="color:#960050;background-color:#1e0010">$</span><span style="color:#ae81ff">0.</span>&lt;init&gt; (Lkotlin/jvm/functions/Function1;)V
+   L11
+    CHECKCAST ThirdParty<span style="color:#960050;background-color:#1e0010">$</span>Callback
+    INVOKEVIRTUAL ThirdParty.removeCallback (LThirdParty<span style="color:#960050;background-color:#1e0010">$</span>Callback;)V
+   L12
+</code></pre></div><p>Bytecode is the same! We still create a new Callback object.<br>
+So, we create two callback objects. One per each method call. But the program works correctly.</p>
+<p>This is because of the inner callback implementation:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TestKt</span><span style="color:#960050;background-color:#1e0010">$</span>sam<span style="color:#960050;background-color:#1e0010">$</span>ThirdParty_Callback<span style="color:#960050;background-color:#1e0010">$</span><span style="color:#ae81ff">0</span> implements ThirdParty.Callback, FunctionAdapter {
+   <span style="color:#75715e">// $FF: synthetic field
+</span><span style="color:#75715e"></span>   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Function1 function;
+
+   TestKt<span style="color:#960050;background-color:#1e0010">$</span>sam<span style="color:#960050;background-color:#1e0010">$</span>ThirdParty_Callback<span style="color:#960050;background-color:#1e0010">$</span><span style="color:#ae81ff">0</span>(Function1 var1) {
+      <span style="color:#66d9ef">this</span>.function = var1;
+   }
+
+   <span style="color:#75715e">// $FF: synthetic method
+</span><span style="color:#75715e"></span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> void onValueChanged(int value) {
+      Intrinsics.checkExpressionValueIsNotNull(<span style="color:#66d9ef">this</span>.function.invoke(value), <span style="color:#e6db74">&#34;invoke(...)&#34;</span>);
+   }
+
+   <span style="color:#66d9ef">public</span> Function getFunctionDelegate() {
+      <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>.function;
+   }
+
+   <span style="color:#66d9ef">public</span> boolean equals(Object var1) {
+      <span style="color:#66d9ef">return</span> var1 instanceof ThirdParty.Callback &amp;&amp; var1 instanceof FunctionAdapter &amp;&amp; Intrinsics.areEqual(<span style="color:#66d9ef">this</span>.function, ((FunctionAdapter)var1).getFunctionDelegate());
+   }
+
+   <span style="color:#66d9ef">public</span> int hashCode() {
+      <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>.function.hashCode();
+   }
+}
+</code></pre></div><p>Pay attention to the <code>equals/hashCode</code>. It is delegated to our original method reference. So, we have two separate objects, but because they use the same function reference and because of the <code>equals/hashCode</code> methods delegated to that method reference - they look the same.</p>
+<p>That is why we can even write:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#66d9ef">val</span> thirdParty = ThirdParty()
+
+    thirdParty.printState()
+    thirdParty.addCallback(<span style="color:#f92672">::</span>onValueChanged)
+    thirdParty.printState()
+    thirdParty.removeCallback(<span style="color:#f92672">::</span>onValueChanged)
+    thirdParty.printState()
+}
+</code></pre></div><p>And still, we won&rsquo;t have an issue.</p>
+<blockquote>
+<p>But pay attention that in this case for each method call new Callback object will be created. To optimize consecutive method calls one might consider creating a callback instance manually and pass it explicitly.</p>
+</blockquote>
+<p>With Kotlin 1.4 one don&rsquo;t have to write <code>object : Callback {}</code>, it is possible to do:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> callback = ThirdParty.Callback(<span style="color:#f92672">::</span>onValueChanged)
+</code></pre></div><p>Because functional interfaces support SAM conversion.</p>
+<h3 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>It seems like with Kotlin functional interfaces there is no such issue as in Kotlin-Java interop. The program will work as it was intended.<br>
+But one should anyway be attentive because the program will work correctly at the price of increased memory allocations.<br>
+So, it is still good practice to convert method references into objects explicitly without relying on the compiler.</p>
+<p>Happy coding.</p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="https://krossovochkin.github.io/posts/2020_10_14_kotlin_nitpickers_guide/">
+                <span class="button__text">Kotlin Nitpicker&#39;s guide</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>© 2020 Vasya Drobushkov</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+  <div class="footer__inner">
+    <div class="copyright copyright--user">
+      <a href="https://www.facebook.com/vasya.drobushkov">Facebook</a><a href="https://twitter.com/krossovochkin">Twitter</a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://krossovochkin.github.io/assets/main.js"></script>
+<script src="https://krossovochkin.github.io/assets/prism.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>
