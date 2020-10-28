@@ -169,7 +169,7 @@ We&rsquo;ll start with Integers first and then take a look at floating-point num
 <p>As said before - we&rsquo;re dealing with a subset of numbers in programming. Therefore the first question we&rsquo;d like to answer is whether we&rsquo;ll have a solution for any given set of numbers.<br>
 Here we have three situations:</p>
 <ul>
-<li>start is greater than the end. We can safely assume that start should not be greater than the end. In such a case no solution exists, because or logical rule is broken. That means that here we can throw an exception.<br>
+<li>start is greater than the end. We can safely assume that start should not be greater than the end. In such a case no solution exists, because our logical rule is broken. That means that here we can throw an exception.<br>
 Let&rsquo;s write a test for this:</li>
 </ul>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Test(expected = IllegalArgumentException<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>)
@@ -203,11 +203,11 @@ This will be covered with:</p>
 }
 </code></pre></div><p>For any other pair of points, we&rsquo;ll be able to have a solution. If <code>start</code> and <code>end</code> can be represented as Integers (they are in the subset of whole numbers which can be represented as Integer) middle point will be between them and that means solution also will be represented as Integer without issues.</p>
 <p>The naive approach would be to apply our math knowledge, we&rsquo;ll write our function body:</p>
-<pre><code>fun middle(start: Int, end: Int): Int {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">middle</span>(start: Int, end: Int): Int {
 	...
-	return (start + end) / 2
+	<span style="color:#66d9ef">return</span> (start + end) / <span style="color:#ae81ff">2</span>
 }
-</code></pre><p>But this would be incorrect because if <code>start = 1</code> and <code>end = Int.MAX_VALUE</code> then <code>start + end</code> overflows and the result will be negative.</p>
+</code></pre></div><p>But this would be incorrect because if <code>start = 1</code> and <code>end = Int.MAX_VALUE</code> then <code>start + end</code> overflows and the result will be negative.</p>
 <h3 id="integer-handling-overflow">Integer handling overflow<a href="#integer-handling-overflow" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
 <p>That means that whenever we design a function that works with numbers, we need to consider that not all whole numbers can be represented as Integer. Specifically, we need to carefully take a look at boundaries.<br>
 For handling this there is a good trick:</p>
@@ -217,7 +217,7 @@ For handling this there is a good trick:</p>
 	...
 	<span style="color:#66d9ef">return</span> start + (end - start) / <span style="color:#ae81ff">2</span>
 }
-</code></pre></div><p>But now we have subtraction, which means we need to pay attention to <code>Int.MIN_VALUE</code> as well. What if we have <code>start = Int.MIN_VALUE</code> and <code>end = 5</code>. Now when we an overflow again.</p>
+</code></pre></div><p>But now we have subtraction, which means we need to pay attention to <code>Int.MIN_VALUE</code> as well. What if we have <code>start = Int.MIN_VALUE</code> and <code>end = 5</code>. Now we have an overflow again.</p>
 <p>After considering all of this we come up with a solution: depending on whether start and end have same sign or different, we&rsquo;ll use different formula. And the function will be:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">middle</span>(start: Int, end: Int): Int {
     <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">when</span> {
@@ -271,10 +271,116 @@ For handling this there is a good trick:</p>
 }
 </code></pre></div><p>Are we good? Not really. With floating-point numbers, one should work carefully because of precision. While with Integers it is not possible to represent numbers less than <code>Int.MIN_VALUE</code> and greater than <code>Int.MAX_VALUE</code> and points in between two closest Integer values, with doubles we might not preserve exact numbers in between two points with the required precision.</p>
 <p>Consider the following test:</p>
-<pre><code>@Test
-fun `double inexact`() {
-	assertEquals(0.45, middle(0.3, 0.6), 1.0e-17)
-}</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Test
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">`double inexact`</span>() {
+	assertEquals(<span style="color:#ae81ff">0.45</span>, middle(<span style="color:#ae81ff">0.3</span>, <span style="color:#ae81ff">0.6</span>), <span style="color:#ae81ff">1.0e-17</span>)
+}
+</code></pre></div><p>The solution should be <code>0.45</code>, but after math applied to Double numbers, there might be an error. And instead of <code>0.45</code>, we&rsquo;ll get <code>0.44999999999999</code>. That is why when doing a comparison we have to add precision. If we take say <code>1.0e-16</code> - test passes. But if we take <code>1.0e-17</code> - it fails, because the result can be represented with the required precision. This is something we should be aware of. Our function will return the best possible result.</p>
+<h3 id="double-infinity">Double infinity<a href="#double-infinity" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>With Double, we not only have <code>Double.MIN_VALUE</code> and <code>Double.MAX_VALUE</code>. Also, we have <code>Double.NEGATIVE_INFINITY</code> and <code>Double.POSITIVE_INFINITY</code>. These are special values and let&rsquo;s look at how our implementation works with them.<br>
+But first, let&rsquo;s think about the expected results.</p>
+<p>We might say that if start or end is represented as infinity then the result is unknown. We don&rsquo;t know how far we can go with either. So, the simplest thing we can do is to check for these values and, for example, throw an exception.<br>
+But also we can do some additional calculations.<br>
+For example, if we have <code>start = Double.NEGATIVE_INFINITY</code> and <code>end = Double.NEGATIVE_INFINITY</code>? Our start and end both the same, so it feels that we can return <code>Double.NEGATIVE_INFINITY</code> as a result. Same for <code>Double.POSITIVE_INFINITY</code>. And this case is already covered by our check for <code>start == end</code>.</p>
+<p>What about one number is infinity and another is not? Can we assume that result should be infinity as well? I guess so. Because whatever we sum with infinity - the result will be infinity again.</p>
+<p>And what about the case when <code>start == Double.NEGATIVE_INFINITY</code> and <code>end == Double.POSITIVE_INFINITY</code>? Here the result is undefined. We don&rsquo;t know what is bigger - negative infinity or positive infinity. We could speculate that result should be <code>0</code>. And probably it is up to a designer of the method. I think that in such a case it is better to throw an exception.</p>
+<p>And our set of tests is now should have:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Test(expected = IllegalArgumentException<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>)
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">`double start is negative infinity and end is positive infinity then throws exception`</span>() {
+	middle(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY)
+}
+
+@Test
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">`double start is negative infinity and end is not infinity then negative infinity`</span>() {
+	assertEquals(Double.NEGATIVE_INFINITY, middle(Double.NEGATIVE_INFINITY, Double.MAX_VALUE), <span style="color:#ae81ff">1.0e-16</span>)
+}
+
+@Test
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">`double start is not infinity and end is positive infinity then positive infinity`</span>() {
+	assertEquals(Double.POSITIVE_INFINITY, middle(Double.MIN_VALUE, Double.POSITIVE_INFINITY), <span style="color:#ae81ff">1.0e-16</span>)
+}
+
+@Test
+<span style="color:#66d9ef">fun</span> <span style="color:#960050;background-color:#1e0010">`</span><span style="color:#a6e22e">double</span> start == end == negative infinity then negative infinity<span style="color:#960050;background-color:#1e0010">`</span>() {
+	assertEquals(Double.NEGATIVE_INFINITY, middle(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY), <span style="color:#ae81ff">1.0e-16</span>)
+}
+
+@Test
+<span style="color:#66d9ef">fun</span> <span style="color:#960050;background-color:#1e0010">`</span><span style="color:#a6e22e">double</span> start == end == positive infinity then positive infinity<span style="color:#960050;background-color:#1e0010">`</span>() {
+	assertEquals(Double.POSITIVE_INFINITY, middle(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY), <span style="color:#ae81ff">1.0e-16</span>)
+}
+</code></pre></div><p>And our fixed solution for Double now looks like:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">middle</span>(start: Double, end: Double): Double {
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">when</span> {
+        start == Double.NEGATIVE_INFINITY &amp;&amp; end == Double.POSITIVE_INFINITY -&gt; <span style="color:#66d9ef">throw</span> IllegalArgumentException()
+        start &gt; end -&gt; <span style="color:#66d9ef">throw</span> IllegalArgumentException()
+        start == end -&gt; start
+        start &lt; <span style="color:#ae81ff">0</span> &amp;&amp; end &gt; <span style="color:#ae81ff">0</span> -&gt; (start + end) / <span style="color:#ae81ff">2</span>
+        <span style="color:#66d9ef">else</span> -&gt; start + (end - start) / <span style="color:#ae81ff">2</span>
+    }
+}
+</code></pre></div><h3 id="double-nan">Double NaN<a href="#double-nan" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>There is yet another special value in Double - <code>Double.NaN</code>. Here the solution is simple: if either start or end is <code>Double.NaN</code> then we should throw an exception, as we can&rsquo;t calculate the result.</p>
+<p>We add two more test cases:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Test(expected = IllegalArgumentException<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>)
+<span style="color:#66d9ef">fun</span> <span style="color:#960050;background-color:#1e0010">`</span><span style="color:#a6e22e">start</span> == NaN then throws exception<span style="color:#960050;background-color:#1e0010">`</span>() {
+	middle(Double.NaN, <span style="color:#ae81ff">1.0</span>)
+}
+
+@Test(expected = IllegalArgumentException<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>)
+<span style="color:#66d9ef">fun</span> <span style="color:#960050;background-color:#1e0010">`</span><span style="color:#a6e22e">end</span> == NaN then throws exception<span style="color:#960050;background-color:#1e0010">`</span>() {
+	middle(<span style="color:#ae81ff">1.0</span>, Double.NaN)
+}
+</code></pre></div><p>And adjust our function to handle that:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">middle</span>(start: Double, end: Double): Double {
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">when</span> {
+        start.isNaN() -&gt; <span style="color:#66d9ef">throw</span> IllegalArgumentException()
+        end.isNaN() -&gt; <span style="color:#66d9ef">throw</span> IllegalArgumentException()
+        start == Double.NEGATIVE_INFINITY &amp;&amp; end == Double.POSITIVE_INFINITY -&gt; <span style="color:#66d9ef">throw</span> IllegalArgumentException()
+        start &gt; end -&gt; <span style="color:#66d9ef">throw</span> IllegalArgumentException()
+        start == end -&gt; start
+        start &lt; <span style="color:#ae81ff">0</span> &amp;&amp; end &gt; <span style="color:#ae81ff">0</span> -&gt; (start + end) / <span style="color:#ae81ff">2</span>
+        <span style="color:#66d9ef">else</span> -&gt; start + (end - start) / <span style="color:#ae81ff">2</span>
+    }
+}
+</code></pre></div><p>One thing to note is that it is tempting to make a comparison with <code>start == Double.NaN</code>, but it would be a mistake.<br>
+If we look at implementation of <code>isNan</code> method, we&rsquo;ll see the following:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isNaN</span><span style="color:#f92672">(</span><span style="color:#66d9ef">double</span> v<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+	<span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>v <span style="color:#f92672">!=</span> v<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p><code>Double.NaN</code> is not equal to itself, so <code>start == Double.NaN</code> would be incorrect.</p>
+<blockquote>
+<p>With Double it is possible to not throw an exception but instead in exceptional cases return <code>Double.NaN</code>. It is again totally acceptable and depends on the API designer&rsquo;s decision.</p>
+</blockquote>
+<h3 id="number">Number<a href="#number" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Let&rsquo;s say we&rsquo;d like to write a general function for any Number. We have various options:</p>
+<ul>
+<li>create a separate option for any type of Number (though we wouldn&rsquo;t handle the case with some third party implementations). This way we will check the type of provided number and choose the correct function with some fallback (probably Double or BigDecimal)</li>
+<li>create a single version which under the hood will use the broadest type - say BigDecimal. Then the client will convert the result to the required Number implementation. This will give us a single method, though it will be heavier in terms of resources.</li>
+</ul>
+<p>For simplicity, let&rsquo;s go with the second option.</p>
+<p>Here we can apply just something like:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">middle</span>(start: Number, end: Number): Number {
+    <span style="color:#66d9ef">if</span> (start == end) {
+        <span style="color:#66d9ef">return</span> start
+    }
+    <span style="color:#66d9ef">val</span> a = start.toString().toBigDecimal()
+    <span style="color:#66d9ef">val</span> b = end.toString().toBigDecimal()
+
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">when</span> {
+        a &gt; b -&gt; <span style="color:#66d9ef">throw</span> IllegalArgumentException()
+        a &lt; BigDecimal.ZERO &amp;&amp; b &gt; BigDecimal.ZERO -&gt; (a + b) / <span style="color:#ae81ff">2.</span>toBigDecimal()
+        <span style="color:#66d9ef">else</span> -&gt; a + (b - a) / <span style="color:#ae81ff">2.</span>toBigDecimal()
+    }
+}
+</code></pre></div><p>First, we&rsquo;ll check for our initial equality to avoid redundant conversion.
+Then we first convert numbers to string and then to BigDecimal. We do that to avoid losing information.
+Finally, we have our usual checks. Thanks to Kotlin operator overload it looks pretty well with <code>+</code> instead of <code>plus</code>.</p>
+<h3 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>In this article, I wanted to show two things. First, that math as we study it at university and math in programming are two different things. In programming, we face additional limitations that we can&rsquo;t ignore. Second that even some small and simple functions require thorough API design. Depending on what our goal is, what constraints we have, how we&rsquo;d like to approach the corner and exceptional cases (fail fast or continue gracefully) we&rsquo;ll have different results.<br>
+Pay attention to details, apply as much care to the system and its smaller parts.</p>
+<p>Happy coding.</p>
+
       </div></div>
 
   
