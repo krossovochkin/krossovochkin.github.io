@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Middle Point :: Krossovochkin — Android Developer</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="description" content="Introduction Working with numbers in programming never was a simple thing. In math, we deal with various sets of numbers - whole numbers, rational, complex. All these sets are infinite - that means that for any number we can find another smaller one and one which is bigger. In programming when we work with numbers we deal with some subset of these sets - that many that can be represented with a given amount of bits." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://krossovochkin.github.io/posts/2020_10_28_middle_point/" />
+
+
+
+
+<link rel="stylesheet" href="https://krossovochkin.github.io/assets/style.css">
+
+  <link rel="stylesheet" href="https://krossovochkin.github.io/assets/yellow.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://krossovochkin.github.io/img/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="https://krossovochkin.github.io/img/favicon/yellow.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  <meta name="twitter:site" content="krossovochkin" />
+
+<meta name="twitter:creator" content="krossovochkin" />
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Middle Point :: Krossovochkin">
+<meta property="og:description" content="Introduction Working with numbers in programming never was a simple thing. In math, we deal with various sets of numbers - whole numbers, rational, complex. All these sets are infinite - that means that for any number we can find another smaller one and one which is bigger. In programming when we work with numbers we deal with some subset of these sets - that many that can be represented with a given amount of bits." />
+<meta property="og:url" content="https://krossovochkin.github.io/posts/2020_10_28_middle_point/" />
+<meta property="og:site_name" content="Middle Point" />
+
+  <meta property="og:image" content="https://krossovochkin.github.io/">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2020-10-28 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Krossovochkin
+  </div>
+</a>
+
+    </div>
+    <div class="menu-trigger">menu</div>
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About me</a></li>
+        
+      
+        
+          <li><a href="/">Posts</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About me</a></li>
+      
+    
+      
+        <li><a href="/">Posts</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://krossovochkin.github.io/posts/2020_10_28_middle_point/">Middle Point</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2020-10-28 
+      </span>
+    
+    
+    <span class="post-author">::
+      Vasya Drobushkov
+    </span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="https://krossovochkin.github.io/tags/programming/">programming</a>&nbsp;
+    
+    #<a href="https://krossovochkin.github.io/tags/middle-point/">middle point</a>&nbsp;
+    
+    #<a href="https://krossovochkin.github.io/tags/overflow/">overflow</a>&nbsp;
+    
+  </span>
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <h3 id="introduction">Introduction<a href="#introduction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Working with numbers in programming never was a simple thing. In math, we deal with various sets of numbers - whole numbers, rational, complex. All these sets are infinite - that means that for any number we can find another smaller one and one which is bigger. In programming when we work with numbers we deal with some subset of these sets - that many that can be represented with a given amount of bits.
+When we want to work with whole numbers we can use e.g. Integer, which are the numbers being able to be represented usually with 4 bits. For floating-point numbers - say Double - it is 8 bits. There is no plus or minus infinity (in Double there are +/- infinity, though they are used for special cases).</p>
+<p>Let&rsquo;s look at a simple problem: given start and end number - calculate number which is in the middle. That means that we need to find such a number, which distance both to start and end will be the same.<br>
+In math this is a simple problem: <code>(a + b) / 2</code> is the number. Let&rsquo;s look at what difficulties we&rsquo;ll face while writing such a program.<br>
+We&rsquo;ll start with Integers first and then take a look at floating-point numbers.</p>
+<h3 id="design-api">Design API<a href="#design-api" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>We&rsquo;d like to have a function that takes two numbers as parameters returning the middle point as a result. That means that for Integers we might have:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">middle</span>(start: Int, end: Int): Int
+</code></pre></div><p>For Double:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">middle</span>(start Double, end: Double): Double 
+</code></pre></div><p>And in general, if we would like to work with any number:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">middle</span>(start: Number, end: Number): Number
+</code></pre></div><h3 id="analyze-solution-existence">Analyze solution existence<a href="#analyze-solution-existence" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>As said before - we&rsquo;re dealing with a subset of numbers in programming. Therefore the first question we&rsquo;d like to answer is whether we&rsquo;ll have a solution for any given set of numbers.<br>
+Here we have three situations:</p>
+<ul>
+<li>start is greater than the end. We can safely assume that start should not be greater than the end. In such a case no solution exists, because or logical rule is broken. That means that here we can throw an exception.<br>
+Let&rsquo;s write a test for this:</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Test(expected = IllegalArgumentException<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>)
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">`if start greater than end then throws exception`</span>() {
+	middle(<span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">4</span>)
+}
+</code></pre></div><ul>
+<li>start is equal to end. In such a case middle both points are in the same place - and the middle will be there as well. Therefore we can return either start or end as a result.<br>
+This can be handled by this test case:</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Test
+<span style="color:#66d9ef">fun</span> <span style="color:#960050;background-color:#1e0010">`</span><span style="color:#a6e22e">if</span> start == end then start<span style="color:#960050;background-color:#1e0010">`</span>() {
+	assertEquals(<span style="color:#ae81ff">5</span>, middle(<span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">5</span>))
+}
+</code></pre></div><ul>
+<li>start is less than the end. Here we can apply our general logic of calculating the middle point.</li>
+</ul>
+<p>With this our initial setup for a function will be:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">middle</span>(start: Int, end: Int): Int {
+	<span style="color:#66d9ef">if</span> (start &gt; end) <span style="color:#66d9ef">throw</span> IllegalArgumentException()
+	<span style="color:#66d9ef">if</span> (start == end) <span style="color:#66d9ef">return</span> start
+	...
+}
+</code></pre></div><h3 id="integer-naive-approach">Integer naive approach<a href="#integer-naive-approach" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>An additional case which we should cover with Integer numbers is a case when we have two numbers with odd distance. Assume we have <code>start = 3</code> and <code>end = 6</code>. The correct middle point here would be <code>4.5</code>. But it is not possible to represent such a number as Integer.<br>
+To cover that case we&rsquo;ll introduce an exception - in such cases we&rsquo;ll return closest smaller to the real middle point number.<br>
+This will be covered with:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Test
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">`if distance is odd then returns closest smaller`</span>() {
+	assertEquals(<span style="color:#ae81ff">4</span>, middle(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">6</span>))
+}
+</code></pre></div><p>For any other pair of points, we&rsquo;ll be able to have a solution. If <code>start</code> and <code>end</code> can be represented as Integers (they are in the subset of whole numbers which can be represented as Integer) middle point will be between them and that means solution also will be represented as Integer without issues.</p>
+<p>The naive approach would be to apply our math knowledge, we&rsquo;ll write our function body:</p>
+<pre><code>fun middle(start: Int, end: Int): Int {
+	...
+	return (start + end) / 2
+}
+</code></pre><p>But this would be incorrect because if <code>start = 1</code> and <code>end = Int.MAX_VALUE</code> then <code>start + end</code> overflows and the result will be negative.</p>
+<h3 id="integer-handling-overflow">Integer handling overflow<a href="#integer-handling-overflow" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>That means that whenever we design a function that works with numbers, we need to consider that not all whole numbers can be represented as Integer. Specifically, we need to carefully take a look at boundaries.<br>
+For handling this there is a good trick:</p>
+<pre><code>(a + b) / 2 = a / 2 + b / 2 = a - a / 2 + b / 2 = a + (b - a) / 2
+</code></pre><p>With a simple trick, we now avoid the sum of big numbers therefore our case with <code>start = 1</code> and <code>end = Int.MAX_VALUE</code> now works correctly. So, our function will be:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">middle</span>(start: Int, end: Int): Int {
+	...
+	<span style="color:#66d9ef">return</span> start + (end - start) / <span style="color:#ae81ff">2</span>
+}
+</code></pre></div><p>But now we have subtraction, which means we need to pay attention to <code>Int.MIN_VALUE</code> as well. What if we have <code>start = Int.MIN_VALUE</code> and <code>end = 5</code>. Now when we an overflow again.</p>
+<p>After considering all of this we come up with a solution: depending on whether start and end have same sign or different, we&rsquo;ll use different formula. And the function will be:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">middle</span>(start: Int, end: Int): Int {
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">when</span> {
+        start &gt; end -&gt; <span style="color:#66d9ef">throw</span> IllegalArgumentException()
+        start == end -&gt; start
+        start &lt; <span style="color:#ae81ff">0</span> &amp;&amp; end &gt; <span style="color:#ae81ff">0</span> -&gt; (start + end) / <span style="color:#ae81ff">2</span>
+        <span style="color:#66d9ef">else</span> -&gt; start + (end - start) / <span style="color:#ae81ff">2</span>
+    }
+}
+</code></pre></div><p>And the set of tests:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Test
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">`if start greater than 0 and end greater than 0 and no overflow`</span>() {
+	assertEquals(<span style="color:#ae81ff">6</span>, middle(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">11</span>))
+}
+
+@Test
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">`if start greater than 0 and end greater than 0 and has overflow`</span>() {
+	assertEquals(Int.MAX_VALUE - <span style="color:#ae81ff">1</span>, middle(Int.MAX_VALUE - <span style="color:#ae81ff">2</span>, Int.MAX_VALUE))
+}
+
+@Test
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">`if start less than 0 and end less than 0 and no overflow`</span>() {
+	assertEquals(-<span style="color:#ae81ff">6</span>, middle(-<span style="color:#ae81ff">11</span>, -<span style="color:#ae81ff">1</span>))
+}
+
+@Test
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">`if start less than 0 and end less than 0 and has overflow`</span>() {
+	assertEquals(Int.MIN_VALUE + <span style="color:#ae81ff">1</span>, middle(Int.MIN_VALUE + <span style="color:#ae81ff">1</span>, Int.MIN_VALUE + <span style="color:#ae81ff">2</span>))
+}
+
+@Test
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">`if start less than 0 and end greater than 0 and no overflow`</span>() {
+	assertEquals(<span style="color:#ae81ff">1</span>, middle(-<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">6</span>))
+}
+
+@Test
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">`if start less than 0 and end greater than 0 and has overflow`</span>() {
+	assertEquals(-<span style="color:#ae81ff">1</span>, middle(Int.MIN_VALUE, Int.MAX_VALUE - <span style="color:#ae81ff">1</span>))
+}
+</code></pre></div><p>Not as simple as was at first thought.</p>
+<h3 id="double-naive-approach">Double naive approach<a href="#double-naive-approach" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<p>Now let&rsquo;s look at Double. Here we can be sure that we&rsquo;ll be able to represent the result correctly for the case when the middle point can&rsquo;t be represented as an Integer because of the decimal part.</p>
+<p>Let&rsquo;s just copy-paste our function changing Int to Double:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">middle</span>(start: Double, end: Double): Double {
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">when</span> {
+        start &gt; end -&gt; <span style="color:#66d9ef">throw</span> IllegalArgumentException()
+        start == end -&gt; start
+        start &lt; <span style="color:#ae81ff">0</span> &amp;&amp; end &gt; <span style="color:#ae81ff">0</span> -&gt; (start + end) / <span style="color:#ae81ff">2</span>
+        <span style="color:#66d9ef">else</span> -&gt; start + (end - start) / <span style="color:#ae81ff">2</span>
+    }
+}
+</code></pre></div><p>Are we good? Not really. With floating-point numbers, one should work carefully because of precision. While with Integers it is not possible to represent numbers less than <code>Int.MIN_VALUE</code> and greater than <code>Int.MAX_VALUE</code> and points in between two closest Integer values, with doubles we might not preserve exact numbers in between two points with the required precision.</p>
+<p>Consider the following test:</p>
+<pre><code>@Test
+fun `double inexact`() {
+	assertEquals(0.45, middle(0.3, 0.6), 1.0e-17)
+}</code></pre>
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="https://krossovochkin.github.io/posts/2020_10_17_kotlin_functional_interfaces_function_references_and_sam_conversion/">
+                <span class="button__text">Kotlin Functional Interfaces: Function reference and SAM conversion</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>© 2020 Vasya Drobushkov</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+  <div class="footer__inner">
+    <div class="copyright copyright--user">
+      <a href="https://www.facebook.com/vasya.drobushkov">Facebook</a><a href="https://twitter.com/krossovochkin">Twitter</a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://krossovochkin.github.io/assets/main.js"></script>
+<script src="https://krossovochkin.github.io/assets/prism.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

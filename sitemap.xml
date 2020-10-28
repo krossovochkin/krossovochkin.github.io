@@ -3,6 +3,41 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://krossovochkin.github.io/</loc>
+    <lastmod>2020-10-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/2020_10_28_middle_point/</loc>
+    <lastmod>2020-10-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/tags/middle-point/</loc>
+    <lastmod>2020-10-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/tags/overflow/</loc>
+    <lastmod>2020-10-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/posts/</loc>
+    <lastmod>2020-10-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/tags/programming/</loc>
+    <lastmod>2020-10-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.github.io/tags/</loc>
+    <lastmod>2020-10-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://krossovochkin.github.io/tags/functional-interface/</loc>
     <lastmod>2020-10-17T00:00:00+00:00</lastmod>
   </url>
@@ -18,22 +53,7 @@
   </url>
   
   <url>
-    <loc>https://krossovochkin.github.io/</loc>
-    <lastmod>2020-10-17T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://krossovochkin.github.io/posts/</loc>
-    <lastmod>2020-10-17T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://krossovochkin.github.io/tags/sam/</loc>
-    <lastmod>2020-10-17T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://krossovochkin.github.io/tags/</loc>
     <lastmod>2020-10-17T00:00:00+00:00</lastmod>
   </url>
   
@@ -44,11 +64,6 @@
   
   <url>
     <loc>https://krossovochkin.github.io/posts/2020_10_14_kotlin_nitpickers_guide/</loc>
-    <lastmod>2020-10-14T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://krossovochkin.github.io/tags/programming/</loc>
     <lastmod>2020-10-14T00:00:00+00:00</lastmod>
   </url>
   

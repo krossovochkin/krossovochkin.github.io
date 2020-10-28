@@ -7,10 +7,37 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>© 2020 Vasya Drobushkov</copyright>
-    <lastBuildDate>Sat, 17 Oct 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 28 Oct 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://krossovochkin.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>middle point</title>
+      <link>https://krossovochkin.github.io/tags/middle-point/</link>
+      <pubDate>Wed, 28 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.github.io/tags/middle-point/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>overflow</title>
+      <link>https://krossovochkin.github.io/tags/overflow/</link>
+      <pubDate>Wed, 28 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.github.io/tags/overflow/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>programming</title>
+      <link>https://krossovochkin.github.io/tags/programming/</link>
+      <pubDate>Wed, 28 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.github.io/tags/programming/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>functional interface</title>
@@ -45,15 +72,6 @@
       <pubDate>Wed, 14 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://krossovochkin.github.io/tags/code-review/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>programming</title>
-      <link>https://krossovochkin.github.io/tags/programming/</link>
-      <pubDate>Wed, 14 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/programming/</guid>
       <description></description>
     </item>
     
