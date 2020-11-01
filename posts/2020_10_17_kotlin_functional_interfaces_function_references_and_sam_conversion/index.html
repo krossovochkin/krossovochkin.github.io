@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <meta name="description" content="Introduction About two years ago I made a post about a tricky case in Kotlin-Java interop related to the usage of function references and SAM conversion. One of the points there was that in Kotlin, if interface is declared instead of a function, one has to explicitly create an object, therefore no caveats as with interop:
 val callback = object : ThirdParty.Callback {override fun onValueChanged(value: Int) {this@App.onValueChanged(value)}}With Kotlin 1." />
-<meta name="keywords" content="" />
+<meta name="keywords" content="kotlin, sam, functional interface" />
 <meta name="robots" content="noodp" />
 <link rel="canonical" href="https://krossovochkin.github.io/posts/2020_10_17_kotlin_functional_interfaces_function_references_and_sam_conversion/" />
 
@@ -141,10 +141,6 @@ val callback = object : ThirdParty.Callback {override fun onValueChanged(value:
   <span class="post-tags">
     
     #<a href="https://krossovochkin.github.io/tags/kotlin/">kotlin</a>&nbsp;
-    
-    #<a href="https://krossovochkin.github.io/tags/sam/">sam</a>&nbsp;
-    
-    #<a href="https://krossovochkin.github.io/tags/functional-interface/">functional interface</a>&nbsp;
     
   </span>
   

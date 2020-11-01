@@ -22,65 +22,11 @@
     </item>
     
     <item>
-      <title>middle point</title>
-      <link>https://krossovochkin.github.io/tags/middle-point/</link>
-      <pubDate>Wed, 28 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/middle-point/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>overflow</title>
-      <link>https://krossovochkin.github.io/tags/overflow/</link>
-      <pubDate>Wed, 28 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/overflow/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>programming</title>
       <link>https://krossovochkin.github.io/tags/programming/</link>
       <pubDate>Wed, 28 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://krossovochkin.github.io/tags/programming/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>functional interface</title>
-      <link>https://krossovochkin.github.io/tags/functional-interface/</link>
-      <pubDate>Sat, 17 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/functional-interface/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>sam</title>
-      <link>https://krossovochkin.github.io/tags/sam/</link>
-      <pubDate>Sat, 17 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/sam/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>code review</title>
-      <link>https://krossovochkin.github.io/tags/code-review/</link>
-      <pubDate>Wed, 14 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/code-review/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>flow</title>
-      <link>https://krossovochkin.github.io/tags/flow/</link>
-      <pubDate>Sun, 17 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/flow/</guid>
       <description></description>
     </item>
     
@@ -103,29 +49,11 @@
     </item>
     
     <item>
-      <title>rxjava2</title>
-      <link>https://krossovochkin.github.io/tags/rxjava2/</link>
-      <pubDate>Sun, 17 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/rxjava2/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>android</title>
-      <link>https://krossovochkin.github.io/tags/android/</link>
+      <title>other</title>
+      <link>https://krossovochkin.github.io/tags/other/</link>
       <pubDate>Thu, 07 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/tags/android/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>nostalgia</title>
-      <link>https://krossovochkin.github.io/tags/nostalgia/</link>
-      <pubDate>Thu, 07 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/nostalgia/</guid>
+      <guid>https://krossovochkin.github.io/tags/other/</guid>
       <description></description>
     </item>
     
@@ -157,155 +85,20 @@
     </item>
     
     <item>
+      <title>android</title>
+      <link>https://krossovochkin.github.io/tags/android/</link>
+      <pubDate>Sun, 29 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.github.io/tags/android/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>java</title>
       <link>https://krossovochkin.github.io/tags/java/</link>
       <pubDate>Thu, 19 Mar 2020 00:00:00 +0000</pubDate>
       
       <guid>https://krossovochkin.github.io/tags/java/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>synthetics</title>
-      <link>https://krossovochkin.github.io/tags/synthetics/</link>
-      <pubDate>Thu, 19 Mar 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/synthetics/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>test</title>
-      <link>https://krossovochkin.github.io/tags/test/</link>
-      <pubDate>Thu, 19 Mar 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/test/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>unit</title>
-      <link>https://krossovochkin.github.io/tags/unit/</link>
-      <pubDate>Thu, 19 Mar 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/unit/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>unit testing</title>
-      <link>https://krossovochkin.github.io/tags/unit-testing/</link>
-      <pubDate>Thu, 19 Mar 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/unit-testing/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>testing</title>
-      <link>https://krossovochkin.github.io/tags/testing/</link>
-      <pubDate>Thu, 05 Mar 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/testing/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>throttling</title>
-      <link>https://krossovochkin.github.io/tags/throttling/</link>
-      <pubDate>Mon, 02 Mar 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/throttling/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>stream</title>
-      <link>https://krossovochkin.github.io/tags/stream/</link>
-      <pubDate>Wed, 26 Feb 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/stream/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>stream types</title>
-      <link>https://krossovochkin.github.io/tags/stream-types/</link>
-      <pubDate>Wed, 26 Feb 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/stream-types/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>error</title>
-      <link>https://krossovochkin.github.io/tags/error/</link>
-      <pubDate>Mon, 24 Feb 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/error/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>error handling</title>
-      <link>https://krossovochkin.github.io/tags/error-handling/</link>
-      <pubDate>Mon, 24 Feb 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/error-handling/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>motion layout</title>
-      <link>https://krossovochkin.github.io/tags/motion-layout/</link>
-      <pubDate>Fri, 21 Feb 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/motion-layout/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>backpressure</title>
-      <link>https://krossovochkin.github.io/tags/backpressure/</link>
-      <pubDate>Thu, 06 Feb 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/backpressure/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>bytecode</title>
-      <link>https://krossovochkin.github.io/tags/bytecode/</link>
-      <pubDate>Sun, 02 Feb 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/bytecode/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>dex</title>
-      <link>https://krossovochkin.github.io/tags/dex/</link>
-      <pubDate>Sun, 02 Feb 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/dex/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>threading</title>
-      <link>https://krossovochkin.github.io/tags/threading/</link>
-      <pubDate>Sat, 25 Jan 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/threading/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>theme</title>
-      <link>https://krossovochkin.github.io/tags/theme/</link>
-      <pubDate>Sun, 19 Jan 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/theme/</guid>
       <description></description>
     </item>
     
@@ -319,155 +112,11 @@
     </item>
     
     <item>
-      <title>trigger</title>
-      <link>https://krossovochkin.github.io/tags/trigger/</link>
-      <pubDate>Fri, 17 Jan 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/trigger/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>handler</title>
-      <link>https://krossovochkin.github.io/tags/handler/</link>
-      <pubDate>Tue, 24 Dec 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/handler/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>looper</title>
-      <link>https://krossovochkin.github.io/tags/looper/</link>
-      <pubDate>Tue, 24 Dec 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/looper/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>fusion</title>
-      <link>https://krossovochkin.github.io/tags/fusion/</link>
-      <pubDate>Sat, 02 Nov 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/fusion/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>operator fusion</title>
-      <link>https://krossovochkin.github.io/tags/operator-fusion/</link>
-      <pubDate>Sat, 02 Nov 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/operator-fusion/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>coding task</title>
-      <link>https://krossovochkin.github.io/tags/coding-task/</link>
-      <pubDate>Fri, 27 Sep 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/coding-task/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>dateformat</title>
-      <link>https://krossovochkin.github.io/tags/dateformat/</link>
-      <pubDate>Sun, 21 Jul 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/dateformat/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>cube</title>
-      <link>https://krossovochkin.github.io/tags/cube/</link>
-      <pubDate>Sun, 07 Jul 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/cube/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>ru</title>
-      <link>https://krossovochkin.github.io/tags/ru/</link>
-      <pubDate>Sun, 07 Jul 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/ru/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>rubik</title>
-      <link>https://krossovochkin.github.io/tags/rubik/</link>
-      <pubDate>Sun, 07 Jul 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/rubik/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>rubik&#39;s cube</title>
-      <link>https://krossovochkin.github.io/tags/rubiks-cube/</link>
-      <pubDate>Sun, 07 Jul 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/rubiks-cube/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>gradle</title>
-      <link>https://krossovochkin.github.io/tags/gradle/</link>
-      <pubDate>Thu, 04 Jul 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/gradle/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>version</title>
-      <link>https://krossovochkin.github.io/tags/version/</link>
-      <pubDate>Thu, 04 Jul 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/version/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>observable</title>
-      <link>https://krossovochkin.github.io/tags/observable/</link>
-      <pubDate>Mon, 27 May 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/observable/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>single</title>
-      <link>https://krossovochkin.github.io/tags/single/</link>
-      <pubDate>Mon, 27 May 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/single/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>education</title>
-      <link>https://krossovochkin.github.io/tags/education/</link>
+      <title>productivity</title>
+      <link>https://krossovochkin.github.io/tags/productivity/</link>
       <pubDate>Wed, 10 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/tags/education/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>learning</title>
-      <link>https://krossovochkin.github.io/tags/learning/</link>
-      <pubDate>Wed, 10 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/learning/</guid>
+      <guid>https://krossovochkin.github.io/tags/productivity/</guid>
       <description></description>
     </item>
     
@@ -481,69 +130,6 @@
     </item>
     
     <item>
-      <title>butterknife</title>
-      <link>https://krossovochkin.github.io/tags/butterknife/</link>
-      <pubDate>Mon, 18 Feb 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/butterknife/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>findViewById</title>
-      <link>https://krossovochkin.github.io/tags/findviewbyid/</link>
-      <pubDate>Mon, 18 Feb 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/findviewbyid/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>movies</title>
-      <link>https://krossovochkin.github.io/tags/movies/</link>
-      <pubDate>Mon, 15 Oct 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/movies/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>interop</title>
-      <link>https://krossovochkin.github.io/tags/interop/</link>
-      <pubDate>Thu, 13 Sep 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/interop/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>interoperability</title>
-      <link>https://krossovochkin.github.io/tags/interoperability/</link>
-      <pubDate>Thu, 13 Sep 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/interoperability/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>dynamic</title>
-      <link>https://krossovochkin.github.io/tags/dynamic/</link>
-      <pubDate>Sat, 21 Jul 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/dynamic/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>music</title>
-      <link>https://krossovochkin.github.io/tags/music/</link>
-      <pubDate>Sun, 24 Jun 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/music/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>russian</title>
       <link>https://krossovochkin.github.io/tags/russian/</link>
       <pubDate>Sun, 24 Jun 2018 00:00:00 +0000</pubDate>
@@ -553,38 +139,11 @@
     </item>
     
     <item>
-      <title>fairytales</title>
-      <link>https://krossovochkin.github.io/tags/fairytales/</link>
-      <pubDate>Sun, 17 Jun 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/fairytales/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>neural networks</title>
-      <link>https://krossovochkin.github.io/tags/neural-networks/</link>
+      <title>machine learning</title>
+      <link>https://krossovochkin.github.io/tags/machine-learning/</link>
       <pubDate>Thu, 09 Nov 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/tags/neural-networks/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>NN</title>
-      <link>https://krossovochkin.github.io/tags/nn/</link>
-      <pubDate>Thu, 09 Nov 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/nn/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>notifications</title>
-      <link>https://krossovochkin.github.io/tags/notifications/</link>
-      <pubDate>Sat, 11 Feb 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.github.io/tags/notifications/</guid>
+      <guid>https://krossovochkin.github.io/tags/machine-learning/</guid>
       <description></description>
     </item>
     
