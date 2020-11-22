@@ -1,69 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  
-    <title>Operator fusion in RxJava 2 :: Krossovochkin — Android Developer</title>
-  
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    
+    
+
+
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Enable responsiveness on mobile devices -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="description" content="Introduction RxJava is a very powerful library, though it has some issues as well. Specifically performance and memory issues, which come from problems library tries to solve and how the solution is designed from technical perspective. In order to minimize overhead in RxJava there are a number of optimizations, which are called “operator fusion”. And we’ll talk about them in this article. But first let’s recap how RxJava reactive types work and what issues they have." />
-<meta name="keywords" content="rxjava, rxjava2, fusion, operator fusion" />
-<meta name="robots" content="noodp" />
-<link rel="canonical" href="https://krossovochkin.github.io/posts/2019_11_02_operator_fusion_in_rxjava_2/" />
+<meta name="generator" content="Hugo 0.78.2" />
+
+    
+    
+    
+
+<title>Operator fusion in RxJava 2 • Vasya Drobushkov</title>
 
 
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-148934073-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Operator fusion in RxJava 2"/>
+<meta name="twitter:description" content="Introduction RxJava is a very powerful library, though it has some issues as well. Specifically performance and memory issues, which come from problems library tries to solve and how the solution is designed from technical perspective. In order to minimize overhead in RxJava there are a number of optimizations, which are called “operator fusion”. And we’ll talk about them in this article. But first let’s recap how RxJava reactive types work and what issues they have."/>
 
-
-
-<link rel="stylesheet" href="https://krossovochkin.github.io/assets/style.css">
-
-  <link rel="stylesheet" href="https://krossovochkin.github.io/assets/yellow.css">
-
-
-
-
-
-
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://krossovochkin.github.io/img/apple-touch-icon-144-precomposed.png">
-
-  <link rel="shortcut icon" href="https://krossovochkin.github.io/img/favicon/yellow.png">
-
-
-
-<meta name="twitter:card" content="summary" />
-
-  <meta name="twitter:site" content="krossovochkin" />
-
-<meta name="twitter:creator" content="krossovochkin" />
-
-
-<meta property="og:locale" content="en" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="Operator fusion in RxJava 2 :: Krossovochkin">
+<meta property="og:title" content="Operator fusion in RxJava 2" />
 <meta property="og:description" content="Introduction RxJava is a very powerful library, though it has some issues as well. Specifically performance and memory issues, which come from problems library tries to solve and how the solution is designed from technical perspective. In order to minimize overhead in RxJava there are a number of optimizations, which are called “operator fusion”. And we’ll talk about them in this article. But first let’s recap how RxJava reactive types work and what issues they have." />
+<meta property="og:type" content="article" />
 <meta property="og:url" content="https://krossovochkin.github.io/posts/2019_11_02_operator_fusion_in_rxjava_2/" />
-<meta property="og:site_name" content="Operator fusion in RxJava 2" />
-
-  <meta property="og:image" content="https://krossovochkin.github.io/">
-
-<meta property="og:image:width" content="2048">
-<meta property="og:image:height" content="1024">
+<meta property="article:published_time" content="2019-11-02T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-11-02T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
 
 
-  <meta property="article:published_time" content="2019-11-02 00:00:00 &#43;0000 UTC" />
+    
 
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
 
 
 
@@ -72,101 +43,172 @@ if (!doNotTrack) {
 
 
 
+<link rel="stylesheet" href="/scss/hyde-hyde.adf8a0af011d3afb07ed907ad3295e1c99f49503bc91d395e38dc3f8dfdf4900.css" integrity="sha256-rfigrwEdOvsH7ZB60yleHJn0lQO8kdOV443D&#43;N/fSQA=">
 
 
+<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    
+    
 
 </head>
-<body class="">
 
 
-<div class="container center headings--one-size">
-
-  <header class="header">
-  <div class="header__inner">
-    <div class="header__logo">
-      <a href="/">
-  <div class="logo">
-    Krossovochkin
-  </div>
-</a>
-
-    </div>
-    <div class="menu-trigger">menu</div>
-  </div>
-  
-    <nav class="menu">
-  <ul class="menu__inner menu__inner--desktop">
+    <body class="theme-base-0a ">
     
-      
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="https://krossovochkin.github.io/">
         
-          <li><a href="/about">About me</a></li>
+          Vasya Drobushkov
         
-      
-        
-          <li><a href="/">Posts</a></li>
-        
-      
-      
-    
-
-    
-  </ul>
-
-  <ul class="menu__inner menu__inner--mobile">
-    
-      
-        <li><a href="/about">About me</a></li>
-      
-    
-      
-        <li><a href="/">Posts</a></li>
-      
-    
-    
-  </ul>
-</nav>
-
-  
-</header>
-
-
-  <div class="content">
-    
-<div class="post">
-  <h1 class="post-title">
-    <a href="https://krossovochkin.github.io/posts/2019_11_02_operator_fusion_in_rxjava_2/">Operator fusion in RxJava 2</a></h1>
-  <div class="post-meta">
-    
-      <span class="post-date">
-        2019-11-02 
+        </a>
       </span>
+      
+        
+        
+        
+        <div class="author-image">
+          <img src="https://krossovochkin.github.io/../img/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
+        </div>
+        
+      
+      
+      <p class="site__description">
+        
+      </p>
+    </div>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">Vasya Drobushkov</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="/posts/">
+						<span>Posts</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="/about/">
+						<span>About</span>
+					</a>
+				</li>
+			 
+		
+	</ul>
+</div>
+
+        <section class="social">
+	
+	<a href="https://twitter.com/krossovochkin" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://facebook.com/vasya.drobushkov" rel="me"><i class="fab fa-facebook-f"></i></a>
+	
+	
+	<a href="https://github.com/krossovochkin" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	<a href="https://linkedin.com/in/vasyadrobushkov" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://stackoverflow.com/users/1533933/krossovochkin" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</section>
+
+      </div>
+    </div>
     
-    
-    <span class="post-author">::
-      Vasya Drobushkov
-    </span>
-    
+<div class="copyright">
+  &copy; 2019 - 2020 Vasya Drobushkov
+  
+    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
+  
+</div>
+
+
+
   </div>
+</div>
 
-  
-  <span class="post-tags">
+        <div class="content container">
+            
     
-    #<a href="https://krossovochkin.github.io/tags/rxjava/">rxjava</a>&nbsp;
+<article>
+  <header>
+    <h1>Operator fusion in RxJava 2</h1>
     
-  </span>
-  
+    
+<div class="post__meta">
+    
+    
+      <i class="fas fa-calendar-alt"></i> Nov 2, 2019
+    
+    
+    
+    
+    
+      
+      
+          <br/>
+           <i class="fas fa-tags"></i>
+          
+          <a class="badge badge-tag" href="/tags/rxjava">rxjava</a>
+          
+      
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 12 min read
+</div>
 
-  
 
+  </header>
   
-
-  <div class="post-content"><div>
-        <p><a href="https://proandroiddev.com/operator-fusion-in-rxjava-2-dcd6612cffae"><img src="https://img.shields.io/badge/original-proandroiddev-green#badge" alt=""></a> <a href="https://androidweekly.net/issues/issue-386"><img src="https://img.shields.io/badge/androidweekly-386-blue#badge" alt=""></a></p>
-<h2 id="introduction">Introduction<a href="#introduction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+  
+  <div class="post">
+    <p><a href="https://proandroiddev.com/operator-fusion-in-rxjava-2-dcd6612cffae"><img src="https://img.shields.io/badge/original-proandroiddev-green#badge" alt=""></a> <a href="https://androidweekly.net/issues/issue-386"><img src="https://img.shields.io/badge/androidweekly-386-blue#badge" alt=""></a></p>
+<h2 id="introduction">Introduction</h2>
 <p>RxJava is a very powerful library, though it has some issues as well. Specifically performance and memory issues, which come from problems library tries to solve and how the solution is designed from technical perspective.
 In order to minimize overhead in RxJava there are a number of optimizations, which are called “operator fusion”. And we’ll talk about them in this article.
 But first let’s recap how RxJava reactive types work and what issues they have.</p>
-<h3 id="observable">Observable<a href="#observable" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="observable">Observable</h3>
 <p><img src="../../img/1_-GlVgagYR7eyhAfd2Js82Q.png" alt=""></p>
 <p>When working with Observable there are three major pieces: Observable, Observer and Disposable.
 We all know Observable and how it is created (e.g. Observable.just(&ldquo;Hello, World!&quot;)). Observable is a building block of each Rx-chain. To make Observable work, we need to subscribe to it with passing Observer to the subscribe(&hellip;) method.
@@ -174,12 +216,12 @@ Observer is basically an interface with callbacks onSubscribe, onNext, onError a
 When we subscribe to Observable with some Observer, Observable creates Disposable object and passes it to Observer (so Observer can later dispose Rx-chain if needed) via onSubscribe callback.
 After that is done — communication is established and Observable can emit some values via onNext without any additional waiting.
 Therefore Observable doesn’t support backpressure — there is no way for Observer to notify Observable that it should wait and not emit more values.</p>
-<h3 id="flowable">Flowable<a href="#flowable" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="flowable">Flowable</h3>
 <p><img src="../../img/1_WrJqMpUirEMZs_iGqT9qqQ.png" alt=""></p>
 <p>With Flowable everything is similar, but instead of Observer and Disposable we have Subscriber and Subscription.
 Subscription has additional request(n) method, using which Subscriber can explicitly request Flowable to emit requested amount of items.
 Without requesting values Flowable won’t emit anything, that is why Flowable supports backpressure.</p>
-<h3 id="assembly-and-subscribe">Assembly and subscribe<a href="#assembly-and-subscribe" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="assembly-and-subscribe">Assembly and subscribe</h3>
 <p>When working with RxJava reactive types there are two important stages: assembly and subscribe.
 On assembly Rx-chain is built, on subscribe — we “start” Rx-chain.</p>
 <p>Consider following example:</p>
@@ -213,12 +255,12 @@ On assembly Rx-chain is built, on subscribe — we “start” Rx-chain.</p>
 </ul>
 <p><img src="../../img/1_pvHknxH6NsoabgUzaiB4Lg.png" alt=""></p>
 <p>So you can see that quite a lot of things happen with this short Rx-chain. If this chain was of type Flowable then additional communication with request(n) would also take place making this even more complicated.</p>
-<h3 id="queues-and-synchronization">Queues and synchronization<a href="#queues-and-synchronization" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="queues-and-synchronization">Queues and synchronization</h3>
 <p>Operators under the hood might have their internal Queues for processing events. Access to this queue should be serialized (that means that it should be accessed with proper synchronization).
 RxJava2 has non-blocking synchronization based on Atomics (e.g. AtomicInteger) and infinite loops with compareAndSet method (for better performance). So inside the library it is common to see some code like this:</p>
 <p><img src="../../img/1_t3Xh3DzMEgg3JBOlIw98Dg.png" alt=""></p>
 <p>Queue in an operator along with Atomic objects also provides an overhead if we consider that each operator in a chain can have its own Queue.</p>
-<h3 id="issues">Issues<a href="#issues" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="issues">Issues</h3>
 <p>So considering all the above, issues which RxJava has are:</p>
 <ul>
 <li>
@@ -231,7 +273,7 @@ RxJava2 has non-blocking synchronization based on Atomics (e.g. AtomicInteger) a
 <p>Allocations and serialization overhead — creating internal structures as queues and atomic objects for each operator comes as a memory and performance overhead</p>
 </li>
 </ul>
-<h2 id="operator-fusion">Operator fusion<a href="#operator-fusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="operator-fusion">Operator fusion</h2>
 <p>To resolve some of the performance and memory issues there is “operator fusion”.</p>
 <p>There are two types of fusion:</p>
 <ul>
@@ -242,14 +284,14 @@ RxJava2 has non-blocking synchronization based on Atomics (e.g. AtomicInteger) a
 <p>Micro fusion — removing unnecessary synchronization and sharing internal structures (such as queues) between operators</p>
 </li>
 </ul>
-<h2 id="macro-fusion-on-assembly">Macro fusion on Assembly<a href="#macro-fusion-on-assembly" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
-<h3 id="on-assembly">On Assembly<a href="#on-assembly" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h2 id="macro-fusion-on-assembly">Macro fusion on Assembly</h2>
+<h3 id="on-assembly">On Assembly</h3>
 <p>Macro fusion on assembly is focused on minimizing number of Observables and objects created during assembly. When we talk about “assembly” we mean this place:</p>
 <p><img src="../../img/1_9CIEZkn-Yd1ESUB6yEMzMQ.png" alt=""></p>
-<h3 id="basic-on-assembly-fusion">Basic on Assembly fusion<a href="#basic-on-assembly-fusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="basic-on-assembly-fusion">Basic on Assembly fusion</h3>
 <p>The simplest way to optimize some Observables is to add checks for special cases, so that created Observables are simpler in terms of implementation than general one. As an example we can look at Observable.fromArray, which can downgrade to Observable.empty or Observable.just if there are 0 or 1 items provided respectively:</p>
 <p><img src="../../img/1_5mQ1ljg0cT_vs72mKPz0OQ.png" alt=""></p>
-<h3 id="scalarcallable">ScalarCallable<a href="#scalarcallable" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="scalarcallable">ScalarCallable</h3>
 <p>First “advanced” optimization from fuseable package we’ll look onto is ScalarCallable interface:</p>
 <p><img src="../../img/1_ZktLkbl6QTBuDCFZ9dAawA.png" alt=""></p>
 <p>It is basically that same interface as common java Callable with the difference that it doesn’t throw exceptions.
@@ -259,7 +301,7 @@ Based on the described contract only empty and just operators on Observable, Flo
 <p>Then for example in xMap operators (flatMap, switchMap, concatMap) we can apply the optimization if source is marked with this interface:</p>
 <p><img src="../../img/1_0zRHH54ymNepgt35ineQLA.png" alt=""></p>
 <p>In case source is marked with ScalarCallable interface we can switch to simplified version of xMap instead of full implementation (which is quite heavy).</p>
-<h3 id="fusetoxxx">FuseToXXX<a href="#fusetoxxx" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="fusetoxxx">FuseToXXX</h3>
 <p>In the fuseable package there are three interfaces:</p>
 <p><img src="../../img/1_Jw-pXUIxRBOiwyrf5pVtkA.png" alt=""></p>
 <p>Let’s take a closer look at FuseToObservable, for other interfaces everything will be similar.</p>
@@ -273,23 +315,23 @@ Based on the described contract only empty and just operators on Observable, Flo
 <p><img src="../../img/1_tSTodGHba4FDc6wby0ZQnw.png" alt=""></p>
 <p>And when we call toObservable that implementation will be extracted which effectively means that toObservable Observable won’t be created:</p>
 <p><img src="../../img/1_cLlSdQ35RkpVDXsnIiHfWw.png" alt=""></p>
-<h2 id="macro-fusion-on-subscribe">Macro fusion on subscribe<a href="#macro-fusion-on-subscribe" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="macro-fusion-on-subscribe">Macro fusion on subscribe</h2>
 <p>Macro fusion on subscribe is focused on the same type of optimizations which are done on assembly, but they are done inside subscribeActual method:</p>
 <p><img src="../../img/1_Nl-uHiJIFBcWCnQexejsTw.png" alt=""></p>
 <p>Sometimes it is just not possible to apply optimization during assembly, because data is unknown before subscription, sometimes it is just more convenient to do some optimization on subscribe rather than on assembly.</p>
-<h3 id="basic-on-subscribe-fusion">Basic on subscribe fusion<a href="#basic-on-subscribe-fusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="basic-on-subscribe-fusion">Basic on subscribe fusion</h3>
 <p>Same as with assembly there is simple optimization which checks for some special conditions to use simplified implementation instead of general one. For example Observable.amb checks number of sources provided to decide whether heavy AmbCoordinator should be instantiated or not:</p>
 <p><img src="../../img/1_Jy8ROQFe3MWTswk6bxZa1w.png" alt=""></p>
-<h3 id="callable">Callable<a href="#callable" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="callable">Callable</h3>
 <p>During on assembly we have some optimization with ScalarCallable interface. For subscribe time we have similar optimizations with Callable interface.</p>
 <blockquote>
 <p>NOTE: as ScalarCallable extends Callable — any optimization which can be applied during assembly on ScalarCallable also can be applied to Callable on subscribe</p>
 </blockquote>
 <p>For example in xMap operators during subscribe for Observables marked with Callable interface it is possible to switch to simplified implementation:</p>
 <p><img src="../../img/1_AU5ss0gObYaFhcvU8sEY_A.png" alt=""></p>
-<h2 id="micro-fusion">Micro fusion<a href="#micro-fusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="micro-fusion">Micro fusion</h2>
 <p>Micro fusion is aimed to minimize overhead by reducing some synchronization or sharing internal structures as queues.</p>
-<h3 id="conditionalsubscriber">ConditionalSubscriber<a href="#conditionalsubscriber" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="conditionalsubscriber">ConditionalSubscriber</h3>
 <p>Let’s look at the example of what happens when operator like Flowable.filter is used:</p>
 <p><img src="../../img/1_b8FsW2GVN0Gi3XohhssOiA.png" alt=""></p>
 <p>We have Upstream, our filter operator and the downstream. Let’s imagine that our filter function checks whether or not value is less than 5. After subscription is established downstream has to request some number of items from upstream:</p>
@@ -336,7 +378,7 @@ This can minimize number of required request(n) calls as upstream receives direc
 <p><img src="../../img/1_XpNdWcZQkE_ZoZycOvqJUw.png" alt=""></p>
 <p>But it would not be that awesome if this optimization aimed to make less overhead with chained filter operators (as it seems anyway can be written inside one filter operator). The good thing is that Flowable.map also implements ConditionalSubscriber, which makes less overhead when have multiple filter and map operators chained together:</p>
 <p><img src="../../img/1_8g0uThbDA_jM1QgmA2q8PQ.png" alt=""></p>
-<h3 id="queue-fuseable">Queue fuseable<a href="#queue-fuseable" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="queue-fuseable">Queue fuseable</h3>
 <p>The most complicated micro fusion is based on sharing internal queues between operators. The whole optimization is based on the QueueSubscription interface</p>
 <p><img src="../../img/1_0EtetDjl7bWpm4946rPuQg.png" alt=""></p>
 <p>It is basically just Queue and Subscription under one interface. But Queue interface is not just simple interface from Java, instead it has additional method requestFusion in it:</p>
@@ -360,7 +402,7 @@ If they agree on the fusion — then new communication implementation will be us
 </li>
 </ul>
 <p>ANY — is just SYNC or ASYNC (what exactly will be established is based on what mode upstream supports).</p>
-<h3 id="sync-fusion">SYNC fusion<a href="#sync-fusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="sync-fusion">SYNC fusion</h3>
 <p>SYNC fusion is available only when upstream values are either already statically available or are generated when poll() is called synchronously.</p>
 <p>If upstream and downstream agree to use sync fusion mode, this will lead to the following contract:</p>
 <ul>
@@ -383,7 +425,7 @@ If they agree on the fusion — then new communication implementation will be us
 <p><img src="../../img/1_gTGkU2wgrHR4JVYr-lEAlw.png" alt=""></p>
 <p>Example of operator which supports SYNC fusion mode is Flowable.range:</p>
 <p><img src="../../img/1_BSZ8aU_pj2s9IBfAciRlAw.png" alt=""></p>
-<h3 id="async-fusion">ASYNC fusion<a href="#async-fusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="async-fusion">ASYNC fusion</h3>
 <p>ASYNC fusion mode is available when upstream values may become available to poll() eventually.</p>
 <p>If upstream and downstream agree to use async fusion mode, this will lead to the following contract:</p>
 <ul>
@@ -409,7 +451,7 @@ Downstream should treat such onNext as indication that poll() can be called</p>
 <p><img src="../../img/1_l9ZeVhsmwVm_YMBhG-mbRQ.png" alt=""></p>
 <p>Here you see that during on subscribe, when source implements QueueSubscription fusion mode ANY is requested.
 And depending on what mode was accepted by source different strategies are applied.</p>
-<h3 id="queuesubscription-threading">QueueSubscription threading<a href="#queuesubscription-threading" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="queuesubscription-threading">QueueSubscription threading</h3>
 <p>With queue fusion it is important to pay attention to threading issue. If we allow downstream to access upstream’s queue it may lead to an issue if upstream and downstream are working on different threads:</p>
 <p><img src="../../img/1_qMwn_G7xenYa4UDbF4rlsw.png" alt=""></p>
 <p>It might happen that inside map we have some heavy computation, which (in case of direct polling) may leak that computation to a different thread.
@@ -418,7 +460,7 @@ To resolve this issue there is additional marker option BOUNDARY, which says tha
 <p><img src="../../img/1_J11KO3iYXnEV4u9pYWhKEw.png" alt=""></p>
 <p>Which inside states that BOUNDARY mode is not allowed:</p>
 <p><img src="../../img/1_JotNj4pes4unXqHMJhUYQw.png" alt=""></p>
-<h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="conclusion">Conclusion</h2>
 <p>In this article we had an overview of some optimizations in RxJava and found some interesting things:</p>
 <ul>
 <li>
@@ -441,69 +483,79 @@ The reason is that these optimizations are applied to some critical places and c
 <a href="https://akarnokd.blogspot.com/2016/04/operator-fusion-part-2-final.html"><strong>Operator fusion (part 2 - final)</strong></a></p>
 <p>Happy coding</p>
 
-      </div></div>
-
-  
-  
-<div class="pagination">
-    <div class="pagination__title">
-        <span class="pagination__title-h">Read other posts</span>
-        <hr />
-    </div>
-    <div class="pagination__buttons">
-        
-        <span class="button previous">
-            <a href="https://krossovochkin.github.io/posts/2019_12_24_decoding_handler_and_looper_in_android/">
-                <span class="button__icon">←</span>
-                <span class="button__text">Decoding Handler and Looper in Android</span>
-            </a>
-        </span>
-        
-        
-        <span class="button next">
-            <a href="https://krossovochkin.github.io/posts/2019_09_27_random_interview_coding_task_retrospective/">
-                <span class="button__text">Random interview coding task retrospective</span>
-                <span class="button__icon">→</span>
-            </a>
-        </span>
-        
-    </div>
-</div>
-
-  
-
-  
-
-</div>
-
   </div>
-
   
-    <footer class="footer">
-  <div class="footer__inner">
+
+<div class="navigation navigation-single">
     
-      <div class="copyright copyright--user">
-        <span>© 2020 Vasya Drobushkov</span>
+    <a href="/posts/2019_09_27_random_interview_coding_task_retrospective/" class="navigation-prev">
+      <i aria-hidden="true" class="fa fa-chevron-left"></i>
+      <span class="navigation-tittle">Random interview coding task retrospective</span>
+    </a>
     
-        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
-      </div>
-  </div>
-  <div class="footer__inner">
-    <div class="copyright copyright--user">
-      <a href="https://www.facebook.com/vasya.drobushkov">Facebook</a><a href="https://twitter.com/krossovochkin">Twitter</a>
-    </div>
-  </div>
-</footer>
-
-<script src="https://krossovochkin.github.io/assets/main.js"></script>
-<script src="https://krossovochkin.github.io/assets/prism.js"></script>
-
-
-
+    
+    <a href="/posts/2019_12_24_decoding_handler_and_looper_in_android/" class="navigation-next">
+      <span class="navigation-tittle">Decoding Handler and Looper in Android</span>
+      <i aria-hidden="true" class="fa fa-chevron-right"></i>
+    </a>
+    
+</div>
 
 
   
-</div>
 
-</body>
+  
+    
+
+
+</article>
+
+
+        </div>
+        
+    
+
+  
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
+
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+        
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/bash.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/java.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+            
+        
+    <script type="text/javascript">
+        
+        hljs.configure({languages: ["bash, java, kotlin"]});
+        
+        hljs.initHighlightingOnLoad();
+    </script>
+    
+
+
+
+    
+
+
+
+    </body>
 </html>

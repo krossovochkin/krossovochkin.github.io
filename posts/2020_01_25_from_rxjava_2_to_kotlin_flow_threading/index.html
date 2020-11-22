@@ -1,71 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  
-    <title>From RxJava 2 to Kotlin Flow: Threading :: Krossovochkin — Android Developer</title>
-  
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    
+    
+
+
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Enable responsiveness on mobile devices -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="description" content="Source
-  
-Introduction For a long time RxJava was undisputed leader for reactive solutions on Android, though with Kotlin expansion and introducing cold streams (Flow) seems situation might be rapidly changing in the coming years. Though reactive programming is not related to threading in the first place, concurrency and parallelism are very important anyway. In this article we’ll try to make short recap on threading in RxJava 2 (with some basic caveats on its usage) and then take a look at how threading works in Kotlin Flow, so if anyone would like to migrate their code without affecting functionality it would be nice and smooth." />
-<meta name="keywords" content="rxjava, rxjava2, kotlin, kotlin flow, flow, threading" />
-<meta name="robots" content="noodp" />
-<link rel="canonical" href="https://krossovochkin.github.io/posts/2020_01_25_from_rxjava_2_to_kotlin_flow_threading/" />
+<meta name="generator" content="Hugo 0.78.2" />
+
+    
+    
+    
+
+<title>From RxJava 2 to Kotlin Flow: Threading • Vasya Drobushkov</title>
 
 
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-148934073-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="From RxJava 2 to Kotlin Flow: Threading"/>
+<meta name="twitter:description" content="Comparing threading in RxJava 2 and Kotlin Flow"/>
 
-
-
-<link rel="stylesheet" href="https://krossovochkin.github.io/assets/style.css">
-
-  <link rel="stylesheet" href="https://krossovochkin.github.io/assets/yellow.css">
-
-
-
-
-
-
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://krossovochkin.github.io/img/apple-touch-icon-144-precomposed.png">
-
-  <link rel="shortcut icon" href="https://krossovochkin.github.io/img/favicon/yellow.png">
-
-
-
-<meta name="twitter:card" content="summary" />
-
-  <meta name="twitter:site" content="krossovochkin" />
-
-<meta name="twitter:creator" content="krossovochkin" />
-
-
-<meta property="og:locale" content="en" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="From RxJava 2 to Kotlin Flow: Threading :: Krossovochkin">
+<meta property="og:title" content="From RxJava 2 to Kotlin Flow: Threading" />
 <meta property="og:description" content="Comparing threading in RxJava 2 and Kotlin Flow" />
+<meta property="og:type" content="article" />
 <meta property="og:url" content="https://krossovochkin.github.io/posts/2020_01_25_from_rxjava_2_to_kotlin_flow_threading/" />
-<meta property="og:site_name" content="From RxJava 2 to Kotlin Flow: Threading" />
-
-  <meta property="og:image" content="https://krossovochkin.github.io/">
-
-<meta property="og:image:width" content="2048">
-<meta property="og:image:height" content="1024">
+<meta property="article:published_time" content="2020-01-25T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-01-25T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
 
 
-  <meta property="article:published_time" content="2020-01-25 00:00:00 &#43;0000 UTC" />
+    
 
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
 
 
 
@@ -74,107 +43,180 @@ if (!doNotTrack) {
 
 
 
+<link rel="stylesheet" href="/scss/hyde-hyde.adf8a0af011d3afb07ed907ad3295e1c99f49503bc91d395e38dc3f8dfdf4900.css" integrity="sha256-rfigrwEdOvsH7ZB60yleHJn0lQO8kdOV443D&#43;N/fSQA=">
 
 
+<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    
+    
 
 </head>
-<body class="">
 
 
-<div class="container center headings--one-size">
-
-  <header class="header">
-  <div class="header__inner">
-    <div class="header__logo">
-      <a href="/">
-  <div class="logo">
-    Krossovochkin
-  </div>
-</a>
-
-    </div>
-    <div class="menu-trigger">menu</div>
-  </div>
-  
-    <nav class="menu">
-  <ul class="menu__inner menu__inner--desktop">
+    <body class="theme-base-0a ">
     
-      
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="https://krossovochkin.github.io/">
         
-          <li><a href="/about">About me</a></li>
+          Vasya Drobushkov
         
-      
-        
-          <li><a href="/">Posts</a></li>
-        
-      
-      
-    
-
-    
-  </ul>
-
-  <ul class="menu__inner menu__inner--mobile">
-    
-      
-        <li><a href="/about">About me</a></li>
-      
-    
-      
-        <li><a href="/">Posts</a></li>
-      
-    
-    
-  </ul>
-</nav>
-
-  
-</header>
-
-
-  <div class="content">
-    
-<div class="post">
-  <h1 class="post-title">
-    <a href="https://krossovochkin.github.io/posts/2020_01_25_from_rxjava_2_to_kotlin_flow_threading/">From RxJava 2 to Kotlin Flow: Threading</a></h1>
-  <div class="post-meta">
-    
-      <span class="post-date">
-        2020-01-25 
+        </a>
       </span>
+      
+        
+        
+        
+        <div class="author-image">
+          <img src="https://krossovochkin.github.io/../img/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
+        </div>
+        
+      
+      
+      <p class="site__description">
+        
+      </p>
+    </div>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">Vasya Drobushkov</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="/posts/">
+						<span>Posts</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="/about/">
+						<span>About</span>
+					</a>
+				</li>
+			 
+		
+	</ul>
+</div>
+
+        <section class="social">
+	
+	<a href="https://twitter.com/krossovochkin" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://facebook.com/vasya.drobushkov" rel="me"><i class="fab fa-facebook-f"></i></a>
+	
+	
+	<a href="https://github.com/krossovochkin" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	<a href="https://linkedin.com/in/vasyadrobushkov" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://stackoverflow.com/users/1533933/krossovochkin" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</section>
+
+      </div>
+    </div>
     
-    
-    <span class="post-author">::
-      Vasya Drobushkov
-    </span>
-    
+<div class="copyright">
+  &copy; 2019 - 2020 Vasya Drobushkov
+  
+    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
+  
+</div>
+
+
+
   </div>
+</div>
 
-  
-  <span class="post-tags">
+        <div class="content container">
+            
     
-    #<a href="https://krossovochkin.github.io/tags/rxjava/">rxjava</a>&nbsp;
+<article>
+  <header>
+    <h1>From RxJava 2 to Kotlin Flow: Threading</h1>
     
-    #<a href="https://krossovochkin.github.io/tags/kotlin/">kotlin</a>&nbsp;
     
-    #<a href="https://krossovochkin.github.io/tags/kotlin-flow/">kotlin flow</a>&nbsp;
+<div class="post__meta">
     
-  </span>
-  
+    
+      <i class="fas fa-calendar-alt"></i> Jan 25, 2020
+    
+    
+    
+    
+    
+      
+      
+          <br/>
+           <i class="fas fa-tags"></i>
+          
+          <a class="badge badge-tag" href="/tags/rxjava">rxjava</a>
+           
+      
+          <a class="badge badge-tag" href="/tags/kotlin">kotlin</a>
+           
+      
+          <a class="badge badge-tag" href="/tags/kotlin-flow">kotlin flow</a>
+          
+      
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 13 min read
+</div>
 
-  
 
+  </header>
   
-
-  <div class="post-content"><div>
-        <p><img src="https://images.unsplash.com/photo-1552034412-443022194b52?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1357&amp;q=80" alt="Source"><em><a href="https://unsplash.com/photos/vyyVbUOYNPc">Source</a></em></p>
+  
+  <div class="post">
+    <p><img src="https://images.unsplash.com/photo-1552034412-443022194b52?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1357&amp;q=80" alt="Source"><em><a href="https://unsplash.com/photos/vyyVbUOYNPc">Source</a></em></p>
 <p><a href="https://proandroiddev.com/from-rxjava-2-to-kotlin-flow-threading-8618867e1955"><img src="https://img.shields.io/badge/original-proandroiddev-green#badge" alt=""></a> <a href="https://androidweekly.net/issues/issue-398"><img src="https://img.shields.io/badge/androidweekly-398-blue#badge" alt=""></a> <a href="https://proandroiddev.com/proandroiddev-digest-14-b7247f25292f"><img src="https://img.shields.io/badge/proandroiddevdigest-14-green#badge" alt=""></a></p>
-<h2 id="introduction">Introduction<a href="#introduction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="introduction">Introduction</h2>
 <p>For a long time RxJava was undisputed leader for reactive solutions on Android, though with Kotlin expansion and introducing cold streams (Flow) seems situation might be rapidly changing in the coming years.
 Though reactive programming is not related to threading in the first place, concurrency and parallelism are very important anyway.
 In this article we’ll try to make short recap on threading in RxJava 2 (with some basic caveats on its usage) and then take a look at how threading works in Kotlin Flow, so if anyone would like to migrate their code without affecting functionality it would be nice and smooth.</p>
 <p>Let’s start from the short recap on RxJava 2.</p>
-<h2 id="rxjava-2">RxJava 2<a href="#rxjava-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="rxjava-2">RxJava 2</h2>
 <p>Both RxJava 2 Observable and Kotlin Flow are cold streams. That means that code inside is not executed until there is subscription.</p>
 <blockquote>
 <p>In RxJava there are also other types such as Flowable, Single, etc. In the article we’ll talk about Observable only because everything else applies to other types as well.</p>
@@ -182,7 +224,7 @@ In this article we’ll try to make short recap on threading in RxJava 2 (with s
 <p>Basic usage looks like the following:</p>
 <p><img src="../../img/1_Y8LjGynLPUwJ6ZNzVAG2HQ.png" alt=""></p>
 <p>Here we see that we observe for some changes with subscribing on io. And each result received we print on main thread (because we are observing on main).</p>
-<h3 id="subscribeon">subscribeOn<a href="#subscribeon" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="subscribeon">subscribeOn</h3>
 <p>This is an operator which declares on which scheduler observable will be subscribed to. “Where it will be subscribed” means — “on which scheduler our chain will be started”.</p>
 <p>The first important thing about subscribeOn is that it doesn’t matter where it will be:</p>
 <p><img src="../../img/1_l2-3g3OFyw_IOLIwTKLl7A.png" alt=""></p>
@@ -190,20 +232,20 @@ In this article we’ll try to make short recap on threading in RxJava 2 (with s
 <p>Both these cases produce same results and it is not surprise. By providing this operator in the chain we declare where chain will be started — and this knowledge can’t be dependent on position.</p>
 <p>Second thing is that as chain can’t be started on multiple schedulers simultaneously — there is no need to put multiple subscribeOn in the chain as only one will take effect. If you for some reason put multiple subscribeOn operators in the chain, then the top one will win and the bottom will be ignored:</p>
 <p><img src="../../img/1_LBKRVDIpr_rxjylKadaSgg.png" alt=""></p>
-<h3 id="observeon">observeOn<a href="#observeon" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="observeon">observeOn</h3>
 <p>When subscribeOn says on which scheduler chain will be started, observeOn says on which scheduler thread will proceed. Effectively that means that observeOn changes scheduler in the chain below itself.</p>
 <p><img src="../../img/1_uCiZwTFtiPoh8KZdMUDLpg.png" alt=""></p>
 <p>Here we see that from the chain started till the observeOn we’re on io (red line) and then observeOn changes chain to be run on mainThread scheduler — so everything below is on mainThread now (green line).</p>
 <p>Unlike subscribeOn it is actually has some sense to add multiple observeOn if there is a need:</p>
 <p><img src="../../img/1_ES5NJCpKCmVVhdD36UurzQ.png" alt=""></p>
 <p>If we look at example above: here we might say that we load something from network, then calculate something and then print result. Adding multiple observeOn first switches to computation scheduler (to make computation in background thread — it is blue line), and then switch to mainThread to print result.</p>
-<h3 id="just--defer">just + defer<a href="#just--defer" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="just--defer">just + defer</h3>
 <p>One common mistake with subscribeOn is its usage with Observable.just.</p>
 <p><img src="../../img/1_4EVWYZCJ4u9mPrJazHQaeg.png" alt=""></p>
 <p>Value inside just is calculated immediately and not upon subscription. That means that if you create such observable on main thread, then that potentially heavy computation will be done on main thread. Subscription would be done correctly on io, but value for just will be calculated before that.</p>
 <p>One of the ways to fix this is to wrap your Observable.just into Observable.defer, so everything inside will be calculated upon subscription and on the scheduler we’ve declared in subscribeOn:</p>
 <p><img src="../../img/1_x8ASbBk5N1KnVIDaT8KRHA.png" alt=""></p>
-<h3 id="flatmap-concurrency-and-parallelism">flatMap concurrency and parallelism<a href="#flatmap-concurrency-and-parallelism" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="flatmap-concurrency-and-parallelism">flatMap concurrency and parallelism</h3>
 <p>Another tricky thing comes from the usage of operator flatMap and understanding of the concurrency and parallelism.</p>
 <p>One example to understand a problem is when we have stream of list of ids and for each we’d like to load some data from the network:</p>
 <p><img src="../../img/1_KmPkrVtEedgkXu08JxSMew.png" alt=""></p>
@@ -215,10 +257,10 @@ In order to change behavior and make our code run in parallel we need to move su
 <p>So, when we use some operators like flatMap our chain has more than one subscription points: one for original chain start and one for each inner observable:</p>
 <p><img src="../../img/1_qft5P6_SBwP8sbYVL5IETg.png" alt=""></p>
 <p>On the picture arrows point where subscription happens. Using subscribeOn we can declare on which scheduler subscription in such a points should happen.</p>
-<h3 id="no-threading">No threading<a href="#no-threading" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="no-threading">No threading</h3>
 <p>Last but not least if we don’t use subscribeOn or observeOn, then code will be synchronous. All the execution will be sequential and before observable completed execution of next statements will be blocked.</p>
 <p>That’s is basically it on the threading in RxJava, now let’s move on to Kotlin Flow.</p>
-<h2 id="kotlin-flow">Kotlin Flow<a href="#kotlin-flow" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="kotlin-flow">Kotlin Flow</h2>
 <p>Basic usage with Kotlin Flow is the following:</p>
 <p><img src="../../img/1_i95ne1PCxci1yCcizF14cQ.png" alt=""></p>
 <blockquote>
@@ -228,14 +270,14 @@ In order to change behavior and make our code run in parallel we need to move su
 <p>First thing which we should note is that flow can be collected only inside some coroutine scope (because collect method is a suspend function). Because of that we’ve created scope and in that scope launch’ed new coroutine. In that launched coroutines we now can collect the flow.</p>
 <p>One important thing about Kotlin flow and collect function is a feature called <strong>context preservation</strong>. That means that we don’t need to declare on which Dispatcher to collect the data — that dispatcher always will be same as in the scope in which we’re collecting data from our flow.</p>
 <p>So if we want to collect in Main, then we need to call collect function in the coroutine with Dispatchers.Main in the context.</p>
-<h3 id="flowon">flowOn<a href="#flowon" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="flowon">flowOn</h3>
 <p>This is an operator which changes the context (dispatcher particularly) on which flow is working.</p>
 <p><img src="../../img/1_QOMRfQTktM17z2xHUYmcrQ.png" alt=""></p>
 <p>So in our example above, by writing flowOn(Dispatchers.IO) we say that we want everything *before *it run on the IO.</p>
 <p>If we add some computation (inside map) as we’ve done before with RxJava we’ll have the following result:</p>
 <p><img src="../../img/1_zpbvxCRXjGLSEuFlnrWarg.png" alt=""></p>
 <p>We’ll see that basically we can change where our operators should work by declaring flowOn after them.</p>
-<h3 id="launchin">launchIn<a href="#launchin" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="launchin">launchIn</h3>
 <p>One important thing about collect function is that it is suspending. That means that when we call collect execution is suspended until flow is finished.</p>
 <p>So if you put inside same coroutine two collect functions, then first one will effectively block second from execution:</p>
 <p><img src="../../img/1_xopZFayVenZK03PQ9RoZ0Q.png" alt=""></p>
@@ -245,14 +287,14 @@ In order to change behavior and make our code run in parallel we need to move su
 <p>But it doesn’t look pretty and to make it look a bit better (without additional nested level) we can use launchIn extension function (which is just syntactic sugar over that wrapped launch) with onEach:</p>
 <p><img src="../../img/1_atQKeG0bwwMfjBD7nBIZHg.png" alt=""></p>
 <p>This way we create code which looks more similar to us (who wrote on RxJava before), because subscription in RxJava usually not blocking (unless some blockingXXX method is used), so seems launchIn should be primary option for similar use cases.</p>
-<h3 id="flowof">flowOf<a href="#flowof" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="flowof">flowOf</h3>
 <p>With flowOf we have similar situation as with Observable.just. If you put some calculation (suspending) then it will be done in the outer scope and not affected by flowOn:</p>
 <p><img src="../../img/1_jTX93fFjuwjxR33NLaSkmA.png" alt=""></p>
 <p>If run inside context with Dispatchers.Main, then calculate() will be run on main and not on io.</p>
 <p>To fix that you can use flow builder and explicitly emit value inside:</p>
 <p><img src="../../img/1_JSkHKLjh9X-YDL1Olkl5hQ.png" alt=""></p>
 <p>Then calculation will be done on IO thread.</p>
-<h3 id="flatmapmerge-concurrency-and-parallelism">flatMapMerge concurrency and parallelism<a href="#flatmapmerge-concurrency-and-parallelism" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="flatmapmerge-concurrency-and-parallelism">flatMapMerge concurrency and parallelism</h3>
 <p>To find out how Kotlin Flow works with flatMapMerge (analog of RxJava flatMap) we’ll use few test examples:</p>
 <p><img src="../../img/1__G4_NwfgY1wmO7aVoamsrw.png" alt=""></p>
 <p>Here we have flow which is collected on d1 dispatcher. The flow has two items, which are flat mapped onto two other items each. And we have single flowOn on the d2 dispatcher.
@@ -311,18 +353,18 @@ collect: pool-1-thread-3 [@coroutine](http://twitter.com/coroutine)#2
 </code></pre><p>We see that outer now runs on the d1 and therefore not affected by flowOn:</p>
 <p><img src="../../img/1_5D5AHoF0nPJyD7lcMvp0cA.png" alt=""></p>
 <p>And that’s the difference.</p>
-<h2 id="comparison">Comparison<a href="#comparison" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="comparison">Comparison</h2>
 <p>Now let’s make some comparison and conclusion and also see few examples.</p>
 <p>From the comparison part both RxJava and Kotlin Flow represent cold streams. Both have general operators and approaches for changing threading (schedulers or dispatchers) in the chain.</p>
-<h3 id="control-of-threading">Control of threading<a href="#control-of-threading" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="control-of-threading">Control of threading</h3>
 <p>In RxJava for threading **Schedulers **are used (most common io(), computation(), mainThread())</p>
 <p>In Kotlin Flow for threading **Dispatchers <strong>are used</strong> **(most common IO, Default, Main)</p>
-<h3 id="threading-operators">Threading operators<a href="#threading-operators" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="threading-operators">Threading operators</h3>
 <p>In RxJava we declare on which scheduler chain should be <em>subscribed (started)</em> using <strong>subscribeOn</strong>, and where it should *proceed *using <strong>observeOn</strong>.</p>
 <p>In Kotlin Flow we declare on which context (dispatcher) chain should be <em>collected (ended)</em> using scope in which flow is collected, and where it works *before *that using <strong>flowOn</strong>.</p>
 <p>So it is like reversed approaches. In RxJava we declare start and modify chain below.
 In Kotlin Flow we have end declared and can modify chain above.</p>
-<h3 id="migration-example">Migration Example<a href="#migration-example" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="migration-example">Migration Example</h3>
 <p>Consider we have some complex RxJava chain we’d like to migrate to Kotlin Flow keeping the threading logic as before. From above we already understand that we basically need flip upside-down our mental model and do not forget to test.</p>
 <p>Also we should already keep in mind that non-blocking threading in RxJava and suspending with thread reusing between coroutines are different approaches and we won’t be able to have exact one-to-one relation. Though we can put some constraints, like we want to keep parallelism where we had it and have same blocks of code run on same thread pools.</p>
 <p>To make our test example as correct as possible we’ll use java executors under the hood of the Scheduler and Dispatcher.
@@ -440,75 +482,85 @@ end: pool-5-thread-1 [@coroutine](http://twitter.com/coroutine)#2
 <p>This could be just a coincidence because of concurrency, or maybe it is because of the coroutines better utilizing threads usage (or maybe not, actually I don’t know, so if somebody has some other ideas do not hesitate to post a response). Though we don’t care that much because usage of thread pool was anyway correct.</p>
 <p>If we visualize threading, we can do something like:</p>
 <p><img src="../../img/1_z6XDLAkVgMLmyeYsvSTbbA.png" alt=""></p>
-<h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="conclusion">Conclusion</h2>
 <p>Kotlin Flow is good and can be compared to RxJava Observable. They have similar look, similar operators and they both handle threading inside their chains. They have similar tricks with usage of Observable.just or flowOf. But in terms of concurrency and parallelism seems Kotlin Flow is simpler. Also Kotlin Flow has no such an issue as RxJava with subscribeOn, as in flow we declare end of the chain with the scope and it is technically impossible to put multiple of them.</p>
 <p>On the approaches to handling threading Kotlin Flow and RxJava have opposite concepts: in RxJava we think in terms of top-to-bottom, when in Kotlin Flow from bottom-to-top. But anyway it is possible to migrate your code vice versa if there is need to without breaking much of the functionality.</p>
 <p>Hope you’ve enjoyed this article and it was useful for you.</p>
 <p>Happy coding!</p>
 
-      </div></div>
-
-  
-  
-<div class="pagination">
-    <div class="pagination__title">
-        <span class="pagination__title-h">Read other posts</span>
-        <hr />
-    </div>
-    <div class="pagination__buttons">
-        
-        <span class="button previous">
-            <a href="https://krossovochkin.github.io/posts/2020_02_02_diving_deep_into_android_dex_bytecode/">
-                <span class="button__icon">←</span>
-                <span class="button__text">Diving deep into Android Dex bytecode</span>
-            </a>
-        </span>
-        
-        
-        <span class="button next">
-            <a href="https://krossovochkin.github.io/posts/2020_01_19_change_theme_dynamically_with_circular_reveal_animation_on_android/">
-                <span class="button__text">Change Theme Dynamically with Circular Reveal Animation on Android</span>
-                <span class="button__icon">→</span>
-            </a>
-        </span>
-        
-    </div>
-</div>
-
-  
-
-  
-
-</div>
-
   </div>
-
   
-    <footer class="footer">
-  <div class="footer__inner">
+
+<div class="navigation navigation-single">
     
-      <div class="copyright copyright--user">
-        <span>© 2020 Vasya Drobushkov</span>
+    <a href="/posts/2020_01_19_change_theme_dynamically_with_circular_reveal_animation_on_android/" class="navigation-prev">
+      <i aria-hidden="true" class="fa fa-chevron-left"></i>
+      <span class="navigation-tittle">Change Theme Dynamically with Circular Reveal Animation on Android</span>
+    </a>
     
-        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
-      </div>
-  </div>
-  <div class="footer__inner">
-    <div class="copyright copyright--user">
-      <a href="https://www.facebook.com/vasya.drobushkov">Facebook</a><a href="https://twitter.com/krossovochkin">Twitter</a>
-    </div>
-  </div>
-</footer>
-
-<script src="https://krossovochkin.github.io/assets/main.js"></script>
-<script src="https://krossovochkin.github.io/assets/prism.js"></script>
-
-
-
+    
+    <a href="/posts/2020_02_02_diving_deep_into_android_dex_bytecode/" class="navigation-next">
+      <span class="navigation-tittle">Diving deep into Android Dex bytecode</span>
+      <i aria-hidden="true" class="fa fa-chevron-right"></i>
+    </a>
+    
+</div>
 
 
   
-</div>
 
-</body>
+  
+    
+
+
+</article>
+
+
+        </div>
+        
+    
+
+  
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
+
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+        
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/bash.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/java.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+            
+        
+    <script type="text/javascript">
+        
+        hljs.configure({languages: ["bash, java, kotlin"]});
+        
+        hljs.initHighlightingOnLoad();
+    </script>
+    
+
+
+
+    
+
+
+
+    </body>
 </html>

@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>dart on Krossovochkin</title>
+    <title>dart on Vasya Drobushkov</title>
     <link>https://krossovochkin.github.io/tags/dart/</link>
-    <description>Recent content in dart on Krossovochkin</description>
+    <description>Recent content in dart on Vasya Drobushkov</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>© 2020 Vasya Drobushkov</copyright>
-    <lastBuildDate>Mon, 08 Apr 2019 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://krossovochkin.github.io/tags/dart/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>en</language>
+    <lastBuildDate>Mon, 08 Apr 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.github.io/tags/dart/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Dart language bad design choices</title>
       <link>https://krossovochkin.github.io/posts/2019_04_08_dart_language_bad_design_choices/</link>

@@ -1,71 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  
-    <title>Kotlin Functional Interfaces: Function reference and SAM conversion :: Krossovochkin — Android Developer</title>
-  
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    
+    
+
+
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Enable responsiveness on mobile devices -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="description" content="Introduction About two years ago I made a post about a tricky case in Kotlin-Java interop related to the usage of function references and SAM conversion. One of the points there was that in Kotlin, if interface is declared instead of a function, one has to explicitly create an object, therefore no caveats as with interop:
-val callback = object : ThirdParty.Callback {override fun onValueChanged(value: Int) {this@App.onValueChanged(value)}}With Kotlin 1." />
-<meta name="keywords" content="kotlin, sam, functional interface" />
-<meta name="robots" content="noodp" />
-<link rel="canonical" href="https://krossovochkin.github.io/posts/2020_10_17_kotlin_functional_interfaces_function_references_and_sam_conversion/" />
+<meta name="generator" content="Hugo 0.78.2" />
+
+    
+    
+    
+
+<title>Kotlin Functional Interfaces: Function reference and SAM conversion • Vasya Drobushkov</title>
 
 
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-148934073-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Kotlin Functional Interfaces: Function reference and SAM conversion"/>
+<meta name="twitter:description" content="Introduction About two years ago I made a post about a tricky case in Kotlin-Java interop related to the usage of function references and SAM conversion. One of the points there was that in Kotlin, if interface is declared instead of a function, one has to explicitly create an object, therefore no caveats as with interop:
+val callback = object : ThirdParty.Callback { override fun onValueChanged(value: Int) { this@App.onValueChanged(value) } } With Kotlin 1."/>
 
-
-
-<link rel="stylesheet" href="https://krossovochkin.github.io/assets/style.css">
-
-  <link rel="stylesheet" href="https://krossovochkin.github.io/assets/yellow.css">
-
-
-
-
-
-
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://krossovochkin.github.io/img/apple-touch-icon-144-precomposed.png">
-
-  <link rel="shortcut icon" href="https://krossovochkin.github.io/img/favicon/yellow.png">
-
-
-
-<meta name="twitter:card" content="summary" />
-
-  <meta name="twitter:site" content="krossovochkin" />
-
-<meta name="twitter:creator" content="krossovochkin" />
-
-
-<meta property="og:locale" content="en" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="Kotlin Functional Interfaces: Function reference and SAM conversion :: Krossovochkin">
+<meta property="og:title" content="Kotlin Functional Interfaces: Function reference and SAM conversion" />
 <meta property="og:description" content="Introduction About two years ago I made a post about a tricky case in Kotlin-Java interop related to the usage of function references and SAM conversion. One of the points there was that in Kotlin, if interface is declared instead of a function, one has to explicitly create an object, therefore no caveats as with interop:
-val callback = object : ThirdParty.Callback {override fun onValueChanged(value: Int) {this@App.onValueChanged(value)}}With Kotlin 1." />
+val callback = object : ThirdParty.Callback { override fun onValueChanged(value: Int) { this@App.onValueChanged(value) } } With Kotlin 1." />
+<meta property="og:type" content="article" />
 <meta property="og:url" content="https://krossovochkin.github.io/posts/2020_10_17_kotlin_functional_interfaces_function_references_and_sam_conversion/" />
-<meta property="og:site_name" content="Kotlin Functional Interfaces: Function reference and SAM conversion" />
-
-  <meta property="og:image" content="https://krossovochkin.github.io/">
-
-<meta property="og:image:width" content="2048">
-<meta property="og:image:height" content="1024">
+<meta property="article:published_time" content="2020-10-17T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-10-17T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
 
 
-  <meta property="article:published_time" content="2020-10-17 00:00:00 &#43;0000 UTC" />
+    
 
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
 
 
 
@@ -74,124 +45,195 @@ val callback = object : ThirdParty.Callback {override fun onValueChanged(value:
 
 
 
+<link rel="stylesheet" href="/scss/hyde-hyde.adf8a0af011d3afb07ed907ad3295e1c99f49503bc91d395e38dc3f8dfdf4900.css" integrity="sha256-rfigrwEdOvsH7ZB60yleHJn0lQO8kdOV443D&#43;N/fSQA=">
 
 
+<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    
+    
 
 </head>
-<body class="">
 
 
-<div class="container center headings--one-size">
-
-  <header class="header">
-  <div class="header__inner">
-    <div class="header__logo">
-      <a href="/">
-  <div class="logo">
-    Krossovochkin
-  </div>
-</a>
-
-    </div>
-    <div class="menu-trigger">menu</div>
-  </div>
-  
-    <nav class="menu">
-  <ul class="menu__inner menu__inner--desktop">
+    <body class="theme-base-0a ">
     
-      
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="https://krossovochkin.github.io/">
         
-          <li><a href="/about">About me</a></li>
+          Vasya Drobushkov
         
-      
-        
-          <li><a href="/">Posts</a></li>
-        
-      
-      
-    
-
-    
-  </ul>
-
-  <ul class="menu__inner menu__inner--mobile">
-    
-      
-        <li><a href="/about">About me</a></li>
-      
-    
-      
-        <li><a href="/">Posts</a></li>
-      
-    
-    
-  </ul>
-</nav>
-
-  
-</header>
-
-
-  <div class="content">
-    
-<div class="post">
-  <h1 class="post-title">
-    <a href="https://krossovochkin.github.io/posts/2020_10_17_kotlin_functional_interfaces_function_references_and_sam_conversion/">Kotlin Functional Interfaces: Function reference and SAM conversion</a></h1>
-  <div class="post-meta">
-    
-      <span class="post-date">
-        2020-10-17 
+        </a>
       </span>
+      
+        
+        
+        
+        <div class="author-image">
+          <img src="https://krossovochkin.github.io/../img/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
+        </div>
+        
+      
+      
+      <p class="site__description">
+        
+      </p>
+    </div>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">Vasya Drobushkov</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="/posts/">
+						<span>Posts</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="/about/">
+						<span>About</span>
+					</a>
+				</li>
+			 
+		
+	</ul>
+</div>
+
+        <section class="social">
+	
+	<a href="https://twitter.com/krossovochkin" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://facebook.com/vasya.drobushkov" rel="me"><i class="fab fa-facebook-f"></i></a>
+	
+	
+	<a href="https://github.com/krossovochkin" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	<a href="https://linkedin.com/in/vasyadrobushkov" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://stackoverflow.com/users/1533933/krossovochkin" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</section>
+
+      </div>
+    </div>
     
-    
-    <span class="post-author">::
-      Vasya Drobushkov
-    </span>
-    
+<div class="copyright">
+  &copy; 2019 - 2020 Vasya Drobushkov
+  
+    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
+  
+</div>
+
+
+
   </div>
+</div>
 
-  
-  <span class="post-tags">
+        <div class="content container">
+            
     
-    #<a href="https://krossovochkin.github.io/tags/kotlin/">kotlin</a>&nbsp;
+<article>
+  <header>
+    <h1>Kotlin Functional Interfaces: Function reference and SAM conversion</h1>
     
-  </span>
-  
+    
+<div class="post__meta">
+    
+    
+      <i class="fas fa-calendar-alt"></i> Oct 17, 2020
+    
+    
+    
+    
+    
+      
+      
+          <br/>
+           <i class="fas fa-tags"></i>
+          
+          <a class="badge badge-tag" href="/tags/kotlin">kotlin</a>
+          
+      
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 4 min read
+</div>
 
-  
 
+  </header>
   
-
-  <div class="post-content"><div>
-        <p><a href="https://mailchi.mp/kotlinweekly/kotlin-weekly-220"><img src="https://img.shields.io/badge/kotlinweekly-220-purple#badge" alt=""></a></p>
-<h3 id="introduction">Introduction<a href="#introduction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+  
+  <div class="post">
+    <p><a href="https://mailchi.mp/kotlinweekly/kotlin-weekly-220"><img src="https://img.shields.io/badge/kotlinweekly-220-purple#badge" alt=""></a></p>
+<h3 id="introduction">Introduction</h3>
 <p>About two years ago I <a href="https://medium.com/@krossovochkin/kotlin-java-interop-function-references-and-sam-conversions-3d0cd36f7967">made a post</a> about a tricky case in Kotlin-Java interop related to the usage of function references and SAM conversion.
 One of the points there was that in Kotlin, if interface is declared instead of a function, one has to explicitly create an object, therefore no caveats as with interop:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> callback = <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">: </span><span style="color:#a6e22e">ThirdParty</span>.Callback {
     <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onValueChanged</span>(value: Int) {
-        <span style="color:#66d9ef">this</span>@App.onValueChanged(value)
+        <span style="color:#66d9ef">this</span><span style="color:#a6e22e">@App</span>.onValueChanged(value)
     }
 }
 </code></pre></div><p>With Kotlin 1.4 there is now a &ldquo;Functional interface&rdquo; which supports SAM conversion. And <a href="https://medium.com/@mwolfe38/does-the-new-kotlin-1-4-sam-interfaces-using-fun-interface-declaration-have-similar-issues-1b08fa65a096">I&rsquo;ve been asked</a> on how it works in a similar situation.<br>
 Let&rsquo;s find out.</p>
-<h3 id="setup">Setup<a href="#setup" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="setup">Setup</h3>
 <p>First, let&rsquo;s make our setup with Kotlin. We have our ThirdParty class which manages the callbacks:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ThirdParty</span> {
 
     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> callbacks = mutableListOf&lt;Callback&gt;()
 
     <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">addCallback</span>(callback: Callback) {
-        println(<span style="color:#e6db74">&#34;addCallback: $callback&#34;</span>)
-        callbacks += callback
+        println(<span style="color:#e6db74">&#34;addCallback: </span><span style="color:#e6db74">$callback</span><span style="color:#e6db74">&#34;</span>)
+        callbacks <span style="color:#f92672">+=</span> callback
     }
 
     <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">removeCallback</span>(callback: Callback) {
-        println(<span style="color:#e6db74">&#34;removeCallback: $callback&#34;</span>)
-        callbacks -= callback
+        println(<span style="color:#e6db74">&#34;removeCallback: </span><span style="color:#e6db74">$callback</span><span style="color:#e6db74">&#34;</span>)
+        callbacks <span style="color:#f92672">-=</span> callback
     }
 
     <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">printState</span>() {
-        println(<span style="color:#e6db74">&#34;Callbacks count: ${callbacks.size}&#34;</span>)
+        println(<span style="color:#e6db74">&#34;Callbacks count: </span><span style="color:#e6db74">${callbacks.size}</span><span style="color:#e6db74">&#34;</span>)
     }
 
     <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">interface</span> Callback {
@@ -201,8 +243,8 @@ Let&rsquo;s find out.</p>
 }
 </code></pre></div><p>And our client code in which we&rsquo;ll add and remove our callback:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">main</span>() {
-    <span style="color:#66d9ef">val</span> callback: (Int) -&gt; Unit = <span style="color:#f92672">::</span>onValueChanged
-    println(<span style="color:#e6db74">&#34;callback created: $callback&#34;</span>)
+    <span style="color:#66d9ef">val</span> callback: (Int) <span style="color:#f92672">-&gt;</span> Unit = <span style="color:#f92672">::</span>onValueChanged
+    println(<span style="color:#e6db74">&#34;callback created: </span><span style="color:#e6db74">$callback</span><span style="color:#e6db74">&#34;</span>)
 
     <span style="color:#66d9ef">val</span> thirdParty = ThirdParty()
 
@@ -225,7 +267,7 @@ Callbacks count: 1
 removeCallback: TestKt$sam$ThirdParty_Callback$0@47ef8be8
 Callbacks count: 0
 </code></pre><p>Here we see that our program worked correctly. Seems callback objects are the same.</p>
-<h3 id="bytecode">Bytecode<a href="#bytecode" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="bytecode">Bytecode</h3>
 <p>Let&rsquo;s look on how that is achieved in the bytecode. For <code>addCallback</code> line we have:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">  L7
     LINENUMBER <span style="color:#ae81ff">8</span> L7
@@ -237,7 +279,7 @@ Callbacks count: 0
     NEW TestKt<span style="color:#960050;background-color:#1e0010">$</span>sam<span style="color:#960050;background-color:#1e0010">$</span>ThirdParty_Callback<span style="color:#960050;background-color:#1e0010">$</span><span style="color:#ae81ff">0</span>
     DUP
     ALOAD <span style="color:#ae81ff">2</span>
-    INVOKESPECIAL TestKt<span style="color:#960050;background-color:#1e0010">$</span>sam<span style="color:#960050;background-color:#1e0010">$</span>ThirdParty_Callback<span style="color:#960050;background-color:#1e0010">$</span><span style="color:#ae81ff">0.</span>&lt;init&gt; (Lkotlin/jvm/functions/Function1;)V
+    INVOKESPECIAL TestKt<span style="color:#960050;background-color:#1e0010">$</span>sam<span style="color:#960050;background-color:#1e0010">$</span>ThirdParty_Callback<span style="color:#960050;background-color:#1e0010">$</span><span style="color:#ae81ff">0.</span>&lt;<span style="color:#66d9ef">init</span>&gt; (Lkotlin/jvm/functions/Function1;)V
    L8
     CHECKCAST ThirdParty<span style="color:#960050;background-color:#1e0010">$</span>Callback
     INVOKEVIRTUAL ThirdParty.addCallback (LThirdParty<span style="color:#960050;background-color:#1e0010">$</span>Callback;)V
@@ -254,7 +296,7 @@ Callbacks count: 0
     NEW TestKt<span style="color:#960050;background-color:#1e0010">$</span>sam<span style="color:#960050;background-color:#1e0010">$</span>ThirdParty_Callback<span style="color:#960050;background-color:#1e0010">$</span><span style="color:#ae81ff">0</span>
     DUP
     ALOAD <span style="color:#ae81ff">2</span>
-    INVOKESPECIAL TestKt<span style="color:#960050;background-color:#1e0010">$</span>sam<span style="color:#960050;background-color:#1e0010">$</span>ThirdParty_Callback<span style="color:#960050;background-color:#1e0010">$</span><span style="color:#ae81ff">0.</span>&lt;init&gt; (Lkotlin/jvm/functions/Function1;)V
+    INVOKESPECIAL TestKt<span style="color:#960050;background-color:#1e0010">$</span>sam<span style="color:#960050;background-color:#1e0010">$</span>ThirdParty_Callback<span style="color:#960050;background-color:#1e0010">$</span><span style="color:#ae81ff">0.</span>&lt;<span style="color:#66d9ef">init</span>&gt; (Lkotlin/jvm/functions/Function1;)V
    L11
     CHECKCAST ThirdParty<span style="color:#960050;background-color:#1e0010">$</span>Callback
     INVOKEVIRTUAL ThirdParty.removeCallback (LThirdParty<span style="color:#960050;background-color:#1e0010">$</span>Callback;)V
@@ -280,7 +322,7 @@ So, we create two callback objects. One per each method call. But the program wo
    }
 
    <span style="color:#66d9ef">public</span> boolean equals(Object var1) {
-      <span style="color:#66d9ef">return</span> var1 instanceof ThirdParty.Callback &amp;&amp; var1 instanceof FunctionAdapter &amp;&amp; Intrinsics.areEqual(<span style="color:#66d9ef">this</span>.function, ((FunctionAdapter)var1).getFunctionDelegate());
+      <span style="color:#66d9ef">return</span> var1 instanceof ThirdParty.Callback <span style="color:#f92672">&amp;&amp;</span> var1 instanceof FunctionAdapter <span style="color:#f92672">&amp;&amp;</span> Intrinsics.areEqual(<span style="color:#66d9ef">this</span>.function, ((FunctionAdapter)var1).getFunctionDelegate());
    }
 
    <span style="color:#66d9ef">public</span> int hashCode() {
@@ -305,75 +347,85 @@ So, we create two callback objects. One per each method call. But the program wo
 <p>With Kotlin 1.4 one don&rsquo;t have to write <code>object : Callback {}</code>, it is possible to do:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> callback = ThirdParty.Callback(<span style="color:#f92672">::</span>onValueChanged)
 </code></pre></div><p>Because functional interfaces support SAM conversion.</p>
-<h3 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="conclusion">Conclusion</h3>
 <p>It seems like with Kotlin functional interfaces there is no such issue as in Kotlin-Java interop. The program will work as it was intended.<br>
 But one should anyway be attentive because the program will work correctly at the price of increased memory allocations.<br>
 So, it is still good practice to convert method references into objects explicitly without relying on the compiler.</p>
 <p>Happy coding.</p>
 
-      </div></div>
-
-  
-  
-<div class="pagination">
-    <div class="pagination__title">
-        <span class="pagination__title-h">Read other posts</span>
-        <hr />
-    </div>
-    <div class="pagination__buttons">
-        
-        <span class="button previous">
-            <a href="https://krossovochkin.github.io/posts/2020_10_28_middle_point/">
-                <span class="button__icon">←</span>
-                <span class="button__text">Middle Point</span>
-            </a>
-        </span>
-        
-        
-        <span class="button next">
-            <a href="https://krossovochkin.github.io/posts/2020_10_14_kotlin_nitpickers_guide/">
-                <span class="button__text">Kotlin Nitpicker&#39;s guide</span>
-                <span class="button__icon">→</span>
-            </a>
-        </span>
-        
-    </div>
-</div>
-
-  
-
-  
-
-</div>
-
   </div>
-
   
-    <footer class="footer">
-  <div class="footer__inner">
+
+<div class="navigation navigation-single">
     
-      <div class="copyright copyright--user">
-        <span>© 2020 Vasya Drobushkov</span>
+    <a href="/posts/2020_10_14_kotlin_nitpickers_guide/" class="navigation-prev">
+      <i aria-hidden="true" class="fa fa-chevron-left"></i>
+      <span class="navigation-tittle">Kotlin Nitpicker&#39;s guide</span>
+    </a>
     
-        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
-      </div>
-  </div>
-  <div class="footer__inner">
-    <div class="copyright copyright--user">
-      <a href="https://www.facebook.com/vasya.drobushkov">Facebook</a><a href="https://twitter.com/krossovochkin">Twitter</a>
-    </div>
-  </div>
-</footer>
-
-<script src="https://krossovochkin.github.io/assets/main.js"></script>
-<script src="https://krossovochkin.github.io/assets/prism.js"></script>
-
-
-
+    
+    <a href="/posts/2020_10_28_middle_point/" class="navigation-next">
+      <span class="navigation-tittle">Middle Point</span>
+      <i aria-hidden="true" class="fa fa-chevron-right"></i>
+    </a>
+    
+</div>
 
 
   
-</div>
 
-</body>
+  
+    
+
+
+</article>
+
+
+        </div>
+        
+    
+
+  
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
+
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+        
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/bash.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/java.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+            
+        
+    <script type="text/javascript">
+        
+        hljs.configure({languages: ["bash, java, kotlin"]});
+        
+        hljs.initHighlightingOnLoad();
+    </script>
+    
+
+
+
+    
+
+
+
+    </body>
 </html>

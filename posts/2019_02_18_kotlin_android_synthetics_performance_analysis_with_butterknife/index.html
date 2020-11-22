@@ -1,77 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  
-    <title>Kotlin-android-synthetics performance analysis (with ButterKnife) :: Krossovochkin — Android Developer</title>
-  
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    
+    
+
+
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Enable responsiveness on mobile devices -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="description" content="Introduction After comment that synthetic is no longer recommended practice and some arguments I decided to go deeper into issue with performance of kotlin-android-synthetics by analyzing generated Java and byte code and comparing to other approaches (such as vanilla-*findViewById *and ButterKnife).
+<meta name="generator" content="Hugo 0.78.2" />
+
+    
+    
+    
+
+<title>Kotlin-android-synthetics performance analysis (with ButterKnife) • Vasya Drobushkov</title>
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Kotlin-android-synthetics performance analysis (with ButterKnife)"/>
+<meta name="twitter:description" content="Introduction After comment that synthetic is no longer recommended practice and some arguments I decided to go deeper into issue with performance of kotlin-android-synthetics by analyzing generated Java and byte code and comparing to other approaches (such as vanilla-*findViewById *and ButterKnife).
 Vanilla-findViewById This is sample Activity we’ll work with throughout the article. Approach with *findViewById *will be our baseline.
 Sample consists of:
   *Activity *class
-  One *TextView *property inside *Activity *with *lateinit *modifier" />
-<meta name="keywords" content="android, synthetics, butterknife, findViewById" />
-<meta name="robots" content="noodp" />
-<link rel="canonical" href="https://krossovochkin.github.io/posts/2019_02_18_kotlin_android_synthetics_performance_analysis_with_butterknife/" />
+  One *TextView *property inside *Activity *with *lateinit *modifier"/>
 
-
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-148934073-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-
-
-
-<link rel="stylesheet" href="https://krossovochkin.github.io/assets/style.css">
-
-  <link rel="stylesheet" href="https://krossovochkin.github.io/assets/yellow.css">
-
-
-
-
-
-
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://krossovochkin.github.io/img/apple-touch-icon-144-precomposed.png">
-
-  <link rel="shortcut icon" href="https://krossovochkin.github.io/img/favicon/yellow.png">
-
-
-
-<meta name="twitter:card" content="summary" />
-
-  <meta name="twitter:site" content="krossovochkin" />
-
-<meta name="twitter:creator" content="krossovochkin" />
-
-
-<meta property="og:locale" content="en" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="Kotlin-android-synthetics performance analysis (with ButterKnife) :: Krossovochkin">
+<meta property="og:title" content="Kotlin-android-synthetics performance analysis (with ButterKnife)" />
 <meta property="og:description" content="Introduction After comment that synthetic is no longer recommended practice and some arguments I decided to go deeper into issue with performance of kotlin-android-synthetics by analyzing generated Java and byte code and comparing to other approaches (such as vanilla-*findViewById *and ButterKnife).
 Vanilla-findViewById This is sample Activity we’ll work with throughout the article. Approach with *findViewById *will be our baseline.
 Sample consists of:
   *Activity *class
   One *TextView *property inside *Activity *with *lateinit *modifier" />
+<meta property="og:type" content="article" />
 <meta property="og:url" content="https://krossovochkin.github.io/posts/2019_02_18_kotlin_android_synthetics_performance_analysis_with_butterknife/" />
-<meta property="og:site_name" content="Kotlin-android-synthetics performance analysis (with ButterKnife)" />
-
-  <meta property="og:image" content="https://krossovochkin.github.io/">
-
-<meta property="og:image:width" content="2048">
-<meta property="og:image:height" content="1024">
+<meta property="article:published_time" content="2019-02-18T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-02-18T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
 
 
-  <meta property="article:published_time" content="2019-02-18 00:00:00 &#43;0000 UTC" />
+    
 
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
 
 
 
@@ -80,99 +51,170 @@ Sample consists of:
 
 
 
+<link rel="stylesheet" href="/scss/hyde-hyde.adf8a0af011d3afb07ed907ad3295e1c99f49503bc91d395e38dc3f8dfdf4900.css" integrity="sha256-rfigrwEdOvsH7ZB60yleHJn0lQO8kdOV443D&#43;N/fSQA=">
 
 
+<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    
+    
 
 </head>
-<body class="">
 
 
-<div class="container center headings--one-size">
-
-  <header class="header">
-  <div class="header__inner">
-    <div class="header__logo">
-      <a href="/">
-  <div class="logo">
-    Krossovochkin
-  </div>
-</a>
-
-    </div>
-    <div class="menu-trigger">menu</div>
-  </div>
-  
-    <nav class="menu">
-  <ul class="menu__inner menu__inner--desktop">
+    <body class="theme-base-0a ">
     
-      
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="https://krossovochkin.github.io/">
         
-          <li><a href="/about">About me</a></li>
+          Vasya Drobushkov
         
-      
-        
-          <li><a href="/">Posts</a></li>
-        
-      
-      
-    
-
-    
-  </ul>
-
-  <ul class="menu__inner menu__inner--mobile">
-    
-      
-        <li><a href="/about">About me</a></li>
-      
-    
-      
-        <li><a href="/">Posts</a></li>
-      
-    
-    
-  </ul>
-</nav>
-
-  
-</header>
-
-
-  <div class="content">
-    
-<div class="post">
-  <h1 class="post-title">
-    <a href="https://krossovochkin.github.io/posts/2019_02_18_kotlin_android_synthetics_performance_analysis_with_butterknife/">Kotlin-android-synthetics performance analysis (with ButterKnife)</a></h1>
-  <div class="post-meta">
-    
-      <span class="post-date">
-        2019-02-18 
+        </a>
       </span>
+      
+        
+        
+        
+        <div class="author-image">
+          <img src="https://krossovochkin.github.io/../img/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
+        </div>
+        
+      
+      
+      <p class="site__description">
+        
+      </p>
+    </div>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">Vasya Drobushkov</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="/posts/">
+						<span>Posts</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="/about/">
+						<span>About</span>
+					</a>
+				</li>
+			 
+		
+	</ul>
+</div>
+
+        <section class="social">
+	
+	<a href="https://twitter.com/krossovochkin" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://facebook.com/vasya.drobushkov" rel="me"><i class="fab fa-facebook-f"></i></a>
+	
+	
+	<a href="https://github.com/krossovochkin" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	<a href="https://linkedin.com/in/vasyadrobushkov" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://stackoverflow.com/users/1533933/krossovochkin" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</section>
+
+      </div>
+    </div>
     
-    
-    <span class="post-author">::
-      Vasya Drobushkov
-    </span>
-    
+<div class="copyright">
+  &copy; 2019 - 2020 Vasya Drobushkov
+  
+    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
+  
+</div>
+
+
+
   </div>
+</div>
 
-  
-  <span class="post-tags">
+        <div class="content container">
+            
     
-    #<a href="https://krossovochkin.github.io/tags/android/">android</a>&nbsp;
+<article>
+  <header>
+    <h1>Kotlin-android-synthetics performance analysis (with ButterKnife)</h1>
     
-  </span>
-  
+    
+<div class="post__meta">
+    
+    
+      <i class="fas fa-calendar-alt"></i> Feb 18, 2019
+    
+    
+    
+    
+    
+      
+      
+          <br/>
+           <i class="fas fa-tags"></i>
+          
+          <a class="badge badge-tag" href="/tags/android">android</a>
+          
+      
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 12 min read
+</div>
 
-  
 
+  </header>
   
-
-  <div class="post-content"><div>
-        <p><a href="https://proandroiddev.com/kotlin-android-synthetics-performance-analysis-with-butterknife-90a54ca4325d"><img src="https://img.shields.io/badge/original-proandroiddev-green#badge" alt=""></a></p>
-<h1 id="introduction">Introduction<a href="#introduction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+  
+  <div class="post">
+    <p><a href="https://proandroiddev.com/kotlin-android-synthetics-performance-analysis-with-butterknife-90a54ca4325d"><img src="https://img.shields.io/badge/original-proandroiddev-green#badge" alt=""></a></p>
+<h1 id="introduction">Introduction</h1>
 <p>After comment that <a href="https://android-review.googlesource.com/c/platform/frameworks/support/+/882241">synthetic is no longer recommended practice</a> and <a href="https://proandroiddev.com/the-argument-over-kotlin-synthetics-735305dd4ed0">some arguments</a> I decided to go deeper into issue with performance of <em>kotlin-android-synthetics</em> by analyzing generated Java and byte code and comparing to other approaches (such as vanilla-*findViewById *and <em>ButterKnife</em>).</p>
-<h2 id="vanilla-findviewbyid">Vanilla-findViewById<a href="#vanilla-findviewbyid" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="vanilla-findviewbyid">Vanilla-findViewById</h2>
 <p>This is sample Activity we’ll work with throughout the article.
 Approach with *findViewById *will be our baseline.</p>
 <p>Sample consists of:</p>
@@ -279,14 +321,14 @@ Why we have <em><strong>_$_findViewCache</strong></em>, <em><strong>_$_findCache
 </li>
 </ul>
 <p>Let’s try to answer these questions one by one.</p>
-<h3 id="code-generation-issue">Code generation issue<a href="#code-generation-issue" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="code-generation-issue">Code generation issue</h3>
 <p>I have no exact answer to the question why we have synthetic code generated for class which hasn’t used them.
 Most likely (as <a href="https://kotlinlang.org/docs/tutorials/android-plugin.html#layoutcontainer-support">*LayoutContainers *are supported</a> — including <em>Activity</em>, <em>Fragment</em>, <em>View</em>) code is generated for all these classes without checking whether some features of synthetics are actually used in them.
 Maybe it is just easier to generate to all supported classes than to check where exactly code is needed.
 Also it might help with incremental builds as after code generation and first build success there is no need to redo it again.</p>
 <p>This might look like an overhead from code perspective (and it basically is). Thankfully we have <em>multidex</em>, so number of methods is no longer an issue.
 For release build *ProGuard *(or <em>R8</em>) will remove unused methods and fields and will do many other optimizations so the problem will gone (eventually there even won’t be <em>update()</em> method in resulting release byte-code as code will be inlined into *onCreate *method)</p>
-<h3 id="lateinit-checks">Lateinit checks<a href="#lateinit-checks" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="lateinit-checks">Lateinit checks</h3>
 <p>Various *Intrinsic *checks are generated by Kotlin for Java. On Kotlin level it is easy to enforce and check that values are not null/nullable etc., but when it comes to Java there are no guarantees that everything will work well.</p>
 <p>As *TextView *property is not final it is possible that between two lines value will be set to <em>null</em>. Intrinsic checks ensure that if some contract is violated exception is thrown as soon as possible.</p>
 <p>This again might look as an overhead if we know that we’ll initialize *TextView *in *onCreate *(and we’ll check that value is not null) and that we’ll not try to change property concurrently and that we don’t call <em>update()</em> method before <em>onCreate</em>, so that additional checks are not really required (or at least it could be one).
@@ -313,7 +355,7 @@ But it is something we know, not the compiler.</p>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>So we have only one check and then update all properties on local property. Neat.</p>
 <p>Though such optimizations are definitely premature as anyway in release build ProGuard will do better optimization work without making your code look a bit weird.</p>
-<h3 id="hashmapsparsearray">HashMap/SparseArray<a href="#hashmapsparsearray" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="hashmapsparsearray">HashMap/SparseArray</h3>
 <p>Why <em>HashMap</em> is used instead of <em>SparseArray</em>?</p>
 <p>As keys are integers each lookup will trigger boxing of the integer value which will badly impact memory usage and make GC to trigger more often.
 Seems *SparseArray *is better option because we’ll have primitive integers as keys, why it is not used?</p>
@@ -323,18 +365,18 @@ Seems *SparseArray *is better option because we’ll have primitive integers as 
 <span style="color:#f92672">}</span>
 </code></pre></div><p>After that we’ll have <em>SparseArray</em> as cache for views.</p>
 <p>Also it is possible to disable cache by using “NONE”, though this option hardly ever useful.</p>
-<h3 id="result">Result<a href="#result" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="result">Result</h3>
 <p>To conclude, evaluation of vanilla approach:</p>
 <ul>
 <li>one-time initialization (in <em>onCreate</em>)</li>
 <li>fast subsequent getters (property keeps reference to <em>View</em>)
 – a lot of boilerplate (properties, *findViewById *calls)</li>
 </ul>
-<h2 id="butterknife">ButterKnife<a href="#butterknife" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="butterknife">ButterKnife</h2>
 <p>Let’s look at the same example with ButterKnife:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ButterKnifeAcivity</span> : AppCompatActivity() {
 
-    @BindView(R.id.textView)
+    <span style="color:#a6e22e">@BindView</span>(R.id.textView)
     <span style="color:#66d9ef">lateinit</span> <span style="color:#66d9ef">var</span> textView: TextView
 
     <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
@@ -429,14 +471,14 @@ It is actually redundant (and will be removed by <em>ProGuard</em>), because *Bu
 <span style="color:#f92672">}</span>
 </code></pre></div><p>So, basically using <em>ButterKnife</em> is similar to vanilla approach. The only difference is that we don’t have to write a lot of *findViewById *calls (though we still need to write one line per property — *Binds *annotation — but it is anyway better as we have actual property and view id near to each other).</p>
 <p>There is small downside that *ButterKnife *uses reflection to instantiate *ViewBinding *class. But this is usual trade-off between reflection and code generation.</p>
-<h3 id="result-1">Result<a href="#result-1" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="result-1">Result</h3>
 <p>To conclude, evaluation of *ButterKnife *approach:</p>
 <ul>
 <li>one-time initialization (in <em>onCreate</em>)</li>
 <li>fast subsequent getters (property keeps reference to <em>View</em>)
 +/– quite a lot of boilerplate (still need to define properties, though no need to write a lot of *findViewById *mehod calls, instead just one method bind — but it is needed to add *Binds *annotation to each property)</li>
 </ul>
-<h2 id="synthetics">Synthetics<a href="#synthetics" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="synthetics">Synthetics</h2>
 <p>Same sample using synthetics:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">import</span> kotlinx.android.synthetic.main.activity_main.*
 
@@ -735,14 +777,14 @@ Additional thing is that by not calling view cache multiple times <em>ProGuard</
 Is it enough to recommend using apply “optimization”? I think no. Though there is some impact in the resulting release byte-code it is still matter of optimizations on byte-code level. We usually should not do any code tricks to make byte-code faster.
 Even if right now solution works, then we need to check over time that this optimization is still working.
 Otherwise it is better to have clean code.</p>
-<h3 id="result-2">Result<a href="#result-2" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="result-2">Result</h3>
 <p>To conclude, evaluation of Synthetics approach:</p>
 <ul>
 <li>no boilerplate (automatic properties creation and binding*)
 +/– dynamic initialization (views are not binded in *onCreate *but on first call. Whether it is a plus or not actually depends)
 – slow getters (either *HashMap *with autoboxing of key or relatively slow lookup in *SparseArray *— which seems still converted to *HashMap *in release; possible delay for first time get)</li>
 </ul>
-<h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="conclusion">Conclusion</h2>
 <p>So, use or not use?</p>
 <p>Actually it depends.
 I think synthetics is pretty useful tool for common cases when you have simple screens and not using e.g. ‘includes’ and other stuff.
@@ -753,69 +795,79 @@ ButterKnife looks as something between the two and because of that [still] a goo
 Synthetics approach definitely has the worst performance comparing to vanilla or ButterKnife, but I hope that some optimizations will be done in the future so it will become really good approach.</p>
 <p>Happy coding!</p>
 
-      </div></div>
-
-  
-  
-<div class="pagination">
-    <div class="pagination__title">
-        <span class="pagination__title-h">Read other posts</span>
-        <hr />
-    </div>
-    <div class="pagination__buttons">
-        
-        <span class="button previous">
-            <a href="https://krossovochkin.github.io/posts/2019_04_08_dart_language_bad_design_choices/">
-                <span class="button__icon">←</span>
-                <span class="button__text">Dart language bad design choices</span>
-            </a>
-        </span>
-        
-        
-        <span class="button next">
-            <a href="https://krossovochkin.github.io/posts/2019_10_15_scary_movies/">
-                <span class="button__text">Scary movies</span>
-                <span class="button__icon">→</span>
-            </a>
-        </span>
-        
-    </div>
-</div>
-
-  
-
-  
-
-</div>
-
   </div>
-
   
-    <footer class="footer">
-  <div class="footer__inner">
+
+<div class="navigation navigation-single">
     
-      <div class="copyright copyright--user">
-        <span>© 2020 Vasya Drobushkov</span>
+    <a href="/posts/2019_10_15_scary_movies/" class="navigation-prev">
+      <i aria-hidden="true" class="fa fa-chevron-left"></i>
+      <span class="navigation-tittle">Scary movies</span>
+    </a>
     
-        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
-      </div>
-  </div>
-  <div class="footer__inner">
-    <div class="copyright copyright--user">
-      <a href="https://www.facebook.com/vasya.drobushkov">Facebook</a><a href="https://twitter.com/krossovochkin">Twitter</a>
-    </div>
-  </div>
-</footer>
-
-<script src="https://krossovochkin.github.io/assets/main.js"></script>
-<script src="https://krossovochkin.github.io/assets/prism.js"></script>
-
-
-
+    
+    <a href="/posts/2019_04_08_dart_language_bad_design_choices/" class="navigation-next">
+      <span class="navigation-tittle">Dart language bad design choices</span>
+      <i aria-hidden="true" class="fa fa-chevron-right"></i>
+    </a>
+    
+</div>
 
 
   
-</div>
 
-</body>
+  
+    
+
+
+</article>
+
+
+        </div>
+        
+    
+
+  
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
+
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+        
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/bash.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/java.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+            
+        
+    <script type="text/javascript">
+        
+        hljs.configure({languages: ["bash, java, kotlin"]});
+        
+        hljs.initHighlightingOnLoad();
+    </script>
+    
+
+
+
+    
+
+
+
+    </body>
 </html>

@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>kotlin on Krossovochkin</title>
+    <title>kotlin on Vasya Drobushkov</title>
     <link>https://krossovochkin.github.io/tags/kotlin/</link>
-    <description>Recent content in kotlin on Krossovochkin</description>
+    <description>Recent content in kotlin on Vasya Drobushkov</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>© 2020 Vasya Drobushkov</copyright>
-    <lastBuildDate>Sat, 31 Oct 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://krossovochkin.github.io/tags/kotlin/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>en</language>
+    <lastBuildDate>Sat, 31 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.github.io/tags/kotlin/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Boolean not</title>
       <link>https://krossovochkin.github.io/posts/2020_10_31_boolean_not/</link>
@@ -19,7 +14,7 @@
       
       <guid>https://krossovochkin.github.io/posts/2020_10_31_boolean_not/</guid>
       <description>Introduction Boolean is one of the essential types in programming and probably one of the simplest because it has only two values: true and false. Boolean are usually used as flags for control flow, specifically, conditions.
-if (string.isEmpty()) {println(&amp;#34;String is empty&amp;#34;)}It is not much interesting in Boolean, but in Kotlin there is one thing which might be confusing if used - it is method not().
+if (string.isEmpty()) { println(&amp;#34;String is empty&amp;#34;) } It is not much interesting in Boolean, but in Kotlin there is one thing which might be confusing if used - it is method not().
 Negate Boolean If we look at declaration of Boolean class in Kotlin we&amp;rsquo;ll see five methods, four of which are pretty obvious: and, or, xor and compareTo.</description>
     </item>
     
@@ -30,7 +25,7 @@ Negate Boolean If we look at declaration of Boolean class in Kotlin we&amp;rsquo
       
       <guid>https://krossovochkin.github.io/posts/2020_10_17_kotlin_functional_interfaces_function_references_and_sam_conversion/</guid>
       <description>Introduction About two years ago I made a post about a tricky case in Kotlin-Java interop related to the usage of function references and SAM conversion. One of the points there was that in Kotlin, if interface is declared instead of a function, one has to explicitly create an object, therefore no caveats as with interop:
-val callback = object : ThirdParty.Callback {override fun onValueChanged(value: Int) {this@App.onValueChanged(value)}}With Kotlin 1.</description>
+val callback = object : ThirdParty.Callback { override fun onValueChanged(value: Int) { this@App.onValueChanged(value) } } With Kotlin 1.</description>
     </item>
     
     <item>
@@ -39,7 +34,7 @@ val callback = object : ThirdParty.Callback {override fun onValueChanged(value:
       <pubDate>Wed, 14 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://krossovochkin.github.io/posts/2020_10_14_kotlin_nitpickers_guide/</guid>
-      <description>Introduction Code review is an essential tool for a development team, which helps ensure high-quality standards of code. While reviewing others&amp;rsquo; code one might find bugs, design issues, and so on. One another part of reviewing is getting used to the codebase and following team&amp;rsquo;s code style for better maintenance. Though it is pretty cool in theory, in practice team might face few issues, one of which is nitpicking. When review is bloated with dozens of similar comments related to e.</description>
+      <description>Introduction Code review is an essential tool for a development team, which helps ensure high-quality standards of code. While reviewing others&#39; code one might find bugs, design issues, and so on. One another part of reviewing is getting used to the codebase and following team&amp;rsquo;s code style for better maintenance. Though it is pretty cool in theory, in practice team might face few issues, one of which is nitpicking. When review is bloated with dozens of similar comments related to e.</description>
     </item>
     
     <item>

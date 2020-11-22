@@ -1,72 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  
-    <title>The Real Kotlin Flow benefits over RxJava :: Krossovochkin — Android Developer</title>
-  
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    
+    
+
+
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Enable responsiveness on mobile devices -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="description" content="Source
- 
-Introduction Recently the article about Kotlin Flow benefits over RxJava was published by Antoni Castejón García: Kotlin Flow benefits over RxJava
-Though Antoni made a good work and many thanks to him for providing his feedback and experience (we need to share our thoughts, this improves community acknowledgment in various areas) — I found few places in the article with which I don’t fully or partially agree. Some points, in my opinion, were missing." />
-<meta name="keywords" content="kotlin, kotlin flow, flow, rxjava, rxjava2" />
-<meta name="robots" content="noodp" />
-<link rel="canonical" href="https://krossovochkin.github.io/posts/2020_05_17_the_real_kotlin_flow_benefits_over_rxjava/" />
+<meta name="generator" content="Hugo 0.78.2" />
+
+    
+    
+    
+
+<title>The Real Kotlin Flow benefits over RxJava • Vasya Drobushkov</title>
 
 
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-148934073-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="The Real Kotlin Flow benefits over RxJava"/>
+<meta name="twitter:description" content="Attempt to analyze the benefits of Kotlin Flow over RxJava."/>
 
-
-
-<link rel="stylesheet" href="https://krossovochkin.github.io/assets/style.css">
-
-  <link rel="stylesheet" href="https://krossovochkin.github.io/assets/yellow.css">
-
-
-
-
-
-
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://krossovochkin.github.io/img/apple-touch-icon-144-precomposed.png">
-
-  <link rel="shortcut icon" href="https://krossovochkin.github.io/img/favicon/yellow.png">
-
-
-
-<meta name="twitter:card" content="summary" />
-
-  <meta name="twitter:site" content="krossovochkin" />
-
-<meta name="twitter:creator" content="krossovochkin" />
-
-
-<meta property="og:locale" content="en" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="The Real Kotlin Flow benefits over RxJava :: Krossovochkin">
+<meta property="og:title" content="The Real Kotlin Flow benefits over RxJava" />
 <meta property="og:description" content="Attempt to analyze the benefits of Kotlin Flow over RxJava." />
+<meta property="og:type" content="article" />
 <meta property="og:url" content="https://krossovochkin.github.io/posts/2020_05_17_the_real_kotlin_flow_benefits_over_rxjava/" />
-<meta property="og:site_name" content="The Real Kotlin Flow benefits over RxJava" />
-
-  <meta property="og:image" content="https://krossovochkin.github.io/">
-
-<meta property="og:image:width" content="2048">
-<meta property="og:image:height" content="1024">
+<meta property="article:published_time" content="2020-05-17T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-05-17T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
 
 
-  <meta property="article:published_time" content="2020-05-17 00:00:00 &#43;0000 UTC" />
+    
 
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
 
 
 
@@ -75,102 +43,175 @@ if (!doNotTrack) {
 
 
 
+<link rel="stylesheet" href="/scss/hyde-hyde.adf8a0af011d3afb07ed907ad3295e1c99f49503bc91d395e38dc3f8dfdf4900.css" integrity="sha256-rfigrwEdOvsH7ZB60yleHJn0lQO8kdOV443D&#43;N/fSQA=">
 
 
+<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    
+    
 
 </head>
-<body class="">
 
 
-<div class="container center headings--one-size">
-
-  <header class="header">
-  <div class="header__inner">
-    <div class="header__logo">
-      <a href="/">
-  <div class="logo">
-    Krossovochkin
-  </div>
-</a>
-
-    </div>
-    <div class="menu-trigger">menu</div>
-  </div>
-  
-    <nav class="menu">
-  <ul class="menu__inner menu__inner--desktop">
+    <body class="theme-base-0a ">
     
-      
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="https://krossovochkin.github.io/">
         
-          <li><a href="/about">About me</a></li>
+          Vasya Drobushkov
         
-      
-        
-          <li><a href="/">Posts</a></li>
-        
-      
-      
-    
-
-    
-  </ul>
-
-  <ul class="menu__inner menu__inner--mobile">
-    
-      
-        <li><a href="/about">About me</a></li>
-      
-    
-      
-        <li><a href="/">Posts</a></li>
-      
-    
-    
-  </ul>
-</nav>
-
-  
-</header>
-
-
-  <div class="content">
-    
-<div class="post">
-  <h1 class="post-title">
-    <a href="https://krossovochkin.github.io/posts/2020_05_17_the_real_kotlin_flow_benefits_over_rxjava/">The Real Kotlin Flow benefits over RxJava</a></h1>
-  <div class="post-meta">
-    
-      <span class="post-date">
-        2020-05-17 
+        </a>
       </span>
+      
+        
+        
+        
+        <div class="author-image">
+          <img src="https://krossovochkin.github.io/../img/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
+        </div>
+        
+      
+      
+      <p class="site__description">
+        
+      </p>
+    </div>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">Vasya Drobushkov</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="/posts/">
+						<span>Posts</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="/about/">
+						<span>About</span>
+					</a>
+				</li>
+			 
+		
+	</ul>
+</div>
+
+        <section class="social">
+	
+	<a href="https://twitter.com/krossovochkin" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://facebook.com/vasya.drobushkov" rel="me"><i class="fab fa-facebook-f"></i></a>
+	
+	
+	<a href="https://github.com/krossovochkin" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	<a href="https://linkedin.com/in/vasyadrobushkov" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://stackoverflow.com/users/1533933/krossovochkin" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</section>
+
+      </div>
+    </div>
     
-    
-    <span class="post-author">::
-      Vasya Drobushkov
-    </span>
-    
+<div class="copyright">
+  &copy; 2019 - 2020 Vasya Drobushkov
+  
+    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
+  
+</div>
+
+
+
   </div>
+</div>
 
-  
-  <span class="post-tags">
+        <div class="content container">
+            
     
-    #<a href="https://krossovochkin.github.io/tags/rxjava/">rxjava</a>&nbsp;
+<article>
+  <header>
+    <h1>The Real Kotlin Flow benefits over RxJava</h1>
     
-    #<a href="https://krossovochkin.github.io/tags/kotlin/">kotlin</a>&nbsp;
     
-    #<a href="https://krossovochkin.github.io/tags/kotlin-flow/">kotlin flow</a>&nbsp;
+<div class="post__meta">
     
-  </span>
-  
+    
+      <i class="fas fa-calendar-alt"></i> May 17, 2020
+    
+    
+    
+    
+    
+      
+      
+          <br/>
+           <i class="fas fa-tags"></i>
+          
+          <a class="badge badge-tag" href="/tags/rxjava">rxjava</a>
+           
+      
+          <a class="badge badge-tag" href="/tags/kotlin">kotlin</a>
+           
+      
+          <a class="badge badge-tag" href="/tags/kotlin-flow">kotlin flow</a>
+          
+      
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 12 min read
+</div>
 
-  
 
+  </header>
   
-
-  <div class="post-content"><div>
-        <p><img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1357&amp;q=80" alt="Source"><em><a href="https://unsplash.com/photos/Lks7vei-eAg">Source</a></em></p>
+  
+  <div class="post">
+    <p><img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1357&amp;q=80" alt="Source"><em><a href="https://unsplash.com/photos/Lks7vei-eAg">Source</a></em></p>
 <p><a href="https://proandroiddev.com/the-real-kotlin-flow-benefits-over-rxjava-c19b99ba6eb9"><img src="https://img.shields.io/badge/original-proandroiddev-green#badge" alt=""></a> <a href="https://proandroiddev.com/proandroiddev-digest-22-a7bf64f9f068"><img src="https://img.shields.io/badge/proandroiddevdigest-22-green#badge" alt=""></a></p>
-<h2 id="introduction">Introduction<a href="#introduction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="introduction">Introduction</h2>
 <p>Recently the article about Kotlin Flow benefits over RxJava was published by <a href="undefined">Antoni Castejón García</a>:
 <a href="https://proandroiddev.com/kotlin-flow-benefits-over-rxjava-b220658f1a92"><strong>Kotlin Flow benefits over RxJava</strong></a></p>
 <p>Though Antoni made a good work and many thanks to him for providing his feedback and experience (we need to share our thoughts, this improves community acknowledgment in various areas) — I found few places in the article with which I don’t fully or partially agree. Some points, in my opinion, were missing. So, I decided to make a follow-up feedback post on what I consider the real benefits of Kotlin Flow over RxJava. Feedback is also a good thing as it helps us to drive forward and maybe look at the same things from a different angle.</p>
@@ -189,13 +230,13 @@ if (!doNotTrack) {
 </li>
 </ul>
 <p>Let’s go!</p>
-<h2 id="decoding-original-article">Decoding original article<a href="#decoding-original-article" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="decoding-original-article">Decoding original article</h2>
 <blockquote>
 <p>However, if you want to implement a <em>Subject</em> related pattern you will have to use <em>Channels</em> for now. It is not a problem, but you will end up having a lot of <em>ExperimentalCoroutinesApi</em> annotations in your project. The good thing is they announced that they are going to implement a way to catch and share flows in <em>StateFlow</em>(<a href="https://github.com/Kotlin/kotlinx.coroutines/issues/1973">check here</a>) so, hopefully, this will be fixed soon.</p>
 </blockquote>
 <p>🚨 Channels are somewhat equivalents of RxJava Subjects. Previously we could use ConflatedBroadcastChannel instead of BehaviorSubject and BroadcastChannel instead of PublishSubject. But with introduction of StateFlow it comes a bit more interesting, as channels seem not that good (open question). Maybe in the future in the standard library there will be something else for PublishSubject as well.
 And yes, this API is experimental, so it can be changed at any time.</p>
-<p>🚨 Over time many of theExperimentalCoroutinesApi are promoted to the next level. But now they are FlowPreview which guarantee neither binary nor source compatibility. The simplest examples are debounce and flatMapMerge. They are in preview now. 
+<p>🚨 Over time many of theExperimentalCoroutinesApi are promoted to the next level. But now they are FlowPreview which guarantee neither binary nor source compatibility. The simplest examples are debounce and flatMapMerge. They are in preview now.
 So, yes, now you will face fewer ExperimentalCoroutinesApi methods, but still many of them are not stable.</p>
 <blockquote>
 <p>This is the first adjective that comes to my mind to describe the framework. Creating a Flow instance is super simple:
@@ -205,7 +246,7 @@ That’s it. You don’t have to deal with different methods to create a stream 
 <p>🚨 Let’s be honest. Kotlin Flow also has flowOf(&hellip;), which is essentially same as just in RxJava and might be misused in the same way:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">flowOf(makeNetworkRequest())
 </code></pre></div><p>🆗 Other than that I agree that writing custom flows (and flow builder is basically the same as using create in RxJava) is simple. But at the same time I think that RxJava version, being probably a bit more verbose, is the same:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">create { it.onNext(<span style="color:#e6db74">&#34;whatever&#34;</span>) }
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">create { <span style="color:#66d9ef">it</span>.onNext(<span style="color:#e6db74">&#34;whatever&#34;</span>) }
 </code></pre></div><p>Wait, but could one spot the difference? RxJava’s version will remain not completed when Kotlin Flow version will complete at the end.
 Everything is simple when you know the details</p>
 <blockquote>
@@ -217,11 +258,11 @@ Everything is simple when you know the details</p>
 </blockquote>
 <p>🚨 Let’s try to make that clear: map and flatMap are not for sync/async operations.</p>
 <blockquote>
-<h1 id="map-is-to-transform-content-of-the-stream">Map is to transform content of the stream.<a href="#map-is-to-transform-content-of-the-stream" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
-<h1 id="flatmap-to-transform-stream">FlatMap to transform stream.<a href="#flatmap-to-transform-stream" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+<h1 id="map-is-to-transform-content-of-the-stream">Map is to transform content of the stream.</h1>
+<h1 id="flatmap-to-transform-stream">FlatMap to transform stream.</h1>
 </blockquote>
 <p>The most interesting thing is that in opposite it is possible to always use flatMap and not use map, because:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">map(f: (A) -&gt; B) = flatMap { a -&gt; just(f(a)) }
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">map(f: (A) <span style="color:#f92672">-&gt;</span> B) = flatMap { a <span style="color:#f92672">-&gt;</span> just(f(a)) }
 </code></pre></div><p>Though in reality flatMap implementation provides more overhead, so use whichever operator is needed in your particular situation. If you want to transform content of the stream — use map.</p>
 <p>This is in theory, referencing some functional programming stuff.</p>
 <p>🚨 Yes, body of map method in RxJava is called synchronously, but synchronously **on a scheduler **on which current part of the chain is working. So, I see no issue with that.</p>
@@ -235,13 +276,13 @@ Also flatMap allows concurrency (by merging various streams), when map is for di
         <span style="color:#ae81ff">40</span>
     }
 }
-@Test
+<span style="color:#a6e22e">@Test</span>
 <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">test</span>() {
     CoroutineScope(Job()).launch {
         flowOf(<span style="color:#ae81ff">1</span>)
             .map { hiThere() }
             .flowOn(Dispatchers.IO)
-            .collect { println(it) }
+            .collect { println(<span style="color:#66d9ef">it</span>) }
     }
 }
 </code></pre></div><p>In RxJava we would do something like:</p>
@@ -254,7 +295,7 @@ Also flatMap allows concurrency (by merging various streams), when map is for di
     Observable.just(<span style="color:#ae81ff">1</span>)
         .flatMapSingle { hiThere() }
         .subscribeOn(io())
-        .subscribe { println(it) }
+        .subscribe { println(<span style="color:#66d9ef">it</span>) }
 }
 </code></pre></div><p>One might say that RxJava is too verbose. Maybe, but not that is important. In RxJava we have clearly defined that our function hiThere provides a new stream. And like any other stream, it might be subscribed on some different scheduler. This is huge knowledge because from the usage I already know what function can do.
 If there would be map — then I’ll understand that there will be just transformation of values (which will be done on the particular scheduler in the chain).</p>
@@ -276,8 +317,8 @@ Common operators in the standard library is a good thing. It unifies behaviors, 
 <p>🆗 Half-point goes to Kotlin Flow. Basically as with map/flatMap it is possible to use onErrorResumeNext always. But it provides more overhead, so one can decide. The advantage of Kotlin Flow is that the same operator for different implementations is somewhat equal.</p>
 <p>Same time, Kotlin Flow doesn’t have doOnError and one will have to write either own method or do something like:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">.<span style="color:#66d9ef">catch</span> { 
-    doSomething(it)
-    <span style="color:#66d9ef">throw</span> it
+    doSomething(<span style="color:#66d9ef">it</span>)
+    <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">it</span>
 }
 </code></pre></div><blockquote>
 <p>Backpressure handling</p>
@@ -299,7 +340,7 @@ More info on the threading in the article:
 <p>🚨 But regarding viewModelScope for coroutines: it is possible to make something similar for RxJava as well. Android Jetpack team just invests time into coroutines support and not RxJava.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TestViewModel</span> : MyViewModel() {
 
-    init {
+    <span style="color:#66d9ef">init</span> {
         scope.launch(
             Observable.just(<span style="color:#e6db74">&#34;10&#34;</span>)
                 .subscribe { println(<span style="color:#e6db74">&#34;Something&#34;</span>) }
@@ -342,7 +383,7 @@ More info on the threading in the article:
 <span style="color:#66d9ef">val</span> MyViewModel.scope: MyScope
     <span style="color:#66d9ef">get</span>() {
         <span style="color:#66d9ef">val</span> scope = getObserver(TAG_SCOPE) <span style="color:#66d9ef">as</span>? MyScope
-        <span style="color:#66d9ef">if</span> (scope != <span style="color:#66d9ef">null</span>) {
+        <span style="color:#66d9ef">if</span> (scope <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
             <span style="color:#66d9ef">return</span> scope
         }
 
@@ -361,7 +402,7 @@ More info on the threading in the article:
         <span style="color:#66d9ef">return</span> newScope
     }
 
-<span style="color:#66d9ef">fun</span> &lt;T&gt; <span style="color:#a6e22e">Observable</span>&lt;T&gt;.launchIn(scope: MyScope) {
+<span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">Observable</span>&lt;T&gt;.launchIn(scope: MyScope) {
     <span style="color:#66d9ef">return</span> scope.launch(<span style="color:#66d9ef">this</span>.subscribe())
 }
 </code></pre></div><p>Of course, this won’t enforce you to add all your subscriptions that way. One might set up custom lint rule for that or so, though it wouldn’t be trivial.</p>
@@ -374,7 +415,7 @@ More info on the threading in the article:
 </blockquote>
 <p>🚨 In RxJava one can add also only one library and it is stable-stable.</p>
 <p>🚨 Only some parts (core) are stable in Flow. Many operators are in preview or experimental, but we’ve already discussed that.</p>
-<h2 id="what-was-missing">What was missing<a href="#what-was-missing" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="what-was-missing">What was missing</h2>
 <p>There are few things that in my opinion were missing from the list of the advantages of Kotlin Flow:</p>
 <ul>
 <li>
@@ -387,7 +428,7 @@ More info on the threading in the article:
 <p>✅ One can pass nullable values in the Flow. There is no need to wrap values in Option as in RxJava</p>
 </li>
 </ul>
-<h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="conclusion">Conclusion</h2>
 <p>Let’s sum up the real advantages of Kotlin Flow over RxJava are:</p>
 <ul>
 <li>
@@ -433,69 +474,79 @@ More info on the threading in the article:
 <p>In my opinion in the coming years we’ll get used to Kotlin Flow and most likely new projects will be written using it not RxJava. Though there is little gain to rewrite existing apps to Kotlin Flow. At least now. But right now is the best time to start learning and trying on your pet projects maybe.</p>
 <p>Happy coding!</p>
 
-      </div></div>
-
-  
-  
-<div class="pagination">
-    <div class="pagination__title">
-        <span class="pagination__title-h">Read other posts</span>
-        <hr />
-    </div>
-    <div class="pagination__buttons">
-        
-        <span class="button previous">
-            <a href="https://krossovochkin.github.io/posts/2020_10_14_kotlin_nitpickers_guide/">
-                <span class="button__icon">←</span>
-                <span class="button__text">Kotlin Nitpicker&#39;s guide</span>
-            </a>
-        </span>
-        
-        
-        <span class="button next">
-            <a href="https://krossovochkin.github.io/posts/2020_05_07_raising_old_project_from_the_depth/">
-                <span class="button__text">Raising old project from the depth</span>
-                <span class="button__icon">→</span>
-            </a>
-        </span>
-        
-    </div>
-</div>
-
-  
-
-  
-
-</div>
-
   </div>
-
   
-    <footer class="footer">
-  <div class="footer__inner">
+
+<div class="navigation navigation-single">
     
-      <div class="copyright copyright--user">
-        <span>© 2020 Vasya Drobushkov</span>
+    <a href="/posts/2020_05_07_raising_old_project_from_the_depth/" class="navigation-prev">
+      <i aria-hidden="true" class="fa fa-chevron-left"></i>
+      <span class="navigation-tittle">Raising old project from the depth</span>
+    </a>
     
-        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
-      </div>
-  </div>
-  <div class="footer__inner">
-    <div class="copyright copyright--user">
-      <a href="https://www.facebook.com/vasya.drobushkov">Facebook</a><a href="https://twitter.com/krossovochkin">Twitter</a>
-    </div>
-  </div>
-</footer>
-
-<script src="https://krossovochkin.github.io/assets/main.js"></script>
-<script src="https://krossovochkin.github.io/assets/prism.js"></script>
-
-
-
+    
+    <a href="/posts/2020_10_14_kotlin_nitpickers_guide/" class="navigation-next">
+      <span class="navigation-tittle">Kotlin Nitpicker&#39;s guide</span>
+      <i aria-hidden="true" class="fa fa-chevron-right"></i>
+    </a>
+    
+</div>
 
 
   
-</div>
 
-</body>
+  
+    
+
+
+</article>
+
+
+        </div>
+        
+    
+
+  
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
+
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+        
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/bash.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/java.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+            
+        
+    <script type="text/javascript">
+        
+        hljs.configure({languages: ["bash, java, kotlin"]});
+        
+        hljs.initHighlightingOnLoad();
+    </script>
+    
+
+
+
+    
+
+
+
+    </body>
 </html>

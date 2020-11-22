@@ -1,73 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  
-    <title>Dynamic mobile client development. Problem and concept. :: Krossovochkin — Android Developer</title>
-  
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    
+    
+
+
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Enable responsiveness on mobile devices -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="description" content="Data and interfaces — are two of the most important things in development.
+<meta name="generator" content="Hugo 0.78.2" />
+
+    
+    
+    
+
+<title>Dynamic mobile client development. Problem and concept. • Vasya Drobushkov</title>
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Dynamic mobile client development. Problem and concept."/>
+<meta name="twitter:description" content="Data and interfaces — are two of the most important things in development.
 Data usually comes from/to server and tells application what should be used (and therefore shown to the user on UI)
-One of the main challenges in mobile development is to be in sync with server. Server is updated immediately (often along with web). Publishing to Play Store takes some time (even not talking about AppStore and their app review)." />
-<meta name="keywords" content="android, dynamic" />
-<meta name="robots" content="noodp" />
-<link rel="canonical" href="https://krossovochkin.github.io/posts/2018_07_21_dynamic_mobile_client_development_problem_and_concept/" />
+One of the main challenges in mobile development is to be in sync with server. Server is updated immediately (often along with web). Publishing to Play Store takes some time (even not talking about AppStore and their app review)."/>
 
-
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-148934073-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-
-
-
-<link rel="stylesheet" href="https://krossovochkin.github.io/assets/style.css">
-
-  <link rel="stylesheet" href="https://krossovochkin.github.io/assets/yellow.css">
-
-
-
-
-
-
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://krossovochkin.github.io/img/apple-touch-icon-144-precomposed.png">
-
-  <link rel="shortcut icon" href="https://krossovochkin.github.io/img/favicon/yellow.png">
-
-
-
-<meta name="twitter:card" content="summary" />
-
-  <meta name="twitter:site" content="krossovochkin" />
-
-<meta name="twitter:creator" content="krossovochkin" />
-
-
-<meta property="og:locale" content="en" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="Dynamic mobile client development. Problem and concept. :: Krossovochkin">
+<meta property="og:title" content="Dynamic mobile client development. Problem and concept." />
 <meta property="og:description" content="Data and interfaces — are two of the most important things in development.
 Data usually comes from/to server and tells application what should be used (and therefore shown to the user on UI)
 One of the main challenges in mobile development is to be in sync with server. Server is updated immediately (often along with web). Publishing to Play Store takes some time (even not talking about AppStore and their app review)." />
+<meta property="og:type" content="article" />
 <meta property="og:url" content="https://krossovochkin.github.io/posts/2018_07_21_dynamic_mobile_client_development_problem_and_concept/" />
-<meta property="og:site_name" content="Dynamic mobile client development. Problem and concept." />
-
-  <meta property="og:image" content="https://krossovochkin.github.io/">
-
-<meta property="og:image:width" content="2048">
-<meta property="og:image:height" content="1024">
+<meta property="article:published_time" content="2018-07-21T00:00:00+00:00" />
+<meta property="article:modified_time" content="2018-07-21T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
 
 
-  <meta property="article:published_time" content="2018-07-21 00:00:00 &#43;0000 UTC" />
+    
 
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
 
 
 
@@ -76,110 +47,181 @@ One of the main challenges in mobile development is to be in sync with server. S
 
 
 
+<link rel="stylesheet" href="/scss/hyde-hyde.adf8a0af011d3afb07ed907ad3295e1c99f49503bc91d395e38dc3f8dfdf4900.css" integrity="sha256-rfigrwEdOvsH7ZB60yleHJn0lQO8kdOV443D&#43;N/fSQA=">
 
 
+<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    
+    
 
 </head>
-<body class="">
 
 
-<div class="container center headings--one-size">
-
-  <header class="header">
-  <div class="header__inner">
-    <div class="header__logo">
-      <a href="/">
-  <div class="logo">
-    Krossovochkin
-  </div>
-</a>
-
-    </div>
-    <div class="menu-trigger">menu</div>
-  </div>
-  
-    <nav class="menu">
-  <ul class="menu__inner menu__inner--desktop">
+    <body class="theme-base-0a ">
     
-      
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="https://krossovochkin.github.io/">
         
-          <li><a href="/about">About me</a></li>
+          Vasya Drobushkov
         
-      
-        
-          <li><a href="/">Posts</a></li>
-        
-      
-      
-    
-
-    
-  </ul>
-
-  <ul class="menu__inner menu__inner--mobile">
-    
-      
-        <li><a href="/about">About me</a></li>
-      
-    
-      
-        <li><a href="/">Posts</a></li>
-      
-    
-    
-  </ul>
-</nav>
-
-  
-</header>
-
-
-  <div class="content">
-    
-<div class="post">
-  <h1 class="post-title">
-    <a href="https://krossovochkin.github.io/posts/2018_07_21_dynamic_mobile_client_development_problem_and_concept/">Dynamic mobile client development. Problem and concept.</a></h1>
-  <div class="post-meta">
-    
-      <span class="post-date">
-        2018-07-21 
+        </a>
       </span>
+      
+        
+        
+        
+        <div class="author-image">
+          <img src="https://krossovochkin.github.io/../img/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
+        </div>
+        
+      
+      
+      <p class="site__description">
+        
+      </p>
+    </div>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">Vasya Drobushkov</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="/posts/">
+						<span>Posts</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="/about/">
+						<span>About</span>
+					</a>
+				</li>
+			 
+		
+	</ul>
+</div>
+
+        <section class="social">
+	
+	<a href="https://twitter.com/krossovochkin" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://facebook.com/vasya.drobushkov" rel="me"><i class="fab fa-facebook-f"></i></a>
+	
+	
+	<a href="https://github.com/krossovochkin" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	<a href="https://linkedin.com/in/vasyadrobushkov" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://stackoverflow.com/users/1533933/krossovochkin" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</section>
+
+      </div>
+    </div>
     
-    
-    <span class="post-author">::
-      Vasya Drobushkov
-    </span>
-    
+<div class="copyright">
+  &copy; 2019 - 2020 Vasya Drobushkov
+  
+    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
+  
+</div>
+
+
+
   </div>
+</div>
 
-  
-  <span class="post-tags">
+        <div class="content container">
+            
     
-    #<a href="https://krossovochkin.github.io/tags/android/">android</a>&nbsp;
+<article>
+  <header>
+    <h1>Dynamic mobile client development. Problem and concept.</h1>
     
-  </span>
-  
+    
+<div class="post__meta">
+    
+    
+      <i class="fas fa-calendar-alt"></i> Jul 21, 2018
+    
+    
+    
+    
+    
+      
+      
+          <br/>
+           <i class="fas fa-tags"></i>
+          
+          <a class="badge badge-tag" href="/tags/android">android</a>
+          
+      
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 10 min read
+</div>
 
-  
 
+  </header>
   
-
-  <div class="post-content"><div>
-        <p><a href="https://medium.com/@krossovochkin/dynamic-mobile-client-development-problem-and-concept-df509891061"><img src="https://img.shields.io/badge/original-medium-green#badge" alt=""></a></p>
+  
+  <div class="post">
+    <p><a href="https://medium.com/@krossovochkin/dynamic-mobile-client-development-problem-and-concept-df509891061"><img src="https://img.shields.io/badge/original-medium-green#badge" alt=""></a></p>
 <p>Data and interfaces — are two of the most important things in development.</p>
 <p>Data usually comes from/to server and tells application what should be used (and therefore shown to the user on UI)</p>
 <p>One of the main challenges in mobile development is to be in sync with server.
 Server is updated immediately (often along with web). Publishing to Play Store takes some time (even not talking about AppStore and their app review).
 Also users might try to use older versions of app with newer versions of web/server (not updating application when newer version was published).
 Even more difficult to handle compatibility issues when there might be multiple servers with different versions on them, and application has to be flexible to work with all of them.</p>
-<p>Coding to interfaces is important. Good interfaces allow to build flexible systems, provide better testability and maintainability. 
+<p>Coding to interfaces is important. Good interfaces allow to build flexible systems, provide better testability and maintainability.
 Flexible interfaces allow to write less boilerplate code for common solutions.
 However bad interfaces are even worse than having no interfaces at all.
 There are a lot of ways to make interfaces bad, but it is not exactly the topic.
 Here I will try to look at one particular type of interfaces — interfaces between Presentation layer and actual Views. And will look at particular property of such interfaces — flexibility/extensibility.</p>
 <p>By flexibility/extensibility I mean ability to add new functionality (or remove old one) with as less changes to interface as possible.
 As a consequence implementation of such interface should also have as less changes as possible.</p>
-<h2 id="profile-screen">Profile screen<a href="#profile-screen" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="profile-screen">Profile screen</h2>
 <p>Suppose we have screen in the app, where we have Profile information, such as first name, last name etc.</p>
 <p><img src="../../img/1_sog1e4-ONR1ndQOHeRAQSg.png" alt=""></p>
 <p>We query this data from server and the response could look like:</p>
@@ -233,7 +275,7 @@ Each change requires some work on server and client.
 Doing such changes on a client is boring, because you just put new fields, bind them, code base becomes bigger with quite a lot of duplication (or similar code).
 Server and clients become interconnected so that older client might not be compatible with server any more (for example client expects to have birth date, which was removed from newer version of the server)</p>
 <p>Let’s then try to make sure that our apps cannot communicate with server they are not compatible with.</p>
-<h2 id="blocking-screen">Blocking screen<a href="#blocking-screen" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="blocking-screen">Blocking screen</h2>
 <p>The easiest thing we can do is to have versioning on server and application, compare these versions e.g. on application startup and if application is not compatible to work with server — show some kind of “blocking” screen which tells user that current app is not supported any more and user has to download newer version.</p>
 <p>So we have a screen and we need an interface for such screen.
 We are intelligent, so we want to have our screen as generic as possible. So we define that it will contain some cute image, title, message and button which will lead user to Play Store to download newer version of the app.</p>
@@ -263,9 +305,9 @@ Also, we might want to have different functionalities for different versions of 
 <p>ViewModels constructed from Components</p>
 </li>
 </ul>
-<h2 id="components">Components<a href="#components" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="components">Components</h2>
 <p>Basically Component is an abstraction over UI element (label, button etc.) or combination of UI elements (e.g. input text might have a hint, which is effectively label, but we can create component with input text and a hint — and call it with some special name).</p>
-<h3 id="interfaces">Interfaces<a href="#interfaces" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="interfaces">Interfaces</h3>
 <p>Important thing about component is that is has its clear interface.
 The simplest interface of a UI component is input/output.
 Input is data component can take into and output is number of actions that component can trigger.</p>
@@ -282,22 +324,22 @@ If we want to add new component — we should update server configuration (i.e. 
 Each client should be able to work with provided configuration correctly. It means that if on server TextInput component is registered — client should be able to understand exactly what View to use and what its interfaces are.</p>
 <p>Each configuration has its version, so it is pretty easy to know whether client is able to work with some particular server. We just need to compare versions of configurations.</p>
 <p>Actions should be registered in server configuration as well. They might not be too specific like “OpenLoginScreenAction”. It is better to have more generic “OpenScreen(screenId)” and have set of screen ids registered in the configuration.</p>
-<h3 id="styling">Styling<a href="#styling" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="styling">Styling</h3>
 <p>Components should be visually attractive. That means that we should be able to provide specific style to a component.
 Of course we can try to set some low-level properties to component (such as text size or text color), but it is not that flexible.
 Design system comes to the rescue here. Instead of defining set of low-level properties, we can define high-level styles for each component (H1, Body etc.).
 Each of such high-level styles will be a combination of low-level properties.</p>
 <p>As an easiest thing, one can take <a href="https://material.io/design/introduction">Material Design System</a>. Or develop own design system.</p>
 <p>These styles are also part of the server configuration.</p>
-<h2 id="dynamic-screens">Dynamic screens<a href="#dynamic-screens" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="dynamic-screens">Dynamic screens</h2>
 <p>Dynamic screen — is a screen which doesn’t know exactly what it will contain.
 It is screen which takes as input some configuration of components to be shown.
 If we make our blocking screen as dynamic screen we will not define what exactly will be shown on it. It might be combination of image, title, message and button. But in different configuration if might be combination of title and button only.</p>
-<h3 id="layouting">Layouting<a href="#layouting" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="layouting">Layouting</h3>
 <p>The simplest example of dynamic screen is a screen which has a number of components positioned one by one vertically.</p>
 <p><img src="../../img/1_vpRQqHXLeKVsa9mmVz8g2A.png" alt=""></p>
 <p>Of course, it is not necessarily the case and we might want to have some “layout components”, which provide some different positioning of its children (vertical, horizontal, relative and so on)</p>
-<h3 id="navigation">Navigation<a href="#navigation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="navigation">Navigation</h3>
 <p>Navigation between components is specific case of actions.
 We might bind special keys to dynamic screens.</p>
 <p>Some components (e.g. on clicks) will produce actions to navigate to particular screen.</p>
@@ -345,10 +387,10 @@ For example, for Profile screen we might have something like:</p>
 </code></pre></div><p>Looks more generic and flexible, right?</p>
 <p>In principle mobile application becomes just a kernel to do some work provided with configurations by server.
 And application itself is stored on a server, which can be easily and quickly updated (together with the mobile app if configuration of core parts — components, styles, actions, screen keys etc. — were not changed).</p>
-<h2 id="offline-mode">Offline mode<a href="#offline-mode" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="offline-mode">Offline mode</h2>
 <p>One advantage of dynamic screens and dynamic navigation is that whole application has some configuration, which can be pre-cached from the server.
 This allows to have pretty good offline mode.</p>
-<h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="conclusion">Conclusion</h2>
 <p>Being a client developer it becomes more and more boring to add/remove some fields from the screen. And even create more screens.
 Often it feels like having screen as generic as possible has a lot of advantages -you should implement whole system only once and then all the configuration is done on the server.</p>
 <p>Sometimes server guys say that they don’t want to have “client” logic on server.
@@ -365,69 +407,79 @@ And this is like next step to send client UI functionality to server as well.</p
 But for now that’s it.</p>
 <p>Thank you for your time</p>
 
-      </div></div>
-
-  
-  
-<div class="pagination">
-    <div class="pagination__title">
-        <span class="pagination__title-h">Read other posts</span>
-        <hr />
-    </div>
-    <div class="pagination__buttons">
-        
-        <span class="button previous">
-            <a href="https://krossovochkin.github.io/posts/2018_09_13_kotlin_java_interop_function_references_and_sam_conversions/">
-                <span class="button__icon">←</span>
-                <span class="button__text">Kotlin-Java interop: function references and SAM conversions</span>
-            </a>
-        </span>
-        
-        
-        <span class="button next">
-            <a href="https://krossovochkin.github.io/posts/2018_06_24_programming_and_music/">
-                <span class="button__text">Программирование и музыка</span>
-                <span class="button__icon">→</span>
-            </a>
-        </span>
-        
-    </div>
-</div>
-
-  
-
-  
-
-</div>
-
   </div>
-
   
-    <footer class="footer">
-  <div class="footer__inner">
+
+<div class="navigation navigation-single">
     
-      <div class="copyright copyright--user">
-        <span>© 2020 Vasya Drobushkov</span>
+    <a href="/posts/2018_06_24_programming_and_music/" class="navigation-prev">
+      <i aria-hidden="true" class="fa fa-chevron-left"></i>
+      <span class="navigation-tittle">Программирование и музыка</span>
+    </a>
     
-        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
-      </div>
-  </div>
-  <div class="footer__inner">
-    <div class="copyright copyright--user">
-      <a href="https://www.facebook.com/vasya.drobushkov">Facebook</a><a href="https://twitter.com/krossovochkin">Twitter</a>
-    </div>
-  </div>
-</footer>
-
-<script src="https://krossovochkin.github.io/assets/main.js"></script>
-<script src="https://krossovochkin.github.io/assets/prism.js"></script>
-
-
-
+    
+    <a href="/posts/2018_09_13_kotlin_java_interop_function_references_and_sam_conversions/" class="navigation-next">
+      <span class="navigation-tittle">Kotlin-Java interop: function references and SAM conversions</span>
+      <i aria-hidden="true" class="fa fa-chevron-right"></i>
+    </a>
+    
+</div>
 
 
   
-</div>
 
-</body>
+  
+    
+
+
+</article>
+
+
+        </div>
+        
+    
+
+  
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
+
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+        
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/bash.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/java.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+            
+        
+    <script type="text/javascript">
+        
+        hljs.configure({languages: ["bash, java, kotlin"]});
+        
+        hljs.initHighlightingOnLoad();
+    </script>
+    
+
+
+
+    
+
+
+
+    </body>
 </html>

@@ -1,71 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  
-    <title>Diving deep into Android Dex bytecode :: Krossovochkin — Android Developer</title>
-  
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    
+    
+
+
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Enable responsiveness on mobile devices -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="description" content="Source
- 
-Introduction Modern Android development is based on Kotlin, which is interoperable with Java. Whenever we use some cool feature from Kotlin (say High-order functions) under the hood (when running on JVM) the feature is implemented in terms of Java bytecode. This might lead to some overheads in memory and performance if used without caution (for example excessive usage of lambdas with parameters without inlining might produce a lot of anonymous classes and put additional pressure on GC)." />
-<meta name="keywords" content="android, dex, bytecode" />
-<meta name="robots" content="noodp" />
-<link rel="canonical" href="https://krossovochkin.github.io/posts/2020_02_02_diving_deep_into_android_dex_bytecode/" />
+<meta name="generator" content="Hugo 0.78.2" />
+
+    
+    
+    
+
+<title>Diving deep into Android Dex bytecode • Vasya Drobushkov</title>
 
 
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-148934073-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Diving deep into Android Dex bytecode"/>
+<meta name="twitter:description" content="Analyzing memory and performance of our code at the low-level."/>
 
-
-
-<link rel="stylesheet" href="https://krossovochkin.github.io/assets/style.css">
-
-  <link rel="stylesheet" href="https://krossovochkin.github.io/assets/yellow.css">
-
-
-
-
-
-
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://krossovochkin.github.io/img/apple-touch-icon-144-precomposed.png">
-
-  <link rel="shortcut icon" href="https://krossovochkin.github.io/img/favicon/yellow.png">
-
-
-
-<meta name="twitter:card" content="summary" />
-
-  <meta name="twitter:site" content="krossovochkin" />
-
-<meta name="twitter:creator" content="krossovochkin" />
-
-
-<meta property="og:locale" content="en" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="Diving deep into Android Dex bytecode :: Krossovochkin">
+<meta property="og:title" content="Diving deep into Android Dex bytecode" />
 <meta property="og:description" content="Analyzing memory and performance of our code at the low-level." />
+<meta property="og:type" content="article" />
 <meta property="og:url" content="https://krossovochkin.github.io/posts/2020_02_02_diving_deep_into_android_dex_bytecode/" />
-<meta property="og:site_name" content="Diving deep into Android Dex bytecode" />
-
-  <meta property="og:image" content="https://krossovochkin.github.io/">
-
-<meta property="og:image:width" content="2048">
-<meta property="og:image:height" content="1024">
+<meta property="article:published_time" content="2020-02-02T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-02-02T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
 
 
-  <meta property="article:published_time" content="2020-02-02 00:00:00 &#43;0000 UTC" />
+    
 
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
 
 
 
@@ -74,98 +43,169 @@ if (!doNotTrack) {
 
 
 
+<link rel="stylesheet" href="/scss/hyde-hyde.adf8a0af011d3afb07ed907ad3295e1c99f49503bc91d395e38dc3f8dfdf4900.css" integrity="sha256-rfigrwEdOvsH7ZB60yleHJn0lQO8kdOV443D&#43;N/fSQA=">
 
 
+<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    
+    
 
 </head>
-<body class="">
 
 
-<div class="container center headings--one-size">
-
-  <header class="header">
-  <div class="header__inner">
-    <div class="header__logo">
-      <a href="/">
-  <div class="logo">
-    Krossovochkin
-  </div>
-</a>
-
-    </div>
-    <div class="menu-trigger">menu</div>
-  </div>
-  
-    <nav class="menu">
-  <ul class="menu__inner menu__inner--desktop">
+    <body class="theme-base-0a ">
     
-      
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="https://krossovochkin.github.io/">
         
-          <li><a href="/about">About me</a></li>
+          Vasya Drobushkov
         
-      
-        
-          <li><a href="/">Posts</a></li>
-        
-      
-      
-    
-
-    
-  </ul>
-
-  <ul class="menu__inner menu__inner--mobile">
-    
-      
-        <li><a href="/about">About me</a></li>
-      
-    
-      
-        <li><a href="/">Posts</a></li>
-      
-    
-    
-  </ul>
-</nav>
-
-  
-</header>
-
-
-  <div class="content">
-    
-<div class="post">
-  <h1 class="post-title">
-    <a href="https://krossovochkin.github.io/posts/2020_02_02_diving_deep_into_android_dex_bytecode/">Diving deep into Android Dex bytecode</a></h1>
-  <div class="post-meta">
-    
-      <span class="post-date">
-        2020-02-02 
+        </a>
       </span>
+      
+        
+        
+        
+        <div class="author-image">
+          <img src="https://krossovochkin.github.io/../img/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
+        </div>
+        
+      
+      
+      <p class="site__description">
+        
+      </p>
+    </div>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">Vasya Drobushkov</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="/posts/">
+						<span>Posts</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="/about/">
+						<span>About</span>
+					</a>
+				</li>
+			 
+		
+	</ul>
+</div>
+
+        <section class="social">
+	
+	<a href="https://twitter.com/krossovochkin" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://facebook.com/vasya.drobushkov" rel="me"><i class="fab fa-facebook-f"></i></a>
+	
+	
+	<a href="https://github.com/krossovochkin" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	<a href="https://linkedin.com/in/vasyadrobushkov" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://stackoverflow.com/users/1533933/krossovochkin" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</section>
+
+      </div>
+    </div>
     
-    
-    <span class="post-author">::
-      Vasya Drobushkov
-    </span>
-    
+<div class="copyright">
+  &copy; 2019 - 2020 Vasya Drobushkov
+  
+    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
+  
+</div>
+
+
+
   </div>
+</div>
 
-  
-  <span class="post-tags">
+        <div class="content container">
+            
     
-    #<a href="https://krossovochkin.github.io/tags/android/">android</a>&nbsp;
+<article>
+  <header>
+    <h1>Diving deep into Android Dex bytecode</h1>
     
-  </span>
-  
+    
+<div class="post__meta">
+    
+    
+      <i class="fas fa-calendar-alt"></i> Feb 2, 2020
+    
+    
+    
+    
+    
+      
+      
+          <br/>
+           <i class="fas fa-tags"></i>
+          
+          <a class="badge badge-tag" href="/tags/android">android</a>
+          
+      
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 11 min read
+</div>
 
-  
 
+  </header>
   
-
-  <div class="post-content"><div>
-        <p><img src="https://images.unsplash.com/photo-1501721709601-744e5bf3440d?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1357&amp;q=80" alt="Source"><em><a href="https://unsplash.com/photos/5MvL55-rSvI">Source</a></em></p>
+  
+  <div class="post">
+    <p><img src="https://images.unsplash.com/photo-1501721709601-744e5bf3440d?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1357&amp;q=80" alt="Source"><em><a href="https://unsplash.com/photos/5MvL55-rSvI">Source</a></em></p>
 <p><a href="https://proandroiddev.com/diving-deep-into-android-dex-bytecode-48db82b170c8"><img src="https://img.shields.io/badge/original-proandroiddev-green#badge" alt=""></a> <a href="https://proandroiddev.com/proandroiddev-digest-15-b467005869ce"><img src="https://img.shields.io/badge/proandroiddevdigest-15-green#badge" alt=""></a></p>
-<h2 id="introduction">Introduction<a href="#introduction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="introduction">Introduction</h2>
 <p>Modern Android development is based on Kotlin, which is interoperable with Java. Whenever we use some cool feature from Kotlin (say High-order functions) under the hood (when running on JVM) the feature is implemented in terms of Java bytecode. This might lead to some overheads in memory and performance if used without caution (for example excessive usage of lambdas with parameters without inlining might produce a lot of anonymous classes and put additional pressure on GC).</p>
 <p>In order to get some insight on the performance and memory we can look at Java bytecode (or decompile from it to .java files). This way we might see some additional classes instantiated, or variables etc.
 But one thing about analyzing such bytecode is that actually it won’t be run on the device. Before running on Android all the compiled code (.class files) are compiled into .dex files. This is so called <a href="https://source.android.com/devices/tech/dalvik/dalvik-bytecode">Dalvik bytecode</a>.</p>
@@ -185,21 +225,21 @@ But one thing about analyzing such bytecode is that actually it won’t be run o
 <p>This article was inspired by <a href="https://jakewharton.com/blog/">series of posts about d8 and r8</a> by Jake Wharton. And I highly recommend anyone who is interested to read them. Also I encourage you to read content of the links in this article as they will be useful for broader understanding.
 Here we’ll go through some practical guide on how to get used to new tools and see the resulting bytecode.</p>
 </blockquote>
-<h2 id="setup">Setup<a href="#setup" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
-<h3 id="kotlinc">Kotlinc<a href="#kotlinc" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h2 id="setup">Setup</h2>
+<h3 id="kotlinc">Kotlinc</h3>
 <p>First of all we’ll need to download kotlinc — Kotlin compiler for command line. And add it to your system paths.
 <a href="https://kotlinlang.org/docs/tutorials/command-line.html"><strong>Working with the Command Line Compiler</strong>
 *Every release ships with a standalone version of the compiler. We can download the latest version (…*kotlinlang.org</a></p>
-<h3 id="java">Java<a href="#java" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="java">Java</h3>
 <p>In order to run our dex-tools we’ll need to have Java setup. Choose any you’ll get comfortable with and add it to your system paths.</p>
-<h3 id="d8r8">D8/R8<a href="#d8r8" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="d8r8">D8/R8</h3>
 <p>Next we download D8/R8 sources from its repository (see instructions following the <a href="https://r8.googlesource.com/r8/+/master/README.md">link</a>) and build.</p>
 <blockquote>
 <p><strong>NOTE</strong>: do not forget that R8 depends on the <a href="https://www.chromium.org/developers/how-tos/install-depot-tools">depot_tools</a>, which you should download and add to your system paths before proceed.
-Also to build D8/R8 you’ll need then to execute: “tools/gradle.py d8 r8&rdquo;.
+Also to build D8/R8 you’ll need then to execute: “tools/gradle.py d8 r8&quot;.
 Jar files which we’ll use will be under /build/libs folder.</p>
 </blockquote>
-<h3 id="commands">Commands<a href="#commands" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="commands">Commands</h3>
 <p>These are the commands which we’ll use throughout the article.</p>
 <p>Compile all the kotlin files in the current directory:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kotlinc *.kt
@@ -212,9 +252,9 @@ Jar files which we’ll use will be under /build/libs folder.</p>
 -dontobfuscate
 </code></pre><p>Dump content of .dex file to see its contents.</p>
 <pre><code>$ANDROID_HOME/build-tools/29.0.2/dexdump -d classes.dex
-</code></pre><h2 id="verify-setup">Verify setup<a href="#verify-setup" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+</code></pre><h2 id="verify-setup">Verify setup</h2>
 <p>In order to verify your setup works, you can go through <a href="https://jakewharton.com/r8-optimization-staticization/">this article</a> and see whether you get similar results. Or try to follow examples below.</p>
-<h2 id="example-1-where-no-class-is-instantiated">Example 1 (where no class is instantiated)<a href="#example-1-where-no-class-is-instantiated" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="example-1-where-no-class-is-instantiated">Example 1 (where no class is instantiated)</h2>
 <p>In first our example let’s look at following program:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">main</span>() {
     print(Runner().run(<span style="color:#ae81ff">5</span>))
@@ -298,7 +338,7 @@ For this let’s look at the content of the main function:</p>
 </li>
 </ul>
 <p>Not that difficult right? Next let’s look at some other examples.</p>
-<h2 id="example-2-where-extension-function-is-not-called-almost">Example 2 (where extension function is not called… almost)<a href="#example-2-where-extension-function-is-not-called-almost" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="example-2-where-extension-function-is-not-called-almost">Example 2 (where extension function is not called… almost)</h2>
 <p>Next example looks the following way:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">main</span>() {
     println(<span style="color:#e6db74">&#34;Hello world&#34;</span>.calculate())
@@ -344,7 +384,7 @@ That happens because kotlin adds Intrinsics checks (to verify that params are no
 0004: invoke-virtual {v0, v1}, Ljava/io/PrintStream;.println:(I)V // method@0001
 0007: return-void
 </code></pre><p>Again we have everything optimized and final value is calculated at compile time.</p>
-<h2 id="example-3-where-we-encounter-overhead">Example 3 (where we encounter overhead)<a href="#example-3-where-we-encounter-overhead" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="example-3-where-we-encounter-overhead">Example 3 (where we encounter overhead)</h2>
 <p>Next program is the following:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">main</span>() {
     println(Runner().run(<span style="color:#ae81ff">5</span>))
@@ -389,7 +429,7 @@ So in this example we didn’t get precalculated result inlined.</p>
 <blockquote>
 <p>If anyone knows why exactly that happened or what can be added during compilation or r8 to make it work feel free to leave a comment.</p>
 </blockquote>
-<h2 id="example-4-where-we-fix-overhead-from-example-3">Example 4 (where we fix overhead from Example 3)<a href="#example-4-where-we-fix-overhead-from-example-3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="example-4-where-we-fix-overhead-from-example-3">Example 4 (where we fix overhead from Example 3)</h2>
 <p>As we’ve analyzed particular use case in Example 3 and see that there is some room for improvements, let’s try to utilize this:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">main</span>() {
     println(Runner().run(<span style="color:#ae81ff">5</span>))
@@ -399,7 +439,7 @@ So in this example we didn’t get precalculated result inlined.</p>
     <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">run</span>(x: Int): Int {
         <span style="color:#66d9ef">var</span> result = <span style="color:#ae81ff">0</span>
         <span style="color:#66d9ef">for</span> (i <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">0.</span>.x) {
-            result += i
+            result <span style="color:#f92672">+=</span> i
         }
         <span style="color:#66d9ef">return</span> result
     }
@@ -457,76 +497,86 @@ So in this example we didn’t get precalculated result inlined.</p>
 </li>
 </ul>
 <p>So, we did better that before and should be probably a bit happy :)</p>
-<h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="conclusion">Conclusion</h2>
 <p>Here in this article we saw in practice how we can analyze dex bytecode and with help of r8 in some cases have it optimized (despite Java bytecode is not).
 The key takeaways should be the following: even when you try to optimize your code written in Kotlin to make it faster or consume less memory, and even when you look at Java bytecode after your code is compiled, you should also pay attention to dex bytecode and look at the tools such as r8 to make them do their job while keeping your codebase clean.</p>
 <p>This article is not about telling you that you should not optimize your code in the first place (but actually you shouldn’t, write correct first and then optimize where needed), it is mostly about knowledge that current development ecosystems are quite complex and it is difficult to know what is actually happening at the lower levels. Therefore it might be useful to know the tools which might help you to identify places for performance or memory improvements where you need them.</p>
 <p>Think about optimizations, write fast code which consumes less memory but don’t forget to profile first.</p>
 <p>Happy coding!</p>
 
-      </div></div>
-
-  
-  
-<div class="pagination">
-    <div class="pagination__title">
-        <span class="pagination__title-h">Read other posts</span>
-        <hr />
-    </div>
-    <div class="pagination__buttons">
-        
-        <span class="button previous">
-            <a href="https://krossovochkin.github.io/posts/2020_02_06_from_rxjava_to_kotlin_flow_backpressure/">
-                <span class="button__icon">←</span>
-                <span class="button__text">From RxJava to Kotlin Flow: Backpressure</span>
-            </a>
-        </span>
-        
-        
-        <span class="button next">
-            <a href="https://krossovochkin.github.io/posts/2020_01_25_from_rxjava_2_to_kotlin_flow_threading/">
-                <span class="button__text">From RxJava 2 to Kotlin Flow: Threading</span>
-                <span class="button__icon">→</span>
-            </a>
-        </span>
-        
-    </div>
-</div>
-
-  
-
-  
-
-</div>
-
   </div>
-
   
-    <footer class="footer">
-  <div class="footer__inner">
+
+<div class="navigation navigation-single">
     
-      <div class="copyright copyright--user">
-        <span>© 2020 Vasya Drobushkov</span>
+    <a href="/posts/2020_01_25_from_rxjava_2_to_kotlin_flow_threading/" class="navigation-prev">
+      <i aria-hidden="true" class="fa fa-chevron-left"></i>
+      <span class="navigation-tittle">From RxJava 2 to Kotlin Flow: Threading</span>
+    </a>
     
-        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
-      </div>
-  </div>
-  <div class="footer__inner">
-    <div class="copyright copyright--user">
-      <a href="https://www.facebook.com/vasya.drobushkov">Facebook</a><a href="https://twitter.com/krossovochkin">Twitter</a>
-    </div>
-  </div>
-</footer>
-
-<script src="https://krossovochkin.github.io/assets/main.js"></script>
-<script src="https://krossovochkin.github.io/assets/prism.js"></script>
-
-
-
+    
+    <a href="/posts/2020_02_06_from_rxjava_to_kotlin_flow_backpressure/" class="navigation-next">
+      <span class="navigation-tittle">From RxJava to Kotlin Flow: Backpressure</span>
+      <i aria-hidden="true" class="fa fa-chevron-right"></i>
+    </a>
+    
+</div>
 
 
   
-</div>
 
-</body>
+  
+    
+
+
+</article>
+
+
+        </div>
+        
+    
+
+  
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
+
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+        
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/bash.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/java.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+            
+        
+    <script type="text/javascript">
+        
+        hljs.configure({languages: ["bash, java, kotlin"]});
+        
+        hljs.initHighlightingOnLoad();
+    </script>
+    
+
+
+
+    
+
+
+
+    </body>
 </html>

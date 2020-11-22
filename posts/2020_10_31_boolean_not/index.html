@@ -1,73 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  
-    <title>Boolean not :: Krossovochkin — Android Developer</title>
-  
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    
+    
+
+
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Enable responsiveness on mobile devices -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="description" content="Introduction Boolean is one of the essential types in programming and probably one of the simplest because it has only two values: true and false. Boolean are usually used as flags for control flow, specifically, conditions.
-if (string.isEmpty()) {println(&amp;#34;String is empty&amp;#34;)}It is not much interesting in Boolean, but in Kotlin there is one thing which might be confusing if used - it is method not().
-Negate Boolean If we look at declaration of Boolean class in Kotlin we&amp;rsquo;ll see five methods, four of which are pretty obvious: and, or, xor and compareTo." />
-<meta name="keywords" content="kotlin" />
-<meta name="robots" content="noodp" />
-<link rel="canonical" href="https://krossovochkin.github.io/posts/2020_10_31_boolean_not/" />
+<meta name="generator" content="Hugo 0.78.2" />
+
+    
+    
+    
+
+<title>Boolean not • Vasya Drobushkov</title>
 
 
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-148934073-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Boolean not"/>
+<meta name="twitter:description" content="Introduction Boolean is one of the essential types in programming and probably one of the simplest because it has only two values: true and false. Boolean are usually used as flags for control flow, specifically, conditions.
+if (string.isEmpty()) { println(&#34;String is empty&#34;) } It is not much interesting in Boolean, but in Kotlin there is one thing which might be confusing if used - it is method not().
+Negate Boolean If we look at declaration of Boolean class in Kotlin we&rsquo;ll see five methods, four of which are pretty obvious: and, or, xor and compareTo."/>
 
-
-
-<link rel="stylesheet" href="https://krossovochkin.github.io/assets/style.css">
-
-  <link rel="stylesheet" href="https://krossovochkin.github.io/assets/yellow.css">
-
-
-
-
-
-
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://krossovochkin.github.io/img/apple-touch-icon-144-precomposed.png">
-
-  <link rel="shortcut icon" href="https://krossovochkin.github.io/img/favicon/yellow.png">
-
-
-
-<meta name="twitter:card" content="summary" />
-
-  <meta name="twitter:site" content="krossovochkin" />
-
-<meta name="twitter:creator" content="krossovochkin" />
-
-
-<meta property="og:locale" content="en" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="Boolean not :: Krossovochkin">
+<meta property="og:title" content="Boolean not" />
 <meta property="og:description" content="Introduction Boolean is one of the essential types in programming and probably one of the simplest because it has only two values: true and false. Boolean are usually used as flags for control flow, specifically, conditions.
-if (string.isEmpty()) {println(&amp;#34;String is empty&amp;#34;)}It is not much interesting in Boolean, but in Kotlin there is one thing which might be confusing if used - it is method not().
-Negate Boolean If we look at declaration of Boolean class in Kotlin we&amp;rsquo;ll see five methods, four of which are pretty obvious: and, or, xor and compareTo." />
+if (string.isEmpty()) { println(&#34;String is empty&#34;) } It is not much interesting in Boolean, but in Kotlin there is one thing which might be confusing if used - it is method not().
+Negate Boolean If we look at declaration of Boolean class in Kotlin we&rsquo;ll see five methods, four of which are pretty obvious: and, or, xor and compareTo." />
+<meta property="og:type" content="article" />
 <meta property="og:url" content="https://krossovochkin.github.io/posts/2020_10_31_boolean_not/" />
-<meta property="og:site_name" content="Boolean not" />
-
-  <meta property="og:image" content="https://krossovochkin.github.io/">
-
-<meta property="og:image:width" content="2048">
-<meta property="og:image:height" content="1024">
+<meta property="article:published_time" content="2020-10-31T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-10-31T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
 
 
-  <meta property="article:published_time" content="2020-10-31 00:00:00 &#43;0000 UTC" />
+    
 
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
 
 
 
@@ -76,103 +47,174 @@ Negate Boolean If we look at declaration of Boolean class in Kotlin we&amp;rsquo
 
 
 
+<link rel="stylesheet" href="/scss/hyde-hyde.adf8a0af011d3afb07ed907ad3295e1c99f49503bc91d395e38dc3f8dfdf4900.css" integrity="sha256-rfigrwEdOvsH7ZB60yleHJn0lQO8kdOV443D&#43;N/fSQA=">
 
 
+<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    
+    
 
 </head>
-<body class="">
 
 
-<div class="container center headings--one-size">
-
-  <header class="header">
-  <div class="header__inner">
-    <div class="header__logo">
-      <a href="/">
-  <div class="logo">
-    Krossovochkin
-  </div>
-</a>
-
-    </div>
-    <div class="menu-trigger">menu</div>
-  </div>
-  
-    <nav class="menu">
-  <ul class="menu__inner menu__inner--desktop">
+    <body class="theme-base-0a ">
     
-      
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="https://krossovochkin.github.io/">
         
-          <li><a href="/about">About me</a></li>
+          Vasya Drobushkov
         
-      
-        
-          <li><a href="/">Posts</a></li>
-        
-      
-      
-    
-
-    
-  </ul>
-
-  <ul class="menu__inner menu__inner--mobile">
-    
-      
-        <li><a href="/about">About me</a></li>
-      
-    
-      
-        <li><a href="/">Posts</a></li>
-      
-    
-    
-  </ul>
-</nav>
-
-  
-</header>
-
-
-  <div class="content">
-    
-<div class="post">
-  <h1 class="post-title">
-    <a href="https://krossovochkin.github.io/posts/2020_10_31_boolean_not/">Boolean not</a></h1>
-  <div class="post-meta">
-    
-      <span class="post-date">
-        2020-10-31 
+        </a>
       </span>
+      
+        
+        
+        
+        <div class="author-image">
+          <img src="https://krossovochkin.github.io/../img/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
+        </div>
+        
+      
+      
+      <p class="site__description">
+        
+      </p>
+    </div>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">Vasya Drobushkov</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="/posts/">
+						<span>Posts</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="/about/">
+						<span>About</span>
+					</a>
+				</li>
+			 
+		
+	</ul>
+</div>
+
+        <section class="social">
+	
+	<a href="https://twitter.com/krossovochkin" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://facebook.com/vasya.drobushkov" rel="me"><i class="fab fa-facebook-f"></i></a>
+	
+	
+	<a href="https://github.com/krossovochkin" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	<a href="https://linkedin.com/in/vasyadrobushkov" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://stackoverflow.com/users/1533933/krossovochkin" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</section>
+
+      </div>
+    </div>
     
-    
-    <span class="post-author">::
-      Vasya Drobushkov
-    </span>
-    
+<div class="copyright">
+  &copy; 2019 - 2020 Vasya Drobushkov
+  
+    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
+  
+</div>
+
+
+
   </div>
+</div>
 
-  
-  <span class="post-tags">
+        <div class="content container">
+            
     
-    #<a href="https://krossovochkin.github.io/tags/kotlin/">kotlin</a>&nbsp;
+<article>
+  <header>
+    <h1>Boolean not</h1>
     
-  </span>
-  
+    
+<div class="post__meta">
+    
+    
+      <i class="fas fa-calendar-alt"></i> Oct 31, 2020
+    
+    
+    
+    
+    
+      
+      
+          <br/>
+           <i class="fas fa-tags"></i>
+          
+          <a class="badge badge-tag" href="/tags/kotlin">kotlin</a>
+          
+      
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 5 min read
+</div>
 
-  
 
+  </header>
   
-
-  <div class="post-content"><div>
-        <p><a href="https://mailchi.mp/kotlinweekly/gjz7gia1eq"><img src="https://img.shields.io/badge/kotlinweekly-222-purple#badge" alt=""></a></p>
-<h3 id="introduction">Introduction<a href="#introduction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+  
+  <div class="post">
+    <p><a href="https://mailchi.mp/kotlinweekly/gjz7gia1eq"><img src="https://img.shields.io/badge/kotlinweekly-222-purple#badge" alt=""></a></p>
+<h3 id="introduction">Introduction</h3>
 <p>Boolean is one of the essential types in programming and probably one of the simplest because it has only two values: true and false. Boolean are usually used as flags for control flow, specifically, conditions.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">if</span> (string.isEmpty()) {
 	println(<span style="color:#e6db74">&#34;String is empty&#34;</span>)
 }
 </code></pre></div><p>It is not much interesting in Boolean, but in Kotlin there is one thing which might be confusing if used - it is method <code>not()</code>.</p>
-<h3 id="negate-boolean">Negate Boolean<a href="#negate-boolean" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="negate-boolean">Negate Boolean</h3>
 <p>If we look at declaration of Boolean class in Kotlin we&rsquo;ll see five methods, four of which are pretty obvious: <code>and</code>, <code>or</code>, <code>xor</code> and <code>compareTo</code>. And the fifth is <code>not</code>:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Boolean</span> <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">constructor</span>() : Comparable&lt;Boolean&gt; {
     <span style="color:#75715e">/**
@@ -191,7 +233,7 @@ Negate Boolean If we look at declaration of Boolean class in Kotlin we&amp;rsquo
 </code></pre></div><p>The best option - it says what it should: &ldquo;do something when string is not empty&rdquo;. Cool. Though such extensions are not available for every case, and most likely you should not try to create such for all the cases.</p>
 <p>Such methods are good for some low-level simple cases like <code>email.isNotValid()</code> when a negative form is primary business logic and used this way most of the time. But in general, it is better to name functions positively, so there is less confusion with negation. If you wish you can add a negative function, but it should be additional and not primary.<br>
 Say, you have class <code>Connection</code> and you&rsquo;d like to check whether the connection is established or not. You can create <code>Connection.isNotEstablished()</code> function, but if you do, you have to add <code>Connection.isEstablished()</code> as well, otherwise, it might be the situation, when you&rsquo;d want to do something like: <code>!connection.isNotEstablished()</code>, which is for sure confusing.</p>
-<h3 id="why-not">Why <code>not</code>?<a href="#why-not" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="why-not">Why <code>not</code>?</h3>
 <p>As seen before the best option is to have information about negation in the middle of the name, then in the beginning, and only then at the end (this might be my personal preference, but I guess it is a common thing). Then why method <code>not()</code> was added to <code>Boolean</code> if one not meant to use it?</p>
 <p>The main reason is that <code>not()</code> is not just a function - it is an <a href="https://kotlinlang.org/docs/reference/operator-overloading.html">operator</a>.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">operator</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">not</span>(): Boolean
@@ -203,8 +245,8 @@ Say, you have class <code>Connection</code> and you&rsquo;d like to check whethe
     ;
     <span style="color:#66d9ef">operator</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">not</span>(): MyBoolean {
         <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">when</span> (<span style="color:#66d9ef">this</span>) {
-            True -&gt; False
-            False -&gt; True
+            True <span style="color:#f92672">-&gt;</span> False
+            False <span style="color:#f92672">-&gt;</span> True
         }
     }
 }
@@ -213,11 +255,11 @@ Say, you have class <code>Connection</code> and you&rsquo;d like to check whethe
 </code></pre></div><blockquote>
 <p>Operator function <code>not</code> allows you to write <code>!</code> before expression. Function <code>not</code> is not something that is expected to be used directly, as it doesn&rsquo;t improve readability and has no other advantages.</p>
 </blockquote>
-<h3 id="where-not">Where <code>not</code>?<a href="#where-not" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="where-not">Where <code>not</code>?</h3>
 <p>There is one additional point where <code>not</code> can be used. The operator function is a function. And in Kotlin functions are first-class citizens. With higher-order functions, it is possible to pass a function to another function as an argument. It might be lambda or function reference. There is no difference in a bytecode, but upon agreement in a team, it might be possible to use one or another.</p>
 <p>Say, we have a list of boolean values and we&rsquo;d like to invert them. Doing it in a functional style we might do it with a lambda:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">listOf(<span style="color:#66d9ef">true</span>, <span style="color:#66d9ef">false</span>, <span style="color:#66d9ef">true</span>)
-	.map { !it }
+	.map { !<span style="color:#66d9ef">it</span> }
 </code></pre></div><p>Or with function reference:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">listOf(<span style="color:#66d9ef">true</span>, <span style="color:#66d9ef">false</span>, <span style="color:#66d9ef">true</span>)
 	.map(Boolean<span style="color:#f92672">::</span>not)
@@ -225,67 +267,79 @@ Say, you have class <code>Connection</code> and you&rsquo;d like to check whethe
 <blockquote>
 <p>Writing code in a functional style it might be possible to use <code>Boolean.not</code> function as a reference to other methods.</p>
 </blockquote>
-<h3 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="conclusion">Conclusion</h3>
 <p>I hope now we have a better understanding of why <code>not</code> function is declared in <code>Boolean</code> class, what &ldquo;syntax sugar&rdquo; it enables, and how it might be somewhat useful in functional programming.<br>
 Besides this, I highly discourage direct usage of the <code>not</code> function in a normal control flow. Don&rsquo;t write <code>shouldApplyFilter.not()</code>. It doesn&rsquo;t provide you any readability gains and doesn&rsquo;t make your code better.</p>
 <p>Happy coding.</p>
 
-      </div></div>
-
-  
-  
-<div class="pagination">
-    <div class="pagination__title">
-        <span class="pagination__title-h">Read other posts</span>
-        <hr />
-    </div>
-    <div class="pagination__buttons">
-        
-        
-        <span class="button next">
-            <a href="https://krossovochkin.github.io/posts/2020_10_28_middle_point/">
-                <span class="button__text">Middle Point</span>
-                <span class="button__icon">→</span>
-            </a>
-        </span>
-        
-    </div>
-</div>
-
-  
-
-  
-
-</div>
-
   </div>
-
   
-    <footer class="footer">
-  <div class="footer__inner">
+
+<div class="navigation navigation-single">
     
-      <div class="copyright copyright--user">
-        <span>© 2020 Vasya Drobushkov</span>
+    <a href="/posts/2020_10_28_middle_point/" class="navigation-prev">
+      <i aria-hidden="true" class="fa fa-chevron-left"></i>
+      <span class="navigation-tittle">Middle Point</span>
+    </a>
     
-        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
-      </div>
-  </div>
-  <div class="footer__inner">
-    <div class="copyright copyright--user">
-      <a href="https://www.facebook.com/vasya.drobushkov">Facebook</a><a href="https://twitter.com/krossovochkin">Twitter</a>
-    </div>
-  </div>
-</footer>
-
-<script src="https://krossovochkin.github.io/assets/main.js"></script>
-<script src="https://krossovochkin.github.io/assets/prism.js"></script>
-
-
-
+    
+</div>
 
 
   
-</div>
 
-</body>
+  
+    
+
+
+</article>
+
+
+        </div>
+        
+    
+
+  
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
+
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+        
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/bash.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/java.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+            
+        
+    <script type="text/javascript">
+        
+        hljs.configure({languages: ["bash, java, kotlin"]});
+        
+        hljs.initHighlightingOnLoad();
+    </script>
+    
+
+
+
+    
+
+
+
+    </body>
 </html>

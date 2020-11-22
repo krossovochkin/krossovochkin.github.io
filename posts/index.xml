@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Krossovochkin</title>
+    <title>Posts on Vasya Drobushkov</title>
     <link>https://krossovochkin.github.io/posts/</link>
-    <description>Recent content in Posts on Krossovochkin</description>
+    <description>Recent content in Posts on Vasya Drobushkov</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>© 2020 Vasya Drobushkov</copyright>
-    <lastBuildDate>Sat, 31 Oct 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://krossovochkin.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>en</language>
+    <lastBuildDate>Sat, 31 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Boolean not</title>
       <link>https://krossovochkin.github.io/posts/2020_10_31_boolean_not/</link>
@@ -19,7 +14,7 @@
       
       <guid>https://krossovochkin.github.io/posts/2020_10_31_boolean_not/</guid>
       <description>Introduction Boolean is one of the essential types in programming and probably one of the simplest because it has only two values: true and false. Boolean are usually used as flags for control flow, specifically, conditions.
-if (string.isEmpty()) {println(&amp;#34;String is empty&amp;#34;)}It is not much interesting in Boolean, but in Kotlin there is one thing which might be confusing if used - it is method not().
+if (string.isEmpty()) { println(&amp;#34;String is empty&amp;#34;) } It is not much interesting in Boolean, but in Kotlin there is one thing which might be confusing if used - it is method not().
 Negate Boolean If we look at declaration of Boolean class in Kotlin we&amp;rsquo;ll see five methods, four of which are pretty obvious: and, or, xor and compareTo.</description>
     </item>
     
@@ -39,7 +34,7 @@ Negate Boolean If we look at declaration of Boolean class in Kotlin we&amp;rsquo
       
       <guid>https://krossovochkin.github.io/posts/2020_10_17_kotlin_functional_interfaces_function_references_and_sam_conversion/</guid>
       <description>Introduction About two years ago I made a post about a tricky case in Kotlin-Java interop related to the usage of function references and SAM conversion. One of the points there was that in Kotlin, if interface is declared instead of a function, one has to explicitly create an object, therefore no caveats as with interop:
-val callback = object : ThirdParty.Callback {override fun onValueChanged(value: Int) {this@App.onValueChanged(value)}}With Kotlin 1.</description>
+val callback = object : ThirdParty.Callback { override fun onValueChanged(value: Int) { this@App.onValueChanged(value) } } With Kotlin 1.</description>
     </item>
     
     <item>
@@ -48,7 +43,7 @@ val callback = object : ThirdParty.Callback {override fun onValueChanged(value:
       <pubDate>Wed, 14 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://krossovochkin.github.io/posts/2020_10_14_kotlin_nitpickers_guide/</guid>
-      <description>Introduction Code review is an essential tool for a development team, which helps ensure high-quality standards of code. While reviewing others&amp;rsquo; code one might find bugs, design issues, and so on. One another part of reviewing is getting used to the codebase and following team&amp;rsquo;s code style for better maintenance. Though it is pretty cool in theory, in practice team might face few issues, one of which is nitpicking. When review is bloated with dozens of similar comments related to e.</description>
+      <description>Introduction Code review is an essential tool for a development team, which helps ensure high-quality standards of code. While reviewing others&#39; code one might find bugs, design issues, and so on. One another part of reviewing is getting used to the codebase and following team&amp;rsquo;s code style for better maintenance. Though it is pretty cool in theory, in practice team might face few issues, one of which is nitpicking. When review is bloated with dozens of similar comments related to e.</description>
     </item>
     
     <item>
@@ -279,7 +274,7 @@ In this article we’ll try to understand Handler and Looper in Android. What, h
       
       <guid>https://krossovochkin.github.io/posts/2019_07_21_simmmmplllledateformat/</guid>
       <description>Introduction Using SimpleDateFormat to format dates and times is a common thing (as Java 8 Time API is not that available on Android yet). Usually it looks like:
-val formatter = SimpleDateFormat(&amp;#34;dd MMMM yyyy&amp;#34;, Locale.ENGLISH)formatter.format(date)We can use different formats and locales with not only providing correct translations, but also some additional locale-specific formatting rules.
+val formatter = SimpleDateFormat(&amp;#34;dd MMMM yyyy&amp;#34;, Locale.ENGLISH) formatter.format(date) We can use different formats and locales with not only providing correct translations, but also some additional locale-specific formatting rules.
 One tricky thing about SimpleDateFormat formats is why we have M and L when they look identical?</description>
     </item>
     
@@ -440,7 +435,7 @@ One of the main challenges in mobile development is to be in sync with server. S
       
       <guid>https://krossovochkin.github.io/posts/2017_02_11_android_notifications_overview_and_pitfalls/</guid>
       <description>Introduction Notifications are widely used in Android applications. Though API is pretty straightforward, there are some key things that one should know and understand. This article will try to be first step into understanding Notifications API.
-Sending Single Notification Notification singleNotification = new NotificationCompat.Builder(this).setContentTitle(&amp;#34;Title&amp;#34;).setContentText(&amp;#34;Text&amp;#34;).setSmallIcon(R.drawable.ic_notification).build();NotificationManagerCompat notificationManager = NotificationManagerCompat.*from*(context);notificationManager.notify(notificationId, singleNotification);Key things here:
+Sending Single Notification Notification singleNotification = new NotificationCompat.Builder(this) .setContentTitle(&amp;#34;Title&amp;#34;) .setContentText(&amp;#34;Text&amp;#34;) .setSmallIcon(R.drawable.ic_notification) .build(); NotificationManagerCompat notificationManager = NotificationManagerCompat.*from*(context); notificationManager.notify(notificationId, singleNotification); Key things here:
   We use NotificationCompat.Builder to have single interface for creating notifications and let Support Library do all compatibility tricks;</description>
     </item>
     

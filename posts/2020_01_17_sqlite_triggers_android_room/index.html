@@ -1,71 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  
-    <title>SQLite Triggers (&#43; Android Room) :: Krossovochkin — Android Developer</title>
-  
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    
+    
+
+
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Enable responsiveness on mobile devices -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="description" content="Introduction SQLite is one of the most used database. This is because it is used on almost all mobile devices in the world. As SQLite is very similar to SQL everyone already knows the basic concepts like querying, inserting, updating, deleting data; databases and tables; joining tables etc. But SQLite also has some advanced features and this article is about one of such called Trigger.
-If we try to speculate on the name “Trigger” we might say that probably something will be done when some changes are made to the database." />
-<meta name="keywords" content="android, sqlite, trigger" />
-<meta name="robots" content="noodp" />
-<link rel="canonical" href="https://krossovochkin.github.io/posts/2020_01_17_sqlite_triggers_android_room/" />
+<meta name="generator" content="Hugo 0.78.2" />
+
+    
+    
+    
+
+<title>SQLite Triggers (&#43; Android Room) • Vasya Drobushkov</title>
 
 
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-148934073-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="SQLite Triggers (&#43; Android Room)"/>
+<meta name="twitter:description" content="Introduction SQLite is one of the most used database. This is because it is used on almost all mobile devices in the world. As SQLite is very similar to SQL everyone already knows the basic concepts like querying, inserting, updating, deleting data; databases and tables; joining tables etc. But SQLite also has some advanced features and this article is about one of such called Trigger.
+If we try to speculate on the name “Trigger” we might say that probably something will be done when some changes are made to the database."/>
 
-
-
-<link rel="stylesheet" href="https://krossovochkin.github.io/assets/style.css">
-
-  <link rel="stylesheet" href="https://krossovochkin.github.io/assets/yellow.css">
-
-
-
-
-
-
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://krossovochkin.github.io/img/apple-touch-icon-144-precomposed.png">
-
-  <link rel="shortcut icon" href="https://krossovochkin.github.io/img/favicon/yellow.png">
-
-
-
-<meta name="twitter:card" content="summary" />
-
-  <meta name="twitter:site" content="krossovochkin" />
-
-<meta name="twitter:creator" content="krossovochkin" />
-
-
-<meta property="og:locale" content="en" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="SQLite Triggers (&#43; Android Room) :: Krossovochkin">
+<meta property="og:title" content="SQLite Triggers (&#43; Android Room)" />
 <meta property="og:description" content="Introduction SQLite is one of the most used database. This is because it is used on almost all mobile devices in the world. As SQLite is very similar to SQL everyone already knows the basic concepts like querying, inserting, updating, deleting data; databases and tables; joining tables etc. But SQLite also has some advanced features and this article is about one of such called Trigger.
 If we try to speculate on the name “Trigger” we might say that probably something will be done when some changes are made to the database." />
+<meta property="og:type" content="article" />
 <meta property="og:url" content="https://krossovochkin.github.io/posts/2020_01_17_sqlite_triggers_android_room/" />
-<meta property="og:site_name" content="SQLite Triggers (&#43; Android Room)" />
-
-  <meta property="og:image" content="https://krossovochkin.github.io/">
-
-<meta property="og:image:width" content="2048">
-<meta property="og:image:height" content="1024">
+<meta property="article:published_time" content="2020-01-17T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-01-17T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
 
 
-  <meta property="article:published_time" content="2020-01-17 00:00:00 &#43;0000 UTC" />
+    
 
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
 
 
 
@@ -74,99 +45,171 @@ If we try to speculate on the name “Trigger” we might say that probably some
 
 
 
+<link rel="stylesheet" href="/scss/hyde-hyde.adf8a0af011d3afb07ed907ad3295e1c99f49503bc91d395e38dc3f8dfdf4900.css" integrity="sha256-rfigrwEdOvsH7ZB60yleHJn0lQO8kdOV443D&#43;N/fSQA=">
 
 
+<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    
+    
 
 </head>
-<body class="">
 
 
-<div class="container center headings--one-size">
-
-  <header class="header">
-  <div class="header__inner">
-    <div class="header__logo">
-      <a href="/">
-  <div class="logo">
-    Krossovochkin
-  </div>
-</a>
-
-    </div>
-    <div class="menu-trigger">menu</div>
-  </div>
-  
-    <nav class="menu">
-  <ul class="menu__inner menu__inner--desktop">
+    <body class="theme-base-0a ">
     
-      
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="https://krossovochkin.github.io/">
         
-          <li><a href="/about">About me</a></li>
+          Vasya Drobushkov
         
-      
-        
-          <li><a href="/">Posts</a></li>
-        
-      
-      
-    
-
-    
-  </ul>
-
-  <ul class="menu__inner menu__inner--mobile">
-    
-      
-        <li><a href="/about">About me</a></li>
-      
-    
-      
-        <li><a href="/">Posts</a></li>
-      
-    
-    
-  </ul>
-</nav>
-
-  
-</header>
-
-
-  <div class="content">
-    
-<div class="post">
-  <h1 class="post-title">
-    <a href="https://krossovochkin.github.io/posts/2020_01_17_sqlite_triggers_android_room/">SQLite Triggers (+ Android Room)</a></h1>
-  <div class="post-meta">
-    
-      <span class="post-date">
-        2020-01-17 
+        </a>
       </span>
+      
+        
+        
+        
+        <div class="author-image">
+          <img src="https://krossovochkin.github.io/../img/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
+        </div>
+        
+      
+      
+      <p class="site__description">
+        
+      </p>
+    </div>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">Vasya Drobushkov</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="/posts/">
+						<span>Posts</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="/about/">
+						<span>About</span>
+					</a>
+				</li>
+			 
+		
+	</ul>
+</div>
+
+        <section class="social">
+	
+	<a href="https://twitter.com/krossovochkin" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://facebook.com/vasya.drobushkov" rel="me"><i class="fab fa-facebook-f"></i></a>
+	
+	
+	<a href="https://github.com/krossovochkin" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	<a href="https://linkedin.com/in/vasyadrobushkov" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://stackoverflow.com/users/1533933/krossovochkin" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</section>
+
+      </div>
+    </div>
     
-    
-    <span class="post-author">::
-      Vasya Drobushkov
-    </span>
-    
+<div class="copyright">
+  &copy; 2019 - 2020 Vasya Drobushkov
+  
+    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
+  
+</div>
+
+
+
   </div>
+</div>
 
-  
-  <span class="post-tags">
+        <div class="content container">
+            
     
-    #<a href="https://krossovochkin.github.io/tags/android/">android</a>&nbsp;
+<article>
+  <header>
+    <h1>SQLite Triggers (&#43; Android Room)</h1>
     
-    #<a href="https://krossovochkin.github.io/tags/sqlite/">sqlite</a>&nbsp;
     
-  </span>
-  
+<div class="post__meta">
+    
+    
+      <i class="fas fa-calendar-alt"></i> Jan 17, 2020
+    
+    
+    
+    
+    
+      
+      
+          <br/>
+           <i class="fas fa-tags"></i>
+          
+          <a class="badge badge-tag" href="/tags/android">android</a>
+           
+      
+          <a class="badge badge-tag" href="/tags/sqlite">sqlite</a>
+          
+      
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 12 min read
+</div>
 
-  
 
+  </header>
   
-
-  <div class="post-content"><div>
-        <p><a href="https://proandroiddev.com/sqlite-triggers-android-room-2e7120bb3e3a"><img src="https://img.shields.io/badge/original-proandroiddev-green#badge" alt=""></a> <a href="https://androidweekly.net/issues/issue-397"><img src="https://img.shields.io/badge/androidweekly-397-blue#badge" alt=""></a></p>
-<h2 id="introduction">Introduction<a href="#introduction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+  
+  <div class="post">
+    <p><a href="https://proandroiddev.com/sqlite-triggers-android-room-2e7120bb3e3a"><img src="https://img.shields.io/badge/original-proandroiddev-green#badge" alt=""></a> <a href="https://androidweekly.net/issues/issue-397"><img src="https://img.shields.io/badge/androidweekly-397-blue#badge" alt=""></a></p>
+<h2 id="introduction">Introduction</h2>
 <p>SQLite is one of the <a href="https://www.sqlite.org/mostdeployed.html">most used</a> database. This is because it is used on almost all mobile devices in the world. As SQLite is very similar to SQL everyone already knows the basic concepts like querying, inserting, updating, deleting data; databases and tables; joining tables etc.
 But SQLite also has some advanced features and this article is about one of such called Trigger.</p>
 <p>If we try to speculate on the name “Trigger” we might say that probably something will be done when some changes are made to the database. And we’re pretty close to the truth.</p>
@@ -208,7 +251,7 @@ But SQLite also has some advanced features and this article is about one of such
 It feels so unsafe to implement business logic this way as it will be difficult to test, it might be broken with database schema updates and it is implicit somewhere inside SQL. It seems better to expose all the callbacks of database changes to our actual program and implement all the required logic in code.
 And personally I think that this is for sure relevant questions.</p>
 <p>However one of the cases where triggers might be not bad is logging over table changes. Let’s see how it might look like with example.</p>
-<h2 id="sqlite-trigger-example">SQLite Trigger Example<a href="#sqlite-trigger-example" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="sqlite-trigger-example">SQLite Trigger Example</h2>
 <p>Let’s imagine that we have some data which can be structured in one table (we’ll call it data) with such structure:</p>
 <pre><code>order_id | timestamp | price
 </code></pre><p>Table contains three columns:</p>
@@ -239,11 +282,11 @@ We’ll store that information in the log table. It has the following structure:
 </li>
 </ul>
 <p>Let’s solve this problem using triggers.</p>
-<h3 id="setup">Setup<a href="#setup" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="setup">Setup</h3>
 <p>First of all we’ll download SQLite command line tool for our platform following instructions <a href="https://www.sqlite.org/download.html">here</a>.
 Then we run sqlite3 in terminal providing database name and we’re ready:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">% sqlite testdb
-</code></pre></div><h3 id="create-tables">Create tables<a href="#create-tables" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+</code></pre></div><h3 id="create-tables">Create tables</h3>
 <p>Then let’s create our tables:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sqlite &gt; create table data<span style="color:#f92672">(</span>order_id integer primary key, timestamp integer, price real<span style="color:#f92672">)</span>;
 
@@ -251,7 +294,7 @@ sqlite &gt; create table log<span style="color:#f92672">(</span>_id integer prim
 </code></pre></div><blockquote>
 <p>If you stuck with syntax you always can check <a href="https://sqlite.org/cli.html">documentation </a>on command-line-interface of SQLite</p>
 </blockquote>
-<h3 id="create-trigger">Create trigger<a href="#create-trigger" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="create-trigger">Create trigger</h3>
 <p>Now let’s create trigger:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">create trigger order_added after insert on data
 begin
@@ -272,11 +315,11 @@ end;
 <blockquote>
 <p>One can see that data which activated our trigger’s operation can be accessed via new. . So if we’d like to access price which was inserted into data table we can refer to it as new.price</p>
 </blockquote>
-<h3 id="activate-trigger">Activate trigger<a href="#activate-trigger" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="activate-trigger">Activate trigger</h3>
 <p>So now we’re ready to activate our trigger by inserting something into data table:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sqlite &gt; insert into data<span style="color:#f92672">(</span>timestamp, price<span style="color:#f92672">)</span> values<span style="color:#f92672">(</span>1568069843, 12.2<span style="color:#f92672">)</span>;
 sqlite &gt; insert into data<span style="color:#f92672">(</span>timestamp, price<span style="color:#f92672">)</span> values<span style="color:#f92672">(</span>1568069862, 15.2<span style="color:#f92672">)</span>;
-</code></pre></div><h3 id="check-result">Check result<a href="#check-result" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+</code></pre></div><h3 id="check-result">Check result</h3>
 <p>To check the result let’s query what is inside log table:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sqlite &gt; <span style="color:#66d9ef">select</span> * from log;
 1|2020-01-03 06:46:52|<span style="color:#ae81ff">1</span> <span style="color:#ae81ff">1568069843</span> 12.2
@@ -284,7 +327,7 @@ sqlite &gt; insert into data<span style="color:#f92672">(</span>timestamp, price
 </code></pre></div><p>And we see that we have exactly two records in our log table. Timestamp column has date-time of when data was inserted and payload column has all the information on the data that was inserted.</p>
 <p>OK, that was interesting. That doesn’t mean that tomorrow you should start using triggers, but at least it is good to know that such feature exists.
 Though we here used command line tool, but maybe we’d like to create trigger inside our Android app. Let’s look how we can achieve that.</p>
-<h2 id="android-room-add-sqlite-trigger">Android Room add SQLite Trigger<a href="#android-room-add-sqlite-trigger" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="android-room-add-sqlite-trigger">Android Room add SQLite Trigger</h2>
 <p>Using SQLite database on Android is traditionally was done using SQLiteDatabase, SQLiteOpenHelper and Cursor.
 Though now Room from architecture components becomes one of the most common ways to work with database on Android. But Room doesn’t support triggers (whereas SQLiteDatabase does).
 Therefore in order to work with triggers on Android we have to return to the basics.</p>
@@ -302,48 +345,48 @@ Therefore in order to work with triggers on Android we have to return to the bas
 <p>It is worth noting that (considering that triggers can be abused and lead to some issues if handled without care) SQLite command written in execSQL is not validated at compile time (unlike commands one can write in Room’s @Query annotation). So here one should be twice as more attentive.</p>
 </blockquote>
 <p>But to test that it works let’s add a bit of a code. We’ll start from describing our entities:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Entity(tableName = <span style="color:#e6db74">&#34;data&#34;</span>)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Entity</span>(tableName = <span style="color:#e6db74">&#34;data&#34;</span>)
 <span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Order</span>(
-    @PrimaryKey
-    @ColumnInfo(name = <span style="color:#e6db74">&#34;order_id&#34;</span>)
+    <span style="color:#a6e22e">@PrimaryKey</span>
+    <span style="color:#a6e22e">@ColumnInfo</span>(name = <span style="color:#e6db74">&#34;order_id&#34;</span>)
     <span style="color:#66d9ef">val</span> orderId: Int,
 
-    @ColumnInfo(name = <span style="color:#e6db74">&#34;timestamp&#34;</span>)
+    <span style="color:#a6e22e">@ColumnInfo</span>(name = <span style="color:#e6db74">&#34;timestamp&#34;</span>)
     <span style="color:#66d9ef">val</span> timestamp: Int,
 
-    @ColumnInfo(name = <span style="color:#e6db74">&#34;price&#34;</span>)
+    <span style="color:#a6e22e">@ColumnInfo</span>(name = <span style="color:#e6db74">&#34;price&#34;</span>)
     <span style="color:#66d9ef">val</span> price: Double
 )
 
-@Entity(tableName = <span style="color:#e6db74">&#34;log&#34;</span>)
+<span style="color:#a6e22e">@Entity</span>(tableName = <span style="color:#e6db74">&#34;log&#34;</span>)
 <span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">OrderInsertedLog</span>(
-    @PrimaryKey
-    @ColumnInfo(name = <span style="color:#e6db74">&#34;_id&#34;</span>)
+    <span style="color:#a6e22e">@PrimaryKey</span>
+    <span style="color:#a6e22e">@ColumnInfo</span>(name = <span style="color:#e6db74">&#34;_id&#34;</span>)
     <span style="color:#66d9ef">val</span> id: Int,
 
-    @ColumnInfo(name = <span style="color:#e6db74">&#34;timestamp&#34;</span>)
+    <span style="color:#a6e22e">@ColumnInfo</span>(name = <span style="color:#e6db74">&#34;timestamp&#34;</span>)
     <span style="color:#66d9ef">val</span> timestamp: String,
 
-    @ColumnInfo(name = <span style="color:#e6db74">&#34;payload&#34;</span>)
+    <span style="color:#a6e22e">@ColumnInfo</span>(name = <span style="color:#e6db74">&#34;payload&#34;</span>)
     <span style="color:#66d9ef">val</span> payload: String
 )
 </code></pre></div><p>Next create DAOs:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Dao
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Dao</span>
 <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">OrderDao</span> {
-    @Insert
+    <span style="color:#a6e22e">@Insert</span>
     <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">insert</span>(order: Order)
 
-    @Query(<span style="color:#e6db74">&#34;select * from data&#34;</span>)
+    <span style="color:#a6e22e">@Query</span>(<span style="color:#e6db74">&#34;select * from data&#34;</span>)
     <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">read</span>(): List&lt;Order&gt;
 }
 
-@Dao
+<span style="color:#a6e22e">@Dao</span>
 <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">LogDao</span> {
-    @Query(<span style="color:#e6db74">&#34;select * from log&#34;</span>)
+    <span style="color:#a6e22e">@Query</span>(<span style="color:#e6db74">&#34;select * from log&#34;</span>)
     <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">read</span>(): List&lt;OrderInsertedLog&gt;
 }
 </code></pre></div><p>And finally we’ll create a database we’ll work with:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Database(entities = [Order<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>, OrderInsertedLog<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>], version = <span style="color:#ae81ff">1</span>)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Database</span>(entities = [Order<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>, OrderInsertedLog<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>], version = <span style="color:#ae81ff">1</span>)
 <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AppDb</span> : RoomDatabase() {
 
     <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">orderDao</span>(): OrderDao
@@ -364,13 +407,13 @@ Therefore in order to work with triggers on Android we have to return to the bas
                 )
                 .addCallback(DB_CALLBACK)
                 .build()
-                .also { INSTANCE = it }
+                .also { INSTANCE = <span style="color:#66d9ef">it</span> }
         }
       
         <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> DB_CALLBACK = <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">: </span><span style="color:#a6e22e">RoomDatabase</span>.Callback() {
             <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(db: SupportSQLiteDatabase) {
                 <span style="color:#66d9ef">super</span>.onCreate(db)
-                db.execSQL(...)
+                db.execSQL(<span style="color:#f92672">..</span>.)
             }
         }
     }
@@ -387,39 +430,39 @@ Therefore in order to work with triggers on Android we have to return to the bas
 
     db.logDao().read()
         .*forEach *{
-            Log.e(<span style="color:#e6db74">&#34;TEST_DB&#34;</span>, <span style="color:#e6db74">&#34;log: $it&#34;</span>)
+            Log.e(<span style="color:#e6db74">&#34;TEST_DB&#34;</span>, <span style="color:#e6db74">&#34;log: </span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>)
         }
 }
 </code></pre></div><p>The results printed in logs will be:</p>
 <pre><code>E/TEST_DB: log: OrderInsertedLog(id=1, timestamp=2020-01-03 08:20:01, payload=1 1568069843 12.2)
 E/TEST_DB: log: OrderInsertedLog(id=2, timestamp=2020-01-03 08:20:01, payload=2 1568069862 15.2)
 </code></pre><p>And that means that our trigger worked great!</p>
-<h2 id="android-room-changes-callback">Android Room Changes callback<a href="#android-room-changes-callback" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="android-room-changes-callback">Android Room Changes callback</h2>
 <p>Having SQLite triggers might be fun, but in usual work we are most interested in the handling some changes in our queries inside our code. This might be some callback, RxJava Observable, Kotlin coroutines Flow etc (which triggers on some update). Let’s find out how it works.</p>
 <p>First or all we’ll change the DAO for our log table to return instead of list of items in the table — Flow of these lists to get actual values when they appear in table:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@Dao
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Dao</span>
 <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">LogDao</span> {
-    @Query(<span style="color:#e6db74">&#34;select * from log&#34;</span>)
+    <span style="color:#a6e22e">@Query</span>(<span style="color:#e6db74">&#34;select * from log&#34;</span>)
     <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">read</span>(): Flow&lt;List&lt;OrderInsertedLog&gt;&gt;
 }
 </code></pre></div><p>And we replace usage of our LogDao to instead collect data from Flow:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">db.logDao().read()
-    .collect { <span style="color:#66d9ef">data</span> -&gt;
+    .collect { <span style="color:#66d9ef">data</span> <span style="color:#f92672">-&gt;</span>
         <span style="color:#66d9ef">data</span>.forEach {
-            Log.e(<span style="color:#e6db74">&#34;TEST_DB&#34;</span>, <span style="color:#e6db74">&#34;log: $it&#34;</span>)
+            Log.e(<span style="color:#e6db74">&#34;TEST_DB&#34;</span>, <span style="color:#e6db74">&#34;log: </span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>)
         }
     }
 </code></pre></div><p>After we execute the program, we’ll see that nothing will be changed so far. First, our program inserts values into data table, then our trigger writes into log, after that we start the Flow from log table and receive new values.</p>
 <p>Let’s look at how inside all this is implemented.
 When we look at the implementation of the LogDao#read we see that it uses CoroutinesRoom.createFlow method (<a href="https://android.googlesource.com/platform/frameworks/support/+/refs/heads/androidx-master-dev/room/ktx/src/main/java/androidx/room/CoroutinesRoom.kt">source code</a>).
 Here is short snippet of how this method looks like:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@JvmStatic
-<span style="color:#66d9ef">fun</span> &lt;R&gt; <span style="color:#a6e22e">createFlow</span>(
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@JvmStatic</span>
+<span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">R</span>&gt; <span style="color:#a6e22e">createFlow</span>(
     db: RoomDatabase,
     inTransaction: Boolean,
     tableNames: Array&lt;String&gt;,
     callable: Callable&lt;R&gt;
-): Flow&lt;@JvmSuppressWildcards) R&gt; = flow {
+): Flow&lt;<span style="color:#a6e22e">@JvmSuppressWildcards</span>) R&gt; = flow {
     <span style="color:#66d9ef">val</span> observerChannel = Channel&lt;Unit&gt;(Channel.CONFLATED)
     <span style="color:#66d9ef">val</span> observer = <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">: </span><span style="color:#a6e22e">InvalidationTracker</span>.Observer(tableNames) {
         <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onInvalidated</span>(tables: MutableSet&lt;String&gt;) {
@@ -498,19 +541,19 @@ Here is short snippet of how this method looks like:</p>
 <blockquote>
 <p>Cases in which all these methods (such as syncTriggers, or running refresh runnable) called are out of scope of this article. It is better to check the source code directly</p>
 </blockquote>
-<h2 id="android-room-changes-callback-and-custom-sqlite-trigger">Android Room Changes callback and custom SQLite Trigger<a href="#android-room-changes-callback-and-custom-sqlite-trigger" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="android-room-changes-callback-and-custom-sqlite-trigger">Android Room Changes callback and custom SQLite Trigger</h2>
 <p>Now as we know how under the hood updates are triggered into our code, let’s try to test on how this is related to the custom SQLite triggers.
 The case we’re interested in is whether custom SQLite trigger’s operation can trigger our code which is listening for changes in the place SQLite trigger’s operation is changing.</p>
 <p>Now we can make an educated guess that as we’ve created SQLite trigger and Room under the hood also uses SQLite triggers — everything should work well.</p>
 <p>For our test the only thing that we’ll change comparing to the previous test is order in which we subscribe for changes to log table and insert into data table.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">viewModelScope.launch {
     db.logDao().read()
-        .*onEach *{ <span style="color:#66d9ef">data</span> -&gt;
+        .*onEach *{ <span style="color:#66d9ef">data</span> <span style="color:#f92672">-&gt;</span>
             <span style="color:#66d9ef">if</span> (<span style="color:#66d9ef">data</span>.isEmpty()) {
                 Log.e(<span style="color:#e6db74">&#34;TEST_DB&#34;</span>, <span style="color:#e6db74">&#34;log empty&#34;</span>)
             }
             <span style="color:#66d9ef">data</span>.*forEach *{
-                Log.e(<span style="color:#e6db74">&#34;TEST_DB&#34;</span>, <span style="color:#e6db74">&#34;log: $it&#34;</span>)
+                Log.e(<span style="color:#e6db74">&#34;TEST_DB&#34;</span>, <span style="color:#e6db74">&#34;log: </span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>)
             }
         }
         .launchIn(<span style="color:#66d9ef">this</span>)
@@ -539,74 +582,84 @@ E/TEST_DB: log: OrderInsertedLog(id=1, timestamp=2020-01-03 08:53:12, payload=1 
 </code></pre><p>We’ve got only two emits (empty list and list with two orders).
 The reason behind that is that our code runs concurrently, our inserts are pretty close and implementation makes its best to deliver results.</p>
 <p>Though the main thing here is that flow from Room works well with custom Triggers. And it is not surprise. There is our custom trigger which listens to data table and writes into log table, and there is Room’s trigger which listens to log table and writes into its internal table (to deliver results into our code). So these dependent calls work pretty well.</p>
-<h2 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="conclusion">Conclusion</h2>
 <p>And that’s it what I have for you for now. I hope now you know a little bit more on the database change triggers — both SQLite and Room— and now you’ll be able to make some weighted decisions in the future.
 Don’t forget to always dive deep and look at what is happening under the hood and learn basics.</p>
 <p>Happy coding!</p>
 
-      </div></div>
-
-  
-  
-<div class="pagination">
-    <div class="pagination__title">
-        <span class="pagination__title-h">Read other posts</span>
-        <hr />
-    </div>
-    <div class="pagination__buttons">
-        
-        <span class="button previous">
-            <a href="https://krossovochkin.github.io/posts/2020_01_19_change_theme_dynamically_with_circular_reveal_animation_on_android/">
-                <span class="button__icon">←</span>
-                <span class="button__text">Change Theme Dynamically with Circular Reveal Animation on Android</span>
-            </a>
-        </span>
-        
-        
-        <span class="button next">
-            <a href="https://krossovochkin.github.io/posts/2019_12_24_decoding_handler_and_looper_in_android/">
-                <span class="button__text">Decoding Handler and Looper in Android</span>
-                <span class="button__icon">→</span>
-            </a>
-        </span>
-        
-    </div>
-</div>
-
-  
-
-  
-
-</div>
-
   </div>
-
   
-    <footer class="footer">
-  <div class="footer__inner">
+
+<div class="navigation navigation-single">
     
-      <div class="copyright copyright--user">
-        <span>© 2020 Vasya Drobushkov</span>
+    <a href="/posts/2019_12_24_decoding_handler_and_looper_in_android/" class="navigation-prev">
+      <i aria-hidden="true" class="fa fa-chevron-left"></i>
+      <span class="navigation-tittle">Decoding Handler and Looper in Android</span>
+    </a>
     
-        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
-      </div>
-  </div>
-  <div class="footer__inner">
-    <div class="copyright copyright--user">
-      <a href="https://www.facebook.com/vasya.drobushkov">Facebook</a><a href="https://twitter.com/krossovochkin">Twitter</a>
-    </div>
-  </div>
-</footer>
-
-<script src="https://krossovochkin.github.io/assets/main.js"></script>
-<script src="https://krossovochkin.github.io/assets/prism.js"></script>
-
-
-
+    
+    <a href="/posts/2020_01_19_change_theme_dynamically_with_circular_reveal_animation_on_android/" class="navigation-next">
+      <span class="navigation-tittle">Change Theme Dynamically with Circular Reveal Animation on Android</span>
+      <i aria-hidden="true" class="fa fa-chevron-right"></i>
+    </a>
+    
+</div>
 
 
   
-</div>
 
-</body>
+  
+    
+
+
+</article>
+
+
+        </div>
+        
+    
+
+  
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
+
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+        
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/bash.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/java.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+            
+        
+    <script type="text/javascript">
+        
+        hljs.configure({languages: ["bash, java, kotlin"]});
+        
+        hljs.initHighlightingOnLoad();
+    </script>
+    
+
+
+
+    
+
+
+
+    </body>
 </html>

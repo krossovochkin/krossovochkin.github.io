@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>kotlin flow on Krossovochkin</title>
+    <title>kotlin flow on Vasya Drobushkov</title>
     <link>https://krossovochkin.github.io/tags/kotlin-flow/</link>
-    <description>Recent content in kotlin flow on Krossovochkin</description>
+    <description>Recent content in kotlin flow on Vasya Drobushkov</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>© 2020 Vasya Drobushkov</copyright>
-    <lastBuildDate>Sun, 17 May 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://krossovochkin.github.io/tags/kotlin-flow/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>en</language>
+    <lastBuildDate>Sun, 17 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.github.io/tags/kotlin-flow/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>The Real Kotlin Flow benefits over RxJava</title>
       <link>https://krossovochkin.github.io/posts/2020_05_17_the_real_kotlin_flow_benefits_over_rxjava/</link>

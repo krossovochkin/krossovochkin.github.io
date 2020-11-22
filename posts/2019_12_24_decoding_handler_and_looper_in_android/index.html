@@ -1,71 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  
-    <title>Decoding Handler and Looper in Android :: Krossovochkin — Android Developer</title>
-  
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    
+    
+
+
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Enable responsiveness on mobile devices -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="description" content="Introduction Handler and Looper are one of the main low-level Android OS things, which almost nobody uses directly (at least nowadays). But they are at the core, so many other high-level solutions are based on them. Therefore one should know what Handler and Looper are, what and how they are doing.
-In this article we’ll try to understand Handler and Looper in Android. What, how and why we might need them." />
-<meta name="keywords" content="android, handler, looper" />
-<meta name="robots" content="noodp" />
-<link rel="canonical" href="https://krossovochkin.github.io/posts/2019_12_24_decoding_handler_and_looper_in_android/" />
+<meta name="generator" content="Hugo 0.78.2" />
+
+    
+    
+    
+
+<title>Decoding Handler and Looper in Android • Vasya Drobushkov</title>
 
 
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-148934073-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Decoding Handler and Looper in Android"/>
+<meta name="twitter:description" content="Introduction Handler and Looper are one of the main low-level Android OS things, which almost nobody uses directly (at least nowadays). But they are at the core, so many other high-level solutions are based on them. Therefore one should know what Handler and Looper are, what and how they are doing.
+In this article we’ll try to understand Handler and Looper in Android. What, how and why we might need them."/>
 
-
-
-<link rel="stylesheet" href="https://krossovochkin.github.io/assets/style.css">
-
-  <link rel="stylesheet" href="https://krossovochkin.github.io/assets/yellow.css">
-
-
-
-
-
-
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://krossovochkin.github.io/img/apple-touch-icon-144-precomposed.png">
-
-  <link rel="shortcut icon" href="https://krossovochkin.github.io/img/favicon/yellow.png">
-
-
-
-<meta name="twitter:card" content="summary" />
-
-  <meta name="twitter:site" content="krossovochkin" />
-
-<meta name="twitter:creator" content="krossovochkin" />
-
-
-<meta property="og:locale" content="en" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="Decoding Handler and Looper in Android :: Krossovochkin">
+<meta property="og:title" content="Decoding Handler and Looper in Android" />
 <meta property="og:description" content="Introduction Handler and Looper are one of the main low-level Android OS things, which almost nobody uses directly (at least nowadays). But they are at the core, so many other high-level solutions are based on them. Therefore one should know what Handler and Looper are, what and how they are doing.
 In this article we’ll try to understand Handler and Looper in Android. What, how and why we might need them." />
+<meta property="og:type" content="article" />
 <meta property="og:url" content="https://krossovochkin.github.io/posts/2019_12_24_decoding_handler_and_looper_in_android/" />
-<meta property="og:site_name" content="Decoding Handler and Looper in Android" />
-
-  <meta property="og:image" content="https://krossovochkin.github.io/">
-
-<meta property="og:image:width" content="2048">
-<meta property="og:image:height" content="1024">
+<meta property="article:published_time" content="2019-12-24T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-12-24T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
 
 
-  <meta property="article:published_time" content="2019-12-24 00:00:00 &#43;0000 UTC" />
+    
 
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
 
 
 
@@ -74,106 +45,177 @@ In this article we’ll try to understand Handler and Looper in Android. What, h
 
 
 
+<link rel="stylesheet" href="/scss/hyde-hyde.adf8a0af011d3afb07ed907ad3295e1c99f49503bc91d395e38dc3f8dfdf4900.css" integrity="sha256-rfigrwEdOvsH7ZB60yleHJn0lQO8kdOV443D&#43;N/fSQA=">
 
 
+<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    
+    
 
 </head>
-<body class="">
 
 
-<div class="container center headings--one-size">
-
-  <header class="header">
-  <div class="header__inner">
-    <div class="header__logo">
-      <a href="/">
-  <div class="logo">
-    Krossovochkin
-  </div>
-</a>
-
-    </div>
-    <div class="menu-trigger">menu</div>
-  </div>
-  
-    <nav class="menu">
-  <ul class="menu__inner menu__inner--desktop">
+    <body class="theme-base-0a ">
     
-      
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="https://krossovochkin.github.io/">
         
-          <li><a href="/about">About me</a></li>
+          Vasya Drobushkov
         
-      
-        
-          <li><a href="/">Posts</a></li>
-        
-      
-      
-    
-
-    
-  </ul>
-
-  <ul class="menu__inner menu__inner--mobile">
-    
-      
-        <li><a href="/about">About me</a></li>
-      
-    
-      
-        <li><a href="/">Posts</a></li>
-      
-    
-    
-  </ul>
-</nav>
-
-  
-</header>
-
-
-  <div class="content">
-    
-<div class="post">
-  <h1 class="post-title">
-    <a href="https://krossovochkin.github.io/posts/2019_12_24_decoding_handler_and_looper_in_android/">Decoding Handler and Looper in Android</a></h1>
-  <div class="post-meta">
-    
-      <span class="post-date">
-        2019-12-24 
+        </a>
       </span>
+      
+        
+        
+        
+        <div class="author-image">
+          <img src="https://krossovochkin.github.io/../img/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
+        </div>
+        
+      
+      
+      <p class="site__description">
+        
+      </p>
+    </div>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">Vasya Drobushkov</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="/posts/">
+						<span>Posts</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="/about/">
+						<span>About</span>
+					</a>
+				</li>
+			 
+		
+	</ul>
+</div>
+
+        <section class="social">
+	
+	<a href="https://twitter.com/krossovochkin" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://facebook.com/vasya.drobushkov" rel="me"><i class="fab fa-facebook-f"></i></a>
+	
+	
+	<a href="https://github.com/krossovochkin" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	<a href="https://linkedin.com/in/vasyadrobushkov" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://stackoverflow.com/users/1533933/krossovochkin" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</section>
+
+      </div>
+    </div>
     
-    
-    <span class="post-author">::
-      Vasya Drobushkov
-    </span>
-    
+<div class="copyright">
+  &copy; 2019 - 2020 Vasya Drobushkov
+  
+    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
+  
+</div>
+
+
+
   </div>
+</div>
 
-  
-  <span class="post-tags">
+        <div class="content container">
+            
     
-    #<a href="https://krossovochkin.github.io/tags/android/">android</a>&nbsp;
+<article>
+  <header>
+    <h1>Decoding Handler and Looper in Android</h1>
     
-  </span>
-  
+    
+<div class="post__meta">
+    
+    
+      <i class="fas fa-calendar-alt"></i> Dec 24, 2019
+    
+    
+    
+    
+    
+      
+      
+          <br/>
+           <i class="fas fa-tags"></i>
+          
+          <a class="badge badge-tag" href="/tags/android">android</a>
+          
+      
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 15 min read
+</div>
 
-  
 
+  </header>
   
-
-  <div class="post-content"><div>
-        <p><a href="https://proandroiddev.com/decoding-handler-and-looper-in-android-d4f3f2449513"><img src="https://img.shields.io/badge/original-proandroiddev-green#badge" alt=""></a></p>
-<h2 id="introduction">Introduction<a href="#introduction" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+  
+  <div class="post">
+    <p><a href="https://proandroiddev.com/decoding-handler-and-looper-in-android-d4f3f2449513"><img src="https://img.shields.io/badge/original-proandroiddev-green#badge" alt=""></a></p>
+<h2 id="introduction">Introduction</h2>
 <p>Handler and Looper are one of the main low-level Android OS things, which almost nobody uses directly (at least nowadays). But they are at the core, so many other high-level solutions are based on them. Therefore one should know what Handler and Looper are, what and how they are doing.</p>
 <p>In this article we’ll try to understand Handler and Looper in Android. What, how and why we might need them.
 We’ll start from some basic knowledge on classes and what they are doing, continue with relations between them. Then we’ll look at each class separately trying to dive deep into details. And will finish with some canonical examples on where they can be used.</p>
-<h3 id="basics">Basics<a href="#basics" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="basics">Basics</h3>
 <p>If we try to describe this complex topic in simple words we might get something like this:</p>
 <blockquote>
 <p>Looper is an abstraction over event loop (infinite loop which drains queue with events) and Handler is an abstraction to put/remove events into/from queue with events (which is drained by Looper) and handle these events when they are processed.</p>
 </blockquote>
-<h3 id="put-everything-together">Put everything together<a href="#put-everything-together" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="put-everything-together">Put everything together</h3>
 <p><img src="../../img/1_XHql6oXry4qVb9JFpeDQ6w.png" alt=""></p>
 <p>This diagram shows how classes are connected together.
 We have a thread, in which we have a Looper. Each Looper has its own MessageQueue. Looper drains the MessageQueue.
@@ -190,8 +232,8 @@ Handler is created for some particular Looper and is used to post messages to it
 <p>Looper might have many different Handlers</p>
 </li>
 </ul>
-<h2 id="diving-deeper">Diving deeper<a href="#diving-deeper" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
-<h3 id="message">Message<a href="#message" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h2 id="diving-deeper">Diving deeper</h2>
+<h3 id="message">Message</h3>
 <p>Message is a data object. It contains payload of the “message”. As it can be sent to various Android components, Message class implements Parcelable interface (so that it can be put in extras to bundles and intents).</p>
 <p>Being a data object Message can have some data inside. Primarily it is:</p>
 <ul>
@@ -217,10 +259,10 @@ The usage is pretty straightforward, e.g. if we want to obtain Message with what
 <pre><code>val msg = Message.obtain(handler, what, object)
 </code></pre>
 <p>More information on Message class one can find in the source code <a href="https://cs.android.com/android/platform/superproject/+/master:frameworks/base/core/java/android/os/Message.java?q=Message">here</a>.</p>
-<h3 id="messagequeue">MessageQueue<a href="#messagequeue" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="messagequeue">MessageQueue</h3>
 <p>MessageQueue as name states is just a queue of messages. This is exactly the implementation of a queue where Handler puts events onto and which Looper is draining.</p>
 <p>There is not much interest in this for now, but if you’re curious you can look at the source code <a href="https://cs.android.com/android/platform/superproject/+/master:frameworks/base/core/java/android/os/MessageQueue.java">here</a>.</p>
-<h3 id="looper">Looper<a href="#looper" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="looper">Looper</h3>
 <p>Looper is a class that runs message loop for some thread. In Java we have threads, in which we might do some useful work. Initially threads don’t have an event loop capabilities, but we can add this capabilities via attaching Looper to them.</p>
 <p>Looper has two main methods: prepare and loop. The first method prepare — inits thread and attaches Looper to it. The second method loop starts event loop.</p>
 <blockquote>
@@ -228,10 +270,10 @@ The usage is pretty straightforward, e.g. if we want to obtain Message with what
 </blockquote>
 <ol>
 <li>It should be clear that running Looper before it was attached to a thread will lead to exceptions. Ensure that prepare method was called inside a thread and only then call loop.</li>
-<li>Each thread can have only one Looper. This is controlled by the ThreadLocal<Looper> object inside Looper class. So calling prepare method twice inside same thread will also lead to an exception.</li>
+<li>Each thread can have only one Looper. This is controlled by the ThreadLocal<!-- raw HTML omitted --> object inside Looper class. So calling prepare method twice inside same thread will also lead to an exception.</li>
 </ol>
 <p>The last methods which are interesting to us in Looper class are quit and quitSafely. These methods are used to stop event loop. The first one is not safe as it will terminate processing the queue and some events might be left unprocessed. The second waits until all the messages are processed and then terminates, therefore it is called safe.</p>
-<h3 id="handler">Handler<a href="#handler" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="handler">Handler</h3>
 <p>Handler is a class which allows you to send and handle Messages and Runnables from thread’s MessageQueue.
 Basically it works the following way:</p>
 <ol>
@@ -253,7 +295,7 @@ Basically it works the following way:</p>
 </ol>
 <p>So, we see that Handler does two things: 1) posts messages to be placed in a queue, 2) handles messages when they were processed by Looper.</p>
 <p>Let’s look at each thing separately. And we’ll start from posting messages.</p>
-<p>As we already know there a basically two major types of messages: what and Runnable. 
+<p>As we already know there a basically two major types of messages: what and Runnable.
 In order to send already created message (e.g. what) we can use sendMessage, sendMessageDelayed and sendMessageAtTime methods. From names it is clear that sendMessage sends message to be processed as soon as possible, sendMessageDelayed sends it to be processed after some timeout and sendMessageAtTime sends it to be processed at some particular moment of time. Pretty obvious.
 Also there is a way to directly post Runnable without first creating explicit message for that. For this there are post, postDelayed and postAtTime methods. They have same meaning as sendMessageXXX methods, the difference is just that we send Runnable instead of already created message.</p>
 <blockquote>
@@ -272,10 +314,10 @@ Also there is a way to directly post Runnable without first creating explicit me
 <p>Last but not least Handler is able not only to add messages to event queue but also to remove them. For such cases there are removeMessages methods, which can trigger removing unprocessed messages which met some criteria from MessageQueue.</p>
 <p>And basically that’s it about Handler. If you are confused — don’t worry, later in the post there will be examples, so hopefully everything will be more clear.</p>
 <p>Source code for Handler one can see <a href="https://cs.android.com/android/platform/superproject/+/master:frameworks/base/core/java/android/os/Handler.java;bpv=0;bpt=1">here</a>.</p>
-<h3 id="handlerthread">HandlerThread<a href="#handlerthread" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="handlerthread">HandlerThread</h3>
 <p>HandlerThread is just a thread which has event loop. That means that if you need Thread with Looper you don’t need to create it by yourself, you just can take HandlerThread.</p>
 <p>There is not much to talk here, you can look at source code <a href="https://cs.android.com/android/platform/superproject/+/master:frameworks/base/core/java/android/os/HandlerThread.java;bpv=0;bpt=1">here </a>(it is less than 200 lines including javadoc).</p>
-<h2 id="usage">Usage<a href="#usage" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="usage">Usage</h2>
 <p>Before going to examples, let’s have a quick recap on classes, what they do and how they are connected. If we need event loop inside some thread the basic structure will be the following:</p>
 <ol>
 <li>
@@ -303,19 +345,19 @@ And as a rule of thumb Handler is good to use in the following cases:</p>
 </li>
 </ol>
 <p>For this we’ll take a look at four examples: two will be about scheduling some work for the future and two about communication between threads.</p>
-<h3 id="example-1-debounce">Example #1 Debounce<a href="#example-1-debounce" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="example-1-debounce">Example #1 Debounce</h3>
 <p>Debounce is a way to skip some frequent calls to have some predefined min delay between these calls and always receiving the latest one.
 It might be easier to describe this by example, so imagine that you have a search query text input. User might type something there and automatically on user type your app sends requests to the server to show some information to the user. But it is excessive usage of resources if we send request to server on each character typed, instead we’ll add a debounce — some strategy to skip some events until there was some quite period (let’s say 200ms ) when user stopped typing for a moment.</p>
 <p>For those who might be familiar with Rx, there is debounce operator which is described by this diagram:</p>
 <p><img src="../../img/0_5RrVwRw0MyrqkqsQ.png" alt="Source"><em><a href="http://reactivex.io/documentation/operators/images/debounce.png">Source</a></em></p>
 <p>What this image shows is that if between events (on the top) there is enough time (i.e. user stopped typing for some time) we receive event, otherwise if there are a lot of events in some short period of time — we discard old ones and wait for timeout to expire.</p>
 <p>In code before adding debounce it might look the following way:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">textInput.onTextChanged { text -&gt; process(text) }
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">textInput.onTextChanged { text <span style="color:#f92672">-&gt;</span> process(text) }
 </code></pre></div><p>We just trigger processing on each character typed. With adding debounce it might look somewhat like:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> debouncer = Debouncer(<span style="color:#ae81ff">200</span>, TimeUnit.MILLISECONDS) { text -&gt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> debouncer = Debouncer(<span style="color:#ae81ff">200</span>, TimeUnit.MILLISECONDS) { text <span style="color:#f92672">-&gt;</span>
     process(text)
 }
-textInput.onTextChanged { text -&gt; debouncer.process(text) }
+textInput.onTextChanged { text <span style="color:#f92672">-&gt;</span> debouncer.process(text) }
 </code></pre></div><p>So, we just redirect all the text changes to debouncer and then it sends us events on some given rate (basically filtering our stream of events).
 But how this is related to Handlers and Loopers?</p>
 <p>The answer is that from diagram we can see that what debouncer is doing is:</p>
@@ -334,13 +376,13 @@ But how this is related to Handlers and Loopers?</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Debouncer</span>(
     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> timeout: Long,
     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> unit: TimeUnit,
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> callback: (String) -&gt; Unit
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> callback: (String) <span style="color:#f92672">-&gt;</span> Unit
 ) {
 
     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> handler = Handler(Looper.getMainLooper()) { 
-        message -&gt;
-        <span style="color:#66d9ef">if</span> (message.what != MESSAGE_WHAT) {
-            <span style="color:#66d9ef">return</span>@Handler <span style="color:#66d9ef">false</span>
+        message <span style="color:#f92672">-&gt;</span>
+        <span style="color:#66d9ef">if</span> (message.what <span style="color:#f92672">!=</span> MESSAGE_WHAT) {
+            <span style="color:#66d9ef">return</span><span style="color:#a6e22e">@Handler</span> <span style="color:#66d9ef">false</span>
         }
 
         callback(message.obj <span style="color:#66d9ef">as</span> String)
@@ -360,7 +402,7 @@ But how this is related to Handlers and Loopers?</p>
 Inside process method we do exactly what we wrote above: first we remove any pending message, then we create new message to be post in the future and then we send that message with delay.
 In Handler’s callback we’ll get every message which passes through debouncer. We extract payload from that message and redirect it to initial callback.
 Pretty simple, so let’s move on to next example.</p>
-<h3 id="example-2-throttle">Example #2 Throttle<a href="#example-2-throttle" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="example-2-throttle">Example #2 Throttle</h3>
 <p>Now when we have created our Debouncer, let’s look at the different but similar example — Throttler.
 Throttler again will reduce our stream with events, but instead of sending us latest value it will trigger as soon as first event comes and then prevent events triggering for some period of time.</p>
 <p>It might be useful in cases when we have a button, which we’d like to not be clicked twice in a short period of time. So without throttler our code would look like:</p>
@@ -374,7 +416,7 @@ button.setOnClickListener { throttler.onAction() }
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Throttler</span>(
     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> timeout: Long,
     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> unit: TimeUnit,
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> callback: () -&gt; Unit
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> callback: () <span style="color:#f92672">-&gt;</span> Unit
 ) {
     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> handler = Handler(Looper.getMainLooper())
 
@@ -394,15 +436,15 @@ button.setOnClickListener { throttler.onAction() }
 <p>Yes, throttling to avoid double-click on button could be done without Handler. We could just store current timestamp into variable and onAction compare current timestamp with timestamp from previous action occurrence. So, consider this just as a training example.</p>
 </blockquote>
 <p>OK, here we should be fine with scheduling work somewhere in the future, let’s move on to the background work.</p>
-<h3 id="example-3-network">Example #3 Network<a href="#example-3-network" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="example-3-network">Example #3 Network</h3>
 <p>In Android one can’t perform network calls on main thread. If one tries to do so, then NetworkOnMainThreadException will be thrown.
 To schedule some background work to separate thread one can just create new thread and make e.g. new network call. But in order to retrieve result on caller’s thread (main thread) one should be able to send it somehow back to main thread, for example using main thread’s Handler.</p>
 <p>But let’s go one step back and look at the example of handling sequential network requests on separate background thread (using HandlerThread).</p>
 <p>We’ll just create HandlerThread and new Handler. Using that Handler we’ll post new network requests to queue and then retrieve results using Callback.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> messageWhat = <span style="color:#ae81ff">9898</span>
-<span style="color:#66d9ef">val</span> uiHandler = Handler(Looper.getMainLooper()) { message -&gt;
-    <span style="color:#66d9ef">if</span> (message.what == messageWhat) {
-        println(<span style="color:#e6db74">&#34;Result: ${message.obj}&#34;</span>)
+<span style="color:#66d9ef">val</span> uiHandler = Handler(Looper.getMainLooper()) { message <span style="color:#f92672">-&gt;</span>
+    <span style="color:#66d9ef">if</span> (message.what <span style="color:#f92672">==</span> messageWhat) {
+        println(<span style="color:#e6db74">&#34;Result: </span><span style="color:#e6db74">${message.obj}</span><span style="color:#e6db74">&#34;</span>)
         <span style="color:#66d9ef">true</span>
     } <span style="color:#66d9ef">else</span> {
         <span style="color:#66d9ef">false</span>
@@ -415,7 +457,7 @@ workerHandler.post {
     URL(<span style="color:#e6db74">&#34;[https://google.com](https://google.com)&#34;</span>).openStream().use {
         uiHandler.sendMessage(
             uiHandler.obtainMessage(
-                messageWhat, <span style="color:#e6db74">&#34;data ${it.read()}&#34;</span>
+                messageWhat, <span style="color:#e6db74">&#34;data </span><span style="color:#e6db74">${it.read()}</span><span style="color:#e6db74">&#34;</span>
             )
         )
     }
@@ -427,7 +469,7 @@ workerThread.join()
 </code></pre></div><p>Here we create first Handler uiHandler as a receiver and workerHandler as producer of some message. Then in workerHandler we post runnable to send some network request and on success we send message back to uiHandler.
 And that’s it.</p>
 <p>One might say that this implementation is far away from being production ready — that’s true, though there might be some cases when it might be possible. And if we look at the source code of IntentService we’ll see quite similar stuff.</p>
-<h3 id="example-4-ipc">Example #4 IPC<a href="#example-4-ipc" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="example-4-ipc">Example #4 IPC</h3>
 <p>IPC stands for Inter-process communication. On Android each app works in its own process. Each process can have multiple threads. Each process works in separate sandbox and is not able to directly communicate with other apps/processes.
 For inter-process communication in Android there is such interface as IBinder and Handler/Looper is related to that infrastructure.
 The core thing in such infrastructure is Messenger, which has an IBinder instance to allow communication.</p>
@@ -465,7 +507,7 @@ Important note that IMessenger is serializable, so we can send it to other proce
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : AppCompatActivity() {
 
     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> handler = Handler(Looper.getMainLooper()) {
-        Log.e(<span style="color:#e6db74">&#34;TAG&#34;</span>, <span style="color:#e6db74">&#34;Value received: ${it.arg1}&#34;</span>)
+        Log.e(<span style="color:#e6db74">&#34;TAG&#34;</span>, <span style="color:#e6db74">&#34;Value received: </span><span style="color:#e6db74">${it.arg1}</span><span style="color:#e6db74">&#34;</span>)
         <span style="color:#66d9ef">true</span>
     }
     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> messenger = Messenger(handler)
@@ -473,7 +515,7 @@ Important note that IMessenger is serializable, so we can send it to other proce
     <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
         <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Log.e(<span style="color:#e6db74">&#34;TAG&#34;</span>, <span style="color:#e6db74">&#34;Activity: ${android.os.Process.myPid()}&#34;</span>)
+        Log.e(<span style="color:#e6db74">&#34;TAG&#34;</span>, <span style="color:#e6db74">&#34;Activity: </span><span style="color:#e6db74">${android.os.Process.myPid()}</span><span style="color:#e6db74">&#34;</span>)
 
         startService(Intent(<span style="color:#66d9ef">this</span>, MyService<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java).apply {
             putExtra(<span style="color:#e6db74">&#34;KEY_MESSENGER&#34;</span>, messenger)
@@ -501,9 +543,9 @@ Important note that IMessenger is serializable, so we can send it to other proce
         flags: Int, 
         startId: Int
     ): Int {
-        Log.e(<span style="color:#e6db74">&#34;TAG&#34;</span>, <span style="color:#e6db74">&#34;Service: ${android.os.Process.myPid()}&#34;</span>)
+        Log.e(<span style="color:#e6db74">&#34;TAG&#34;</span>, <span style="color:#e6db74">&#34;Service: </span><span style="color:#e6db74">${android.os.Process.myPid()}</span><span style="color:#e6db74">&#34;</span>)
         intent<span style="color:#f92672">?.</span>getParcelableExtra&lt;Messenger&gt;(<span style="color:#e6db74">&#34;KEY_MESSENGER&#34;</span>)
-            <span style="color:#f92672">?.</span>let { messenger -&gt;
+            <span style="color:#f92672">?.</span>let { messenger <span style="color:#f92672">-&gt;</span>
                 Thread {
                     <span style="color:#66d9ef">for</span> (i <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">1.</span>.<span style="color:#ae81ff">10</span>) {
                         messenger.send(createMessage(i))
@@ -530,7 +572,7 @@ Important note that IMessenger is serializable, so we can send it to other proce
 }
 </code></pre></div><p>Here in onStartCommand we extract Messenger instance from intent, create new Thread and inside it start sending messages to our MainActivity.
 When we run our program, we’ll see that messages are successfully delivered from background process to our MainActivity.</p>
-<h2 id="conslusion">Conslusion<a href="#conslusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="conslusion">Conslusion</h2>
 <p>Hopefully after that article one can get an idea of some low-level OS tools for event scheduling, processes/threads communication without using some popular third party solutions.</p>
 <p>It doesn’t mean that you should start using such tools directly, but still it is important to know what happens inside the platform and what possibilities it has.</p>
 <p>Don’t forget to read documentation on Handler and Looper, on working in background and on inter-process communication.
@@ -538,69 +580,79 @@ When we run our program, we’ll see that messages are successfully delivered fr
 <a href="https://developer.android.com/guide/components/aidl"><strong>Android Interface Definition Language (AIDL) | Android Developers</strong></a></p>
 <p>Happy coding.</p>
 
-      </div></div>
-
-  
-  
-<div class="pagination">
-    <div class="pagination__title">
-        <span class="pagination__title-h">Read other posts</span>
-        <hr />
-    </div>
-    <div class="pagination__buttons">
-        
-        <span class="button previous">
-            <a href="https://krossovochkin.github.io/posts/2020_01_17_sqlite_triggers_android_room/">
-                <span class="button__icon">←</span>
-                <span class="button__text">SQLite Triggers (&#43; Android Room)</span>
-            </a>
-        </span>
-        
-        
-        <span class="button next">
-            <a href="https://krossovochkin.github.io/posts/2019_11_02_operator_fusion_in_rxjava_2/">
-                <span class="button__text">Operator fusion in RxJava 2</span>
-                <span class="button__icon">→</span>
-            </a>
-        </span>
-        
-    </div>
-</div>
-
-  
-
-  
-
-</div>
-
   </div>
-
   
-    <footer class="footer">
-  <div class="footer__inner">
+
+<div class="navigation navigation-single">
     
-      <div class="copyright copyright--user">
-        <span>© 2020 Vasya Drobushkov</span>
+    <a href="/posts/2019_11_02_operator_fusion_in_rxjava_2/" class="navigation-prev">
+      <i aria-hidden="true" class="fa fa-chevron-left"></i>
+      <span class="navigation-tittle">Operator fusion in RxJava 2</span>
+    </a>
     
-        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
-      </div>
-  </div>
-  <div class="footer__inner">
-    <div class="copyright copyright--user">
-      <a href="https://www.facebook.com/vasya.drobushkov">Facebook</a><a href="https://twitter.com/krossovochkin">Twitter</a>
-    </div>
-  </div>
-</footer>
-
-<script src="https://krossovochkin.github.io/assets/main.js"></script>
-<script src="https://krossovochkin.github.io/assets/prism.js"></script>
-
-
-
+    
+    <a href="/posts/2020_01_17_sqlite_triggers_android_room/" class="navigation-next">
+      <span class="navigation-tittle">SQLite Triggers (&#43; Android Room)</span>
+      <i aria-hidden="true" class="fa fa-chevron-right"></i>
+    </a>
+    
+</div>
 
 
   
-</div>
 
-</body>
+  
+    
+
+
+</article>
+
+
+        </div>
+        
+    
+
+  
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
+
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+        
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/bash.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/java.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+            
+        
+    <script type="text/javascript">
+        
+        hljs.configure({languages: ["bash, java, kotlin"]});
+        
+        hljs.initHighlightingOnLoad();
+    </script>
+    
+
+
+
+    
+
+
+
+    </body>
 </html>

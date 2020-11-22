@@ -1,75 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  
-    <title>Kotlin-Java interop: function references and SAM conversions :: Krossovochkin — Android Developer</title>
-  
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    
+    
+
+
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Enable responsiveness on mobile devices -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="description" content="Though all the things below are pretty obvious if being careful while dealing with Kotlin-Java interop, I decided still to write short note about one particular issue with function references (from Kotlin side) and SAM conversions (from Java side).
+<meta name="generator" content="Hugo 0.78.2" />
+
+    
+    
+    
+
+<title>Kotlin-Java interop: function references and SAM conversions • Vasya Drobushkov</title>
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Kotlin-Java interop: function references and SAM conversions"/>
+<meta name="twitter:description" content="Though all the things below are pretty obvious if being careful while dealing with Kotlin-Java interop, I decided still to write short note about one particular issue with function references (from Kotlin side) and SAM conversions (from Java side).
 Function reference Function reference is a good way to pass function as a parameter without explicitly using lambdas.
 For example, if we have function:
-fun method(callback: (Input) -&amp;gt; Output) { ." />
-<meta name="keywords" content="kotlin, java, interop, interoperability, sam" />
-<meta name="robots" content="noodp" />
-<link rel="canonical" href="https://krossovochkin.github.io/posts/2018_09_13_kotlin_java_interop_function_references_and_sam_conversions/" />
+fun method(callback: (Input) -&gt; Output) { ."/>
 
-
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-148934073-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-
-
-
-<link rel="stylesheet" href="https://krossovochkin.github.io/assets/style.css">
-
-  <link rel="stylesheet" href="https://krossovochkin.github.io/assets/yellow.css">
-
-
-
-
-
-
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://krossovochkin.github.io/img/apple-touch-icon-144-precomposed.png">
-
-  <link rel="shortcut icon" href="https://krossovochkin.github.io/img/favicon/yellow.png">
-
-
-
-<meta name="twitter:card" content="summary" />
-
-  <meta name="twitter:site" content="krossovochkin" />
-
-<meta name="twitter:creator" content="krossovochkin" />
-
-
-<meta property="og:locale" content="en" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="Kotlin-Java interop: function references and SAM conversions :: Krossovochkin">
+<meta property="og:title" content="Kotlin-Java interop: function references and SAM conversions" />
 <meta property="og:description" content="Though all the things below are pretty obvious if being careful while dealing with Kotlin-Java interop, I decided still to write short note about one particular issue with function references (from Kotlin side) and SAM conversions (from Java side).
 Function reference Function reference is a good way to pass function as a parameter without explicitly using lambdas.
 For example, if we have function:
-fun method(callback: (Input) -&amp;gt; Output) { ." />
+fun method(callback: (Input) -&gt; Output) { ." />
+<meta property="og:type" content="article" />
 <meta property="og:url" content="https://krossovochkin.github.io/posts/2018_09_13_kotlin_java_interop_function_references_and_sam_conversions/" />
-<meta property="og:site_name" content="Kotlin-Java interop: function references and SAM conversions" />
-
-  <meta property="og:image" content="https://krossovochkin.github.io/">
-
-<meta property="og:image:width" content="2048">
-<meta property="og:image:height" content="1024">
+<meta property="article:published_time" content="2018-09-13T00:00:00+00:00" />
+<meta property="article:modified_time" content="2018-09-13T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
 
 
-  <meta property="article:published_time" content="2018-09-13 00:00:00 &#43;0000 UTC" />
+    
 
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
 
 
 
@@ -78,113 +49,185 @@ fun method(callback: (Input) -&amp;gt; Output) { ." />
 
 
 
+<link rel="stylesheet" href="/scss/hyde-hyde.adf8a0af011d3afb07ed907ad3295e1c99f49503bc91d395e38dc3f8dfdf4900.css" integrity="sha256-rfigrwEdOvsH7ZB60yleHJn0lQO8kdOV443D&#43;N/fSQA=">
 
 
+<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    
+    
 
 </head>
-<body class="">
 
 
-<div class="container center headings--one-size">
-
-  <header class="header">
-  <div class="header__inner">
-    <div class="header__logo">
-      <a href="/">
-  <div class="logo">
-    Krossovochkin
-  </div>
-</a>
-
-    </div>
-    <div class="menu-trigger">menu</div>
-  </div>
-  
-    <nav class="menu">
-  <ul class="menu__inner menu__inner--desktop">
+    <body class="theme-base-0a ">
     
-      
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="https://krossovochkin.github.io/">
         
-          <li><a href="/about">About me</a></li>
+          Vasya Drobushkov
         
-      
-        
-          <li><a href="/">Posts</a></li>
-        
-      
-      
-    
-
-    
-  </ul>
-
-  <ul class="menu__inner menu__inner--mobile">
-    
-      
-        <li><a href="/about">About me</a></li>
-      
-    
-      
-        <li><a href="/">Posts</a></li>
-      
-    
-    
-  </ul>
-</nav>
-
-  
-</header>
-
-
-  <div class="content">
-    
-<div class="post">
-  <h1 class="post-title">
-    <a href="https://krossovochkin.github.io/posts/2018_09_13_kotlin_java_interop_function_references_and_sam_conversions/">Kotlin-Java interop: function references and SAM conversions</a></h1>
-  <div class="post-meta">
-    
-      <span class="post-date">
-        2018-09-13 
+        </a>
       </span>
+      
+        
+        
+        
+        <div class="author-image">
+          <img src="https://krossovochkin.github.io/../img/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
+        </div>
+        
+      
+      
+      <p class="site__description">
+        
+      </p>
+    </div>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">Vasya Drobushkov</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="/posts/">
+						<span>Posts</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="/about/">
+						<span>About</span>
+					</a>
+				</li>
+			 
+		
+	</ul>
+</div>
+
+        <section class="social">
+	
+	<a href="https://twitter.com/krossovochkin" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://facebook.com/vasya.drobushkov" rel="me"><i class="fab fa-facebook-f"></i></a>
+	
+	
+	<a href="https://github.com/krossovochkin" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	<a href="https://linkedin.com/in/vasyadrobushkov" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://stackoverflow.com/users/1533933/krossovochkin" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</section>
+
+      </div>
+    </div>
     
-    
-    <span class="post-author">::
-      Vasya Drobushkov
-    </span>
-    
+<div class="copyright">
+  &copy; 2019 - 2020 Vasya Drobushkov
+  
+    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
+  
+</div>
+
+
+
   </div>
+</div>
 
-  
-  <span class="post-tags">
+        <div class="content container">
+            
     
-    #<a href="https://krossovochkin.github.io/tags/kotlin/">kotlin</a>&nbsp;
+<article>
+  <header>
+    <h1>Kotlin-Java interop: function references and SAM conversions</h1>
     
-    #<a href="https://krossovochkin.github.io/tags/java/">java</a>&nbsp;
     
-  </span>
-  
+<div class="post__meta">
+    
+    
+      <i class="fas fa-calendar-alt"></i> Sep 13, 2018
+    
+    
+    
+    
+    
+      
+      
+          <br/>
+           <i class="fas fa-tags"></i>
+          
+          <a class="badge badge-tag" href="/tags/kotlin">kotlin</a>
+           
+      
+          <a class="badge badge-tag" href="/tags/java">java</a>
+          
+      
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 5 min read
+</div>
 
-  
 
+  </header>
   
-
-  <div class="post-content"><div>
-        <p><a href="https://medium.com/@krossovochkin/kotlin-java-interop-function-references-and-sam-conversions-3d0cd36f7967"><img src="https://img.shields.io/badge/original-medium-green#badge" alt=""></a></p>
+  
+  <div class="post">
+    <p><a href="https://medium.com/@krossovochkin/kotlin-java-interop-function-references-and-sam-conversions-3d0cd36f7967"><img src="https://img.shields.io/badge/original-medium-green#badge" alt=""></a></p>
 <p>Though all the things below are pretty obvious if being careful while dealing with Kotlin-Java interop, I decided still to write short note about one particular issue with function references (from Kotlin side) and SAM conversions (from Java side).</p>
-<h3 id="function-reference">Function reference<a href="#function-reference" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="function-reference">Function reference</h3>
 <p>Function reference is a good way to pass function as a parameter without explicitly using lambdas.</p>
 <p>For example, if we have function:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">method</span>(callback: (Input) -&gt; Output) { ... }
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">method</span>(callback: (Input) <span style="color:#f92672">-&gt;</span> Output) { <span style="color:#f92672">..</span>. }
 </code></pre></div><p>then we can pass our function as a lambda with function call or as a function reference:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">callback</span>(input: Input): Output { ... }
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">callback</span>(input: Input): Output { <span style="color:#f92672">..</span>. }
 
-...
+<span style="color:#f92672">..</span>.
 
-method { input -&gt; callback(input) } <span style="color:#75715e">// lambda
+method { input <span style="color:#f92672">-&gt;</span> callback(input) } <span style="color:#75715e">// lambda
 </span><span style="color:#75715e"></span>method(<span style="color:#f92672">::</span>callback) <span style="color:#75715e">// function reference
 </span></code></pre></div><p>I really like to use function references where possible, because it is a bit more concise, you do not create wrapper for “callback”, code is shorter and even easier to read (most of the time).
 And this article is about issues function references can produce when they touch Java.</p>
-<h3 id="sam-conversions"><strong>SAM conversions</strong><a href="#sam-conversions" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="sam-conversions"><strong>SAM conversions</strong></h3>
 <blockquote>
 <p>Just like Java 8, Kotlin supports SAM conversions. This means that Kotlin function literals can be automatically converted into implementations of Java interfaces with a single non-default method, as long as the parameter types of the interface method match the parameter types of the Kotlin function.
 <a href="https://kotlinlang.org/docs/reference/java-interop.html#sam-conversions">Reference</a></p>
@@ -198,7 +241,7 @@ And this article is about issues function references can produce when they touch
 <span style="color:#75715e">// Kotlin:
 </span><span style="color:#75715e"></span>
 executor<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span> <span style="color:#f92672">{</span> doSomething<span style="color:#f92672">()</span> <span style="color:#f92672">}</span>
-</code></pre></div><h3 id="issue-description">Issue description<a href="#issue-description" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+</code></pre></div><h3 id="issue-description">Issue description</h3>
 <p>So, let’s take a look at the example, which shows the issue.
 Consider we have some ThirdParty Java class with some listeners inside.
 One can register some listeners in ThirdParty class and have updates passed through them.
@@ -237,7 +280,7 @@ After each step we’ll look at the state of ThirdParty class (using logs).</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">main</span>() {
 
     <span style="color:#66d9ef">val</span> callback = <span style="color:#f92672">::</span>onValueChanged
-    Log.d(ThirdParty.*TAG*, <span style="color:#e6db74">&#34;callback created: $callback&#34;</span>)
+    Log.d(ThirdParty.*TAG*, <span style="color:#e6db74">&#34;callback created: </span><span style="color:#e6db74">$callback</span><span style="color:#e6db74">&#34;</span>)
 
     <span style="color:#66d9ef">val</span> thirdParty = ThirdParty()
 
@@ -269,16 +312,16 @@ E/ThirdParty: Callbacks **count1**
 </li>
 </ul>
 <p>That happens because our created callback is a (Int) -&gt; Unit function and is not instance of ThirdParty.Callback , so after passing that function reference to a SAM different instanced of ThirdParty.Callback are created.</p>
-<h3 id="how-to-fix">How to fix<a href="#how-to-fix" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="how-to-fix">How to fix</h3>
 <p>To fix this issue (and leak) we should have our callback to be ThirdParty.Callback from the beginning and not a function reference.
 There are few ways to do that:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> callback = <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">: </span><span style="color:#a6e22e">ThirdParty</span>.Callback {
     <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onValueChanged</span>(value: Int) {
-        <span style="color:#66d9ef">this</span>@App.onValueChanged(value)
+        <span style="color:#66d9ef">this</span><span style="color:#a6e22e">@App</span>.onValueChanged(value)
     }
 }
 
-<span style="color:#66d9ef">val</span> callback = ThirdParty.Callback { value -&gt; onValueChanged(value) }
+<span style="color:#66d9ef">val</span> callback = ThirdParty.Callback { value <span style="color:#f92672">-&gt;</span> onValueChanged(value) }
 
 <span style="color:#66d9ef">val</span> callback = ThirdParty.Callback(<span style="color:#f92672">::</span>onValueChanged)
 </code></pre></div><p>All of them are the same, though third one again looks a bit better.</p>
@@ -291,7 +334,7 @@ D/ThirdParty: removeCallback: $sam$ThirdParty_Callback$0@6a2e0a7
 D/ThirdParty: Callbacks count0
 </code></pre><p>So all instances are the same and we successfully removed callback from ThirdParty class.</p>
 <p>Looks pretty obvious and clear, though such small improvements from Kotlin side to predict how things can be used in Java can provide weird issues which are difficult to track (especially when it comes to memory leaks).</p>
-<h3 id="what-happens-if-there-is-no-java-code">What happens if there is no Java code<a href="#what-happens-if-there-is-no-java-code" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="what-happens-if-there-is-no-java-code">What happens if there is no Java code</h3>
 <p>One important thing to know is that such issues can happen only between Kotlin and Java.
 If we had ThirdParty class written in Kotlin (or just converted from Java to Kotlin), then our previously written code wouldn’t compile:</p>
 <pre><code>Type mismatch: inferred type is KFunction1&lt;[@ParameterName](http://twitter.com/ParameterName) Int, Unit&gt; but ThirdParty.Callback was expected
@@ -299,77 +342,87 @@ If we had ThirdParty class written in Kotlin (or just converted from Java to Kot
 <p>But at the same time we have only one option to create callback:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> callback = <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">: </span><span style="color:#a6e22e">ThirdParty</span>.Callback {
     <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onValueChanged</span>(value: Int) {
-        <span style="color:#66d9ef">this</span>@App.onValueChanged(value)
+        <span style="color:#66d9ef">this</span><span style="color:#a6e22e">@App</span>.onValueChanged(value)
     }
 }
 </code></pre></div><p>Other ways won’t work, because SAM conversion is not available and interfaces don’t have constructors.
 So there are some drawbacks in readability for the sake of correctness.</p>
-<h3 id="conclusion">Conclusion<a href="#conclusion" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<h3 id="conclusion">Conclusion</h3>
 <p>The only conclusion from this article is that one should be pretty attentive when dealing with things where Kotlin and Java touch each other.</p>
 
-      </div></div>
-
-  
-  
-<div class="pagination">
-    <div class="pagination__title">
-        <span class="pagination__title-h">Read other posts</span>
-        <hr />
-    </div>
-    <div class="pagination__buttons">
-        
-        <span class="button previous">
-            <a href="https://krossovochkin.github.io/posts/2019_10_15_scary_movies/">
-                <span class="button__icon">←</span>
-                <span class="button__text">Scary movies</span>
-            </a>
-        </span>
-        
-        
-        <span class="button next">
-            <a href="https://krossovochkin.github.io/posts/2018_07_21_dynamic_mobile_client_development_problem_and_concept/">
-                <span class="button__text">Dynamic mobile client development. Problem and concept.</span>
-                <span class="button__icon">→</span>
-            </a>
-        </span>
-        
-    </div>
-</div>
-
-  
-
-  
-
-</div>
-
   </div>
-
   
-    <footer class="footer">
-  <div class="footer__inner">
+
+<div class="navigation navigation-single">
     
-      <div class="copyright copyright--user">
-        <span>© 2020 Vasya Drobushkov</span>
+    <a href="/posts/2018_07_21_dynamic_mobile_client_development_problem_and_concept/" class="navigation-prev">
+      <i aria-hidden="true" class="fa fa-chevron-left"></i>
+      <span class="navigation-tittle">Dynamic mobile client development. Problem and concept.</span>
+    </a>
     
-        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
-      </div>
-  </div>
-  <div class="footer__inner">
-    <div class="copyright copyright--user">
-      <a href="https://www.facebook.com/vasya.drobushkov">Facebook</a><a href="https://twitter.com/krossovochkin">Twitter</a>
-    </div>
-  </div>
-</footer>
-
-<script src="https://krossovochkin.github.io/assets/main.js"></script>
-<script src="https://krossovochkin.github.io/assets/prism.js"></script>
-
-
-
+    
+    <a href="/posts/2019_10_15_scary_movies/" class="navigation-next">
+      <span class="navigation-tittle">Scary movies</span>
+      <i aria-hidden="true" class="fa fa-chevron-right"></i>
+    </a>
+    
+</div>
 
 
   
-</div>
 
-</body>
+  
+    
+
+
+</article>
+
+
+        </div>
+        
+    
+
+  
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
+
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+        
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/bash.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/java.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+            
+        
+    <script type="text/javascript">
+        
+        hljs.configure({languages: ["bash, java, kotlin"]});
+        
+        hljs.initHighlightingOnLoad();
+    </script>
+    
+
+
+
+    
+
+
+
+    </body>
 </html>

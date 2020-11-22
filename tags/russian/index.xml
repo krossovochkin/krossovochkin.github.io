@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>russian on Krossovochkin</title>
+    <title>russian on Vasya Drobushkov</title>
     <link>https://krossovochkin.github.io/tags/russian/</link>
-    <description>Recent content in russian on Krossovochkin</description>
+    <description>Recent content in russian on Vasya Drobushkov</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <copyright>© 2020 Vasya Drobushkov</copyright>
-    <lastBuildDate>Sun, 24 Jun 2018 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://krossovochkin.github.io/tags/russian/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>en</language>
+    <lastBuildDate>Sun, 24 Jun 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.github.io/tags/russian/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Программирование и музыка</title>
       <link>https://krossovochkin.github.io/posts/2018_06_24_programming_and_music/</link>
