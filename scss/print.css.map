@@ -1,7 +1,7 @@
 {
 	"version": 3,
 	"file": "print.css",
-	"sourceRoot": "E:/Work/Temp/website/hugo",
+	"sourceRoot": "E:/work/Temp/website/hugo",
 	"sources": [
 		"themes/hyde-hyde/assets/scss/print.scss",
 		"themes/hyde-hyde/assets/scss/hyde-hyde/_variables.scss",

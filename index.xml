@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Vasya Drobushkov</title>
-    <link>https://krossovochkin.github.io/</link>
+    <link>https://krossovochkin.com/</link>
     <description>Recent content on Vasya Drobushkov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 31 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 31 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.com/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Boolean not</title>
-      <link>https://krossovochkin.github.io/posts/2020_10_31_boolean_not/</link>
+      <link>https://krossovochkin.com/posts/2020_10_31_boolean_not/</link>
       <pubDate>Sat, 31 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2020_10_31_boolean_not/</guid>
+      <guid>https://krossovochkin.com/posts/2020_10_31_boolean_not/</guid>
       <description>Introduction Boolean is one of the essential types in programming and probably one of the simplest because it has only two values: true and false. Boolean are usually used as flags for control flow, specifically, conditions.
 if (string.isEmpty()) { println(&amp;#34;String is empty&amp;#34;) } It is not much interesting in Boolean, but in Kotlin there is one thing which might be confusing if used - it is method not().
 Negate Boolean If we look at declaration of Boolean class in Kotlin we&amp;rsquo;ll see five methods, four of which are pretty obvious: and, or, xor and compareTo.</description>
@@ -20,38 +20,38 @@ Negate Boolean If we look at declaration of Boolean class in Kotlin we&amp;rsquo
     
     <item>
       <title>Middle Point</title>
-      <link>https://krossovochkin.github.io/posts/2020_10_28_middle_point/</link>
+      <link>https://krossovochkin.com/posts/2020_10_28_middle_point/</link>
       <pubDate>Wed, 28 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2020_10_28_middle_point/</guid>
+      <guid>https://krossovochkin.com/posts/2020_10_28_middle_point/</guid>
       <description>Introduction Working with numbers in programming never was a simple thing. In math, we deal with various sets of numbers - whole numbers, rational, complex. All these sets are infinite - that means that for any number we can find another smaller one and one which is bigger. In programming when we work with numbers we deal with some subset of these sets - that many that can be represented with a given amount of bits.</description>
     </item>
     
     <item>
       <title>Kotlin Functional Interfaces: Function reference and SAM conversion</title>
-      <link>https://krossovochkin.github.io/posts/2020_10_17_kotlin_functional_interfaces_function_references_and_sam_conversion/</link>
+      <link>https://krossovochkin.com/posts/2020_10_17_kotlin_functional_interfaces_function_references_and_sam_conversion/</link>
       <pubDate>Sat, 17 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2020_10_17_kotlin_functional_interfaces_function_references_and_sam_conversion/</guid>
+      <guid>https://krossovochkin.com/posts/2020_10_17_kotlin_functional_interfaces_function_references_and_sam_conversion/</guid>
       <description>Introduction About two years ago I made a post about a tricky case in Kotlin-Java interop related to the usage of function references and SAM conversion. One of the points there was that in Kotlin, if interface is declared instead of a function, one has to explicitly create an object, therefore no caveats as with interop:
 val callback = object : ThirdParty.Callback { override fun onValueChanged(value: Int) { this@App.onValueChanged(value) } } With Kotlin 1.</description>
     </item>
     
     <item>
       <title>Kotlin Nitpicker&#39;s guide</title>
-      <link>https://krossovochkin.github.io/posts/2020_10_14_kotlin_nitpickers_guide/</link>
+      <link>https://krossovochkin.com/posts/2020_10_14_kotlin_nitpickers_guide/</link>
       <pubDate>Wed, 14 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2020_10_14_kotlin_nitpickers_guide/</guid>
+      <guid>https://krossovochkin.com/posts/2020_10_14_kotlin_nitpickers_guide/</guid>
       <description>Introduction Code review is an essential tool for a development team, which helps ensure high-quality standards of code. While reviewing others&#39; code one might find bugs, design issues, and so on. One another part of reviewing is getting used to the codebase and following team&amp;rsquo;s code style for better maintenance. Though it is pretty cool in theory, in practice team might face few issues, one of which is nitpicking. When review is bloated with dozens of similar comments related to e.</description>
     </item>
     
     <item>
       <title>The Real Kotlin Flow benefits over RxJava</title>
-      <link>https://krossovochkin.github.io/posts/2020_05_17_the_real_kotlin_flow_benefits_over_rxjava/</link>
+      <link>https://krossovochkin.com/posts/2020_05_17_the_real_kotlin_flow_benefits_over_rxjava/</link>
       <pubDate>Sun, 17 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2020_05_17_the_real_kotlin_flow_benefits_over_rxjava/</guid>
+      <guid>https://krossovochkin.com/posts/2020_05_17_the_real_kotlin_flow_benefits_over_rxjava/</guid>
       <description>Source
  
 Introduction Recently the article about Kotlin Flow benefits over RxJava was published by Antoni Castejón García: Kotlin Flow benefits over RxJava
@@ -60,20 +60,20 @@ Though Antoni made a good work and many thanks to him for providing his feedback
     
     <item>
       <title>Raising old project from the depth</title>
-      <link>https://krossovochkin.github.io/posts/2020_05_07_raising_old_project_from_the_depth/</link>
+      <link>https://krossovochkin.com/posts/2020_05_07_raising_old_project_from_the_depth/</link>
       <pubDate>Thu, 07 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2020_05_07_raising_old_project_from_the_depth/</guid>
+      <guid>https://krossovochkin.com/posts/2020_05_07_raising_old_project_from_the_depth/</guid>
       <description>Introduction I am an Android Developer from the beginning of my professional career. Straight from the University, I’ve jumped into Android development, and to this day continue my journey. During that time I’ve worked in different areas: enterprise, product business applications, SDK development. But all that started with mobile game development.
 The first project I took part in was called “nICE”. It was a match-3-like game. It was at the time when there was Android Market and not Google Play Store, when we used Eclipse and not Android Studio and, of course, used Java.</description>
     </item>
     
     <item>
       <title>Kotlin useful but unfairly not mentioned features</title>
-      <link>https://krossovochkin.github.io/posts/2020_05_03_kotlin_useful_but_unfairly_not_mentioned_features/</link>
+      <link>https://krossovochkin.com/posts/2020_05_03_kotlin_useful_but_unfairly_not_mentioned_features/</link>
       <pubDate>Sun, 03 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2020_05_03_kotlin_useful_but_unfairly_not_mentioned_features/</guid>
+      <guid>https://krossovochkin.com/posts/2020_05_03_kotlin_useful_but_unfairly_not_mentioned_features/</guid>
       <description>Source
  
 Introduction Many of us first learned Kotlin after Java. Learning process was fairly simple because Kotlin has many similarities when at the same time improves development experience by fighting common pain points Java developer (especially on Java 6, which is common in Android world) has to encounter every day.
@@ -82,10 +82,10 @@ There are a bunch of articles about cool Kotlin features like immutability, hand
     
     <item>
       <title>Category theory</title>
-      <link>https://krossovochkin.github.io/posts/2020_04_26_category_theory/</link>
+      <link>https://krossovochkin.com/posts/2020_04_26_category_theory/</link>
       <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2020_04_26_category_theory/</guid>
+      <guid>https://krossovochkin.com/posts/2020_04_26_category_theory/</guid>
       <description>Source
 
 Disclaimer This is short synopsis of great set of lectures. What is written here is by no means true, one should refer to original lectures or some books etc. This is written mostly for myself in case I wanted to revisit the topic in the future. Everything below is not “what it is” but mostly “how I understood that”. So, there might be mistakes and so on.
@@ -94,10 +94,10 @@ Category Category consists of:</description>
     
     <item>
       <title>Accessibility of text over generic background color</title>
-      <link>https://krossovochkin.github.io/posts/2020_03_29_accessibility_of_text_over_generic_background_color/</link>
+      <link>https://krossovochkin.com/posts/2020_03_29_accessibility_of_text_over_generic_background_color/</link>
       <pubDate>Sun, 29 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2020_03_29_accessibility_of_text_over_generic_background_color/</guid>
+      <guid>https://krossovochkin.com/posts/2020_03_29_accessibility_of_text_over_generic_background_color/</guid>
       <description>Source
  
 Introduction One of the important parts of application development is to make it accessible to as many users as possible. This includes people with impaired vision, color blindness, impaired hearing, impaired dexterity, cognitive disabilities, and many other disabilities. Making an app accessible is challenging but rewarding. The difficulty is because the development team should pay attention to some details which often might be overlooked. Though besides some advanced accessibility support might be too expensive to add, there are still some basic best practices to ensure that your app development is heading in the right direction (and can be improved later over time).</description>
@@ -105,10 +105,10 @@ Introduction One of the important parts of application development is to make it
     
     <item>
       <title>Compiler-generated classes, methods and fields in Java</title>
-      <link>https://krossovochkin.github.io/posts/2020_03_19_compiler_generated_classes_methods_and_fields_in_java/</link>
+      <link>https://krossovochkin.com/posts/2020_03_19_compiler_generated_classes_methods_and_fields_in_java/</link>
       <pubDate>Thu, 19 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2020_03_19_compiler_generated_classes_methods_and_fields_in_java/</guid>
+      <guid>https://krossovochkin.com/posts/2020_03_19_compiler_generated_classes_methods_and_fields_in_java/</guid>
       <description>Source
 
 Introduction When we write program in Java we create some classes, methods, fields and put all of this into our source code — .java files. After these files are compiled with javac (Java Compiler) into .class files we got a bunch of Java bytecode. It turns out that not only we create classes, methods and fields in our source code, but also compiler by itself can create them when needed.</description>
@@ -116,10 +116,10 @@ Introduction When we write program in Java we create some classes, methods, fiel
     
     <item>
       <title>Unit Testing Best Practices</title>
-      <link>https://krossovochkin.github.io/posts/2020_03_19_unit_testing_best_practices/</link>
+      <link>https://krossovochkin.com/posts/2020_03_19_unit_testing_best_practices/</link>
       <pubDate>Thu, 19 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2020_03_19_unit_testing_best_practices/</guid>
+      <guid>https://krossovochkin.com/posts/2020_03_19_unit_testing_best_practices/</guid>
       <description>Source
 
 Disclaimer: This is a set of things I consider very useful when writing unit tests. I call them best practices because they allow me to write good, quality tests that are easier to read, more maintainable, and better describe business needs.
@@ -129,10 +129,10 @@ Tests in the Development Process Tests are very important in the development pro
     
     <item>
       <title>From RxJava to Kotlin Flow: Testing</title>
-      <link>https://krossovochkin.github.io/posts/2020_03_05_from_rxjava_to_kotlin_flow_testing/</link>
+      <link>https://krossovochkin.com/posts/2020_03_05_from_rxjava_to_kotlin_flow_testing/</link>
       <pubDate>Thu, 05 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2020_03_05_from_rxjava_to_kotlin_flow_testing/</guid>
+      <guid>https://krossovochkin.com/posts/2020_03_05_from_rxjava_to_kotlin_flow_testing/</guid>
       <description>Source
  This post is part of series of comparing RxJava to Kotlin Flow. Previous articles were about Threading, Backpressure, Error Handling, Stream Types, Throttling
  
@@ -141,10 +141,10 @@ Introduction Testing is a crucial part of whole development. Testing allows you 
     
     <item>
       <title>From RxJava to Kotlin Flow: Throttling</title>
-      <link>https://krossovochkin.github.io/posts/2020_03_02_from_rxjava_to_kotlin_flow_throttling/</link>
+      <link>https://krossovochkin.com/posts/2020_03_02_from_rxjava_to_kotlin_flow_throttling/</link>
       <pubDate>Mon, 02 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2020_03_02_from_rxjava_to_kotlin_flow_throttling/</guid>
+      <guid>https://krossovochkin.com/posts/2020_03_02_from_rxjava_to_kotlin_flow_throttling/</guid>
       <description>Source
  This post is part of series of comparing RxJava to Kotlin Flow. Previous articles were about Threading, Backpressure, Error Handling, Stream Types
   
@@ -154,10 +154,10 @@ Introduction Throttling is also one of the essential features of reactive progra
     
     <item>
       <title>From RxJava to Kotlin Flow: Stream Types</title>
-      <link>https://krossovochkin.github.io/posts/2020_02_26_from_rxjava_to_kotlin_flow_stream_types/</link>
+      <link>https://krossovochkin.com/posts/2020_02_26_from_rxjava_to_kotlin_flow_stream_types/</link>
       <pubDate>Wed, 26 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2020_02_26_from_rxjava_to_kotlin_flow_stream_types/</guid>
+      <guid>https://krossovochkin.com/posts/2020_02_26_from_rxjava_to_kotlin_flow_stream_types/</guid>
       <description>Source
  This post is part of series of comparing RxJava to Kotlin Flow. Previous articles were about Threading, Backpressure, Error Handling
   
@@ -166,10 +166,10 @@ Introduction In reactive programming we use streams. Therefore in both RxJava an
     
     <item>
       <title>From RxJava to Kotlin Flow: Error Handling</title>
-      <link>https://krossovochkin.github.io/posts/2020_02_24_from_rxjava_to_kotlin_flow_error_handling/</link>
+      <link>https://krossovochkin.com/posts/2020_02_24_from_rxjava_to_kotlin_flow_error_handling/</link>
       <pubDate>Mon, 24 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2020_02_24_from_rxjava_to_kotlin_flow_error_handling/</guid>
+      <guid>https://krossovochkin.com/posts/2020_02_24_from_rxjava_to_kotlin_flow_error_handling/</guid>
       <description>Source
  This post is part of series of comparing RxJava to Kotlin Flow. Previous articles were about Threading and Backpressure.
  
@@ -178,10 +178,10 @@ Introduction Error handling is fundamental in reactive programming. Reactive str
     
     <item>
       <title>Vinyls animation with MotionLayout</title>
-      <link>https://krossovochkin.github.io/posts/2020_02_21_vinyls_animation_with_motionlayout/</link>
+      <link>https://krossovochkin.com/posts/2020_02_21_vinyls_animation_with_motionlayout/</link>
       <pubDate>Fri, 21 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2020_02_21_vinyls_animation_with_motionlayout/</guid>
+      <guid>https://krossovochkin.com/posts/2020_02_21_vinyls_animation_with_motionlayout/</guid>
       <description>Source
 
 Introduction Being professional Android developer for many years, things which were always difficult to me are animations, colors and dimensions — basically all the UI/UX stuff. I can’t describe or easily understand what good colors can be used, how to implement this or that animation and so on. Though we’re waiting for MotionLayout for quite long time (and Android Studio 4.0) I took some time to play with it.</description>
@@ -189,19 +189,19 @@ Introduction Being professional Android developer for many years, things which w
     
     <item>
       <title>From RxJava to Kotlin Flow: Backpressure</title>
-      <link>https://krossovochkin.github.io/posts/2020_02_06_from_rxjava_to_kotlin_flow_backpressure/</link>
+      <link>https://krossovochkin.com/posts/2020_02_06_from_rxjava_to_kotlin_flow_backpressure/</link>
       <pubDate>Thu, 06 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2020_02_06_from_rxjava_to_kotlin_flow_backpressure/</guid>
+      <guid>https://krossovochkin.com/posts/2020_02_06_from_rxjava_to_kotlin_flow_backpressure/</guid>
       <description>Disclaimer This article unfortunately is not that dive deep (because of complexity of internals of coroutines), but instead trying to compare RxJava and Kotlin Flow mostly as black box with trying to find out differences in behavior and how to migrate from RxJava with its backpressure solution to Kotlin Flow. Hopefully this article will give you direction on where to look at if you decide to migrate to Kotlin Flow.</description>
     </item>
     
     <item>
       <title>Diving deep into Android Dex bytecode</title>
-      <link>https://krossovochkin.github.io/posts/2020_02_02_diving_deep_into_android_dex_bytecode/</link>
+      <link>https://krossovochkin.com/posts/2020_02_02_diving_deep_into_android_dex_bytecode/</link>
       <pubDate>Sun, 02 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2020_02_02_diving_deep_into_android_dex_bytecode/</guid>
+      <guid>https://krossovochkin.com/posts/2020_02_02_diving_deep_into_android_dex_bytecode/</guid>
       <description>Source
  
 Introduction Modern Android development is based on Kotlin, which is interoperable with Java. Whenever we use some cool feature from Kotlin (say High-order functions) under the hood (when running on JVM) the feature is implemented in terms of Java bytecode. This might lead to some overheads in memory and performance if used without caution (for example excessive usage of lambdas with parameters without inlining might produce a lot of anonymous classes and put additional pressure on GC).</description>
@@ -209,10 +209,10 @@ Introduction Modern Android development is based on Kotlin, which is interoperab
     
     <item>
       <title>From RxJava 2 to Kotlin Flow: Threading</title>
-      <link>https://krossovochkin.github.io/posts/2020_01_25_from_rxjava_2_to_kotlin_flow_threading/</link>
+      <link>https://krossovochkin.com/posts/2020_01_25_from_rxjava_2_to_kotlin_flow_threading/</link>
       <pubDate>Sat, 25 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2020_01_25_from_rxjava_2_to_kotlin_flow_threading/</guid>
+      <guid>https://krossovochkin.com/posts/2020_01_25_from_rxjava_2_to_kotlin_flow_threading/</guid>
       <description>Source
   
 Introduction For a long time RxJava was undisputed leader for reactive solutions on Android, though with Kotlin expansion and introducing cold streams (Flow) seems situation might be rapidly changing in the coming years. Though reactive programming is not related to threading in the first place, concurrency and parallelism are very important anyway. In this article we’ll try to make short recap on threading in RxJava 2 (with some basic caveats on its usage) and then take a look at how threading works in Kotlin Flow, so if anyone would like to migrate their code without affecting functionality it would be nice and smooth.</description>
@@ -220,10 +220,10 @@ Introduction For a long time RxJava was undisputed leader for reactive solutions
     
     <item>
       <title>Change Theme Dynamically with Circular Reveal Animation on Android</title>
-      <link>https://krossovochkin.github.io/posts/2020_01_19_change_theme_dynamically_with_circular_reveal_animation_on_android/</link>
+      <link>https://krossovochkin.com/posts/2020_01_19_change_theme_dynamically_with_circular_reveal_animation_on_android/</link>
       <pubDate>Sun, 19 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2020_01_19_change_theme_dynamically_with_circular_reveal_animation_on_android/</guid>
+      <guid>https://krossovochkin.com/posts/2020_01_19_change_theme_dynamically_with_circular_reveal_animation_on_android/</guid>
       <description>Introduction Dark theme on Android is on a hype at the moment. More and more apps add support for Dark theme over time allowing users to customize their phones, save battery and provide better accessibility. Though another trend which grows today is animated theme changes. First app I saw support of this was Telegram:
 Source
 After that in different modifications such feature started to appear in other apps, for example VK.</description>
@@ -231,48 +231,48 @@ After that in different modifications such feature started to appear in other ap
     
     <item>
       <title>SQLite Triggers (&#43; Android Room)</title>
-      <link>https://krossovochkin.github.io/posts/2020_01_17_sqlite_triggers_android_room/</link>
+      <link>https://krossovochkin.com/posts/2020_01_17_sqlite_triggers_android_room/</link>
       <pubDate>Fri, 17 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2020_01_17_sqlite_triggers_android_room/</guid>
+      <guid>https://krossovochkin.com/posts/2020_01_17_sqlite_triggers_android_room/</guid>
       <description>Introduction SQLite is one of the most used database. This is because it is used on almost all mobile devices in the world. As SQLite is very similar to SQL everyone already knows the basic concepts like querying, inserting, updating, deleting data; databases and tables; joining tables etc. But SQLite also has some advanced features and this article is about one of such called Trigger.
 If we try to speculate on the name “Trigger” we might say that probably something will be done when some changes are made to the database.</description>
     </item>
     
     <item>
       <title>Decoding Handler and Looper in Android</title>
-      <link>https://krossovochkin.github.io/posts/2019_12_24_decoding_handler_and_looper_in_android/</link>
+      <link>https://krossovochkin.com/posts/2019_12_24_decoding_handler_and_looper_in_android/</link>
       <pubDate>Tue, 24 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2019_12_24_decoding_handler_and_looper_in_android/</guid>
+      <guid>https://krossovochkin.com/posts/2019_12_24_decoding_handler_and_looper_in_android/</guid>
       <description>Introduction Handler and Looper are one of the main low-level Android OS things, which almost nobody uses directly (at least nowadays). But they are at the core, so many other high-level solutions are based on them. Therefore one should know what Handler and Looper are, what and how they are doing.
 In this article we’ll try to understand Handler and Looper in Android. What, how and why we might need them.</description>
     </item>
     
     <item>
       <title>Operator fusion in RxJava 2</title>
-      <link>https://krossovochkin.github.io/posts/2019_11_02_operator_fusion_in_rxjava_2/</link>
+      <link>https://krossovochkin.com/posts/2019_11_02_operator_fusion_in_rxjava_2/</link>
       <pubDate>Sat, 02 Nov 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2019_11_02_operator_fusion_in_rxjava_2/</guid>
+      <guid>https://krossovochkin.com/posts/2019_11_02_operator_fusion_in_rxjava_2/</guid>
       <description>Introduction RxJava is a very powerful library, though it has some issues as well. Specifically performance and memory issues, which come from problems library tries to solve and how the solution is designed from technical perspective. In order to minimize overhead in RxJava there are a number of optimizations, which are called “operator fusion”. And we’ll talk about them in this article. But first let’s recap how RxJava reactive types work and what issues they have.</description>
     </item>
     
     <item>
       <title>Random interview coding task retrospective</title>
-      <link>https://krossovochkin.github.io/posts/2019_09_27_random_interview_coding_task_retrospective/</link>
+      <link>https://krossovochkin.com/posts/2019_09_27_random_interview_coding_task_retrospective/</link>
       <pubDate>Fri, 27 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2019_09_27_random_interview_coding_task_retrospective/</guid>
+      <guid>https://krossovochkin.com/posts/2019_09_27_random_interview_coding_task_retrospective/</guid>
       <description>Introduction It happens often that on interviews you’ve asked to perform some coding task. For unknown reason most of the times you’ve asked to write some code not in the IDE, but on piece of paper. I don’t like such tasks on an interview, because in real life one won’t write any kind of code on a paper. If you need to write something not in IDE you face issues like you can’t quickly change something or write new code in between the lines.</description>
     </item>
     
     <item>
       <title>SiMMMMpLLLLeDateFormat</title>
-      <link>https://krossovochkin.github.io/posts/2019_07_21_simmmmplllledateformat/</link>
+      <link>https://krossovochkin.com/posts/2019_07_21_simmmmplllledateformat/</link>
       <pubDate>Sun, 21 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2019_07_21_simmmmplllledateformat/</guid>
+      <guid>https://krossovochkin.com/posts/2019_07_21_simmmmplllledateformat/</guid>
       <description>Introduction Using SimpleDateFormat to format dates and times is a common thing (as Java 8 Time API is not that available on Android yet). Usually it looks like:
 val formatter = SimpleDateFormat(&amp;#34;dd MMMM yyyy&amp;#34;, Locale.ENGLISH) formatter.format(date) We can use different formats and locales with not only providing correct translations, but also some additional locale-specific formatting rules.
 One tricky thing about SimpleDateFormat formats is why we have M and L when they look identical?</description>
@@ -280,38 +280,38 @@ One tricky thing about SimpleDateFormat formats is why we have M and L when they
     
     <item>
       <title>3x3x3 Rubik’s cube world (GIF alert)</title>
-      <link>https://krossovochkin.github.io/posts/2019_07_07_3x3x3_rubiks_cube_world_gif_alert/</link>
+      <link>https://krossovochkin.com/posts/2019_07_07_3x3x3_rubiks_cube_world_gif_alert/</link>
       <pubDate>Sun, 07 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2019_07_07_3x3x3_rubiks_cube_world_gif_alert/</guid>
+      <guid>https://krossovochkin.com/posts/2019_07_07_3x3x3_rubiks_cube_world_gif_alert/</guid>
       <description>Introduction I find Rubik’s cube an awesome puzzle. It has simple design, but quite difficult to solve (if you don’t know how to do that). At the same time it is possible to learn how to solve cube — there are a lot of algorithms for solving (for example Fridrich method describes quite a lot of them). These optimized algorithms made popular speedcubing — solving cube on time — with world record of less than 4 seconds.</description>
     </item>
     
     <item>
       <title>Android Version Code Tricks</title>
-      <link>https://krossovochkin.github.io/posts/2019_07_04_android_version_code_tricks/</link>
+      <link>https://krossovochkin.com/posts/2019_07_04_android_version_code_tricks/</link>
       <pubDate>Thu, 04 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2019_07_04_android_version_code_tricks/</guid>
+      <guid>https://krossovochkin.com/posts/2019_07_04_android_version_code_tricks/</guid>
       <description>Introduction Version code is a special integer value which works as an internal version number. It is not visible to end users. Android system uses this number to protect against application downgrades — it is not possible to install new application with version code lower than in currently installed application. Developers can use version code for example for doing specific tasks on updating to specific version.
 Version code is placed inside AndroidManifest, but usually it is inside *defaultConfig *in build.</description>
     </item>
     
     <item>
       <title>Throttling in RxJava 2</title>
-      <link>https://krossovochkin.github.io/posts/2019_06_24_throttling_in_rxjava_2/</link>
+      <link>https://krossovochkin.com/posts/2019_06_24_throttling_in_rxjava_2/</link>
       <pubDate>Mon, 24 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2019_06_24_throttling_in_rxjava_2/</guid>
+      <guid>https://krossovochkin.com/posts/2019_06_24_throttling_in_rxjava_2/</guid>
       <description>Introduction I don’t know for what reason but I see from time to time same misunderstanding on different throttle operators in RxJava. Usually nobody says about throttle, instead by default everyone says that debounce can be used. Especially using debounce to avoid multiple clicks on buttons is commonly suggested, which I believe is a bad UX (some examples here and here). Let’s finally look at available options in RxJava and find out when it is better to use what.</description>
     </item>
     
     <item>
       <title>Java-C-Assembly Matryoshka</title>
-      <link>https://krossovochkin.github.io/posts/2019_06_04_java_c_assembly_matryoshka/</link>
+      <link>https://krossovochkin.com/posts/2019_06_04_java_c_assembly_matryoshka/</link>
       <pubDate>Tue, 04 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2019_06_04_java_c_assembly_matryoshka/</guid>
+      <guid>https://krossovochkin.com/posts/2019_06_04_java_c_assembly_matryoshka/</guid>
       <description>Source
  
  Disclaimers:
@@ -320,20 +320,20 @@ Version code is placed inside AndroidManifest, but usually it is inside *default
     
     <item>
       <title>RxJava Observable to Single</title>
-      <link>https://krossovochkin.github.io/posts/2019_05_27_rxjava_observable_to_single/</link>
+      <link>https://krossovochkin.com/posts/2019_05_27_rxjava_observable_to_single/</link>
       <pubDate>Mon, 27 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2019_05_27_rxjava_observable_to_single/</guid>
+      <guid>https://krossovochkin.com/posts/2019_05_27_rxjava_observable_to_single/</guid>
       <description>Transforming Single to Observable is simple, as Single satisfies Observable’s contract. Just call single.toObservable() and you’re good. But transforming Observable to Single is not that simple: if it happens that Observable emits exactly one value and completes (or terminates with error without emitting values) then it is pretty straightforward, otherwise one need to set up some additional rules.
 In RxJava there are a number of operators for transforming Observable to Single:</description>
     </item>
     
     <item>
       <title>How to structure learning for maximum return</title>
-      <link>https://krossovochkin.github.io/posts/2019_04_10_how_to_structure_learning_for_maximum_return/</link>
+      <link>https://krossovochkin.com/posts/2019_04_10_how_to_structure_learning_for_maximum_return/</link>
       <pubDate>Wed, 10 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2019_04_10_how_to_structure_learning_for_maximum_return/</guid>
+      <guid>https://krossovochkin.com/posts/2019_04_10_how_to_structure_learning_for_maximum_return/</guid>
       <description>Photo by Tim Gouw on Unsplash
  
 In IT, it’s very difficult to keep up-to-date. A full-time job doesn’t give you a chance to upskill or try new things because you’re too busy dealing with legacy code, developing features, etc.
@@ -343,10 +343,10 @@ For the few past years, I’ve conducted a few experiments towards self-improvem
     
     <item>
       <title>Dart language bad design choices</title>
-      <link>https://krossovochkin.github.io/posts/2019_04_08_dart_language_bad_design_choices/</link>
+      <link>https://krossovochkin.com/posts/2019_04_08_dart_language_bad_design_choices/</link>
       <pubDate>Mon, 08 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2019_04_08_dart_language_bad_design_choices/</guid>
+      <guid>https://krossovochkin.com/posts/2019_04_08_dart_language_bad_design_choices/</guid>
       <description>Introduction Before raising a point about some design choices we need to define some criteria.
   Intent/Declaration &amp;gt; Usage/Implementation Code one write should clearly state the intent. Implementation is not that important than an intent.
   Implicit is bad Implicit things do not share the intention, therefore from the first point it means that any implicit thing hides true intent. If anything hides intention — it can be considered bad.</description>
@@ -354,10 +354,10 @@ For the few past years, I’ve conducted a few experiments towards self-improvem
     
     <item>
       <title>Kotlin-android-synthetics performance analysis (with ButterKnife)</title>
-      <link>https://krossovochkin.github.io/posts/2019_02_18_kotlin_android_synthetics_performance_analysis_with_butterknife/</link>
+      <link>https://krossovochkin.com/posts/2019_02_18_kotlin_android_synthetics_performance_analysis_with_butterknife/</link>
       <pubDate>Mon, 18 Feb 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2019_02_18_kotlin_android_synthetics_performance_analysis_with_butterknife/</guid>
+      <guid>https://krossovochkin.com/posts/2019_02_18_kotlin_android_synthetics_performance_analysis_with_butterknife/</guid>
       <description>Introduction After comment that synthetic is no longer recommended practice and some arguments I decided to go deeper into issue with performance of kotlin-android-synthetics by analyzing generated Java and byte code and comparing to other approaches (such as vanilla-*findViewById *and ButterKnife).
 Vanilla-findViewById This is sample Activity we’ll work with throughout the article. Approach with *findViewById *will be our baseline.
 Sample consists of:
@@ -367,10 +367,10 @@ Sample consists of:
     
     <item>
       <title>Scary movies</title>
-      <link>https://krossovochkin.github.io/posts/2019_10_15_scary_movies/</link>
+      <link>https://krossovochkin.com/posts/2019_10_15_scary_movies/</link>
       <pubDate>Mon, 15 Oct 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2019_10_15_scary_movies/</guid>
+      <guid>https://krossovochkin.com/posts/2019_10_15_scary_movies/</guid>
       <description>I don’t like horror movies. But this short story is not about that particularly. Horror movies are different: murders, ghosts, fantasy etc.
 I don’t like horror movies of any kind. But I still can watch them. 1408, final destination, the saw etc.
 The only thing that scares me in horror movies are people. Not blood, not ghosts.
@@ -379,10 +379,10 @@ Here I’d like to share few movies, which traumatized my psyche in the childhoo
     
     <item>
       <title>Kotlin-Java interop: function references and SAM conversions</title>
-      <link>https://krossovochkin.github.io/posts/2018_09_13_kotlin_java_interop_function_references_and_sam_conversions/</link>
+      <link>https://krossovochkin.com/posts/2018_09_13_kotlin_java_interop_function_references_and_sam_conversions/</link>
       <pubDate>Thu, 13 Sep 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2018_09_13_kotlin_java_interop_function_references_and_sam_conversions/</guid>
+      <guid>https://krossovochkin.com/posts/2018_09_13_kotlin_java_interop_function_references_and_sam_conversions/</guid>
       <description>Though all the things below are pretty obvious if being careful while dealing with Kotlin-Java interop, I decided still to write short note about one particular issue with function references (from Kotlin side) and SAM conversions (from Java side).
 Function reference Function reference is a good way to pass function as a parameter without explicitly using lambdas.
 For example, if we have function:
@@ -391,10 +391,10 @@ fun method(callback: (Input) -&amp;gt; Output) { .</description>
     
     <item>
       <title>Dynamic mobile client development. Problem and concept.</title>
-      <link>https://krossovochkin.github.io/posts/2018_07_21_dynamic_mobile_client_development_problem_and_concept/</link>
+      <link>https://krossovochkin.com/posts/2018_07_21_dynamic_mobile_client_development_problem_and_concept/</link>
       <pubDate>Sat, 21 Jul 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2018_07_21_dynamic_mobile_client_development_problem_and_concept/</guid>
+      <guid>https://krossovochkin.com/posts/2018_07_21_dynamic_mobile_client_development_problem_and_concept/</guid>
       <description>Data and interfaces — are two of the most important things in development.
 Data usually comes from/to server and tells application what should be used (and therefore shown to the user on UI)
 One of the main challenges in mobile development is to be in sync with server. Server is updated immediately (often along with web). Publishing to Play Store takes some time (even not talking about AppStore and their app review).</description>
@@ -402,38 +402,38 @@ One of the main challenges in mobile development is to be in sync with server. S
     
     <item>
       <title>Программирование и музыка</title>
-      <link>https://krossovochkin.github.io/posts/2018_06_24_programming_and_music/</link>
+      <link>https://krossovochkin.com/posts/2018_06_24_programming_and_music/</link>
       <pubDate>Sun, 24 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2018_06_24_programming_and_music/</guid>
+      <guid>https://krossovochkin.com/posts/2018_06_24_programming_and_music/</guid>
       <description>Предисловие Наушники — лучший друг разработчика (спасибо открытым пространствам и людям вокруг). Шум и разговоры отвлекают от работы и не дают сосредоточиться. Решением являются отдельные комнаты для небольших команд (что встречается редко и все равно не является стопроцентным, потому что отвлекать может и просто клацание коллегами по клавиатуре) либо наушники плюс музыка в них. Также у музыки на работе есть и другие преимущества. Например, она может выступать в роли якоря.</description>
     </item>
     
     <item>
       <title>Сказки</title>
-      <link>https://krossovochkin.github.io/posts/2018_06_17_fairytales/</link>
+      <link>https://krossovochkin.com/posts/2018_06_17_fairytales/</link>
       <pubDate>Sun, 17 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2018_06_17_fairytales/</guid>
+      <guid>https://krossovochkin.com/posts/2018_06_17_fairytales/</guid>
       <description>В детстве я читал много сказок, и я думаю, что это оказало некоторое влияние на развитие моего мировоззрения. По крайней мере неявно. Конечно, не факт, что в лучшую сторону. У меня было несколько книг, зачитанных до дыр, и собственно ими я хотел сейчас поделиться.
 Прежде всего: Да, я читал и знаю большинство популярных русских народных сказок вроде Колобка, различных вариаций сказок про Бабу Ягу и Кощея Бессмертного, всяких Красных Шапочек и Волков с козлятами Братьев Гримм и Гадких утят, Дюймовочек (хотя “Новое платье короля” — это очень сильная сказка) Андерсена и прочих известных сказок.</description>
     </item>
     
     <item>
       <title>Neural Networks and Deep Learning</title>
-      <link>https://krossovochkin.github.io/posts/2017_11_09_neural_networks_and_deep_learning/</link>
+      <link>https://krossovochkin.com/posts/2017_11_09_neural_networks_and_deep_learning/</link>
       <pubDate>Thu, 09 Nov 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2017_11_09_neural_networks_and_deep_learning/</guid>
+      <guid>https://krossovochkin.com/posts/2017_11_09_neural_networks_and_deep_learning/</guid>
       <description>Disclaimer It is brief synopsis of Neural Networks and Deep learning course on Coursera. That course is a first part of Deep learning specialization. Though course is great and very useful, I found that it has a lot of mathematics explanation (linear algebra — matrices, derivatives etc.), so sometimes it was difficult to wait for the actual useful information I didn’t know. So, I think I might be interested in reviewing neural networks in the future, but won’t be able to review course information as there will be a lot of such noise.</description>
     </item>
     
     <item>
       <title>[Android] Notifications Overview and Pitfalls</title>
-      <link>https://krossovochkin.github.io/posts/2017_02_11_android_notifications_overview_and_pitfalls/</link>
+      <link>https://krossovochkin.com/posts/2017_02_11_android_notifications_overview_and_pitfalls/</link>
       <pubDate>Sat, 11 Feb 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2017_02_11_android_notifications_overview_and_pitfalls/</guid>
+      <guid>https://krossovochkin.com/posts/2017_02_11_android_notifications_overview_and_pitfalls/</guid>
       <description>Introduction Notifications are widely used in Android applications. Though API is pretty straightforward, there are some key things that one should know and understand. This article will try to be first step into understanding Notifications API.
 Sending Single Notification Notification singleNotification = new NotificationCompat.Builder(this) .setContentTitle(&amp;#34;Title&amp;#34;) .setContentText(&amp;#34;Text&amp;#34;) .setSmallIcon(R.drawable.ic_notification) .build(); NotificationManagerCompat notificationManager = NotificationManagerCompat.*from*(context); notificationManager.notify(notificationId, singleNotification); Key things here:
   We use NotificationCompat.Builder to have single interface for creating notifications and let Support Library do all compatibility tricks;</description>
@@ -441,10 +441,10 @@ Sending Single Notification Notification singleNotification = new NotificationCo
     
     <item>
       <title></title>
-      <link>https://krossovochkin.github.io/about/</link>
+      <link>https://krossovochkin.com/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/about/</guid>
+      <guid>https://krossovochkin.com/about/</guid>
       <description>Vasya Drobushkov @krossovochkin
 About me Android developer with mathematical background. Experienced in developing smart applications for Android, and also in mobile game development. Punctual, always pay attention to details. Fast learner, greedy for knowledge.
  Links LinkedIn Github StackOverflow GoodReads Medium HackerNoon Facebook Twitter Kaggle SpeakerDeck Reddit HackerRank LeetCode

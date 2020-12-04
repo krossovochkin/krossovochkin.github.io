@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>functional programming on Vasya Drobushkov</title>
-    <link>https://krossovochkin.github.io/tags/functional-programming/</link>
+    <link>https://krossovochkin.com/tags/functional-programming/</link>
     <description>Recent content in functional programming on Vasya Drobushkov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 26 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.github.io/tags/functional-programming/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 26 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.com/tags/functional-programming/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Category theory</title>
-      <link>https://krossovochkin.github.io/posts/2020_04_26_category_theory/</link>
+      <link>https://krossovochkin.com/posts/2020_04_26_category_theory/</link>
       <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/posts/2020_04_26_category_theory/</guid>
+      <guid>https://krossovochkin.com/posts/2020_04_26_category_theory/</guid>
       <description>Source
 
 Disclaimer This is short synopsis of great set of lectures. What is written here is by no means true, one should refer to original lectures or some books etc. This is written mostly for myself in case I wanted to revisit the topic in the future. Everything below is not “what it is” but mostly “how I understood that”. So, there might be mistakes and so on.

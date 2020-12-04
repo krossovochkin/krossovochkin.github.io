@@ -2,143 +2,143 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Vasya Drobushkov</title>
-    <link>https://krossovochkin.github.io/tags/</link>
+    <link>https://krossovochkin.com/tags/</link>
     <description>Recent content in Tags on Vasya Drobushkov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 31 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 31 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.com/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>kotlin</title>
-      <link>https://krossovochkin.github.io/tags/kotlin/</link>
+      <link>https://krossovochkin.com/tags/kotlin/</link>
       <pubDate>Sat, 31 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/tags/kotlin/</guid>
+      <guid>https://krossovochkin.com/tags/kotlin/</guid>
       <description></description>
     </item>
     
     <item>
       <title>programming</title>
-      <link>https://krossovochkin.github.io/tags/programming/</link>
+      <link>https://krossovochkin.com/tags/programming/</link>
       <pubDate>Wed, 28 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/tags/programming/</guid>
+      <guid>https://krossovochkin.com/tags/programming/</guid>
       <description></description>
     </item>
     
     <item>
       <title>kotlin flow</title>
-      <link>https://krossovochkin.github.io/tags/kotlin-flow/</link>
+      <link>https://krossovochkin.com/tags/kotlin-flow/</link>
       <pubDate>Sun, 17 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/tags/kotlin-flow/</guid>
+      <guid>https://krossovochkin.com/tags/kotlin-flow/</guid>
       <description></description>
     </item>
     
     <item>
       <title>rxjava</title>
-      <link>https://krossovochkin.github.io/tags/rxjava/</link>
+      <link>https://krossovochkin.com/tags/rxjava/</link>
       <pubDate>Sun, 17 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/tags/rxjava/</guid>
+      <guid>https://krossovochkin.com/tags/rxjava/</guid>
       <description></description>
     </item>
     
     <item>
       <title>other</title>
-      <link>https://krossovochkin.github.io/tags/other/</link>
+      <link>https://krossovochkin.com/tags/other/</link>
       <pubDate>Thu, 07 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/tags/other/</guid>
+      <guid>https://krossovochkin.com/tags/other/</guid>
       <description></description>
     </item>
     
     <item>
       <title>category theory</title>
-      <link>https://krossovochkin.github.io/tags/category-theory/</link>
+      <link>https://krossovochkin.com/tags/category-theory/</link>
       <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/tags/category-theory/</guid>
+      <guid>https://krossovochkin.com/tags/category-theory/</guid>
       <description></description>
     </item>
     
     <item>
       <title>functional programming</title>
-      <link>https://krossovochkin.github.io/tags/functional-programming/</link>
+      <link>https://krossovochkin.com/tags/functional-programming/</link>
       <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/tags/functional-programming/</guid>
+      <guid>https://krossovochkin.com/tags/functional-programming/</guid>
       <description></description>
     </item>
     
     <item>
       <title>accessibility</title>
-      <link>https://krossovochkin.github.io/tags/accessibility/</link>
+      <link>https://krossovochkin.com/tags/accessibility/</link>
       <pubDate>Sun, 29 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/tags/accessibility/</guid>
+      <guid>https://krossovochkin.com/tags/accessibility/</guid>
       <description></description>
     </item>
     
     <item>
       <title>android</title>
-      <link>https://krossovochkin.github.io/tags/android/</link>
+      <link>https://krossovochkin.com/tags/android/</link>
       <pubDate>Sun, 29 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/tags/android/</guid>
+      <guid>https://krossovochkin.com/tags/android/</guid>
       <description></description>
     </item>
     
     <item>
       <title>java</title>
-      <link>https://krossovochkin.github.io/tags/java/</link>
+      <link>https://krossovochkin.com/tags/java/</link>
       <pubDate>Thu, 19 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/tags/java/</guid>
+      <guid>https://krossovochkin.com/tags/java/</guid>
       <description></description>
     </item>
     
     <item>
       <title>sqlite</title>
-      <link>https://krossovochkin.github.io/tags/sqlite/</link>
+      <link>https://krossovochkin.com/tags/sqlite/</link>
       <pubDate>Fri, 17 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/tags/sqlite/</guid>
+      <guid>https://krossovochkin.com/tags/sqlite/</guid>
       <description></description>
     </item>
     
     <item>
       <title>productivity</title>
-      <link>https://krossovochkin.github.io/tags/productivity/</link>
+      <link>https://krossovochkin.com/tags/productivity/</link>
       <pubDate>Wed, 10 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/tags/productivity/</guid>
+      <guid>https://krossovochkin.com/tags/productivity/</guid>
       <description></description>
     </item>
     
     <item>
       <title>dart</title>
-      <link>https://krossovochkin.github.io/tags/dart/</link>
+      <link>https://krossovochkin.com/tags/dart/</link>
       <pubDate>Mon, 08 Apr 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/tags/dart/</guid>
+      <guid>https://krossovochkin.com/tags/dart/</guid>
       <description></description>
     </item>
     
     <item>
       <title>russian</title>
-      <link>https://krossovochkin.github.io/tags/russian/</link>
+      <link>https://krossovochkin.com/tags/russian/</link>
       <pubDate>Sun, 24 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/tags/russian/</guid>
+      <guid>https://krossovochkin.com/tags/russian/</guid>
       <description></description>
     </item>
     
     <item>
       <title>machine learning</title>
-      <link>https://krossovochkin.github.io/tags/machine-learning/</link>
+      <link>https://krossovochkin.com/tags/machine-learning/</link>
       <pubDate>Thu, 09 Nov 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.github.io/tags/machine-learning/</guid>
+      <guid>https://krossovochkin.com/tags/machine-learning/</guid>
       <description></description>
     </item>
     
