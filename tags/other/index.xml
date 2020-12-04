@@ -2,45 +2,45 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>other on Vasya Drobushkov</title>
-    <link>https://krossovochkin.com/tags/other/</link>
+    <link>https://krossovochkin.github.io/tags/other/</link>
     <description>Recent content in other on Vasya Drobushkov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 07 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.com/tags/other/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 07 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.github.io/tags/other/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Raising old project from the depth</title>
-      <link>https://krossovochkin.com/posts/2020_05_07_raising_old_project_from_the_depth/</link>
+      <link>https://krossovochkin.github.io/posts/2020_05_07_raising_old_project_from_the_depth/</link>
       <pubDate>Thu, 07 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.com/posts/2020_05_07_raising_old_project_from_the_depth/</guid>
+      <guid>https://krossovochkin.github.io/posts/2020_05_07_raising_old_project_from_the_depth/</guid>
       <description>Introduction I am an Android Developer from the beginning of my professional career. Straight from the University, I’ve jumped into Android development, and to this day continue my journey. During that time I’ve worked in different areas: enterprise, product business applications, SDK development. But all that started with mobile game development.
 The first project I took part in was called “nICE”. It was a match-3-like game. It was at the time when there was Android Market and not Google Play Store, when we used Eclipse and not Android Studio and, of course, used Java.</description>
     </item>
     
     <item>
       <title>Random interview coding task retrospective</title>
-      <link>https://krossovochkin.com/posts/2019_09_27_random_interview_coding_task_retrospective/</link>
+      <link>https://krossovochkin.github.io/posts/2019_09_27_random_interview_coding_task_retrospective/</link>
       <pubDate>Fri, 27 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.com/posts/2019_09_27_random_interview_coding_task_retrospective/</guid>
+      <guid>https://krossovochkin.github.io/posts/2019_09_27_random_interview_coding_task_retrospective/</guid>
       <description>Introduction It happens often that on interviews you’ve asked to perform some coding task. For unknown reason most of the times you’ve asked to write some code not in the IDE, but on piece of paper. I don’t like such tasks on an interview, because in real life one won’t write any kind of code on a paper. If you need to write something not in IDE you face issues like you can’t quickly change something or write new code in between the lines.</description>
     </item>
     
     <item>
       <title>3x3x3 Rubik’s cube world (GIF alert)</title>
-      <link>https://krossovochkin.com/posts/2019_07_07_3x3x3_rubiks_cube_world_gif_alert/</link>
+      <link>https://krossovochkin.github.io/posts/2019_07_07_3x3x3_rubiks_cube_world_gif_alert/</link>
       <pubDate>Sun, 07 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.com/posts/2019_07_07_3x3x3_rubiks_cube_world_gif_alert/</guid>
+      <guid>https://krossovochkin.github.io/posts/2019_07_07_3x3x3_rubiks_cube_world_gif_alert/</guid>
       <description>Introduction I find Rubik’s cube an awesome puzzle. It has simple design, but quite difficult to solve (if you don’t know how to do that). At the same time it is possible to learn how to solve cube — there are a lot of algorithms for solving (for example Fridrich method describes quite a lot of them). These optimized algorithms made popular speedcubing — solving cube on time — with world record of less than 4 seconds.</description>
     </item>
     
     <item>
       <title>Java-C-Assembly Matryoshka</title>
-      <link>https://krossovochkin.com/posts/2019_06_04_java_c_assembly_matryoshka/</link>
+      <link>https://krossovochkin.github.io/posts/2019_06_04_java_c_assembly_matryoshka/</link>
       <pubDate>Tue, 04 Jun 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.com/posts/2019_06_04_java_c_assembly_matryoshka/</guid>
+      <guid>https://krossovochkin.github.io/posts/2019_06_04_java_c_assembly_matryoshka/</guid>
       <description>Source
  
  Disclaimers:
@@ -49,10 +49,10 @@ The first project I took part in was called “nICE”. It was a match-3-like ga
     
     <item>
       <title>Scary movies</title>
-      <link>https://krossovochkin.com/posts/2019_10_15_scary_movies/</link>
+      <link>https://krossovochkin.github.io/posts/2019_10_15_scary_movies/</link>
       <pubDate>Mon, 15 Oct 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.com/posts/2019_10_15_scary_movies/</guid>
+      <guid>https://krossovochkin.github.io/posts/2019_10_15_scary_movies/</guid>
       <description>I don’t like horror movies. But this short story is not about that particularly. Horror movies are different: murders, ghosts, fantasy etc.
 I don’t like horror movies of any kind. But I still can watch them. 1408, final destination, the saw etc.
 The only thing that scares me in horror movies are people. Not blood, not ghosts.
@@ -61,19 +61,19 @@ Here I’d like to share few movies, which traumatized my psyche in the childhoo
     
     <item>
       <title>Программирование и музыка</title>
-      <link>https://krossovochkin.com/posts/2018_06_24_programming_and_music/</link>
+      <link>https://krossovochkin.github.io/posts/2018_06_24_programming_and_music/</link>
       <pubDate>Sun, 24 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.com/posts/2018_06_24_programming_and_music/</guid>
+      <guid>https://krossovochkin.github.io/posts/2018_06_24_programming_and_music/</guid>
       <description>Предисловие Наушники — лучший друг разработчика (спасибо открытым пространствам и людям вокруг). Шум и разговоры отвлекают от работы и не дают сосредоточиться. Решением являются отдельные комнаты для небольших команд (что встречается редко и все равно не является стопроцентным, потому что отвлекать может и просто клацание коллегами по клавиатуре) либо наушники плюс музыка в них. Также у музыки на работе есть и другие преимущества. Например, она может выступать в роли якоря.</description>
     </item>
     
     <item>
       <title>Сказки</title>
-      <link>https://krossovochkin.com/posts/2018_06_17_fairytales/</link>
+      <link>https://krossovochkin.github.io/posts/2018_06_17_fairytales/</link>
       <pubDate>Sun, 17 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.com/posts/2018_06_17_fairytales/</guid>
+      <guid>https://krossovochkin.github.io/posts/2018_06_17_fairytales/</guid>
       <description>В детстве я читал много сказок, и я думаю, что это оказало некоторое влияние на развитие моего мировоззрения. По крайней мере неявно. Конечно, не факт, что в лучшую сторону. У меня было несколько книг, зачитанных до дыр, и собственно ими я хотел сейчас поделиться.
 Прежде всего: Да, я читал и знаю большинство популярных русских народных сказок вроде Колобка, различных вариаций сказок про Бабу Ягу и Кощея Бессмертного, всяких Красных Шапочек и Волков с козлятами Братьев Гримм и Гадких утят, Дюймовочек (хотя “Новое платье короля” — это очень сильная сказка) Андерсена и прочих известных сказок.</description>
     </item>

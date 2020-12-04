@@ -2,35 +2,35 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>programming on Vasya Drobushkov</title>
-    <link>https://krossovochkin.com/tags/programming/</link>
+    <link>https://krossovochkin.github.io/tags/programming/</link>
     <description>Recent content in programming on Vasya Drobushkov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 28 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.com/tags/programming/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 28 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.github.io/tags/programming/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Middle Point</title>
-      <link>https://krossovochkin.com/posts/2020_10_28_middle_point/</link>
+      <link>https://krossovochkin.github.io/posts/2020_10_28_middle_point/</link>
       <pubDate>Wed, 28 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.com/posts/2020_10_28_middle_point/</guid>
+      <guid>https://krossovochkin.github.io/posts/2020_10_28_middle_point/</guid>
       <description>Introduction Working with numbers in programming never was a simple thing. In math, we deal with various sets of numbers - whole numbers, rational, complex. All these sets are infinite - that means that for any number we can find another smaller one and one which is bigger. In programming when we work with numbers we deal with some subset of these sets - that many that can be represented with a given amount of bits.</description>
     </item>
     
     <item>
       <title>Kotlin Nitpicker&#39;s guide</title>
-      <link>https://krossovochkin.com/posts/2020_10_14_kotlin_nitpickers_guide/</link>
+      <link>https://krossovochkin.github.io/posts/2020_10_14_kotlin_nitpickers_guide/</link>
       <pubDate>Wed, 14 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.com/posts/2020_10_14_kotlin_nitpickers_guide/</guid>
+      <guid>https://krossovochkin.github.io/posts/2020_10_14_kotlin_nitpickers_guide/</guid>
       <description>Introduction Code review is an essential tool for a development team, which helps ensure high-quality standards of code. While reviewing others&#39; code one might find bugs, design issues, and so on. One another part of reviewing is getting used to the codebase and following team&amp;rsquo;s code style for better maintenance. Though it is pretty cool in theory, in practice team might face few issues, one of which is nitpicking. When review is bloated with dozens of similar comments related to e.</description>
     </item>
     
     <item>
       <title>Unit Testing Best Practices</title>
-      <link>https://krossovochkin.com/posts/2020_03_19_unit_testing_best_practices/</link>
+      <link>https://krossovochkin.github.io/posts/2020_03_19_unit_testing_best_practices/</link>
       <pubDate>Thu, 19 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.com/posts/2020_03_19_unit_testing_best_practices/</guid>
+      <guid>https://krossovochkin.github.io/posts/2020_03_19_unit_testing_best_practices/</guid>
       <description>Source
 
 Disclaimer: This is a set of things I consider very useful when writing unit tests. I call them best practices because they allow me to write good, quality tests that are easier to read, more maintainable, and better describe business needs.
