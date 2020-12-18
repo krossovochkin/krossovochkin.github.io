@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     
-    <head>
+  <head>
     <link href="https://gmpg.org/xfn/11" rel="profile">
     <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,20 +10,18 @@
 <meta name="generator" content="Hugo 0.78.2" />
 
     
-    
-    
 
-<title>android • Vasya Drobushkov</title>
+<title>Vasya Drobushkov</title>
 
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="android"/>
+<meta name="twitter:title" content="Vasya Drobushkov"/>
 <meta name="twitter:description" content=""/>
 
-<meta property="og:title" content="android" />
+<meta property="og:title" content="Vasya Drobushkov" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://krossovochkin.com/tags/android/" />
+<meta property="og:url" content="https://krossovochkin.com/" />
 <meta property="og:updated_time" content="2020-12-18T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
 
 
@@ -54,7 +52,7 @@
     <!-- Icons -->
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
     <link rel="shortcut icon" href="/favicon.png">
-    <link rel="alternate" type="application/rss+xml" href="https://krossovochkin.com/tags/android/index.xml" title="Vasya Drobushkov" />
+    <link rel="alternate" type="application/rss+xml" href="https://krossovochkin.com/index.xml" title="Vasya Drobushkov" />
 
     
 
@@ -166,128 +164,117 @@
 
         <div class="content container">
             
-    <span class="section__title">android</span>
-<ul class="posts">
+  <div class="post-list">
+    
+    
+      
+        
+      
+      <div class="post-list__item">
+        <span class="item__title--big">
+          <a href="/posts/2017_02_11_android_notifications_overview_and_pitfalls/" >[Android] Notifications Overview and Pitfalls</a>
+        </span>
+        <span class="item__date">
+          Feb 11, 2017
+        </span>
+        <span >
+        
+        Introduction Notifications are widely used in Android applications. Though API is pretty straightforward, there are some key things that one should know and understand. This article will try to be first step into understanding Notifications API.
+Sending Single Notification Notification singleNotification = new NotificationCompat.Builder(this) .setContentTitle(&#34;Title&#34;) .setContentText(&#34;Text&#34;) .setSmallIcon(R.drawable.ic_notification) .build(); NotificationManagerCompat notificationManager = NotificationManagerCompat.*from*(context); notificationManager.notify(notificationId, singleNotification); Key things here:
+  We use NotificationCompat.Builder to have single interface for creating notifications and let Support Library do all compatibility tricks;
+        
+        </span>
+        
+          ... <a class="read-more-symbol" href="/posts/2017_02_11_android_notifications_overview_and_pitfalls/">➦</a>
+        
+        </div>
+        
+     
+  </div>
+  
+
+<ul class="pagination">
+    
+    <li class="page-item">
+        <a href="/" class="page-link" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+    </li>
+    
+    <li class="page-item">
+    <a href="/page/4/" class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+    
+    
+    
+    
+    
     
         
-<li>
-  <span class="list__title--small">
-    <a href="/posts/2020_12_18_android_room_hidden_costs/" >Android Room Hidden Costs</a>
-      
-      <time class="pull-right hidden-tablet">Dec 18, 2020</time>
-      
-  </span>
-</li>
-
-<li>
-  <span class="list__title--small">
-    <a href="/posts/2020_03_29_accessibility_of_text_over_generic_background_color/" >Accessibility of text over generic background color</a>
-      
-      <time class="pull-right hidden-tablet">Mar 29, 2020</time>
-      
-  </span>
-</li>
-
-<li>
-  <span class="list__title--small">
-    <a href="/posts/2020_02_21_vinyls_animation_with_motionlayout/" >Vinyls animation with MotionLayout</a>
-      
-      <time class="pull-right hidden-tablet">Feb 21, 2020</time>
-      
-  </span>
-</li>
-
-<li>
-  <span class="list__title--small">
-    <a href="/posts/2020_02_02_diving_deep_into_android_dex_bytecode/" >Diving deep into Android Dex bytecode</a>
-      
-      <time class="pull-right hidden-tablet">Feb 2, 2020</time>
-      
-  </span>
-</li>
-
-<li>
-  <span class="list__title--small">
-    <a href="/posts/2020_01_19_change_theme_dynamically_with_circular_reveal_animation_on_android/" >Change Theme Dynamically with Circular Reveal Animation on Android</a>
-      
-      <time class="pull-right hidden-tablet">Jan 19, 2020</time>
-      
-  </span>
-</li>
-
-<li>
-  <span class="list__title--small">
-    <a href="/posts/2020_01_17_sqlite_triggers_android_room/" >SQLite Triggers (&#43; Android Room)</a>
-      
-      <time class="pull-right hidden-tablet">Jan 17, 2020</time>
-      
-  </span>
-</li>
-
-<li>
-  <span class="list__title--small">
-    <a href="/posts/2019_12_24_decoding_handler_and_looper_in_android/" >Decoding Handler and Looper in Android</a>
-      
-      <time class="pull-right hidden-tablet">Dec 24, 2019</time>
-      
-  </span>
-</li>
-
-<li>
-  <span class="list__title--small">
-    <a href="/posts/2019_07_21_simmmmplllledateformat/" >SiMMMMpLLLLeDateFormat</a>
-      
-      <time class="pull-right hidden-tablet">Jul 21, 2019</time>
-      
-  </span>
-</li>
-
-<li>
-  <span class="list__title--small">
-    <a href="/posts/2019_07_04_android_version_code_tricks/" >Android Version Code Tricks</a>
-      
-      <time class="pull-right hidden-tablet">Jul 4, 2019</time>
-      
-  </span>
-</li>
-
-<li>
-  <span class="list__title--small">
-    <a href="/posts/2019_02_18_kotlin_android_synthetics_performance_analysis_with_butterknife/" >Kotlin-android-synthetics performance analysis (with ButterKnife)</a>
-      
-      <time class="pull-right hidden-tablet">Feb 18, 2019</time>
-      
-  </span>
-</li>
-
-<li>
-  <span class="list__title--small">
-    <a href="/posts/2018_07_21_dynamic_mobile_client_development_problem_and_concept/" >Dynamic mobile client development. Problem and concept.</a>
-      
-      <time class="pull-right hidden-tablet">Jul 21, 2018</time>
-      
-  </span>
-</li>
-
-<li>
-  <span class="list__title--small">
-    <a href="/posts/2017_02_11_android_notifications_overview_and_pitfalls/" >[Android] Notifications Overview and Pitfalls</a>
-      
-      <time class="pull-right hidden-tablet">Feb 11, 2017</time>
-      
-  </span>
-</li>
-
-
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="/">1</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="/page/2/">2</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="/page/3/">3</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="/page/4/">4</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item active"><a class="page-link" href="/page/5/">5</a></li>
+    
+    
+    <li class="page-item disabled">
+    <a href="" class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+    
+    <li class="page-item">
+        <a href="/page/5/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+    </li>
     
 </ul>
 
 
         </div>
         
+  
     
-  
-  
+    
 <script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
@@ -299,9 +286,8 @@ if (!doNotTrack) {
 </script>
 <script async src='https://www.google-analytics.com/analytics.js'></script>
 
-
-<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
-
+  
+  <script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
 
 
     </body>

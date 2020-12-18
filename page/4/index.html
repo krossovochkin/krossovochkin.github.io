@@ -22,7 +22,7 @@
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://krossovochkin.com/" />
-<meta property="og:updated_time" content="2020-10-31T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
+<meta property="og:updated_time" content="2020-12-18T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
 
 
     
@@ -167,6 +167,28 @@
   <div class="post-list">
     
     
+      
+        
+      
+      <div class="post-list__item">
+        <span class="item__title--big">
+          <a href="/posts/2019_05_27_rxjava_observable_to_single/" >RxJava Observable to Single</a>
+        </span>
+        <span class="item__date">
+          May 27, 2019
+        </span>
+        <span >
+        
+        Transforming Single to Observable is simple, as Single satisfies Observable’s contract. Just call single.toObservable() and you’re good. But transforming Observable to Single is not that simple: if it happens that Observable emits exactly one value and completes (or terminates with error without emitting values) then it is pretty straightforward, otherwise one need to set up some additional rules.
+In RxJava there are a number of operators for transforming Observable to Single:
+        
+        </span>
+        
+          ... <a class="read-more-symbol" href="/posts/2019_05_27_rxjava_observable_to_single/">➦</a>
+        
+        </div>
+        
+     
       
         
       
@@ -371,29 +393,6 @@ One of the main challenges in mobile development is to be in sync with server. S
         </div>
         
      
-      
-        
-      
-      <div class="post-list__item">
-        <span class="item__title--big">
-          <a href="/posts/2017_02_11_android_notifications_overview_and_pitfalls/" >[Android] Notifications Overview and Pitfalls</a>
-        </span>
-        <span class="item__date">
-          Feb 11, 2017
-        </span>
-        <span >
-        
-        Introduction Notifications are widely used in Android applications. Though API is pretty straightforward, there are some key things that one should know and understand. This article will try to be first step into understanding Notifications API.
-Sending Single Notification Notification singleNotification = new NotificationCompat.Builder(this) .setContentTitle(&#34;Title&#34;) .setContentText(&#34;Text&#34;) .setSmallIcon(R.drawable.ic_notification) .build(); NotificationManagerCompat notificationManager = NotificationManagerCompat.*from*(context); notificationManager.notify(notificationId, singleNotification); Key things here:
-  We use NotificationCompat.Builder to have single interface for creating notifications and let Support Library do all compatibility tricks;
-        
-        </span>
-        
-          ... <a class="read-more-symbol" href="/posts/2017_02_11_android_notifications_overview_and_pitfalls/">➦</a>
-        
-        </div>
-        
-     
   </div>
   
 
@@ -452,12 +451,23 @@ Sending Single Notification Notification singleNotification = new NotificationCo
     <li class="page-item active"><a class="page-link" href="/page/4/">4</a></li>
     
     
-    <li class="page-item disabled">
-    <a href="" class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="/page/5/">5</a></li>
+    
+    
+    <li class="page-item">
+    <a href="/page/5/" class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
     </li>
     
     <li class="page-item">
-        <a href="/page/4/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+        <a href="/page/5/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
     </li>
     
 </ul>

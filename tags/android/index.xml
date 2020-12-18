@@ -6,7 +6,17 @@
     <description>Recent content in android on Vasya Drobushkov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 29 Mar 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.com/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 18 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.com/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Android Room Hidden Costs</title>
+      <link>https://krossovochkin.com/posts/2020_12_18_android_room_hidden_costs/</link>
+      <pubDate>Fri, 18 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.com/posts/2020_12_18_android_room_hidden_costs/</guid>
+      <description>Introduction Android Room is an awesome AndroidX library. It is great because it provides a clean way of how to deal with databases without introducing some heavy concepts. Out of the box with Room one gets:
+ simplified code comparing with raw SQLite queries working via DAO interfaces and models instead of Cursors auto-generated &amp;ldquo;boilerplate&amp;rdquo; code for queries migration support Android Studio tooling (compile-time verification of queries and highlight) support for reactive streams (RxJava, Kotlin Flow) and more  In this article, I&amp;rsquo;d like to discover some hidden costs Room applies to support reactive streams and how one can try to avoid them.</description>
+    </item>
+    
     <item>
       <title>Accessibility of text over generic background color</title>
       <link>https://krossovochkin.com/posts/2020_03_29_accessibility_of_text_over_generic_background_color/</link>
