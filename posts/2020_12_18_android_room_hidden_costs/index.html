@@ -316,6 +316,11 @@ The solution would be to disable kapt, copy-paste generated code to our sources,
     <span style="color:#f92672">};</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>By doing that we can verify in SqlLiteStatements that <code>InvalidationTracker</code> queries its internal table no more.</p>
+<blockquote>
+<p><strong>UPDATE</strong><br>
+Thanks to <a href="https://twitter.com/yigitboyar">Yigit Boyar</a> for pointing out that internal table Room uses is in-memory. Indeed, that table is temp. So, the most of the performance impact is related to SQLite triggers, not querying internal temp table. And triggers are not created unless you subscribe to some Observable declared.<br>
+Though the last is still not free, as querying uses android Cursor, which allocates memory when populating its CursorWindow.</p>
+</blockquote>
 <h3 id="conclusion">Conclusion</h3>
 <p>Android Room is a great library, but it still might impact performance. And if your app is critical to performance one should be very careful. Still, it is possible to remove some overhead in the cases where you need that.<br>
 And don&rsquo;t forget to profile your app, identify problems, and try to find a way to solve them.</p>
