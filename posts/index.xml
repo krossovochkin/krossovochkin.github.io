@@ -6,7 +6,17 @@
     <description>Recent content in Posts on Vasya Drobushkov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 16 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 18 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Debugging Proguard configuration issues</title>
+      <link>https://krossovochkin.com/posts/2021_01_18_debugging_proguard_configuration_issues/</link>
+      <pubDate>Mon, 18 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.com/posts/2021_01_18_debugging_proguard_configuration_issues/</guid>
+      <description>Introduction It might happen so that there is a bug in your release build while in debug everything works fine. In many cases, it might be an issue with Proguard/R8 configuration. Of course, it is better to test your code thoroughly, properly configure Proguard if you, let&amp;rsquo;s say, load some classes only via reflection and so on. But reality sometimes strikes and bugs might go to production.
+In this case, the first thing that is needed is to find a bug and fix it.</description>
+    </item>
+    
     <item>
       <title>Optimize reading articles experience</title>
       <link>https://krossovochkin.com/posts/2021_01_16_optimize_reading_articles_experience/</link>
