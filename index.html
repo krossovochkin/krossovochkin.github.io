@@ -202,8 +202,7 @@
         </span>
         <span >
         
-        Introduction Learning is an essential part of doing anything. There are many different ways to learn something. Like active learning (studying) and passive learning (gaining experience), moving towards some particular goal and exploring unknown places looking for new ideas. One can learn using various types of perception - audial, visual, haptic, speech, etc. Learning is important in all directions: improving your existing skills or getting new.
-I think one of the most straightforward ways of learning is active learning towards some particular goal.
+        Guide on how one can optimize experience on reading articles by managing them via RSS feeds
         
         </span>
         
@@ -224,8 +223,7 @@ I think one of the most straightforward ways of learning is active learning towa
         </span>
         <span >
         
-        Introduction Android Room is an awesome AndroidX library. It is great because it provides a clean way of how to deal with databases without introducing some heavy concepts. Out of the box with Room one gets:
- simplified code comparing with raw SQLite queries working via DAO interfaces and models instead of Cursors auto-generated &ldquo;boilerplate&rdquo; code for queries migration support Android Studio tooling (compile-time verification of queries and highlight) support for reactive streams (RxJava, Kotlin Flow) and more  In this article, I&rsquo;d like to discover some hidden costs Room applies to support reactive streams and how one can try to avoid them.
+        Note on how Room might affect performance of you app if you perform many database requests.
         
         </span>
         
@@ -246,9 +244,7 @@ I think one of the most straightforward ways of learning is active learning towa
         </span>
         <span >
         
-        Introduction Boolean is one of the essential types in programming and probably one of the simplest because it has only two values: true and false. Boolean are usually used as flags for control flow, specifically, conditions.
-if (string.isEmpty()) { println(&#34;String is empty&#34;) } It is not much interesting in Boolean, but in Kotlin there is one thing which might be confusing if used - it is method not().
-Negate Boolean If we look at declaration of Boolean class in Kotlin we&rsquo;ll see five methods, four of which are pretty obvious: and, or, xor and compareTo.
+        It happens so that developers might want to use Boolean#not method. In this article I try to give a clear vision why there is no need to do so.
         
         </span>
         
@@ -290,8 +286,7 @@ Negate Boolean If we look at declaration of Boolean class in Kotlin we&rsquo;ll 
         </span>
         <span >
         
-        Introduction About two years ago I made a post about a tricky case in Kotlin-Java interop related to the usage of function references and SAM conversion. One of the points there was that in Kotlin, if interface is declared instead of a function, one has to explicitly create an object, therefore no caveats as with interop:
-val callback = object : ThirdParty.Callback { override fun onValueChanged(value: Int) { this@App.onValueChanged(value) } } With Kotlin 1.
+        Overview of Kotlin functional interfaces and how they work with SAM conversions.
         
         </span>
         
@@ -312,7 +307,7 @@ val callback = object : ThirdParty.Callback { override fun onValueChanged(value:
         </span>
         <span >
         
-        Introduction Code review is an essential tool for a development team, which helps ensure high-quality standards of code. While reviewing others' code one might find bugs, design issues, and so on. One another part of reviewing is getting used to the codebase and following team&rsquo;s code style for better maintenance. Though it is pretty cool in theory, in practice team might face few issues, one of which is nitpicking. When review is bloated with dozens of similar comments related to e.
+        Guide on how not to do code review of Kotlin code.
         
         </span>
         
