@@ -21,12 +21,10 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Debugging Proguard configuration issues"/>
-<meta name="twitter:description" content="Introduction It might happen so that there is a bug in your release build while in debug everything works fine. In many cases, it might be an issue with Proguard/R8 configuration. Of course, it is better to test your code thoroughly, properly configure Proguard if you, let&rsquo;s say, load some classes only via reflection and so on. But reality sometimes strikes and bugs might go to production.
-In this case, the first thing that is needed is to find a bug and fix it."/>
+<meta name="twitter:description" content="Proguard configuration was never an easy task. Especially it strikes when some issue leaks to the production. In the article I try to provide simple algorithm on how to track down what exactly might be an issue in proguard configuration"/>
 
 <meta property="og:title" content="Debugging Proguard configuration issues" />
-<meta property="og:description" content="Introduction It might happen so that there is a bug in your release build while in debug everything works fine. In many cases, it might be an issue with Proguard/R8 configuration. Of course, it is better to test your code thoroughly, properly configure Proguard if you, let&rsquo;s say, load some classes only via reflection and so on. But reality sometimes strikes and bugs might go to production.
-In this case, the first thing that is needed is to find a bug and fix it." />
+<meta property="og:description" content="Proguard configuration was never an easy task. Especially it strikes when some issue leaks to the production. In the article I try to provide simple algorithm on how to track down what exactly might be an issue in proguard configuration" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://krossovochkin.com/posts/2021_01_18_debugging_proguard_configuration_issues/" />
 <meta property="article:published_time" content="2021-01-18T00:00:00+00:00" />
@@ -210,7 +208,8 @@ In this case, the first thing that is needed is to find a bug and fix it." />
   
   
   <div class="post">
-    <h1 id="introduction">Introduction</h1>
+    <p><img src="https://images.unsplash.com/photo-1590249002987-c3d0e38db7a4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1350&amp;q=80" alt=""></p>
+<h1 id="introduction">Introduction</h1>
 <p>It might happen so that there is a bug in your release build while in debug everything works fine. In many cases, it might be an issue with Proguard/R8 configuration. Of course, it is better to test your code thoroughly, properly configure Proguard if you, let&rsquo;s say, load some classes only via reflection and so on. But reality sometimes strikes and bugs might go to production.<br>
 In this case, the first thing that is needed is to find a bug and fix it. And only then have some retrospective to mitigate such situations in the future.
 When the bug is in production already every minute counts, therefore it is important to have some plan. Proguard configuration seems complex to someone who didn&rsquo;t work with it, so I recommend to take a look at its main features.<br>
