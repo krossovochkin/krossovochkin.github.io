@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    
+
+
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Enable responsiveness on mobile devices -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="generator" content="Hugo 0.79.1" />
+
+    
+    
+    
+
+<title>Bad Kotlin Extensions • Vasya Drobushkov</title>
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Bad Kotlin Extensions"/>
+<meta name="twitter:description" content="Kotlin extensions is a cool feature. Though trying to write &#39;idiomatic&#39; Kotlin code some developers tend to overuse that feature making code worse that it could be without extensions. In this article we&#39;ll go through some examples of how not to write Kotlin extensions"/>
+
+<meta property="og:title" content="Bad Kotlin Extensions" />
+<meta property="og:description" content="Kotlin extensions is a cool feature. Though trying to write &#39;idiomatic&#39; Kotlin code some developers tend to overuse that feature making code worse that it could be without extensions. In this article we&#39;ll go through some examples of how not to write Kotlin extensions" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://krossovochkin.com/posts/2021_01_25_bad_kotlin_extensions/" />
+<meta property="article:published_time" content="2021-01-25T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-01-25T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
+
+
+    
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/scss/hyde-hyde.adf8a0af011d3afb07ed907ad3295e1c99f49503bc91d395e38dc3f8dfdf4900.css" integrity="sha256-rfigrwEdOvsH7ZB60yleHJn0lQO8kdOV443D&#43;N/fSQA=">
+
+
+<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    
+    
+
+</head>
+
+
+    <body class="theme-base-0a ">
+    
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="https://krossovochkin.com/">
+        
+          Vasya Drobushkov
+        
+        </a>
+      </span>
+      
+        
+        
+        
+        <div class="author-image">
+          <img src="https://krossovochkin.com/../img/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
+        </div>
+        
+      
+      
+      <p class="site__description">
+        
+      </p>
+    </div>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">Vasya Drobushkov</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="/posts/">
+						<span>Posts</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="/about/">
+						<span>About</span>
+					</a>
+				</li>
+			 
+		
+	</ul>
+</div>
+
+        <section class="social">
+	
+	<a href="https://twitter.com/krossovochkin" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://facebook.com/vasya.drobushkov" rel="me"><i class="fab fa-facebook-f"></i></a>
+	
+	
+	<a href="https://github.com/krossovochkin" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	<a href="https://linkedin.com/in/vasyadrobushkov" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://stackoverflow.com/users/1533933/krossovochkin" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	<a href="https://t.me/krossovochkin_newsletter" rel="me"><i class="fab fa-telegram fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+</section>
+
+      </div>
+    </div>
+    
+<div class="copyright">
+  &copy; 2019 - 2021 Vasya Drobushkov
+  
+    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
+  
+</div>
+
+
+
+  </div>
+</div>
+
+        <div class="content container">
+            
+    
+<article>
+  <header>
+    <h1>Bad Kotlin Extensions</h1>
+    
+    
+<div class="post__meta">
+    
+    
+      <i class="fas fa-calendar-alt"></i> Jan 25, 2021
+    
+    
+    
+    
+    
+      
+      
+          <br/>
+           <i class="fas fa-tags"></i>
+          
+          <a class="badge badge-tag" href="/tags/kotlin">kotlin</a>
+          
+      
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 7 min read
+</div>
+
+
+  </header>
+  
+  
+  <div class="post">
+    <p><img src="https://images.unsplash.com/photo-1598518619776-eae3f8a34eac?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1351&amp;q=80" alt=""></p>
+<h3 id="introduction">Introduction</h3>
+<p>Kotlin extensions are a cool feature. Though trying to write &lsquo;idiomatic&rsquo; Kotlin code some developers tend to overuse that feature making code worse than it could be without extensions. In this article, we&rsquo;ll go through some examples of how not to write Kotlin extensions.</p>
+<p>First of all, we need to try to define what a good extension is.<br>
+It is simple though vague: good extension solves some problems. When we talk about code the main feature extensions have is to improve readability. Extension methods are static methods with the first parameter being a receiver of the extension. For example, these are equivalents:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">CollectionUtils.first(collection)
+
+collection.first()
+</code></pre></div><p>The second looks better because we don&rsquo;t overwhelm our code with details about <code>CollectionUtils</code>. It feels better because we extend the functionality of some classes without changing their internals, and we don&rsquo;t need to look for some Utils class to find the corresponding method - so IDE can help us with auto-complete to find the required method.</p>
+<p>It is important to understand that the new API that you write with extensions apply additional cognitive load to the reader of your code, as everyone now needs to know that project-specific API.</p>
+<p>So, what extensions can be considered bad? Let&rsquo;s find out.</p>
+<blockquote>
+<p>As a side note, in this article we&rsquo;ll go over public extensions that one might have in the project. I find almost no issues with any kind of extensions if they are private, as it is much easier to look at what they do exactly.</p>
+</blockquote>
+<h3 id="too-smart">Too smart</h3>
+<p>In the first group of bad extensions, we put too smart extensions. These are typically relied on the operator overloading trying to make code as short as possible. It is too smart because making code too short might instead make readability worse.<br>
+A classic example is an extension for a factorial.</p>
+<p>Say, we have a factorial method:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">factorial</span>(num: Int): Long {
+    <span style="color:#66d9ef">var</span> result = <span style="color:#ae81ff">1L</span>
+    <span style="color:#66d9ef">for</span> (i <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">2.</span>.num) result <span style="color:#f92672">*=</span> i
+    <span style="color:#66d9ef">return</span> result
+}
+</code></pre></div><p>This is just an <a href="https://stackoverflow.com/a/45194538/1533933">example</a> (don&rsquo;t use in production, as it might not suit best for your needs - for example, if you need to call this method many times).</p>
+<p>To calculate factorial we&rsquo;ll call it like:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">factorial(<span style="color:#ae81ff">5</span>)
+</code></pre></div><p>&ldquo;Meh, too verbose, let&rsquo;s create an extension to make it shorter&rdquo;:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">operator</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">Int</span>.not(): Int {
+    <span style="color:#66d9ef">return</span> factorial(<span style="color:#66d9ef">this</span>)
+}
+</code></pre></div><p>This is our smart extension, and now we can call the method like this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">!<span style="color:#ae81ff">5</span>
+</code></pre></div><p>See, it is like <code>5!</code> which is a mathematical expression for factorial. Yes, we have an exclamation mark at the beginning, as we can&rsquo;t put it to the end, but still, it is shorter!</p>
+<p>The reality is that it is very difficult to understand for someone who doesn&rsquo;t know that trick what the method is doing.<br>
+From the perspective of such a person that expression looks like a negation of the <code>Int</code>. What it should do? Maybe it is a bitwise negation? Or maybe it converts the number to 1 or 0? Or something else. One can&rsquo;t say without looking at the source of the method. And here is the issue.</p>
+<blockquote>
+<p>If to understand what method does one has to look at sources, then readability is not good.</p>
+</blockquote>
+<p>Another example of a smart expression is building file paths. Instead of:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">File(folder, <span style="color:#66d9ef">file</span>)
+</code></pre></div><p>What if we do:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">operator</span> File.div(fileName: String): File = File(<span style="color:#66d9ef">this</span>, fileName)
+</code></pre></div><p>And use it like:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> file = File(<span style="color:#e6db74">&#34;src&#34;</span>) / <span style="color:#e6db74">&#34;main&#34;</span> / <span style="color:#e6db74">&#34;java&#34;</span> / <span style="color:#e6db74">&#34;com&#34;</span>
+</code></pre></div><p>Cool, it is almost like writing path directly!</p>
+<p>But is it better? Is the code shorter? Has less overhead?<br>
+Or it is just some smart trick? I think the last, therefore such extension is not that good.</p>
+<h3 id="doing-more-than-name-says">Doing more than name says</h3>
+<p>While trying to make your code shorter one can try to move as much as possible to separate method and hide it inside the extension.<br>
+For example, to replace fragment we might need to write:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">supportFragmentManager
+    .beginTransaction()
+	.replace(R.id.container, fragment)
+	.addToBackStack(<span style="color:#66d9ef">null</span>)
+	.commit()
+</code></pre></div><p>Why not create an extension:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">FragmentManager</span>.replaceFragment(<span style="color:#a6e22e">@IdRes</span> id: Int, fragment: Fragment) {
+    <span style="color:#66d9ef">this</span>.beginTransaction()
+	    .replace(R.id.container, fragment)
+		.addToBackStack(<span style="color:#66d9ef">null</span>)
+		.commit()
+}
+</code></pre></div><p>And then just write:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">supportFragmentManager.replaceFragment(R.id.container, fragment)
+</code></pre></div><p>We reduced the boilerplate and everything is cooler now!<br>
+But not really. The issue with such an extension is that it does more than it says.<br>
+It is not only replacing a fragment but also adds to the back stack. And someone who is not aware of that feature (didn&rsquo;t look at sources) might misuse that method if adding to the back stack wasn&rsquo;t something that actually should&rsquo;ve been done.<br>
+We can try to fix that with additional params like:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">FragmentManager</span>.replaceFragment(
+    <span style="color:#a6e22e">@IdRes</span> id: Int,
+	fragment: Fragment,
+	shouldAddToBackStack: Boolean = <span style="color:#66d9ef">true</span>
+) { <span style="color:#f92672">..</span>. }
+</code></pre></div><p>It is a bit better as now at least the method signature says what it does under the hood.</p>
+<h3 id="too-specific">Too specific</h3>
+<p>With the previous example, there is still an issue - the method is too specific. It is intended to be used only to replace fragments. What if we need to add fragments as well? We&rsquo;ll have to create some extension like:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">FragmentManager</span>.addFragment(
+    <span style="color:#a6e22e">@IdRes</span> id: Int,
+	fragment: Fragment,
+	shouldAddToBackStack: Boolean = <span style="color:#66d9ef">true</span>
+) { <span style="color:#f92672">..</span>. }
+</code></pre></div><p>With almost the same internals as replace method. Did we improve readability or created some separate API that has to be extended all the time when we need more features in dealing with fragments? Say, we need to <code>commitAllowingStateLoss</code> - will we add another flag to all the API methods?<br>
+That is why this extension doesn&rsquo;t look good.</p>
+<p>So, we shouldn&rsquo;t write an extension to work with <code>FragmentManager</code>? But it is too verbose!<br>
+Let&rsquo;s look at some better extension by first looking at the issue. Probably the most &ldquo;boilerplate&rdquo; part of the code is the necessity to write <code>beginTransaction</code> and then <code>commit</code> in the end. What if we try to simplify that exact small problem by writing:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">FragmentManager</span>.inTransaction(
+	allowStateLoss: Boolean = <span style="color:#66d9ef">false</span>,
+    block: (FragmentManager) <span style="color:#f92672">-&gt;</span> Unit
+) {
+    <span style="color:#66d9ef">val</span> transaction = <span style="color:#66d9ef">this</span>.beginTransaction()
+	transaction.setReordingAllowed(<span style="color:#66d9ef">true</span>)
+	block(transaction)
+	<span style="color:#66d9ef">if</span> (allowStateLoss) {
+		transaction.commitAllowingStateLoss()
+	} <span style="color:#66d9ef">else</span> {
+		transaction.commit()
+	}
+}
+</code></pre></div><p>And use it like:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">supportFragmentManager.inTransaction {
+    replace(R.id.container, fragment)
+	addToBackStack(<span style="color:#66d9ef">null</span>)
+}
+</code></pre></div><p>The code becomes shorter and we still have all the flexibility we might ever need.</p>
+<p>But the extension is doing more than it says, one can say. As it calls <code>setReorderingAllowed</code>.<br>
+True, but this is a method one should always call, and by using our <code>inTransaction</code> method we won&rsquo;t forget that and won&rsquo;t have that verbose solution.</p>
+<h3 id="saving-few-characters">Saving few characters</h3>
+<p>Let&rsquo;s imagine that we have a <code>ViewModelFactory</code> which creates <code>ViewModel</code> based on the requested class.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">return</span> <span style="color:#66d9ef">when</span>(clazz) {
+    SomeViewModel<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java <span style="color:#f92672">-&gt;</span> createSomeViewModel()
+	<span style="color:#66d9ef">else</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">throw</span> NotImplementedError()
+}
+</code></pre></div><p>It is so ugly to write <code>::class.java</code>, why not write extension with reified type to make the code shorter:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#66d9ef">reified</span> <span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">resolveClass</span>(): Class&lt;T&gt; {
+    <span style="color:#66d9ef">return</span> T<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java
+}
+</code></pre></div><p><strong>NOTE</strong>: strictly speaking it is not an extension, but I hope you got the idea.</p>
+<p>So, we&rsquo;ll have:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">return</span> <span style="color:#66d9ef">when</span>(clazz) {
+    resolveClass&lt;SomeViewModel&gt; <span style="color:#f92672">-&gt;</span> createSomeViewModel()
+	<span style="color:#66d9ef">else</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">throw</span> NotImplementedError()
+}
+</code></pre></div><p>Cool, we now don&rsquo;t have any ugly colons!<br>
+But did we make the code better?<br>
+With our extension, we&rsquo;ve just saved few characters and made more work for the compiler to inline our pretty extension.<br>
+And we again introduced some API everyone should know about.</p>
+<p>The extension is cool and might look like an idiomatic Kotlin code, but it doesn&rsquo;t improve a codebase. Therefore such an extension is not good.</p>
+<h3 id="extension-on-common-classes">Extension on common classes</h3>
+<p>It might be tedious to write a smart extension on the common class such as <code>String</code>, <code>Int</code>, etc.<br>
+For example, we have a string containing the formatted date and we want to convert it to a <code>Date</code> instance.<br>
+Let&rsquo;s do something like:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">String</span>.parseDate(): Date {
+    <span style="color:#66d9ef">return</span> SimpleDateFormat(pattern).parse(<span style="color:#66d9ef">this</span>)
+}
+</code></pre></div><p>We now can do:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#e6db74">&#34;2021/01/01&#34;</span>.parseDate()
+</code></pre></div><p>The issue with such a code is that it doesn&rsquo;t show you what exactly is done under the hood. But it is not the biggest problem.<br>
+By writing some project-specific extensions for common classes you &ldquo;pollute&rdquo; the namespace for that type.<br>
+So, whenever you try to use auto-complete for a <code>String</code> you&rsquo;ll see all the useless extensions one created in the project.<br>
+The solution is simple - avoid writing some extension methods on common classes if they are not related to the class itself.</p>
+<p>For example, the following extension is totally fine:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">String</span>.reversed(): String {<span style="color:#f92672">..</span>.}
+</code></pre></div><p>As it works with the class itself.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>As with many other topics, while writing extensions there is no silver bullet. Some extensions while being questionable, might be good in some particular situation. What is important is to think, when writing an extension, what problem you&rsquo;re trying to solve and what alternatives you have. How bad you can evaluate code without extension and how much value extension might bring to you and your team if written.</p>
+<p>Happy coding.</p>
+
+  </div>
+  
+
+<div class="navigation navigation-single">
+    
+    <a href="/posts/2021_01_18_debugging_proguard_configuration_issues/" class="navigation-prev">
+      <i aria-hidden="true" class="fa fa-chevron-left"></i>
+      <span class="navigation-tittle">Debugging Proguard configuration issues</span>
+    </a>
+    
+    
+</div>
+
+
+  
+
+  
+    
+
+
+</article>
+
+
+        </div>
+        
+    
+
+  
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
+
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+        
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/bash.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/java.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+            
+        
+    <script type="text/javascript">
+        
+        hljs.configure({languages: ["bash, java, kotlin"]});
+        
+        hljs.initHighlightingOnLoad();
+    </script>
+    
+
+
+
+    
+
+
+
+    </body>
+</html>

@@ -3,6 +3,31 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://krossovochkin.com/posts/2021_01_25_bad_kotlin_extensions/</loc>
+    <lastmod>2021-01-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.com/tags/kotlin/</loc>
+    <lastmod>2021-01-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.com/posts/</loc>
+    <lastmod>2021-01-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.com/tags/</loc>
+    <lastmod>2021-01-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.com/</loc>
+    <lastmod>2021-01-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://krossovochkin.com/tags/android/</loc>
     <lastmod>2021-01-18T00:00:00+00:00</lastmod>
   </url>
@@ -13,22 +38,7 @@
   </url>
   
   <url>
-    <loc>https://krossovochkin.com/posts/</loc>
-    <lastmod>2021-01-18T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://krossovochkin.com/tags/proguard/</loc>
-    <lastmod>2021-01-18T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://krossovochkin.com/tags/</loc>
-    <lastmod>2021-01-18T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://krossovochkin.com/</loc>
     <lastmod>2021-01-18T00:00:00+00:00</lastmod>
   </url>
   
@@ -54,11 +64,6 @@
   
   <url>
     <loc>https://krossovochkin.com/posts/2020_10_31_boolean_not/</loc>
-    <lastmod>2020-10-31T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://krossovochkin.com/tags/kotlin/</loc>
     <lastmod>2020-10-31T00:00:00+00:00</lastmod>
   </url>
   
