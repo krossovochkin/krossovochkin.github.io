@@ -488,7 +488,19 @@ Sending Single Notification Notification singleNotification = new NotificationCo
       <guid>https://krossovochkin.com/about/</guid>
       <description>Vasya Drobushkov @krossovochkin
 About me Android developer with mathematical background. Experienced in developing smart applications for Android, and also in mobile game development. Punctual, always pay attention to details. Fast learner, greedy for knowledge.
- Links LinkedIn Github StackOverflow GoodReads Medium HackerNoon Facebook Twitter Kaggle SpeakerDeck Reddit HackerRank LeetCode
+ Links LinkedIn
+Github
+StackOverflow
+GoodReads
+Medium
+HackerNoon
+Facebook
+Twitter
+Kaggle
+SpeakerDeck
+Reddit
+HackerRank
+LeetCode
  Projects Fibery Unofficial
 Android client for fibery.io.
 MVVM, Android Architecture components, coroutines.
