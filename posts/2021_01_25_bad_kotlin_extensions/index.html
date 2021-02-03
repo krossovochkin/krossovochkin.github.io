@@ -296,7 +296,7 @@ Let&rsquo;s look at some better extension by first looking at the issue. Probabl
     block: (FragmentManager) <span style="color:#f92672">-&gt;</span> Unit
 ) {
     <span style="color:#66d9ef">val</span> transaction = <span style="color:#66d9ef">this</span>.beginTransaction()
-	transaction.setReordingAllowed(<span style="color:#66d9ef">true</span>)
+	transaction.setReorderingAllowed(<span style="color:#66d9ef">true</span>)
 	block(transaction)
 	<span style="color:#66d9ef">if</span> (allowStateLoss) {
 		transaction.commitAllowingStateLoss()
