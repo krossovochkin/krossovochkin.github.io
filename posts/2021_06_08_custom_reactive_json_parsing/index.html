@@ -208,7 +208,8 @@
   
   
   <div class="post">
-    <h3 id="introduction">Introduction</h3>
+    <p><a href="https://mailchi.mp/kotlinweekly/kotlin-weekly-254"><img src="https://img.shields.io/badge/kotlinweekly-254-purple#badge" alt=""></a></p>
+<h3 id="introduction">Introduction</h3>
 <p>Parsing JSON strings is a must-have on most Android projects that have server-client communication (of course there are some other formats like XML or <a href="https://developers.google.com/protocol-buffers">Protobuf</a>, but I guess JSON is the most common one at least at the moment). Setting up this communication is relatively straightforward: choose a library, add it to a project, describe models, create mappers, and so on. There are a bunch of various libraries to parse JSON: good old <a href="https://github.com/google/gson">Gson</a>, <a href="https://github.com/FasterXML/jackson">Jackson</a>, or more modern <a href="https://github.com/square/moshi">Moshi</a>, <a href="https://github.com/Kotlin/kotlinx.serialization">kotlinx-serialization</a> and there are more. Set up of these libraries is different, there are differences in the internal implementation, but the general idea is the same for most of them: you can convert JSON-string into a set of objects and vice versa.</p>
 <p>I have a few pet projects where I test various things to be up-to-date with current approaches, have my own opinion on solutions, and better understand pros and cons. One of such pet-projects is a <a href="https://github.com/krossovochkin/KWeather">KWeather</a> - weather app. It is a minimalistic app (with terrible design) that has many things that usually are in many apps: list, details screen, image loading, basic navigation, server-client communication, DB.<br>
 The stack is: multiplatform, jetpack compose UI, sqldelight, ktor, kotlinx-serialization. Many of the libs were added because of multiplatforminess.<br>
