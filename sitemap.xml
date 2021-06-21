@@ -3,6 +3,31 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://krossovochkin.com/posts/</loc>
+    <lastmod>2021-06-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.com/tags/</loc>
+    <lastmod>2021-06-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.com/</loc>
+    <lastmod>2021-06-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.com/posts/2021_06_21_why_custom_website_instead_of_medium/</loc>
+    <lastmod>2021-06-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://krossovochkin.com/tags/writing/</loc>
+    <lastmod>2021-06-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://krossovochkin.com/posts/2021_06_08_custom_reactive_json_parsing/</loc>
     <lastmod>2021-06-08T00:00:00+00:00</lastmod>
   </url>
@@ -14,21 +39,6 @@
   
   <url>
     <loc>https://krossovochkin.com/tags/kotlin/</loc>
-    <lastmod>2021-06-08T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://krossovochkin.com/posts/</loc>
-    <lastmod>2021-06-08T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://krossovochkin.com/tags/</loc>
-    <lastmod>2021-06-08T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://krossovochkin.com/</loc>
     <lastmod>2021-06-08T00:00:00+00:00</lastmod>
   </url>
   
