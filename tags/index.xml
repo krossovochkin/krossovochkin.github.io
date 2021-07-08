@@ -6,7 +6,25 @@
     <description>Recent content in Tags on Vasya Drobushkov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 21 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 08 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>kotlin</title>
+      <link>https://krossovochkin.com/tags/kotlin/</link>
+      <pubDate>Thu, 08 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.com/tags/kotlin/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kotlin flow</title>
+      <link>https://krossovochkin.com/tags/kotlin-flow/</link>
+      <pubDate>Thu, 08 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.com/tags/kotlin-flow/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>writing</title>
       <link>https://krossovochkin.com/tags/writing/</link>
@@ -22,15 +40,6 @@
       <pubDate>Tue, 08 Jun 2021 00:00:00 +0000</pubDate>
       
       <guid>https://krossovochkin.com/tags/json/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>kotlin</title>
-      <link>https://krossovochkin.com/tags/kotlin/</link>
-      <pubDate>Tue, 08 Jun 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.com/tags/kotlin/</guid>
       <description></description>
     </item>
     
@@ -76,15 +85,6 @@
       <pubDate>Wed, 28 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://krossovochkin.com/tags/programming/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>kotlin flow</title>
-      <link>https://krossovochkin.com/tags/kotlin-flow/</link>
-      <pubDate>Sun, 17 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.com/tags/kotlin-flow/</guid>
       <description></description>
     </item>
     

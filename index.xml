@@ -6,7 +6,18 @@
     <description>Recent content on Vasya Drobushkov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 21 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 08 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kotlin flow: Nesting vs Chaining</title>
+      <link>https://krossovochkin.com/posts/2021_07_08_kotlin_flow_nesting_vs_chaining/</link>
+      <pubDate>Thu, 08 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.com/posts/2021_07_08_kotlin_flow_nesting_vs_chaining/</guid>
+      <description>Introduction When it comes to reactive streams it is likely everyone heard about huge &amp;lsquo;Rx-chains&amp;rsquo;. But reactive streams are not only about chaining but also about nesting. Let&amp;rsquo;s find out what are they, what are the differences, and why it matters.
+We&amp;rsquo;ll use Kotlin Flow throughout the article, but everything can be applied to RxJava as well.
+First of all, we need to come up with definitions. For that, we&amp;rsquo;ll take a look at some simple streams.</description>
+    </item>
+    
     <item>
       <title>Why custom website instead of Medium</title>
       <link>https://krossovochkin.com/posts/2021_06_21_why_custom_website_instead_of_medium/</link>

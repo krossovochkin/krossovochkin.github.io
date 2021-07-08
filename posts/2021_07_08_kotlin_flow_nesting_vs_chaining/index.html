@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    
+
+
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Enable responsiveness on mobile devices -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="generator" content="Hugo 0.79.1" />
+
+    
+    
+    
+
+<title>Kotlin flow: Nesting vs Chaining • Vasya Drobushkov</title>
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Kotlin flow: Nesting vs Chaining"/>
+<meta name="twitter:description" content="When it comes to reactive streams it is likely everyone heard about huge &#39;rx-chains&#39;. In this article we&#39;ll see that reactive streams are not only about chaining, but also about nesting and will find out important differences."/>
+
+<meta property="og:title" content="Kotlin flow: Nesting vs Chaining" />
+<meta property="og:description" content="When it comes to reactive streams it is likely everyone heard about huge &#39;rx-chains&#39;. In this article we&#39;ll see that reactive streams are not only about chaining, but also about nesting and will find out important differences." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://krossovochkin.com/posts/2021_07_08_kotlin_flow_nesting_vs_chaining/" />
+<meta property="article:published_time" content="2021-07-08T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-07-08T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
+
+
+    
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/scss/hyde-hyde.adf8a0af011d3afb07ed907ad3295e1c99f49503bc91d395e38dc3f8dfdf4900.css" integrity="sha256-rfigrwEdOvsH7ZB60yleHJn0lQO8kdOV443D&#43;N/fSQA=">
+
+
+<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    
+    
+
+</head>
+
+
+    <body class="theme-base-0a ">
+    
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="https://krossovochkin.com/">
+        
+          Vasya Drobushkov
+        
+        </a>
+      </span>
+      
+        
+        
+        
+        <div class="author-image">
+          <img src="https://krossovochkin.com/../img/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
+        </div>
+        
+      
+      
+      <p class="site__description">
+        
+      </p>
+    </div>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">Vasya Drobushkov</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="/posts/">
+						<span>Posts</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="/about/">
+						<span>About</span>
+					</a>
+				</li>
+			 
+		
+	</ul>
+</div>
+
+        <section class="social">
+	
+	<a href="https://twitter.com/krossovochkin" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://facebook.com/vasya.drobushkov" rel="me"><i class="fab fa-facebook-f"></i></a>
+	
+	
+	<a href="https://github.com/krossovochkin" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	<a href="https://linkedin.com/in/vasyadrobushkov" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://stackoverflow.com/users/1533933/krossovochkin" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	<a href="https://t.me/krossovochkin_newsletter" rel="me"><i class="fab fa-telegram fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+</section>
+
+      </div>
+    </div>
+    
+<div class="copyright">
+  &copy; 2019 - 2021 Vasya Drobushkov
+  
+    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
+  
+</div>
+
+
+
+  </div>
+</div>
+
+        <div class="content container">
+            
+    
+<article>
+  <header>
+    <h1>Kotlin flow: Nesting vs Chaining</h1>
+    
+    
+<div class="post__meta">
+    
+    
+      <i class="fas fa-calendar-alt"></i> Jul 8, 2021
+    
+    
+    
+    
+    
+      
+      
+          <br/>
+           <i class="fas fa-tags"></i>
+          
+          <a class="badge badge-tag" href="/tags/kotlin">kotlin</a>
+           
+      
+          <a class="badge badge-tag" href="/tags/kotlin-flow">kotlin flow</a>
+          
+      
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 5 min read
+</div>
+
+
+  </header>
+  
+  
+  <div class="post">
+    <h3 id="introduction">Introduction</h3>
+<p>When it comes to reactive streams it is likely everyone heard about huge &lsquo;Rx-chains&rsquo;. But reactive streams are not only about chaining but also about nesting. Let&rsquo;s find out what are they, what are the differences, and why it matters.<br>
+We&rsquo;ll use Kotlin Flow throughout the article, but everything can be applied to RxJava as well.</p>
+<p>First of all, we need to come up with definitions. For that, we&rsquo;ll take a look at some simple streams.</p>
+<p>This is an example of chaining. We connect streams together making them look like they are aligned in a single line - like a chain:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">stream1
+    .flatMap { stream2 }
+    .flatMap { stream3 }
+    .flatMap { stream4 }
+    .collect()
+</code></pre></div><p>And here example of nesting. Each stream is nested in the previous one. This looks like a nested if-conditions - therefore &ldquo;nesting&rdquo;:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">stream1
+    .flatMap {
+        stream2.flatMap {
+            stream3.flatMap {
+                stream4
+            }
+        }
+    }
+    .collect()
+</code></pre></div><p>If each stream in the above examples just emits some value and completes, and inside collect we&rsquo;ll print the resulting value - there will be no difference between nesting and chaining. And chain code looks more structured and nesting is smaller - this is better for readability.<br>
+So, let&rsquo;s just use chaining always! Not so fast, there are still cases where nesting is a go-to approach.</p>
+<h3 id="passing-data-between-streams">Passing data between streams</h3>
+<p>Suppose we have a task: we need to query one server endpoint, grab the data from it and send to another server endpoint. And one important thing: both endpoints require <code>userId</code> to be provided. The code would look sth like:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">observeUser()
+    .flatMap { user <span style="color:#f92672">-&gt;</span>
+        api.load(user.id)
+            .flatMap { <span style="color:#66d9ef">data</span> <span style="color:#f92672">-&gt;</span> api.send(user.id, <span style="color:#66d9ef">data</span>) }
+    }
+    .collect()
+</code></pre></div><p>Here we used nesting and it is the only option. If we tried to move the second <code>flatMap</code> into the chain - it won&rsquo;t work as <code>user</code> won&rsquo;t be accessible anymore.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">observeUser()
+    .flatMap { user <span style="color:#f92672">-&gt;</span>
+        api.load(user.id)
+    }
+    .flatMap { <span style="color:#66d9ef">data</span> <span style="color:#f92672">-&gt;</span> api.send(user.id, <span style="color:#66d9ef">data</span>) } <span style="color:#75715e">// ! user is not accessible
+</span><span style="color:#75715e"></span>    .collect()
+</code></pre></div><p>An important observation is that nesting unlike chaining creates scope. And one of the simplest things one can do with the scope is to share some data inside it.</p>
+<h3 id="manage-scope-lifecycle">Manage scope lifecycle</h3>
+<p>Managing variables is the simplest thing, but there is another one - more powerful: scope lifecycle.
+Let&rsquo;s imagine that we have a task of displaying a user&rsquo;s location on a screen - for that we need to observe location data. But we should do that only in some certain cases - these cases will be responded to us by the server.<br>
+The implementation will look like the following:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">observeUser()
+    .flatMapLatest { user <span style="color:#f92672">-&gt;</span> 
+        api.load(user.id)
+            .flatMapLatest { observeLocation() }
+    }
+    .collect()
+</code></pre></div><p>Here we again used nesting, while we don&rsquo;t need to pass any data to the <code>observeLocation</code> stream. Additionally, instead of <code>flatMap</code> we&rsquo;ve used <code>flatMapLatest</code> (in RxJava it is called <code>switchMap</code>) - if the new value will be sent by upstream the downstream will be canceled and a new one created. This ensures that if the user was changed (e.g. account switched) we&rsquo;ll trigger the server once again to determine whether we need to observe location.</p>
+<p>So, why do we use nesting here? Why not use chaining like this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">observeUser()
+    .flatMapLatest { user <span style="color:#f92672">-&gt;</span> 
+        api.load(user.id)
+    }
+    .flatMapLatest { observeLocation() }
+    .collect()
+</code></pre></div><p>The answer is: because we have requirements on a stream lifecycle. To better show this let&rsquo;s write some test.
+We&rsquo;ll have two versions of implementations (for simplicity we&rsquo;ll remove all the details and create abstract test):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">testFlowChain</span>(
+   triggerFlow: Flow&lt;Unit&gt;,
+   observeData: Flow&lt;Int&gt;,
+   observeChanges: Flow&lt;Int&gt;
+): Flow&lt;Int&gt; {
+   <span style="color:#66d9ef">return</span> triggerFlow
+       .flatMapLatest { observeData }
+       .flatMapLatest { observeChanges }
+}
+
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">testFlowNest</span>(
+   triggerFlow: Flow&lt;Unit&gt;,
+   observeData: Flow&lt;Int&gt;,
+   observeChanges: Flow&lt;Int&gt;
+): Flow&lt;Int&gt; {
+   <span style="color:#66d9ef">return</span> triggerFlow
+       .flatMapLatest {
+           observeData
+               .flatMapLatest { observeChanges }
+       }
+}
+</code></pre></div><p>And in the test, we&rsquo;ll check whether the behavior of these two approaches is the same.</p>
+<p>First, we set up <code>SharedFlow</code>s, so that we can emulate streams emission over time.<br>
+Then start collecting our stream under test, emit data to each of the streams and verify the result.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">test</span>(
+   tag: String,
+   testFlow: (Flow&lt;Unit&gt;, Flow&lt;Int&gt;, Flow&lt;Int&gt;) <span style="color:#f92672">-&gt;</span> Flow&lt;Int&gt;
+) {
+   <span style="color:#75715e">// GIVEN
+</span><span style="color:#75715e"></span>   <span style="color:#66d9ef">val</span> triggerFlow = MutableSharedFlow&lt;Unit&gt;()
+   <span style="color:#66d9ef">val</span> observeData = MutableSharedFlow&lt;Int&gt;()
+   <span style="color:#66d9ef">val</span> observeFlow = MutableSharedFlow&lt;Int&gt;()
+
+   runCatching {
+       runBlockingTest {
+           <span style="color:#66d9ef">val</span> items = mutableListOf&lt;Int&gt;()
+
+           <span style="color:#66d9ef">val</span> job = launch {
+               testFlow(
+                   triggerFlow,
+                   observeData,
+                   observeFlow
+               ).collect { items <span style="color:#f92672">+=</span> <span style="color:#66d9ef">it</span> }
+           }
+
+           <span style="color:#75715e">// WHEN
+</span><span style="color:#75715e"></span>           <span style="color:#66d9ef">val</span> data = <span style="color:#ae81ff">200</span>
+           <span style="color:#66d9ef">val</span> changedCount1 = <span style="color:#ae81ff">500</span>
+
+           triggerFlow.emit(Unit)
+           observeData.emit(<span style="color:#66d9ef">data</span>)
+           observeFlow.emit(changedCount1)
+
+           <span style="color:#75715e">// THEN
+</span><span style="color:#75715e"></span>           check(items <span style="color:#f92672">==</span> listOf(changedCount1)) {
+               <span style="color:#e6db74">&#34;&#34;&#34;Check failed:
+</span><span style="color:#e6db74">                   |Expected: </span><span style="color:#e6db74">${listOf(changedCount1)}</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">                   |Actual: </span><span style="color:#e6db74">$items</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">               &#34;&#34;&#34;</span>.trimMargin()
+           }
+<span style="color:#75715e">//...
+</span></code></pre></div><p>If we run this test for each of the approaches we&rsquo;ll see that everything works correctly: all flows are triggered and the result is the same.
+But let&rsquo;s extend the test with some custom emission:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">   <span style="color:#75715e">// WHEN
+</span><span style="color:#75715e"></span>   <span style="color:#66d9ef">val</span> changedCount2 = <span style="color:#ae81ff">200</span>
+
+   triggerFlow.emit(Unit)
+   observeFlow.emit(changedCount2)
+
+   <span style="color:#75715e">// THEN
+</span><span style="color:#75715e"></span>   check(items <span style="color:#f92672">==</span> listOf(changedCount1)) {
+       <span style="color:#e6db74">&#34;&#34;&#34;Check failed:
+</span><span style="color:#e6db74">           |Expected: </span><span style="color:#e6db74">${listOf(changedCount1)}</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">           |Actual: </span><span style="color:#e6db74">$items</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">       &#34;&#34;&#34;</span>.trimMargin()
+   }
+
+   job.cancel()
+}
+</code></pre></div><p>We emit data in each stream except the middle one.<br>
+And when we run tests - the results are different. The nesting approach won&rsquo;t emit value while chaining will.<br>
+If we get back to our example with observing location that means that in the chaining case we might face an issue that the user was changed, but we still collect location data for the previous user. This is a major issue!</p>
+<p>It happened because in the case with nesting we&rsquo;ve defined the scope that has lifecycle attached to the <code>observeUser</code> stream: when the user is changed - everything inside <code>flatMapLatest</code> will be canceled. And in the case of chaining, we have <code>observeLocation</code> outside of user scope - so when the user changed, the location stream is not canceled.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>Understanding such simple concepts such as nesting and chaining becomes crucial for work with reactive streams because on the first look everything might look good, but in reality, there might be some hard-to-catch issues.<br>
+Think thoroughly what approach to choose based on requirements. And write tests - they can help you catch unwanted behavior faster and make your code more reliable.</p>
+<p>Happy coding!</p>
+
+  </div>
+  
+
+<div class="navigation navigation-single">
+    
+    <a href="/posts/2021_06_21_why_custom_website_instead_of_medium/" class="navigation-prev">
+      <i aria-hidden="true" class="fa fa-chevron-left"></i>
+      <span class="navigation-tittle">Why custom website instead of Medium</span>
+    </a>
+    
+    
+</div>
+
+
+  
+
+  
+    
+
+
+</article>
+
+
+        </div>
+        
+    
+
+  
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
+
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+        
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/bash.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/java.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+            
+        
+    <script type="text/javascript">
+        
+        hljs.configure({languages: ["bash, java, kotlin"]});
+        
+        hljs.initHighlightingOnLoad();
+    </script>
+    
+
+
+
+    
+
+
+
+    </body>
+</html>
