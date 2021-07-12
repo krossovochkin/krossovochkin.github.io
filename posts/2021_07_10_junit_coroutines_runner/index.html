@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    
+
+
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Enable responsiveness on mobile devices -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="generator" content="Hugo 0.79.1" />
+
+    
+    
+    
+
+<title>JUnit Coroutines Runner • Vasya Drobushkov</title>
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="JUnit Coroutines Runner"/>
+<meta name="twitter:description" content="Writing tests for kotlin code with coroutines requires adding runBlockingTest for each test method. In the article we&#39;ll try to work around that so that we don&#39;t need to write it."/>
+
+<meta property="og:title" content="JUnit Coroutines Runner" />
+<meta property="og:description" content="Writing tests for kotlin code with coroutines requires adding runBlockingTest for each test method. In the article we&#39;ll try to work around that so that we don&#39;t need to write it." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://krossovochkin.com/posts/2021_07_10_junit_coroutines_runner/" />
+<meta property="article:published_time" content="2021-07-10T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-07-10T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
+
+
+    
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/scss/hyde-hyde.adf8a0af011d3afb07ed907ad3295e1c99f49503bc91d395e38dc3f8dfdf4900.css" integrity="sha256-rfigrwEdOvsH7ZB60yleHJn0lQO8kdOV443D&#43;N/fSQA=">
+
+
+<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    
+    
+
+</head>
+
+
+    <body class="theme-base-0a ">
+    
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="https://krossovochkin.com/">
+        
+          Vasya Drobushkov
+        
+        </a>
+      </span>
+      
+        
+        
+        
+        <div class="author-image">
+          <img src="https://krossovochkin.com/../img/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
+        </div>
+        
+      
+      
+      <p class="site__description">
+        
+      </p>
+    </div>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">Vasya Drobushkov</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="/posts/">
+						<span>Posts</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="/about/">
+						<span>About</span>
+					</a>
+				</li>
+			 
+		
+	</ul>
+</div>
+
+        <section class="social">
+	
+	<a href="https://twitter.com/krossovochkin" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://facebook.com/vasya.drobushkov" rel="me"><i class="fab fa-facebook-f"></i></a>
+	
+	
+	<a href="https://github.com/krossovochkin" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	<a href="https://linkedin.com/in/vasyadrobushkov" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://stackoverflow.com/users/1533933/krossovochkin" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	<a href="https://t.me/krossovochkin_newsletter" rel="me"><i class="fab fa-telegram fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+</section>
+
+      </div>
+    </div>
+    
+<div class="copyright">
+  &copy; 2019 - 2021 Vasya Drobushkov
+  
+    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
+  
+</div>
+
+
+
+  </div>
+</div>
+
+        <div class="content container">
+            
+    
+<article>
+  <header>
+    <h1>JUnit Coroutines Runner</h1>
+    
+    
+<div class="post__meta">
+    
+    
+      <i class="fas fa-calendar-alt"></i> Jul 10, 2021
+    
+    
+    
+    
+    
+      
+      
+          <br/>
+           <i class="fas fa-tags"></i>
+          
+          <a class="badge badge-tag" href="/tags/kotlin">kotlin</a>
+           
+      
+          <a class="badge badge-tag" href="/tags/coroutines">coroutines</a>
+           
+      
+          <a class="badge badge-tag" href="/tags/test">test</a>
+          
+      
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 8 min read
+</div>
+
+
+  </header>
+  
+  
+  <div class="post">
+    <h3 id="introduction">Introduction</h3>
+<p>Recently while writing tests for kotlin code with coroutines I found one annoying thing: almost all the tests start with <code>runBlockingTest</code>. Typing the same stuff repeatedly is something we can&rsquo;t accept! So, I decided to think about how to improve this.</p>
+<blockquote>
+<p>Disclaimer. Yes, this is an example of how to spend few hours to optimize some task that requires you 2 seconds to complete each time. Even on a scale of hundreds of usages such optimization most likely won&rsquo;t pay your time back. But it is always fun to do some weird things even if you understand that they are stupid.</p>
+</blockquote>
+<h3 id="basic-test">Basic test</h3>
+<p>Let&rsquo;s get to the very beginning: we have some function that does some important work and that is suspendable. For simplicity, the function will return some constant value after some delay.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">calculate</span>(): Int {
+    delay(<span style="color:#ae81ff">100L</span>)
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>
+}
+</code></pre></div><p>The next step is to cover this function with tests. We&rsquo;ll have two tests: one for positive and one for negative cases. This can be considered simple mutation testing. In general, we don&rsquo;t need <code>testFail</code>, but for this specific case, it might be useful to verify that we get green tests only if everything is fine, and if something is wrong that we get red tests as expected.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainTest</span> {
+
+    <span style="color:#a6e22e">@Test</span>
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">testSuccess</span>() {
+        runBlockingTest {
+            check(calculate() <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>)
+        }
+    }
+
+    <span style="color:#a6e22e">@Test</span>(expected = IllegalStateException<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>)
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">testFail</span>() {
+        runBlockingTest {
+            check(calculate() <span style="color:#f92672">==</span> <span style="color:#ae81ff">2</span>)
+        }
+    }
+}
+</code></pre></div><p>This looks a bit wordy and has one level of nesting - not cool. We can work around that by using the body as an expression. Now it will be much better.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainTest</span> {
+
+    <span style="color:#a6e22e">@Test</span>
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">testSuccess</span>() = runBlockingTest {
+        check(calculate() <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>)
+    }
+
+    <span style="color:#a6e22e">@Test</span>(expected = IllegalStateException<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>)
+    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">testFail</span>() = runBlockingTest {
+        check(calculate() <span style="color:#f92672">==</span> <span style="color:#ae81ff">2</span>)
+    }
+}
+</code></pre></div><h3 id="custom-junit-rule">Custom JUnit Rule</h3>
+<p>Our first attempt will be to create custom JUnit rule that will apply <code>runBlockingTest</code> automatically for each of our test methods. This will be our rule:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CoroutinesTestRule</span> : TestRule {
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">apply</span>(base: Statement, description: Description): Statement {
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">: </span><span style="color:#a6e22e">Statement</span>() {
+            <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">evaluate</span>() {
+                runBlockingTest { base.evaluate() }
+            }
+        }
+    }
+}
+</code></pre></div><p>Now we can drop <code>runBlockingTest</code> from the test method. But if we do - we face an error:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Test</span>
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">testSuccess</span>() {
+    check(calculate() <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>) <span style="color:#75715e">// Suspend function &#39;calculate&#39; should be called only from a coroutine or another suspend function
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>Yes, to call our function under test we need coroutine scope. Previously it was created by <code>runBlockingTest</code> and now it is missing. What can we do? Look at the second part of the error message: &ldquo;or another suspend function&rdquo;. Let&rsquo;s make our test methods <code>suspend</code> and apply our custom rule:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainTest</span> {
+
+    <span style="color:#a6e22e">@get</span>:Rule
+    <span style="color:#66d9ef">val</span> rule = CoroutinesTestRule()
+
+    <span style="color:#a6e22e">@Test</span>
+    <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">testSuccess</span>() {
+        check(calculate() <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>)
+    }
+}
+</code></pre></div><p>Nice!</p>
+<p>But after trying to run tests we face an error:</p>
+<pre><code>Method testSuccess() should be void
+java.lang.Exception: Method testSuccess() should be void
+  at org.junit.runners.model.FrameworkMethod.validatePublicVoid(FrameworkMethod.java:99)
+  at org.junit.runners.model.FrameworkMethod.validatePublicVoidNoArg(FrameworkMethod.java:74)
+  at org.junit.runners.ParentRunner.validatePublicVoidNoArgMethods(ParentRunner.java:155)
+  at org.junit.runners.BlockJUnit4ClassRunner.validateTestMethods(BlockJUnit4ClassRunner.java:208)
+</code></pre><p>But it looks like our test method doesn&rsquo;t have return type declared, so it should be <code>Unit</code> and it is the same as <code>Void</code>?<br>
+Actually, no. By the way <code>Unit</code> != <code>Void</code>, but in this case, it doesn&rsquo;t matter much. What happens is that after compiling to Java bytecode test method signature will look like:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">public</span> Object calculate(Continuation&lt;Int&gt; continuation)
+</code></pre></div><p>Because of marking method <code>suspend</code> kotlin compiler adds continuation param and <code>Object</code> return type. That <code>Object</code> is used by an internal implementation to e.g. keep track of the internal state.</p>
+<h3 id="diving-looking-for-root-cause">Diving looking for root cause</h3>
+<p>Something went wrong: we tried to run tests, but we can&rsquo;t because of some internal validation, and we need to find a way to suppress some validation checks.<br>
+Looking at the stack trace we find the place where validation checks happen - <code>FrameworkMethod</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+</span><span style="color:#75715e"> * Adds to {@code errors} if this method:
+</span><span style="color:#75715e"> * &lt;ul&gt;
+</span><span style="color:#75715e"> * &lt;li&gt;is not public, or
+</span><span style="color:#75715e"> * &lt;li&gt;returns something other than void, or
+</span><span style="color:#75715e"> * &lt;li&gt;is static (given {@code isStatic is false}), or
+</span><span style="color:#75715e"> * &lt;li&gt;is not static (given {@code isStatic is true}).
+</span><span style="color:#75715e"> * &lt;/ul&gt;
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">validatePublicVoid</span><span style="color:#f92672">(</span><span style="color:#66d9ef">boolean</span> isStatic<span style="color:#f92672">,</span> List<span style="color:#f92672">&lt;</span>Throwable<span style="color:#f92672">&gt;</span> errors<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>isStatic<span style="color:#f92672">()</span> <span style="color:#f92672">!=</span> isStatic<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        String state <span style="color:#f92672">=</span> isStatic <span style="color:#f92672">?</span> <span style="color:#e6db74">&#34;should&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;should not&#34;</span><span style="color:#f92672">;</span>
+        errors<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Exception<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Method &#34;</span> <span style="color:#f92672">+</span> method<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">()</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;() &#34;</span> <span style="color:#f92672">+</span> state <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; be static&#34;</span><span style="color:#f92672">));</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>isPublic<span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+        errors<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Exception<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Method &#34;</span> <span style="color:#f92672">+</span> method<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">()</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;() should be public&#34;</span><span style="color:#f92672">));</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>method<span style="color:#f92672">.</span><span style="color:#a6e22e">getReturnType</span><span style="color:#f92672">()</span> <span style="color:#f92672">!=</span> Void<span style="color:#f92672">.</span><span style="color:#a6e22e">TYPE</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        errors<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Exception<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Method &#34;</span> <span style="color:#f92672">+</span> method<span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">()</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;() should be void&#34;</span><span style="color:#f92672">));</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>What we need is to be able to override the behavior of that method. Looking more at that class we can find the <code>validatePublicVoidNoArg</code> method. We immediately notice that we should also suppress the validation check that verifies that the method has no arguments. Yes, in general, the test method doesn&rsquo;t have arguments, but after adding <code>suspend</code> kotlin compiler will add the <code>continuation</code> argument automatically. So, we need to suppress that check as well.</p>
+<p>The easiest way to do that is to wrap <code>FrameworkMethod</code> into our class, which we&rsquo;ll call <code>SuspendFrameworkMethod</code>, and override the method with a new implementation:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SuspendFrameworkMethod</span>(<span style="color:#66d9ef">val</span> frameworkMethod: FrameworkMethod) : FrameworkMethod(frameworkMethod.method) {
+
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">validatePublicVoidNoArg</span>(isStatic: Boolean, errors: MutableList&lt;Throwable&gt;) {
+        <span style="color:#66d9ef">if</span> (isStatic() <span style="color:#f92672">!=</span> isStatic) {
+            <span style="color:#66d9ef">val</span> state = <span style="color:#66d9ef">if</span> (isStatic) <span style="color:#e6db74">&#34;should&#34;</span> <span style="color:#66d9ef">else</span> <span style="color:#e6db74">&#34;should not&#34;</span>
+            errors.add(Exception(<span style="color:#e6db74">&#34;Method &#34;</span> + method.name + <span style="color:#e6db74">&#34;() &#34;</span> + state + <span style="color:#e6db74">&#34; be static&#34;</span>))
+        }
+        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!is</span>Public) {
+            errors.add(Exception(<span style="color:#e6db74">&#34;Method &#34;</span> + method.name + <span style="color:#e6db74">&#34;() should be public&#34;</span>))
+        }
+        <span style="color:#75715e">// skip check for void
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// skip check for no arg
+</span><span style="color:#75715e"></span>    }
+}
+</code></pre></div><p>We still keep checks that method is public and not static though, as we want to keep these checks.</p>
+<p>After creating a wrapper around <code>FrameworkMethod</code> we should hook it somehow.</p>
+<h3 id="custom-junit-runner">Custom JUnit Runner</h3>
+<p>It turns out that the place where we should add a wrapper is a test runner. Test runner runs tests. Simple as that.<br>
+We write our custom runner called <code>CoroutinesTestRunner</code> overriding some methods, so that wrapper <code>SuspendFrameworkMethod</code> will be used calling our overridden checks:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CoroutinesTestRunner</span>(klass: Class&lt;*&gt;) : BlockJUnit4ClassRunner(klass) {
+
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getChildren</span>(): MutableList&lt;FrameworkMethod&gt; {
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">super</span>.getChildren().map(<span style="color:#f92672">::</span>SuspendFrameworkMethod).toMutableList()
+    }
+
+    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">validatePublicVoidNoArgMethods</span>(
+        <span style="color:#66d9ef">annotation</span>: Class&lt;<span style="color:#66d9ef">out</span> Annotation&gt;,
+        isStatic: Boolean,
+        errors: MutableList&lt;Throwable&gt;
+    ) {
+        <span style="color:#75715e">// skip check no arg
+</span><span style="color:#75715e"></span>        testClass.getAnnotatedMethods(<span style="color:#66d9ef">annotation</span>)
+            .forEach { SuspendFrameworkMethod(<span style="color:#66d9ef">it</span>).validatePublicVoidNoArg(isStatic, errors) }
+    }
+}
+</code></pre></div><p>Now we need to instruct JUnit to use our custom test runner to run our tests:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@RunWith</span>(CoroutinesTestRunner<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>)
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainTest</span> {
+
+    <span style="color:#a6e22e">@Test</span>
+    <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">testSuccess</span>() {
+        check(calculate() <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>)
+    }
+
+    <span style="color:#a6e22e">@Test</span>(expected = IllegalStateException<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>)
+    <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">testFail</span>() {
+        check(calculate() <span style="color:#f92672">==</span> <span style="color:#ae81ff">2</span>)
+    }
+}
+</code></pre></div><p>We run tests and again see the issue:</p>
+<pre><code>wrong number of arguments
+java.lang.IllegalArgumentException: wrong number of arguments
+  at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+  at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+  at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+  at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+  at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
+  at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+  at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
+</code></pre><p>Meh, we need to do something with that as well.</p>
+<h3 id="reflection">Reflection</h3>
+<p>JUnit uses reflection under the hood to run tests. Using reflection JUnit collects all the methods marked with <code>@Test</code> annotation and invokes them proving target and params.
+We can see how it is done by looking at the <code>FrameworkMethod#invokeExplosively</code> method:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+</span><span style="color:#75715e"> * Returns the result of invoking this method on {@code target} with
+</span><span style="color:#75715e"> * parameters {@code params}. {@link InvocationTargetException}s thrown are
+</span><span style="color:#75715e"> * unwrapped, and their causes rethrown.
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">invokeExplosively</span><span style="color:#f92672">(</span><span style="color:#66d9ef">final</span> Object target<span style="color:#f92672">,</span> <span style="color:#66d9ef">final</span> Object<span style="color:#f92672">...</span> params<span style="color:#f92672">)</span>
+        <span style="color:#66d9ef">throws</span> Throwable <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> ReflectiveCallable<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#a6e22e">@Override</span>
+        <span style="color:#66d9ef">protected</span> Object <span style="color:#a6e22e">runReflectiveCall</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Throwable <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">return</span> method<span style="color:#f92672">.</span><span style="color:#a6e22e">invoke</span><span style="color:#f92672">(</span>target<span style="color:#f92672">,</span> params<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>We have the wrong number of arguments because we need to provide <code>continuation</code> as a parameter. An attentive reader could spot that we haven&rsquo;t added <code>runBlockingTest</code> yet.<br>
+Let&rsquo;s do that in our <code>SuspendFrameworkMethod</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Throws</span>(Throwable<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>)
+<span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">invokeExplosively</span>(target: Any?, <span style="color:#66d9ef">vararg</span> params: Any?): Any? {
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">object</span> <span style="color:#960050;background-color:#1e0010">: </span><span style="color:#a6e22e">ReflectiveCallable</span>() {
+        <span style="color:#a6e22e">@Throws</span>(Throwable<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>)
+        <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">runReflectiveCall</span>(): Any {
+            <span style="color:#66d9ef">return</span> runBlockingTest {
+                suspendCoroutine&lt;Unit&gt; { continuation <span style="color:#f92672">-&gt;</span>
+                    frameworkMethod.invokeExplosively(target, continuation, *params)
+                }
+            }
+        }
+    }.run()
+}
+</code></pre></div><p>We wrap the <code>invokeExplosively</code> method with <code>runBlockingTest</code> and create a separate <code>suspendCoroutine</code> to access continuation.</p>
+<p>We then run our tests and they are green!<br>
+Awesome!</p>
+<h3 id="result">Result</h3>
+<p>Now, with <code>CoroutineTestRunner</code> we can write our tests like this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@RunWith</span>(CoroutinesTestRunner<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>)
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainTest</span> {
+
+    <span style="color:#a6e22e">@Test</span>
+    <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">testSuccess</span>() {
+        check(calculate() <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>)
+    }
+
+    <span style="color:#a6e22e">@Test</span>(expected = IllegalStateException<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>)
+    <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">testFail</span>() {
+        check(calculate() <span style="color:#f92672">==</span> <span style="color:#ae81ff">2</span>)
+    }
+}
+</code></pre></div><p>No more explicit <code>runBlockingTest</code>!</p>
+<p>Is it good to use this approach though?</p>
+<p>NO.</p>
+<p>Please, don&rsquo;t try to do anything like this in a real project. The current implementation has many disadvantages:</p>
+<ul>
+<li>We got rid of <code>runBlockingTest</code> but now we should add to each test <code>suspend</code>. That is a very little gain in characters to be saved</li>
+<li><code>runBlockingTest</code> not only provides the scope - it provides a test scope that has additional test methods like <code>advanceTimeBy</code>. And we don&rsquo;t have that test scope anymore. Trying to pass it to the method requires additional changes in our <code>SuspendFrameworkMethod</code> and the resulting test methods will look like this:</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Test</span>
+<span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">test</span>(scope: TestCorotinesScope) {
+    <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>This is even more verbose than using <code>runBlockingTest</code>.</p>
+<p>So, after all, have to admit that this &ldquo;optimization&rdquo; actually doesn&rsquo;t make the test methods look better. Still, the preferred way to write tests is:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Test</span>
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">test</span>() = runBlockingTest {
+    <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>But at least we had some fun and probably understand better the internals of the JUnit framework.</p>
+<p>Happy coding!</p>
+
+  </div>
+  
+
+<div class="navigation navigation-single">
+    
+    <a href="/posts/2021_07_08_kotlin_flow_nesting_vs_chaining/" class="navigation-prev">
+      <i aria-hidden="true" class="fa fa-chevron-left"></i>
+      <span class="navigation-tittle">Kotlin flow: Nesting vs Chaining</span>
+    </a>
+    
+    
+</div>
+
+
+  
+
+  
+    
+
+
+</article>
+
+
+        </div>
+        
+    
+
+  
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
+
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+        
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/bash.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/java.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+            
+        
+    <script type="text/javascript">
+        
+        hljs.configure({languages: ["bash, java, kotlin"]});
+        
+        hljs.initHighlightingOnLoad();
+    </script>
+    
+
+
+
+    
+
+
+
+    </body>
+</html>

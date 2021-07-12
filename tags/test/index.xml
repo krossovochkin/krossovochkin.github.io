@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>test on Vasya Drobushkov</title>
+    <link>https://krossovochkin.com/tags/test/</link>
+    <description>Recent content in test on Vasya Drobushkov</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 10 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.com/tags/test/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>JUnit Coroutines Runner</title>
+      <link>https://krossovochkin.com/posts/2021_07_10_junit_coroutines_runner/</link>
+      <pubDate>Sat, 10 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.com/posts/2021_07_10_junit_coroutines_runner/</guid>
+      <description>Introduction Recently while writing tests for kotlin code with coroutines I found one annoying thing: almost all the tests start with runBlockingTest. Typing the same stuff repeatedly is something we can&amp;rsquo;t accept! So, I decided to think about how to improve this.
+ Disclaimer. Yes, this is an example of how to spend few hours to optimize some task that requires you 2 seconds to complete each time. Even on a scale of hundreds of usages such optimization most likely won&amp;rsquo;t pay your time back.</description>
+    </item>
+    
+  </channel>
+</rss>
