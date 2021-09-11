@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    
+
+
+    <head>
+    <link href="https://gmpg.org/xfn/11" rel="profile">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Enable responsiveness on mobile devices -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="generator" content="Hugo 0.79.1" />
+
+    
+    
+    
+
+<title>Mocking Matchers API • Vasya Drobushkov</title>
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Mocking Matchers API"/>
+<meta name="twitter:description" content="Diving into Matchers API of various mocking libraries such as Mockito, mockito-kotlin, mockk"/>
+
+<meta property="og:title" content="Mocking Matchers API" />
+<meta property="og:description" content="Diving into Matchers API of various mocking libraries such as Mockito, mockito-kotlin, mockk" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://krossovochkin.com/posts/2021_09_11_mocking_matchers_api/" />
+<meta property="article:published_time" content="2021-09-11T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-09-11T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
+
+
+    
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/scss/hyde-hyde.adf8a0af011d3afb07ed907ad3295e1c99f49503bc91d395e38dc3f8dfdf4900.css" integrity="sha256-rfigrwEdOvsH7ZB60yleHJn0lQO8kdOV443D&#43;N/fSQA=">
+
+
+<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/favicon.png">
+    
+    
+
+</head>
+
+
+    <body class="theme-base-0a ">
+    
+<div class="sidebar">
+  <div class="container ">
+    <div class="sidebar-about">
+      <span class="site__title">
+        <a href="https://krossovochkin.com/">
+        
+          Vasya Drobushkov
+        
+        </a>
+      </span>
+      
+        
+        
+        
+        <div class="author-image">
+          <img src="https://krossovochkin.com/../img/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
+        </div>
+        
+      
+      
+      <p class="site__description">
+        
+      </p>
+    </div>
+    <div class="collapsible-menu">
+      <input type="checkbox" id="menuToggle">
+      <label for="menuToggle">Vasya Drobushkov</label>
+      <div class="menu-content">
+        <div>
+	<ul class="sidebar-nav">
+		 
+		 
+			 
+				<li>
+					<a href="/posts/">
+						<span>Posts</span>
+					</a>
+				</li>
+			 
+		 
+			 
+				<li>
+					<a href="/about/">
+						<span>About</span>
+					</a>
+				</li>
+			 
+		
+	</ul>
+</div>
+
+        <section class="social">
+	
+	<a href="https://twitter.com/krossovochkin" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://facebook.com/vasya.drobushkov" rel="me"><i class="fab fa-facebook-f"></i></a>
+	
+	
+	<a href="https://github.com/krossovochkin" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+	<a href="https://linkedin.com/in/vasyadrobushkov" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	<a href="https://stackoverflow.com/users/1533933/krossovochkin" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	<a href="https://t.me/krossovochkin_newsletter" rel="me"><i class="fab fa-telegram fa-lg" aria-hidden="true"></i></a>
+	
+	
+	
+	
+	
+	
+	
+</section>
+
+      </div>
+    </div>
+    
+<div class="copyright">
+  &copy; 2019 - 2021 Vasya Drobushkov
+  
+    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
+  
+</div>
+
+
+
+  </div>
+</div>
+
+        <div class="content container">
+            
+    
+<article>
+  <header>
+    <h1>Mocking Matchers API</h1>
+    
+    
+<div class="post__meta">
+    
+    
+      <i class="fas fa-calendar-alt"></i> Sep 11, 2021
+    
+    
+    
+    
+    
+      
+      
+          <br/>
+           <i class="fas fa-tags"></i>
+          
+          <a class="badge badge-tag" href="/tags/test">test</a>
+          
+      
+    
+    
+    <br/>
+    <i class="fas fa-clock"></i> 6 min read
+</div>
+
+
+  </header>
+  
+  
+  <div class="post">
+    <h3 id="introduction">Introduction</h3>
+<p>Recently, I faced an issue that in the first place I found weird. I even considered that the behavior is generally incorrect. Diving deeper I got few insights on the problem - and this is what I&rsquo;d like to share with you.<br>
+This is a story about the interesting behavior of mocking library and the difficulties of defining API surface for a library.</p>
+<blockquote>
+<p><strong>Disclaimer</strong><br>
+In general, I favor fakes over mocks. In other words, instead of trying to implement emulation of the behavior as a mock - it is generally easier and safer to implement a simple fake object with all the logic (that can be covered with tests if needed).<br>
+Though that doesn&rsquo;t mean that one should not use mocks at all. In my opinion, it depends on the use case. If you would like to stub some values - then going with a fake object sounds like a wise choice, but for verifying behavior (e.g. whether there were interactions with a particular object or not) using mocking libraries might provide a fast solution.<br>
+Needed to say that even when trying to verify interactions one can use fake objects wrapped with spies.<br>
+Regardless, this article is not about what approach is better, it is more about the behavior of mocking libraries and how their API is designed.</p>
+</blockquote>
+<p>Let&rsquo;s imagine that we&rsquo;re writing some tests and we&rsquo;d like to define the behavior of some <code>Product</code> object to return the correct price depending on <code>discountId</code>. Also, let&rsquo;s assume on a project we&rsquo;re using <a href="https://github.com/mockito/mockito-kotlin">mockito-kotlin</a> as a mocking library.<br>
+When doing checkout user can provide some <code>discountId</code> that will apply some price reduction, or there might be no discount - in this case, we&rsquo;ll pass <code>null</code>.<br>
+The mocking might look like this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> product = mock&lt;Product&gt; {
+    on { calculatePrice(<span style="color:#66d9ef">null</span>) } doReturn Price(<span style="color:#ae81ff">10</span>)
+    on { calculatePrice(discountId1) } doReturn Price(<span style="color:#ae81ff">5</span>)
+    on { calculatePrice(discountId2) } doReturn Price(<span style="color:#ae81ff">4</span>)
+}
+</code></pre></div><p>Everything is fine with this code, but there is quite a lot of duplication. In case we&rsquo;d like to register more discount IDs we might tend to copy-paste previous lines and incorrectly change some values. Let&rsquo;s rewrite it a bit to make it more generic:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> product = mock&lt;Product&gt; {
+    on { calculatePrice(any())} doAnswer  { i <span style="color:#f92672">-&gt;</span>
+        <span style="color:#66d9ef">when</span> (<span style="color:#66d9ef">val</span> discountId = i.getArgument&lt;String&gt;(<span style="color:#ae81ff">0</span>)) {
+            <span style="color:#66d9ef">null</span> <span style="color:#f92672">-&gt;</span> Price(<span style="color:#ae81ff">10</span>)
+            discountId1 <span style="color:#f92672">-&gt;</span> Price(<span style="color:#ae81ff">5</span>)
+            discountId2 <span style="color:#f92672">-&gt;</span> Price(<span style="color:#ae81ff">4</span>)
+            <span style="color:#66d9ef">else</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">throw</span> UnsupportedOperationException(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$discountId</span><span style="color:#e6db74"> is not mocked&#34;</span>)
+        }
+    }
+}
+</code></pre></div><p>This uses more lines, but we&rsquo;ve made the code more flexible and removed duplication.</p>
+<blockquote>
+<p>As a side note, doing something like this should already be as a signal that instead of writing complex mock we&rsquo;d better stick to some fake product object to contain all that logic.</p>
+</blockquote>
+<p>We&rsquo;ve set up the mock, but if we run something like:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Test</span>
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">test</span>() {
+    assertEquals(Price(<span style="color:#ae81ff">10</span>), product.calculatePrice(<span style="color:#66d9ef">null</span>))
+}
+</code></pre></div><p>We&rsquo;ll get an exception:</p>
+<pre><code>expected:&lt;Price(value=10)&gt; but was:&lt;null&gt;
+Expected :Price(value=10)
+Actual   :null
+</code></pre><p>But why so? We&rsquo;ve mocked the product to return some value for any input argument, but when passing <code>null</code> we got <code>null</code> as if we&rsquo;ve not mocked such a case.<br>
+The reason behind that is that mockito-kotlin has separate methods for checking non-nullable and nullable inputs. So, in this case, the correct version would be to use <code>anyOrNull</code> instead of <code>any</code>. In that case, everything will work as expected.<br>
+And this is the exact thing that makes me feel weird: doesn&rsquo;t <code>any()</code> mean any input? Why <code>null</code> is not considered as any?</p>
+<p>And even more weird: if instead of <code>org.mockito.kotlin.any</code> we&rsquo;ll use <code>org.mockito.ArgumentMatchers.any</code> (from original Mockito library) - test will pass! Feels like mockito-kotlin (which is a kotlin wrapper over Mockito) doesn&rsquo;t behave the same way as Mockito. I&rsquo;ve been using Mockito for quite a while, so I didn&rsquo;t expect such changes.</p>
+<p>From here let&rsquo;s dive into argument matchers of various mocking libraries: Mockito, mockito-kotlin, and mockk.</p>
+<h3 id="mockito">Mockito</h3>
+<p>Mockito has a bunch of matchers that check for type and handle nullability: <code>any()</code>, <code>any(Class&lt;T&gt; type)</code>, <code>isA(Class&lt;T&gt; type)</code>, <code>isNull()</code>, <code>notNull()</code>, <code>isNotNull()</code>, <code>nullable(Class&lt;T&gt; type)</code>. Wow, there are a lot. Let&rsquo;s find out the differences.</p>
+<ul>
+<li><code>any()</code> - it basically has no check. Any input is considered a match.</li>
+<li><code>any(Class&lt;T&gt; type)</code> - checks that input is instance of type <code>T</code>. It supports both children of type <code>T</code> and varargs.</li>
+<li><code>isA(Class&lt;T&gt; type)</code> - same as <code>any(Class&lt;T&gt; type)</code> but it doesn&rsquo;t support varargs.</li>
+<li><code>isNull()</code> - checks whether input equals to <code>null</code> or not, simple as that.</li>
+<li><code>notNull()</code> - opposite to <code>isNull()</code> - it checks whether value is not equal to <code>null</code></li>
+<li><code>isNotNull()</code> - this is an alias to <code>notNull()</code></li>
+<li><code>nullable(Class&lt;T&gt; type)</code> - this is an alias to having <code>isNull()</code> or <code>isA(Class&lt;T&gt; type)</code></li>
+</ul>
+<p>This looks pretty straightforward as for any case we need we can choose the corresponding matcher.<br>
+One can look at the implementation of each method in more detail <a href="https://github.com/mockito/mockito/blob/main/src/main/java/org/mockito/ArgumentMatchers.java">here</a>.</p>
+<h3 id="mockito-kotlin">Mockito-Kotlin</h3>
+<p>Mockito-kotlin is a wrapper around Mockito, so we can expect it to match the same methods in Mockito. Among available matchers we can find: <code>any()</code>, <code>anyOrNull()</code>, <code>anyVararg()</code>, <code>isA()</code>, <code>isNull()</code>, <code>notNull()</code>, <code>isNotNull()</code>.</p>
+<ul>
+<li><code>any()</code> - immediately we face a difference: this method uses under the hood <code>any(Class&lt;T&gt; type)</code> from Mockito. Interesting.</li>
+<li><code>anyOrNull()</code> - this instead uses <code>any()</code></li>
+<li><code>anyVararg()</code> - this also uses <code>any()</code> internally</li>
+<li><code>isA()</code>, <code>isNull()</code>, <code>notNull()</code>, <code>isNotNull()</code> - under the hood wrap same methods from Mockito.</li>
+</ul>
+<p>This sounds quite interesting because here we faced an inconsistency between mockito-kotlin and Mockito in terms of using the <code>any()</code> method.<br>
+The only reason I can speculate on why it happens so is that term <code>any</code> becomes overloaded when we&rsquo;re writing kotlin code. In kotlin <code>Any</code> is a class that any object extends (unlike java where all objects extend <code>Object</code>). At the same time in kotlin, we have <code>Any?</code> type that is broader than <code>Any</code>. So, when we try to match against <code>any()</code> - do we mean that we match any possible input or that we&rsquo;d like to match all the inputs that extend <code>Any</code> and not <code>Any?</code>?<br>
+If we look from that side everything becomes quite logical - if you expect to match against <code>Any</code> - you use <code>any()</code> and if you match against <code>Any?</code> you use <code>anyOrNull()</code>.<br>
+But as there is no compiler/lint support for that - for anyone who comes from a java background and usage of Mockito library such change might become surprising.</p>
+<p>The exact implementation of each matcher one can find <a href="https://github.com/mockito/mockito-kotlin/blob/main/mockito-kotlin/src/main/kotlin/org/mockito/kotlin/Matchers.kt">here</a></p>
+<h3 id="mockk">Mockk</h3>
+<p>Let&rsquo;s rewrite our mock using Mockk:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> product = mockk&lt;Product&gt; {
+    every { calculatePrice(any()) } answers {
+        <span style="color:#66d9ef">when</span> (<span style="color:#66d9ef">val</span> discountId = <span style="color:#66d9ef">it</span>.invocation.args[<span style="color:#ae81ff">0</span>] <span style="color:#66d9ef">as</span> String?) {
+            <span style="color:#66d9ef">null</span> <span style="color:#f92672">-&gt;</span> Price(<span style="color:#ae81ff">10</span>)
+            discountId1 <span style="color:#f92672">-&gt;</span> Price(<span style="color:#ae81ff">5</span>)
+            discountId2 <span style="color:#f92672">-&gt;</span> Price(<span style="color:#ae81ff">4</span>)
+            <span style="color:#66d9ef">else</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">throw</span> UnsupportedOperationException(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$discountId</span><span style="color:#e6db74"> is not mocked&#34;</span>)
+        }
+    }
+}
+</code></pre></div><p>It will look similar to what we can have with mockito-kotlin.<br>
+We run our test and it passes! So, the behavior is similar to what we have in Mockito and not mockito-kotlin.</p>
+<p>Let&rsquo;s check what we have in the Mockk: <code>any()</code>, <code>isNull(inverse: Boolean = false)</code>, <code>ofType(cls: KClass&lt;R&gt;)</code>, <code>ofType&lt;T&gt;()</code></p>
+<ul>
+<li><code>any()</code> - is a constant matcher that always matches. Similar to <code>any()</code> in Mockito or <code>anyOrNull()</code> in mockito-kotlin</li>
+<li><code>isNull(inverse = false)</code> - matches if input is <code>null</code></li>
+<li><code>isNull(inverse = true)</code> - matches if input is not <code>null</code></li>
+<li><code>ofType&lt;T&gt;(cls: KClass&lt;R&gt;)</code> - matches if input R is instance of T</li>
+<li><code>ofType&lt;T&gt;()</code> - simpler version of previous one - matches if input is instance of T</li>
+</ul>
+<p>For anyone who is interested more info about implementation is <a href="https://github.com/mockk/mockk/blob/master/dsl/common/src/main/kotlin/io/mockk/API.kt">here</a></p>
+<h3 id="conclusion">Conclusion</h3>
+<p>From this we can learn a few things:</p>
+<ul>
+<li>when using some library read the documentation and better dive into how it is implemented to not get surprised later on</li>
+<li>if possible prefer using fakes over mocks. In this case, you&rsquo;ll get the same behavior no matter what mocking library you use to verify interactions, therefore you&rsquo;ll get more control of your test doubles</li>
+</ul>
+<p>Happy coding!</p>
+
+  </div>
+  
+
+<div class="navigation navigation-single">
+    
+    <a href="/posts/2021_07_10_junit_coroutines_runner/" class="navigation-prev">
+      <i aria-hidden="true" class="fa fa-chevron-left"></i>
+      <span class="navigation-tittle">JUnit Coroutines Runner</span>
+    </a>
+    
+    
+</div>
+
+
+  
+
+  
+    
+
+
+</article>
+
+
+        </div>
+        
+    
+
+  
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
+
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+        
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/bash.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/java.min.js"></script>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
+            
+        
+    <script type="text/javascript">
+        
+        hljs.configure({languages: ["bash, java, kotlin"]});
+        
+        hljs.initHighlightingOnLoad();
+    </script>
+    
+
+
+
+    
+
+
+
+    </body>
+</html>

@@ -6,7 +6,19 @@
     <description>Recent content in test on Vasya Drobushkov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 10 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.com/tags/test/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 11 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.com/tags/test/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mocking Matchers API</title>
+      <link>https://krossovochkin.com/posts/2021_09_11_mocking_matchers_api/</link>
+      <pubDate>Sat, 11 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.com/posts/2021_09_11_mocking_matchers_api/</guid>
+      <description>Introduction Recently, I faced an issue that in the first place I found weird. I even considered that the behavior is generally incorrect. Diving deeper I got few insights on the problem - and this is what I&amp;rsquo;d like to share with you.
+This is a story about the interesting behavior of mocking library and the difficulties of defining API surface for a library.
+ Disclaimer
+In general, I favor fakes over mocks.</description>
+    </item>
+    
     <item>
       <title>JUnit Coroutines Runner</title>
       <link>https://krossovochkin.com/posts/2021_07_10_junit_coroutines_runner/</link>
