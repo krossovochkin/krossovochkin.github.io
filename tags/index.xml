@@ -6,7 +6,16 @@
     <description>Recent content in Tags on Vasya Drobushkov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 11 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 14 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>android</title>
+      <link>https://krossovochkin.com/tags/android/</link>
+      <pubDate>Tue, 14 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.com/tags/android/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>test</title>
       <link>https://krossovochkin.com/tags/test/</link>
@@ -58,15 +67,6 @@
       <pubDate>Tue, 08 Jun 2021 00:00:00 +0000</pubDate>
       
       <guid>https://krossovochkin.com/tags/json/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>android</title>
-      <link>https://krossovochkin.com/tags/android/</link>
-      <pubDate>Mon, 18 Jan 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.com/tags/android/</guid>
       <description></description>
     </item>
     
