@@ -294,7 +294,7 @@ Of course, everything is the same when we talk about height and <code>maxWidth</
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getSuggestedMinimumWidth</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>mBackground <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">?</span> mMinWidth <span style="color:#f92672">:</span> max<span style="color:#f92672">(</span>mMinWidth<span style="color:#f92672">,</span> mBackground<span style="color:#f92672">.</span><span style="color:#a6e22e">getMinimumWidth</span><span style="color:#f92672">());</span>
 <span style="color:#f92672">}</span>
-</code></pre></div><p>So, not only <code>View#minimumWidth</code> is taken into consideration, but also background height.
+</code></pre></div><p>So, not only <code>View#minimumWidth</code> is taken into consideration, but also background width.
 That means that if we set some width on a background:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
 <span style="color:#f92672">&lt;shape</span> <span style="color:#a6e22e">xmlns:android=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res/android&#34;</span>
