@@ -211,8 +211,7 @@
   
   
   <div class="post">
-    <p><a href="https://androidweekly.net/issues/issue-484"><img src="https://img.shields.io/badge/androidweekly-484-blue#badge" alt=""></a></p>
-<h3 id="introduction">Introduction</h3>
+    <h3 id="introduction">Introduction</h3>
 <p>Recently while writing tests for kotlin code with coroutines I found one annoying thing: almost all the tests start with <code>runBlockingTest</code>. Typing the same stuff repeatedly is something we can&rsquo;t accept! So, I decided to think about how to improve this.</p>
 <blockquote>
 <p>Disclaimer. Yes, this is an example of how to spend few hours to optimize some task that requires you 2 seconds to complete each time. Even on a scale of hundreds of usages such optimization most likely won&rsquo;t pay your time back. But it is always fun to do some weird things even if you understand that they are stupid.</p>
