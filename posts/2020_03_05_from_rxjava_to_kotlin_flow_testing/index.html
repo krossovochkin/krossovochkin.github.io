@@ -1,217 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
-    
-    
+<html lang="en-us">
+<head>
+  <title>From RxJava to Kotlin Flow: Testing</title>
 
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <head>
-    <link href="https://gmpg.org/xfn/11" rel="profile">
-    <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<!-- Enable responsiveness on mobile devices -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="generator" content="Hugo 0.79.1" />
+  <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script src="https://kit.fontawesome.com/6d5aec2882.js" crossorigin="anonymous"></script>
 
-    
-    
-    
+  <link rel="stylesheet" href="/css/style.css" />
 
-<title>From RxJava to Kotlin Flow: Testing • Vasya Drobushkov</title>
+  
+  <meta name="theme-color" content="#1e2327">
 
-
-<meta name="twitter:card" content="summary"/>
+  <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="From RxJava to Kotlin Flow: Testing"/>
 <meta name="twitter:description" content="Comparing approaches to testing in RxJava and Kotlin Flow"/>
-
-<meta property="og:title" content="From RxJava to Kotlin Flow: Testing" />
-<meta property="og:description" content="Comparing approaches to testing in RxJava and Kotlin Flow" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://krossovochkin.com/posts/2020_03_05_from_rxjava_to_kotlin_flow_testing/" />
-<meta property="article:published_time" content="2020-03-05T00:00:00+00:00" />
-<meta property="article:modified_time" content="2020-03-05T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
-
-
-    
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
-
-
-
-
-
-
-
-
-<link rel="stylesheet" href="/scss/hyde-hyde.adf8a0af011d3afb07ed907ad3295e1c99f49503bc91d395e38dc3f8dfdf4900.css" integrity="sha256-rfigrwEdOvsH7ZB60yleHJn0lQO8kdOV443D&#43;N/fSQA=">
-
-
-<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
-
-
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <!-- Icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
-    <link rel="shortcut icon" href="/favicon.png">
-    
-    
+<meta name="twitter:site" content="@krossovochkin"/>
 
 </head>
 
+<body>
 
-    <body class="theme-base-0a ">
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<header>
+<nav>
+  <ul>
     
-<div class="sidebar">
-  <div class="container ">
-    <div class="sidebar-about">
-      <span class="site__title">
-        <a href="https://krossovochkin.com/">
-        
-          Vasya Drobushkov
-        
-        </a>
-      </span>
-      
-        
-        
-        
-        <div class="author-image">
-          <img src="https://krossovochkin.com/../img/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
-        </div>
-        
-      
-      
-      <p class="site__description">
-        
-      </p>
-    </div>
-    <div class="collapsible-menu">
-      <input type="checkbox" id="menuToggle">
-      <label for="menuToggle">Vasya Drobushkov</label>
-      <div class="menu-content">
-        <div>
-	<ul class="sidebar-nav">
-		 
-		 
-			 
-				<li>
-					<a href="/posts/">
-						<span>Posts</span>
-					</a>
-				</li>
-			 
-		 
-			 
-				<li>
-					<a href="/about/">
-						<span>About</span>
-					</a>
-				</li>
-			 
-		
-	</ul>
-</div>
-
-        <section class="social">
-	
-	<a href="https://twitter.com/krossovochkin" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	<a href="https://facebook.com/vasya.drobushkov" rel="me"><i class="fab fa-facebook-f"></i></a>
-	
-	
-	<a href="https://github.com/krossovochkin" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	
-	
-	<a href="https://linkedin.com/in/vasyadrobushkov" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	<a href="https://stackoverflow.com/users/1533933/krossovochkin" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	<a href="https://t.me/krossovochkin_newsletter" rel="me"><i class="fab fa-telegram fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	
-	
-</section>
-
-      </div>
-    </div>
+    <li class="menu-left"><a href="/">Posts</a></li>
     
-<div class="copyright">
-  &copy; 2019 - 2021 Vasya Drobushkov
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    
+    <li class="menu-right"><a href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://twitter.com/krossovochkin" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-xl"></i></a></li>
+    
+  </ul>
+</nav>
+</header>
+
+<br/>
+
+<div class="meta">
+
   
-    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
-  
-</div>
-
-
-
-  </div>
-</div>
-
-        <div class="content container">
-            
-    
-<article>
-  <header>
-    <h1>From RxJava to Kotlin Flow: Testing</h1>
-    
-    
-<div class="post__meta">
-    
-    
-      <i class="fas fa-calendar-alt"></i> Mar 5, 2020
-    
-    
-    
-    
-    
-      
-      
-          <br/>
-           <i class="fas fa-tags"></i>
-          
-          <a class="badge badge-tag" href="/tags/rxjava">rxjava</a>
-           
-      
-          <a class="badge badge-tag" href="/tags/kotlin">kotlin</a>
-           
-      
-          <a class="badge badge-tag" href="/tags/kotlin-flow">kotlin flow</a>
-          
-      
-    
-    
-    <br/>
-    <i class="fas fa-clock"></i> 10 min read
-</div>
-
-
-  </header>
+    <h1><span class="title">From RxJava to Kotlin Flow: Testing</span></h1>
   
   
-  <div class="post">
-    <p><img src="https://images.unsplash.com/photo-1574170609519-d1d8d4b71f60?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1357&amp;q=80" alt="Source"><em><a href="https://unsplash.com/photos/9kSTF9PvETM">Source</a></em></p>
+    <h3>March 5, 2020</h3>
+  
+
+</div>
+
+<main>
+<p><img src="https://images.unsplash.com/photo-1574170609519-d1d8d4b71f60?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1357&amp;q=80" alt="Source"><em><a href="https://unsplash.com/photos/9kSTF9PvETM">Source</a></em></p>
 <blockquote>
 <p>This post is part of series of comparing RxJava to Kotlin Flow. Previous articles were about <a href="https://proandroiddev.com/from-rxjava-2-to-kotlin-flow-threading-8618867e1955">Threading</a>, <a href="https://proandroiddev.com/from-rxjava-to-kotlin-flow-backpressure-d1fb91e6dea8">Backpressure</a>, <a href="https://proandroiddev.com/from-rxjava-to-kotlin-flow-error-handling-da1f6a4f2708">Error Handling,</a> <a href="https://proandroiddev.com/from-rxjava-to-kotlin-flow-stream-types-7916be6cabc2">Stream Types</a>, <a href="https://proandroiddev.com/from-rxjava-to-kotlin-flow-throttling-ed1778847619">Throttling</a></p>
 </blockquote>
@@ -231,160 +100,160 @@ With Test schedulers we can either provide blocking work in places where it was 
 <h3 id="simple-assert-on-stream">Simple assert on stream</h3>
 <p>We’ll start from simple assertion of the stream values. We might want to verify that subscribing to some stream (e.g. repository method) provides required items and for example has no errors but completes in the end.</p>
 <p>Test for Rxjava in this case will look like the following:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">Observable.just(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
-    .test()
-    .assertValues(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
-    .assertNoErrors()
-    .assertComplete()
-</code></pre></div><p>Here we have simple observable which emits three values and then completes. We subscribe to it using test() method and receive TestObserver as a result. Then we can make assertions on that observer. For example check that we have all three values emitted and that stream completed without errors.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">test</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertComplete</span><span class="p">()</span>
+</span></span></code></pre></div><p>Here we have simple observable which emits three values and then completes. We subscribe to it using test() method and receive TestObserver as a result. Then we can make assertions on that observer. For example check that we have all three values emitted and that stream completed without errors.</p>
 <p>In Kotlin there is no TestObserver implementation yet. So in order to verify that our stream contains required items we’ll have to just collect into list and look at the results:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlockingTest {
-    <span style="color:#66d9ef">val</span> result = flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
-        .toList(mutableListOf())
-
-    assertEquals(listOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>), result)
-}
-</code></pre></div><p>We could use runBlocking for our test, but it is better to always use runBlockingTest as it provides more features and specially designed for testing.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">runBlockingTest</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">result</span> <span class="p">=</span> <span class="n">flowOf</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">toList</span><span class="p">(</span><span class="n">mutableListOf</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">assertEquals</span><span class="p">(</span><span class="n">listOf</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">),</span> <span class="n">result</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>We could use runBlocking for our test, but it is better to always use runBlockingTest as it provides more features and specially designed for testing.</p>
 <p>Testing of Kotlin Flow seems more similar to general unit testing (as for example with Sequences). But don’t make a decision too early, let’s look at next examples.</p>
 <h3 id="assert-on-dynamic-stream">Assert on dynamic stream</h3>
 <p>In the next example we’ll try to test dynamic stream. First let’s try to define what I mean here by dynamic stream. Usually we have some stream (say, Observable), which starts emitting items upon subscription. If we have such stream then the only thing we can do to test it — is to subscribe and see the results. But it is not always enough.
 Consider the case when you have some function which is triggered when user clicked on some button. Your function might be in one class and original stream of UI events be in a separate class (for example on view). In this case when you want to test your class you have Observable of streams as a dependency. And in test we won’t have any user, we even won’t have UI. So, we need a way to emulate user events. And we’ll do that using “dynamic stream”, where we can send events on demand.
 In RxJava for that we’ll use Subject. If we want to send some event to our class, we’ll just send event to that Subject. And we’ll provide that subject to the class we’re testing.</p>
 <p>Let’s see how it looks in test example:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> subject = PublishSubject.create&lt;Int&gt;()
-
-<span style="color:#66d9ef">val</span> observer = subject.test()
-
-observer
-    .assertNoValues()
-    .assertNoErrors()
-    .assertNotComplete()
-
-subject.onNext(<span style="color:#ae81ff">1</span>)
-
-observer
-    .assertValues(<span style="color:#ae81ff">1</span>)
-    .assertNoErrors()
-    .assertNotComplete()
-</code></pre></div><p>We create our test subject and subscribe to it with test.
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">subject</span> <span class="p">=</span> <span class="n">PublishSubject</span><span class="p">.</span><span class="n">create</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">observer</span> <span class="p">=</span> <span class="n">subject</span><span class="p">.</span><span class="n">test</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">observer</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNoValues</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNotComplete</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">subject</span><span class="p">.</span><span class="n">onNext</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">observer</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNotComplete</span><span class="p">()</span>
+</span></span></code></pre></div><p>We create our test subject and subscribe to it with test.
 Then we assert that we don’t have any values in it.
 After that we send some event (say we send UI click event to our class) and verify that on the receiver side we received that event.</p>
 <p>In Kotlin Flow analog of Subject is Channel, so let’s do the following:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlockingTest {
-    <span style="color:#66d9ef">val</span> subject = Channel&lt;Int&gt;()
-    <span style="color:#66d9ef">val</span> values = mutableListOf&lt;Int&gt;()
-    <span style="color:#66d9ef">val</span> job = launch {
-        subject.consumeAsFlow()
-            .collect { values.add(<span style="color:#66d9ef">it</span>) }
-    }
-
-    assertEquals(emptyList&lt;Int&gt;(), values)
-
-    subject.send(<span style="color:#ae81ff">1</span>)
-
-    assertEquals(listOf(<span style="color:#ae81ff">1</span>), values)
-
-    job.cancel()
-}
-</code></pre></div><p>We created our channel in which we’ll send events. But as Kotlin Flow doesn’t have any test observer, we have to store our list of values locally and add values to that list when we receive new item.
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">runBlockingTest</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">subject</span> <span class="p">=</span> <span class="n">Channel</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">values</span> <span class="p">=</span> <span class="n">mutableListOf</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">job</span> <span class="p">=</span> <span class="n">launch</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">subject</span><span class="p">.</span><span class="n">consumeAsFlow</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">collect</span> <span class="p">{</span> <span class="n">values</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="k">it</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">assertEquals</span><span class="p">(</span><span class="n">emptyList</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;(),</span> <span class="n">values</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">assertEquals</span><span class="p">(</span><span class="n">listOf</span><span class="p">(</span><span class="m">1</span><span class="p">),</span> <span class="n">values</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">job</span><span class="p">.</span><span class="n">cancel</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>We created our channel in which we’ll send events. But as Kotlin Flow doesn’t have any test observer, we have to store our list of values locally and add values to that list when we receive new item.
 The issue with such approach is that it is verbose and we have to do that in each test. Also we have to wrap collecting of the items in flow inside separate coroutine (started with launch) because our channel won’t be closed till the end of test and if any work is not completed before test ended, we’ll get an exception from runBlockingTest. So it is important to store reference to job and cancel it in the end of test.
 Sounds too complex. Let’s try to make it a bit better by writing our own implementation of TestObserver for Kotlin Flow:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">Flow</span>&lt;T&gt;.test(scope: CoroutineScope): TestObserver&lt;T&gt; {
-    <span style="color:#66d9ef">return</span> TestObserver(scope, <span style="color:#66d9ef">this</span>)
-}
-
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TestObserver</span>&lt;T&gt;(
-    scope: CoroutineScope,
-    flow: Flow&lt;T&gt;
-) {
-
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> values = mutableListOf&lt;T&gt;()
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> job: Job = scope.launch { 
-        flow.collect { values.add(<span style="color:#66d9ef">it</span>) } 
-    }
-
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">assertNoValues</span>(): TestObserver&lt;T&gt; {
-        assertEquals(emptyList&lt;T&gt;(), <span style="color:#66d9ef">this</span>.values)
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>
-    }
-
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">assertValues</span>(<span style="color:#66d9ef">vararg</span> values: T): TestObserver&lt;T&gt; {
-        assertEquals(values.toList(), <span style="color:#66d9ef">this</span>.values)
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>
-    }
-
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">finish</span>() {
-        job.cancel()
-    }
-}
-</code></pre></div><p>We wrap that local list of values inside our observer and provide methods similar to what we have in RxJava.
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="nf">Flow</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;.</span><span class="n">test</span><span class="p">(</span><span class="n">scope</span><span class="p">:</span> <span class="n">CoroutineScope</span><span class="p">):</span> <span class="n">TestObserver</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">TestObserver</span><span class="p">(</span><span class="n">scope</span><span class="p">,</span> <span class="k">this</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">TestObserver</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">scope</span><span class="p">:</span> <span class="n">CoroutineScope</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flow</span><span class="p">:</span> <span class="n">Flow</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">private</span> <span class="k">val</span> <span class="py">values</span> <span class="p">=</span> <span class="n">mutableListOf</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">private</span> <span class="k">val</span> <span class="py">job</span><span class="p">:</span> <span class="n">Job</span> <span class="p">=</span> <span class="n">scope</span><span class="p">.</span><span class="n">launch</span> <span class="p">{</span> 
+</span></span><span class="line"><span class="cl">        <span class="n">flow</span><span class="p">.</span><span class="n">collect</span> <span class="p">{</span> <span class="n">values</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="k">it</span><span class="p">)</span> <span class="p">}</span> 
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">assertNoValues</span><span class="p">():</span> <span class="n">TestObserver</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">assertEquals</span><span class="p">(</span><span class="n">emptyList</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;(),</span> <span class="k">this</span><span class="p">.</span><span class="n">values</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">this</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">assertValues</span><span class="p">(</span><span class="k">vararg</span> <span class="n">values</span><span class="p">:</span> <span class="n">T</span><span class="p">):</span> <span class="n">TestObserver</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">assertEquals</span><span class="p">(</span><span class="n">values</span><span class="p">.</span><span class="n">toList</span><span class="p">(),</span> <span class="k">this</span><span class="p">.</span><span class="n">values</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">this</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">finish</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">job</span><span class="p">.</span><span class="n">cancel</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>We wrap that local list of values inside our observer and provide methods similar to what we have in RxJava.
 After using our test observer we’ll have such a test:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlockingTest {
-    <span style="color:#66d9ef">val</span> subject = Channel&lt;Int&gt;()
-    <span style="color:#66d9ef">val</span> observer = subject.consumeAsFlow().test(<span style="color:#66d9ef">this</span>)
-
-    observer.assertNoValues()
-
-    subject.send(<span style="color:#ae81ff">1</span>)
-
-    observer.assertValues(<span style="color:#ae81ff">1</span>)
-
-    observer.finish()
-}
-</code></pre></div><p>Looks better. But pay attention that we still have to finish our test observer in the end of test.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">runBlockingTest</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">subject</span> <span class="p">=</span> <span class="n">Channel</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">observer</span> <span class="p">=</span> <span class="n">subject</span><span class="p">.</span><span class="n">consumeAsFlow</span><span class="p">().</span><span class="n">test</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">observer</span><span class="p">.</span><span class="n">assertNoValues</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">observer</span><span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">observer</span><span class="p">.</span><span class="n">finish</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Looks better. But pay attention that we still have to finish our test observer in the end of test.</p>
 <p>Now let’s also re-write test for our first example using our test observer:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlockingTest {
-    flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
-        .test(<span style="color:#66d9ef">this</span>)
-        .assertValues(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
-        .finish()
-}
-</code></pre></div><p>Again, it now seems to look more declarative.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">runBlockingTest</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flowOf</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">test</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">finish</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Again, it now seems to look more declarative.</p>
 <h3 id="custom-schedulerdispatcher">Custom Scheduler/Dispatcher</h3>
 <p>In streams we usually subscribe/observe on some particular Scheduler, for example io or mainThread. Though in tests we don’t have main thread at all and using io thread might provide some latency and need to add logic to convert async code into blocking one.
 It is good pattern to provide dependencies instead of using singletons, so it can also be applied to schedulers.
 For example if we have some load function which works on some particular scheduler, to make it testable, we can provide that scheduler as a dependency:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">load</span>(
-    scheduler: Scheduler = Schedulers.computation()
-): Observable&lt;Int&gt; {
-    <span style="color:#66d9ef">return</span> Observable.just(<span style="color:#ae81ff">1</span>)
-        .delay(<span style="color:#ae81ff">1</span>, TimeUnit.SECONDS, scheduler)
-}
-</code></pre></div><p>By default delay works on computation scheduler, which might make testing more difficult.
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">load</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">scheduler</span><span class="p">:</span> <span class="n">Scheduler</span> <span class="p">=</span> <span class="n">Schedulers</span><span class="p">.</span><span class="n">computation</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">):</span> <span class="n">Observable</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">delay</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">TimeUnit</span><span class="p">.</span><span class="n">SECONDS</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>By default delay works on computation scheduler, which might make testing more difficult.
 For example if we write such a test:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">load()
-    .test()
-    .assertValues(<span style="color:#ae81ff">1</span>)
-    .assertNoErrors()
-    .assertComplete()
-</code></pre></div><p>It will fail, because test will be completed before separate computation thread finished.
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">load</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">test</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertComplete</span><span class="p">()</span>
+</span></span></code></pre></div><p>It will fail, because test will be completed before separate computation thread finished.
 In tests we can provide separate scheduler and one option is to use trampoline.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">load(Schedulers.trampoline())
-    .test()
-    .assertValues(<span style="color:#ae81ff">1</span>)
-    .assertComplete()
-    .assertNoErrors()
-</code></pre></div><p>Now our test passes, as now we basically run our code in a blocking manner.
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">load</span><span class="p">(</span><span class="n">Schedulers</span><span class="p">.</span><span class="n">trampoline</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">test</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertComplete</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
+</span></span></code></pre></div><p>Now our test passes, as now we basically run our code in a blocking manner.
 Note that we’ll wait for the whole delay to expire, so this test will be quite long (more than a second), which is not that good for unit testing.</p>
 <p>In Kotlin Flow I haven’t found any alternative to trampoline. Coroutines are suspending and not blocking, so trying to make them work on single thread seems not a good option. But there is a way to workaround that in a following way:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlockingTest {
-    <span style="color:#66d9ef">val</span> observer = load(coroutineContext.minusKey(Job))
-        .test(<span style="color:#66d9ef">this</span>)
-
-    advanceUntilIdle()
-
-    observer
-        .assertValues(<span style="color:#ae81ff">1</span>)
-        .finish()
-}
-</code></pre></div><p>And our test load function is:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">load</span>(context: CoroutineContext): Flow&lt;Int&gt; {
-    <span style="color:#66d9ef">return</span> flow {
-        delay(<span style="color:#ae81ff">1000</span>)
-        emit(<span style="color:#ae81ff">1</span>)
-    }.flowOn(context)
-}
-</code></pre></div><p>What we do here is provide separate context (it is still good approach to provide context/dispatcher as a dependency, so we can use separate one in tests).
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">runBlockingTest</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">observer</span> <span class="p">=</span> <span class="n">load</span><span class="p">(</span><span class="n">coroutineContext</span><span class="p">.</span><span class="n">minusKey</span><span class="p">(</span><span class="n">Job</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">test</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">advanceUntilIdle</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">observer</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">finish</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>And our test load function is:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">load</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="n">CoroutineContext</span><span class="p">):</span> <span class="n">Flow</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">flow</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="m">1000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}.</span><span class="n">flowOn</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>What we do here is provide separate context (it is still good approach to provide context/dispatcher as a dependency, so we can use separate one in tests).
 We have to do small trick by removing Job from context, because flow context can’t have a job.
 And we use advanceUntilIdle method to wait until our delay expired.
 Note that advancing clock changes virtual time, so that we don’t have to wait for a second and test will be pretty fast.</p>
@@ -394,39 +263,39 @@ The idea is simple — when we have some streams which emit values with some del
 For that there is virtual clock which can be advanced on demand by requested amount of time.</p>
 <p>In RxJava such ability has TestScheduler. It has function advanceTimeBy where we can skip some time.
 Let’s look at the final example where we’ll test debounce operator with our TestScheduler:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> scheduler = TestScheduler()
-
-<span style="color:#66d9ef">val</span> subject = PublishSubject.create&lt;Int&gt;()
-<span style="color:#66d9ef">val</span> observer = subject
-    .debounce(<span style="color:#ae81ff">1</span>, TimeUnit.SECONDS, scheduler)
-    .test()
-
-observer
-    .assertNoValues()
-    .assertNotComplete()
-    .assertNoErrors()
-
-    subject.onNext(<span style="color:#ae81ff">1</span>)
-
-observer
-    .assertNoValues()
-    .assertNotComplete()
-    .assertNoErrors()
-
-    scheduler.advanceTimeBy(<span style="color:#ae81ff">500</span>, TimeUnit.MILLISECONDS)
-
-observer
-    .assertNoValues()
-    .assertNotComplete()
-    .assertNoErrors()
-
-    scheduler.advanceTimeBy(<span style="color:#ae81ff">500</span>, TimeUnit.MILLISECONDS)
-
-observer
-    .assertValues(<span style="color:#ae81ff">1</span>)
-    .assertNotComplete()
-    .assertNoErrors()
-</code></pre></div><p>This test is much longer than previous ones, though pretty simple, let’s look what we have here.
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">scheduler</span> <span class="p">=</span> <span class="n">TestScheduler</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">subject</span> <span class="p">=</span> <span class="n">PublishSubject</span><span class="p">.</span><span class="n">create</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;()</span>
+</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">observer</span> <span class="p">=</span> <span class="n">subject</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">debounce</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">TimeUnit</span><span class="p">.</span><span class="n">SECONDS</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">test</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">observer</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNoValues</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNotComplete</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">subject</span><span class="p">.</span><span class="n">onNext</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">observer</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNoValues</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNotComplete</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">scheduler</span><span class="p">.</span><span class="n">advanceTimeBy</span><span class="p">(</span><span class="m">500</span><span class="p">,</span> <span class="n">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">observer</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNoValues</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNotComplete</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">scheduler</span><span class="p">.</span><span class="n">advanceTimeBy</span><span class="p">(</span><span class="m">500</span><span class="p">,</span> <span class="n">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">observer</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNotComplete</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
+</span></span></code></pre></div><p>This test is much longer than previous ones, though pretty simple, let’s look what we have here.
 First we create our test scheduler and subject which we’ll throttle with debounce.
 Inside debounce we provide our test scheduler so now we’ll be able to control timing.
 After setup is done we just verify that we don’t have any values emitted.
@@ -436,55 +305,55 @@ Then we advance time by 500ms — half time of timer — and verify that no valu
 And finally we advance time by 500ms which should expire timer and emit value. And we verify that exactly this happened.</p>
 <p>Pretty powerful.</p>
 <p>In Kotlin Flow there is TestCoroutineDispatcher which is inherited in runBlockingTest. The test will be similar to what we have in Rx (and of course we add our TestObserver implementation to make it more concise):</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlockingTest {
-    <span style="color:#66d9ef">val</span> subject = Channel&lt;Int&gt;()
-    <span style="color:#66d9ef">val</span> observer = subject.consumeAsFlow()
-        .debounce(<span style="color:#ae81ff">1000</span>)
-        .test(<span style="color:#66d9ef">this</span>)
-
-    observer.assertNoValues()
-
-    subject.send(<span style="color:#ae81ff">1</span>)
-
-    observer.assertNoValues()
-
-    advanceTimeBy(<span style="color:#ae81ff">500</span>)
-
-    observer.assertNoValues()
-
-    advanceTimeBy(<span style="color:#ae81ff">500</span>)
-
-    observer
-        .assertValues(<span style="color:#ae81ff">1</span>)
-        .finish()
-}
-</code></pre></div><h2 id="bonus">Bonus</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">runBlockingTest</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">subject</span> <span class="p">=</span> <span class="n">Channel</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">observer</span> <span class="p">=</span> <span class="n">subject</span><span class="p">.</span><span class="n">consumeAsFlow</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">debounce</span><span class="p">(</span><span class="m">1000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">test</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">observer</span><span class="p">.</span><span class="n">assertNoValues</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">observer</span><span class="p">.</span><span class="n">assertNoValues</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">advanceTimeBy</span><span class="p">(</span><span class="m">500</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">observer</span><span class="p">.</span><span class="n">assertNoValues</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">advanceTimeBy</span><span class="p">(</span><span class="m">500</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">observer</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">finish</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="bonus">Bonus</h2>
 <p>If we took a look at how tests are written in sources of kotlin coroutines, we could find something interesting: there is a TestBase class which has some powerful API (<a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/kotlinx-coroutines-core/jvm/test/TestBase.kt">link</a>).
 One of that API is expect, which declares order in which code expected to be invoked.</p>
 <p>Let’s look at one test for debounce operator:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Test</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">testBasic</span>() = withVirtualTime {
-    <span style="color:#66d9ef">expect</span>(<span style="color:#ae81ff">1</span>)
-    <span style="color:#66d9ef">val</span> flow = flow {
-        <span style="color:#66d9ef">expect</span>(<span style="color:#ae81ff">3</span>)
-        emit(<span style="color:#e6db74">&#34;A&#34;</span>)
-        delay(<span style="color:#ae81ff">1500</span>)
-        emit(<span style="color:#e6db74">&#34;B&#34;</span>)
-        delay(<span style="color:#ae81ff">500</span>)
-        emit(<span style="color:#e6db74">&#34;C&#34;</span>)
-        delay(<span style="color:#ae81ff">250</span>)
-        emit(<span style="color:#e6db74">&#34;D&#34;</span>)
-        delay(<span style="color:#ae81ff">2000</span>)
-        emit(<span style="color:#e6db74">&#34;E&#34;</span>)
-        <span style="color:#66d9ef">expect</span>(<span style="color:#ae81ff">4</span>)
-    }
-
-    <span style="color:#66d9ef">expect</span>(<span style="color:#ae81ff">2</span>)
-    <span style="color:#66d9ef">val</span> result = flow.debounce(<span style="color:#ae81ff">1000</span>).toList()
-    assertEquals(listOf(<span style="color:#e6db74">&#34;A&#34;</span>, <span style="color:#e6db74">&#34;D&#34;</span>, <span style="color:#e6db74">&#34;E&#34;</span>), result)
-    finish(<span style="color:#ae81ff">5</span>)
-}
-</code></pre></div><p>To understand what is the expected order of execution one should just look at indexes inside expect.
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="nd">@Test</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span> <span class="k">fun</span> <span class="nf">testBasic</span><span class="p">()</span> <span class="p">=</span> <span class="n">withVirtualTime</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">expect</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">flow</span> <span class="p">=</span> <span class="n">flow</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">expect</span><span class="p">(</span><span class="m">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="s2">&#34;A&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="m">1500</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="s2">&#34;B&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="m">500</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="s2">&#34;C&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="m">250</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="s2">&#34;D&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="m">2000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="s2">&#34;E&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">expect</span><span class="p">(</span><span class="m">4</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">expect</span><span class="p">(</span><span class="m">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">result</span> <span class="p">=</span> <span class="n">flow</span><span class="p">.</span><span class="n">debounce</span><span class="p">(</span><span class="m">1000</span><span class="p">).</span><span class="n">toList</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="n">assertEquals</span><span class="p">(</span><span class="n">listOf</span><span class="p">(</span><span class="s2">&#34;A&#34;</span><span class="p">,</span> <span class="s2">&#34;D&#34;</span><span class="p">,</span> <span class="s2">&#34;E&#34;</span><span class="p">),</span> <span class="n">result</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">finish</span><span class="p">(</span><span class="m">5</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>To understand what is the expected order of execution one should just look at indexes inside expect.
 Also it uses auto-incremental virtual time — whenever execution hits delay it automatically advances virtual time by that.
 Finally we collect result to list — something we’ve already encountered.</p>
 <p>But this TestBase implementation is not available, though looks pretty well. Hoping it to get into kotlin-coroutines-test package.</p>
@@ -493,79 +362,39 @@ Finally we collect result to list — something we’ve already encountered.</p>
 Testing is imporant and it is good that Kotlin coroutines have built-in testing support.</p>
 <p>Happy coding!</p>
 
-  </div>
-  
+</main>
 
-<div class="navigation navigation-single">
+
+<hr/>
+
+<footer>
+<nav>
+  <ul>
     
-    <a href="/posts/2020_03_02_from_rxjava_to_kotlin_flow_throttling/" class="navigation-prev">
-      <i aria-hidden="true" class="fa fa-chevron-left"></i>
-      <span class="navigation-tittle">From RxJava to Kotlin Flow: Throttling</span>
-    </a>
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
     
     
-    <a href="/posts/2020_03_19_unit_testing_best_practices/" class="navigation-next">
-      <span class="navigation-tittle">Unit Testing Best Practices</span>
-      <i aria-hidden="true" class="fa fa-chevron-right"></i>
-    </a>
+    <li class="menu-right"><a href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-xl"></i></a></li>
     
-</div>
-
-
-  
-
-  
+    <li class="menu-right"><a href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-xl"></i></a></li>
     
-
-
-</article>
-
-
-        </div>
-        
+    <li class="menu-right"><a href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-xl"></i></a></li>
     
-
-  
-  
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'UA-148934073-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-
-<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
-
-
+    <li class="menu-right"><a href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-xl"></i></a></li>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-        
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/bash.min.js"></script>
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/java.min.js"></script>
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
-            
-        
-    <script type="text/javascript">
-        
-        hljs.configure({languages: ["bash, java, kotlin"]});
-        
-        hljs.initHighlightingOnLoad();
-    </script>
+    <li class="menu-right"><a href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-xl"></i></a></li>
     
-
-
-
+    <li class="menu-right"><a href="https://twitter.com/krossovochkin" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a></li>
     
+    <li class="menu-right"><a href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-xl"></i></a></li>
+    
+  </ul>
+</nav>
+</footer>
 
 
+</body>
 
-    </body>
 </html>

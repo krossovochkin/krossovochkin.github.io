@@ -1,211 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
-    
-    
+<html lang="en-us">
+<head>
+  <title>Diving deep into Android Dex bytecode</title>
 
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <head>
-    <link href="https://gmpg.org/xfn/11" rel="profile">
-    <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<!-- Enable responsiveness on mobile devices -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="generator" content="Hugo 0.79.1" />
+  <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script src="https://kit.fontawesome.com/6d5aec2882.js" crossorigin="anonymous"></script>
 
-    
-    
-    
+  <link rel="stylesheet" href="/css/style.css" />
 
-<title>Diving deep into Android Dex bytecode • Vasya Drobushkov</title>
+  
+  <meta name="theme-color" content="#1e2327">
 
-
-<meta name="twitter:card" content="summary"/>
+  <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Diving deep into Android Dex bytecode"/>
 <meta name="twitter:description" content="Analyzing memory and performance of our code at the low-level."/>
-
-<meta property="og:title" content="Diving deep into Android Dex bytecode" />
-<meta property="og:description" content="Analyzing memory and performance of our code at the low-level." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://krossovochkin.com/posts/2020_02_02_diving_deep_into_android_dex_bytecode/" />
-<meta property="article:published_time" content="2020-02-02T00:00:00+00:00" />
-<meta property="article:modified_time" content="2020-02-02T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
-
-
-    
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
-
-
-
-
-
-
-
-
-<link rel="stylesheet" href="/scss/hyde-hyde.adf8a0af011d3afb07ed907ad3295e1c99f49503bc91d395e38dc3f8dfdf4900.css" integrity="sha256-rfigrwEdOvsH7ZB60yleHJn0lQO8kdOV443D&#43;N/fSQA=">
-
-
-<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
-
-
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <!-- Icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
-    <link rel="shortcut icon" href="/favicon.png">
-    
-    
+<meta name="twitter:site" content="@krossovochkin"/>
 
 </head>
 
+<body>
 
-    <body class="theme-base-0a ">
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<header>
+<nav>
+  <ul>
     
-<div class="sidebar">
-  <div class="container ">
-    <div class="sidebar-about">
-      <span class="site__title">
-        <a href="https://krossovochkin.com/">
-        
-          Vasya Drobushkov
-        
-        </a>
-      </span>
-      
-        
-        
-        
-        <div class="author-image">
-          <img src="https://krossovochkin.com/../img/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
-        </div>
-        
-      
-      
-      <p class="site__description">
-        
-      </p>
-    </div>
-    <div class="collapsible-menu">
-      <input type="checkbox" id="menuToggle">
-      <label for="menuToggle">Vasya Drobushkov</label>
-      <div class="menu-content">
-        <div>
-	<ul class="sidebar-nav">
-		 
-		 
-			 
-				<li>
-					<a href="/posts/">
-						<span>Posts</span>
-					</a>
-				</li>
-			 
-		 
-			 
-				<li>
-					<a href="/about/">
-						<span>About</span>
-					</a>
-				</li>
-			 
-		
-	</ul>
-</div>
-
-        <section class="social">
-	
-	<a href="https://twitter.com/krossovochkin" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	<a href="https://facebook.com/vasya.drobushkov" rel="me"><i class="fab fa-facebook-f"></i></a>
-	
-	
-	<a href="https://github.com/krossovochkin" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	
-	
-	<a href="https://linkedin.com/in/vasyadrobushkov" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	<a href="https://stackoverflow.com/users/1533933/krossovochkin" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	<a href="https://t.me/krossovochkin_newsletter" rel="me"><i class="fab fa-telegram fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	
-	
-</section>
-
-      </div>
-    </div>
+    <li class="menu-left"><a href="/">Posts</a></li>
     
-<div class="copyright">
-  &copy; 2019 - 2021 Vasya Drobushkov
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    
+    <li class="menu-right"><a href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://twitter.com/krossovochkin" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-xl"></i></a></li>
+    
+  </ul>
+</nav>
+</header>
+
+<br/>
+
+<div class="meta">
+
   
-    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
-  
-</div>
-
-
-
-  </div>
-</div>
-
-        <div class="content container">
-            
-    
-<article>
-  <header>
-    <h1>Diving deep into Android Dex bytecode</h1>
-    
-    
-<div class="post__meta">
-    
-    
-      <i class="fas fa-calendar-alt"></i> Feb 2, 2020
-    
-    
-    
-    
-    
-      
-      
-          <br/>
-           <i class="fas fa-tags"></i>
-          
-          <a class="badge badge-tag" href="/tags/android">android</a>
-          
-      
-    
-    
-    <br/>
-    <i class="fas fa-clock"></i> 11 min read
-</div>
-
-
-  </header>
+    <h1><span class="title">Diving deep into Android Dex bytecode</span></h1>
   
   
-  <div class="post">
-    <p><img src="https://images.unsplash.com/photo-1501721709601-744e5bf3440d?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1357&amp;q=80" alt="Source"><em><a href="https://unsplash.com/photos/5MvL55-rSvI">Source</a></em></p>
+    <h3>February 2, 2020</h3>
+  
+
+</div>
+
+<main>
+<p><img src="https://images.unsplash.com/photo-1501721709601-744e5bf3440d?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1357&amp;q=80" alt="Source"><em><a href="https://unsplash.com/photos/5MvL55-rSvI">Source</a></em></p>
 <p><a href="https://proandroiddev.com/diving-deep-into-android-dex-bytecode-48db82b170c8"><img src="https://img.shields.io/badge/original-proandroiddev-green#badge" alt=""></a> <a href="https://proandroiddev.com/proandroiddev-digest-15-b467005869ce"><img src="https://img.shields.io/badge/proandroiddevdigest-15-green#badge" alt=""></a></p>
 <h2 id="introduction">Introduction</h2>
 <p>Modern Android development is based on Kotlin, which is interoperable with Java. Whenever we use some cool feature from Kotlin (say High-order functions) under the hood (when running on JVM) the feature is implemented in terms of Java bytecode. This might lead to some overheads in memory and performance if used without caution (for example excessive usage of lambdas with parameters without inlining might produce a lot of anonymous classes and put additional pressure on GC).</p>
@@ -244,48 +119,48 @@ Jar files which we’ll use will be under /build/libs folder.</p>
 <h3 id="commands">Commands</h3>
 <p>These are the commands which we’ll use throughout the article.</p>
 <p>Compile all the kotlin files in the current directory:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kotlinc *.kt
-</code></pre></div><p>Package all the .class files into dex file (with r8 optimizations):</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">java -jar r8.jar --lib $ANDROID_HOME/platforms/android-29/android.jar --release --output . --pg-conf rules.txt *.class
-</code></pre></div><p>Provided &ndash;pg-conf is a proguard rules file, in which we’ll add to keep main function and skip obfuscation (for our readability):</p>
-<pre><code>-keepclasseswithmembers class * {
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kotlinc *.kt
+</span></span></code></pre></div><p>Package all the .class files into dex file (with r8 optimizations):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">java -jar r8.jar --lib <span class="nv">$ANDROID_HOME</span>/platforms/android-29/android.jar --release --output . --pg-conf rules.txt *.class
+</span></span></code></pre></div><p>Provided &ndash;pg-conf is a proguard rules file, in which we’ll add to keep main function and skip obfuscation (for our readability):</p>
+<pre tabindex="0"><code>-keepclasseswithmembers class * {
     public static void main(java.lang.String[]);
 }
 -dontobfuscate
 </code></pre><p>Dump content of .dex file to see its contents.</p>
-<pre><code>$ANDROID_HOME/build-tools/29.0.2/dexdump -d classes.dex
+<pre tabindex="0"><code>$ANDROID_HOME/build-tools/29.0.2/dexdump -d classes.dex
 </code></pre><h2 id="verify-setup">Verify setup</h2>
 <p>In order to verify your setup works, you can go through <a href="https://jakewharton.com/r8-optimization-staticization/">this article</a> and see whether you get similar results. Or try to follow examples below.</p>
 <h2 id="example-1-where-no-class-is-instantiated">Example 1 (where no class is instantiated)</h2>
 <p>In first our example let’s look at following program:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">main</span>() {
-    print(Runner().run(<span style="color:#ae81ff">5</span>))
-}
-
-<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Runner</span> {
-
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">run</span>(x: Int): Int {
-        <span style="color:#66d9ef">return</span> x + <span style="color:#ae81ff">1</span>
-    }
-}
-</code></pre></div><p>Here we basically provide input and print incremented value of it.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">print</span><span class="p">(</span><span class="n">Runner</span><span class="p">().</span><span class="n">run</span><span class="p">(</span><span class="m">5</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">private</span> <span class="k">class</span> <span class="nc">Runner</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">run</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Int</span><span class="p">):</span> <span class="n">Int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">x</span> <span class="p">+</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Here we basically provide input and print incremented value of it.</p>
 <blockquote>
 <p><strong>NOTE</strong>: this is a template which we’ll use. We’ll have main function and some Runner class in which there will be some logic we’ll try to test.</p>
 </blockquote>
 <p>We then run our kotlin compiler, run r8 over compiled .class files and then run dexdump and get following result:</p>
-<pre><code>Processing 'classes.dex'...
-Opened 'classes.dex', DEX version '035'
+<pre tabindex="0"><code>Processing &#39;classes.dex&#39;...
+Opened &#39;classes.dex&#39;, DEX version &#39;035&#39;
 Class #0            -
-  Class descriptor  : 'LMainKt;'
+  Class descriptor  : &#39;LMainKt;&#39;
   Access flags      : 0x0011 (PUBLIC FINAL)
-  Superclass        : 'Ljava/lang/Object;'
+  Superclass        : &#39;Ljava/lang/Object;&#39;
   Interfaces        -
   Static fields     -
   Instance fields   -
   Direct methods    -
     #0              : (in LMainKt;)
-      name          : 'main'
-      type          : '([Ljava/lang/String;)V'
+      name          : &#39;main&#39;
+      type          : &#39;([Ljava/lang/String;)V&#39;
       access        : 0x1009 (PUBLIC STATIC SYNTHETIC)
       code          -
       registers     : 2
@@ -316,7 +191,7 @@ Here we have two interesting things:</p>
 </ul>
 <p>While first is pretty easy to see (we just don’t have Runner mentioned), second we’ll try to investigate deeper.
 For this let’s look at the content of the main function:</p>
-<pre><code>[000114] MainKt.main:([Ljava/lang/String;)V
+<pre tabindex="0"><code>[000114] MainKt.main:([Ljava/lang/String;)V
 0000: const/4 v1, #int 6 // #6
 0001: sget-object v0, Ljava/lang/System;.out:Ljava/io/PrintStream; // field@0000
 0003: invoke-virtual {v0, v1}, Ljava/io/PrintStream;.print:(I)V // method@0001
@@ -342,22 +217,22 @@ For this let’s look at the content of the main function:</p>
 <p>Not that difficult right? Next let’s look at some other examples.</p>
 <h2 id="example-2-where-extension-function-is-not-called-almost">Example 2 (where extension function is not called… almost)</h2>
 <p>Next example looks the following way:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">main</span>() {
-    println(<span style="color:#e6db74">&#34;Hello world&#34;</span>.calculate())
-}
-
-<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">String</span>.calculate(): Int {
-    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>.length * <span style="color:#ae81ff">2</span>
-}
-</code></pre></div><p>We have extension function on String, which we call on some “Hello World” and print result.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">(</span><span class="s2">&#34;Hello world&#34;</span><span class="p">.</span><span class="n">calculate</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">String</span><span class="p">.</span><span class="n">calculate</span><span class="p">():</span> <span class="n">Int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="n">length</span> <span class="p">*</span> <span class="m">2</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>We have extension function on String, which we call on some “Hello World” and print result.</p>
 <p>During r8 work we’ll see the warning:</p>
-<pre><code>Warning in MainKt.class:
+<pre tabindex="0"><code>Warning in MainKt.class:
 
 Type `kotlin.jvm.internal.Intrinsics` was not found, it is required for default or static interface methods desugaring of `int MainKt.calculate(java.lang.String)`
 </code></pre><p>And in resulting dex file we’ll see that our extension function is still in the bytecode:</p>
-<pre><code>...
+<pre tabindex="0"><code>...
 [00017c] MainKt.calculate:(Ljava/lang/String;)I
-0000: const-string v0, &quot;$this$calculate&quot; // string@0001
+0000: const-string v0, &#34;$this$calculate&#34; // string@0001
 0002: invoke-static {v1, v0}, Lkotlin/jvm/internal/Intrinsics;.checkParameterIsNotNull:(Ljava/lang/Object;Ljava/lang/String;)V // method@0004
 0005: invoke-virtual {v1}, Ljava/lang/String;.length:()I // method@0003
 0008: move-result v1
@@ -365,7 +240,7 @@ Type `kotlin.jvm.internal.Intrinsics` was not found, it is required for default 
 000b: return v1
 ...
 [0001a4] MainKt.main:([Ljava/lang/String;)V
-0000: const-string v1, &quot;Hello world&quot; // string@0002
+0000: const-string v1, &#34;Hello world&#34; // string@0002
 0002: invoke-static {v1}, LMainKt;.calculate:(Ljava/lang/String;)I // method@0000
 0005: move-result v1
 0006: sget-object v0, Ljava/lang/System;.out:Ljava/io/PrintStream; // field@0000
@@ -375,12 +250,12 @@ Type `kotlin.jvm.internal.Intrinsics` was not found, it is required for default 
 </code></pre><p>First we see that there is our calculate method and inside main function that method is called with invoke-static.
 That happens because kotlin adds Intrinsics checks (to verify that params are not null) and because implementation of Intrinsics wasn’t found by r8 it won’t be able to optimize this code.</p>
 <p>If we provided Intrinsics implementation, then there will be some optimization. But instead of doing that (as it will require some additional mangling of our setup) we’ll ask kotlin to not generate Intrinsics code by running:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kotlinc *.kt -Xno-param-assertions
-</code></pre></div><blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kotlinc *.kt -Xno-param-assertions
+</span></span></code></pre></div><blockquote>
 <p><strong>NOTE</strong>: think carefully before doing same in production</p>
 </blockquote>
 <p>After that we’ll see the following bytecode:</p>
-<pre><code>[000114] MainKt.main:([Ljava/lang/String;)V
+<pre tabindex="0"><code>[000114] MainKt.main:([Ljava/lang/String;)V
 0000: const/16 v1, #int 22 // #16
 0002: sget-object v0, Ljava/lang/System;.out:Ljava/io/PrintStream; // field@0000
 0004: invoke-virtual {v0, v1}, Ljava/io/PrintStream;.println:(I)V // method@0001
@@ -388,26 +263,26 @@ That happens because kotlin adds Intrinsics checks (to verify that params are no
 </code></pre><p>Again we have everything optimized and final value is calculated at compile time.</p>
 <h2 id="example-3-where-we-encounter-overhead">Example 3 (where we encounter overhead)</h2>
 <p>Next program is the following:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">main</span>() {
-    println(Runner().run(<span style="color:#ae81ff">5</span>))
-}
-
-<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Runner</span> {
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">run</span>(x: Int): Int {
-        <span style="color:#66d9ef">return</span> (<span style="color:#ae81ff">0.</span>.x).sum()
-    }
-}
-</code></pre></div><p>Basically we’d like to calculate sum of arithmetic progression from 0 and step 1.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">(</span><span class="n">Runner</span><span class="p">().</span><span class="n">run</span><span class="p">(</span><span class="m">5</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">private</span> <span class="k">class</span> <span class="nc">Runner</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">run</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Int</span><span class="p">):</span> <span class="n">Int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="p">(</span><span class="m">0.</span><span class="p">.</span><span class="n">x</span><span class="p">).</span><span class="n">sum</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Basically we’d like to calculate sum of arithmetic progression from 0 and step 1.</p>
 <p>When we run R8 we’ll see the following warning:</p>
-<pre><code>Warning in Runner.class:
+<pre tabindex="0"><code>Warning in Runner.class:
 
 Type `kotlin.collections.CollectionsKt` was not found, it is required for default or static interface methods desugaring of `int Runner.run(int)`
 </code></pre><p>This time as we’ve used sum function which is part of kotlin stdlib in order to have r8 work correctly we’ll need to add kotlin stdlib to classpath.</p>
 <p>Download latest kotlin stdlib jar version from <a href="https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib/1.3.61">maven</a>.
 And add it to classpath when r8 works:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ java -jar r8/build/libs/r8.jar --lib $ANDROID_HOME/platforms/android-29/android.jar **--lib kotlin-stdlib-1.3.61.jar** --release --output . --pg-conf rules.txt *.class
-</code></pre></div><p>Then after compilation we’ll see no warnings. Let’s find our what will be inside our bytecode. Unfortunately the result won’t be that great:</p>
-<pre><code>...
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ java -jar r8/build/libs/r8.jar --lib <span class="nv">$ANDROID_HOME</span>/platforms/android-29/android.jar **--lib kotlin-stdlib-1.3.61.jar** --release --output . --pg-conf rules.txt *.class
+</span></span></code></pre></div><p>Then after compilation we’ll see no warnings. Let’s find our what will be inside our bytecode. Unfortunately the result won’t be that great:</p>
+<pre tabindex="0"><code>...
 [0001c4] MainKt.main:([Ljava/lang/String;)V
 0000: new-instance v1, LRunner; // type@0002
 0002: invoke-direct {v1}, LRunner;.&lt;init&gt;:()V // method@0001
@@ -433,22 +308,22 @@ So in this example we didn’t get precalculated result inlined.</p>
 </blockquote>
 <h2 id="example-4-where-we-fix-overhead-from-example-3">Example 4 (where we fix overhead from Example 3)</h2>
 <p>As we’ve analyzed particular use case in Example 3 and see that there is some room for improvements, let’s try to utilize this:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">main</span>() {
-    println(Runner().run(<span style="color:#ae81ff">5</span>))
-}
-
-<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Runner</span> {
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">run</span>(x: Int): Int {
-        <span style="color:#66d9ef">var</span> result = <span style="color:#ae81ff">0</span>
-        <span style="color:#66d9ef">for</span> (i <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">0.</span>.x) {
-            result <span style="color:#f92672">+=</span> i
-        }
-        <span style="color:#66d9ef">return</span> result
-    }
-}
-</code></pre></div><p>This is equivalent code to calculate arithmetic sum as in Example 3. Note, that here we also use range inside for-loop.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">(</span><span class="n">Runner</span><span class="p">().</span><span class="n">run</span><span class="p">(</span><span class="m">5</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">private</span> <span class="k">class</span> <span class="nc">Runner</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">run</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Int</span><span class="p">):</span> <span class="n">Int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">var</span> <span class="py">result</span> <span class="p">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="k">in</span> <span class="m">0.</span><span class="p">.</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">result</span> <span class="o">+=</span> <span class="n">i</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">result</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>This is equivalent code to calculate arithmetic sum as in Example 3. Note, that here we also use range inside for-loop.</p>
 <p>And here is the result:</p>
-<pre><code>[000114] MainKt.main:([Ljava/lang/String;)V
+<pre tabindex="0"><code>[000114] MainKt.main:([Ljava/lang/String;)V
 0000: const/4 v2, #int 0 // #0
 0001: const/4 v0, #int 0 // #0
 0002: add-int/2addr v2, v0
@@ -506,79 +381,39 @@ The key takeaways should be the following: even when you try to optimize your co
 <p>Think about optimizations, write fast code which consumes less memory but don’t forget to profile first.</p>
 <p>Happy coding!</p>
 
-  </div>
-  
+</main>
 
-<div class="navigation navigation-single">
+
+<hr/>
+
+<footer>
+<nav>
+  <ul>
     
-    <a href="/posts/2020_01_25_from_rxjava_2_to_kotlin_flow_threading/" class="navigation-prev">
-      <i aria-hidden="true" class="fa fa-chevron-left"></i>
-      <span class="navigation-tittle">From RxJava 2 to Kotlin Flow: Threading</span>
-    </a>
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
     
     
-    <a href="/posts/2020_02_06_from_rxjava_to_kotlin_flow_backpressure/" class="navigation-next">
-      <span class="navigation-tittle">From RxJava to Kotlin Flow: Backpressure</span>
-      <i aria-hidden="true" class="fa fa-chevron-right"></i>
-    </a>
+    <li class="menu-right"><a href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-xl"></i></a></li>
     
-</div>
-
-
-  
-
-  
+    <li class="menu-right"><a href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-xl"></i></a></li>
     
-
-
-</article>
-
-
-        </div>
-        
+    <li class="menu-right"><a href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-xl"></i></a></li>
     
-
-  
-  
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'UA-148934073-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-
-<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
-
-
+    <li class="menu-right"><a href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-xl"></i></a></li>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-        
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/bash.min.js"></script>
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/java.min.js"></script>
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
-            
-        
-    <script type="text/javascript">
-        
-        hljs.configure({languages: ["bash, java, kotlin"]});
-        
-        hljs.initHighlightingOnLoad();
-    </script>
+    <li class="menu-right"><a href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-xl"></i></a></li>
     
-
-
-
+    <li class="menu-right"><a href="https://twitter.com/krossovochkin" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a></li>
     
+    <li class="menu-right"><a href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-xl"></i></a></li>
+    
+  </ul>
+</nav>
+</footer>
 
 
+</body>
 
-    </body>
 </html>

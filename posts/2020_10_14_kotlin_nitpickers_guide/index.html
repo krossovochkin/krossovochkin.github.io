@@ -1,215 +1,87 @@
 <!DOCTYPE html>
-<html lang="en">
-    
-    
+<html lang="en-us">
+<head>
+  <title>Kotlin Nitpicker&#39;s guide</title>
 
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <head>
-    <link href="https://gmpg.org/xfn/11" rel="profile">
-    <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<!-- Enable responsiveness on mobile devices -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="generator" content="Hugo 0.79.1" />
+  <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script src="https://kit.fontawesome.com/6d5aec2882.js" crossorigin="anonymous"></script>
 
-    
-    
-    
+  <link rel="stylesheet" href="/css/style.css" />
 
-<title>Kotlin Nitpicker&#39;s guide • Vasya Drobushkov</title>
+  
+  <meta name="theme-color" content="#1e2327">
 
-
-<meta name="twitter:card" content="summary"/>
+  <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Kotlin Nitpicker&#39;s guide"/>
 <meta name="twitter:description" content="Guide on how not to do code review of Kotlin code."/>
-
-<meta property="og:title" content="Kotlin Nitpicker&#39;s guide" />
-<meta property="og:description" content="Guide on how not to do code review of Kotlin code." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://krossovochkin.com/posts/2020_10_14_kotlin_nitpickers_guide/" />
-<meta property="article:published_time" content="2020-10-14T00:00:00+00:00" />
-<meta property="article:modified_time" content="2020-10-14T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
-
-
-    
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
-
-
-
-
-
-
-
-
-<link rel="stylesheet" href="/scss/hyde-hyde.adf8a0af011d3afb07ed907ad3295e1c99f49503bc91d395e38dc3f8dfdf4900.css" integrity="sha256-rfigrwEdOvsH7ZB60yleHJn0lQO8kdOV443D&#43;N/fSQA=">
-
-
-<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
-
-
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <!-- Icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
-    <link rel="shortcut icon" href="/favicon.png">
-    
-    
+<meta name="twitter:site" content="@krossovochkin"/>
 
 </head>
 
+<body>
 
-    <body class="theme-base-0a ">
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<header>
+<nav>
+  <ul>
     
-<div class="sidebar">
-  <div class="container ">
-    <div class="sidebar-about">
-      <span class="site__title">
-        <a href="https://krossovochkin.com/">
-        
-          Vasya Drobushkov
-        
-        </a>
-      </span>
-      
-        
-        
-        
-        <div class="author-image">
-          <img src="https://krossovochkin.com/../img/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
-        </div>
-        
-      
-      
-      <p class="site__description">
-        
-      </p>
-    </div>
-    <div class="collapsible-menu">
-      <input type="checkbox" id="menuToggle">
-      <label for="menuToggle">Vasya Drobushkov</label>
-      <div class="menu-content">
-        <div>
-	<ul class="sidebar-nav">
-		 
-		 
-			 
-				<li>
-					<a href="/posts/">
-						<span>Posts</span>
-					</a>
-				</li>
-			 
-		 
-			 
-				<li>
-					<a href="/about/">
-						<span>About</span>
-					</a>
-				</li>
-			 
-		
-	</ul>
-</div>
-
-        <section class="social">
-	
-	<a href="https://twitter.com/krossovochkin" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	<a href="https://facebook.com/vasya.drobushkov" rel="me"><i class="fab fa-facebook-f"></i></a>
-	
-	
-	<a href="https://github.com/krossovochkin" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	
-	
-	<a href="https://linkedin.com/in/vasyadrobushkov" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	<a href="https://stackoverflow.com/users/1533933/krossovochkin" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	<a href="https://t.me/krossovochkin_newsletter" rel="me"><i class="fab fa-telegram fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	
-	
-</section>
-
-      </div>
-    </div>
+    <li class="menu-left"><a href="/">Posts</a></li>
     
-<div class="copyright">
-  &copy; 2019 - 2021 Vasya Drobushkov
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    
+    <li class="menu-right"><a href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://twitter.com/krossovochkin" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-xl"></i></a></li>
+    
+  </ul>
+</nav>
+</header>
+
+<br/>
+
+<div class="meta">
+
   
-    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
-  
-</div>
-
-
-
-  </div>
-</div>
-
-        <div class="content container">
-            
-    
-<article>
-  <header>
-    <h1>Kotlin Nitpicker&#39;s guide</h1>
-    
-    
-<div class="post__meta">
-    
-    
-      <i class="fas fa-calendar-alt"></i> Oct 14, 2020
-    
-    
-    
-    
-    
-      
-      
-          <br/>
-           <i class="fas fa-tags"></i>
-          
-          <a class="badge badge-tag" href="/tags/kotlin">kotlin</a>
-           
-      
-          <a class="badge badge-tag" href="/tags/programming">programming</a>
-          
-      
-    
-    
-    <br/>
-    <i class="fas fa-clock"></i> 9 min read
-</div>
-
-
-  </header>
+    <h1><span class="title">Kotlin Nitpicker&rsquo;s guide</span></h1>
   
   
-  <div class="post">
-    <h3 id="introduction">Introduction</h3>
-<p>Code review is an essential tool for a development team, which helps ensure high-quality standards of code. While reviewing others' code one might find bugs, design issues, and so on. One another part of reviewing is getting used to the codebase and following team&rsquo;s code style for better maintenance.
+    <h3>October 14, 2020</h3>
+  
+
+</div>
+
+<main>
+<h3 id="introduction">Introduction</h3>
+<p>Code review is an essential tool for a development team, which helps ensure high-quality standards of code. While reviewing others&rsquo; code one might find bugs, design issues, and so on. One another part of reviewing is getting used to the codebase and following team&rsquo;s code style for better maintenance.
 Though it is pretty cool in theory, in practice team might face few issues, one of which is nitpicking. When review is bloated with dozens of similar comments related to e.g. how beautifully code looks like.
 Common code style is important, but having a lot of similar comments in each review doesn&rsquo;t help. Instead of trying to understand what code is doing, nitpicker writes a lot of similar comments on the style. Back and forth discussions or fixes of such slow down development process and overall make team&rsquo;s morale worse.</p>
 <p>Kotlin is a great language, saves a lot of time on some common tasks.
@@ -224,27 +96,27 @@ This is a code smell, we might have a crash!</p>
 <p>Yes, !! in code should warn you, because the operation is unsafe.
 But in some situations, you might be fine with that. Sometimes Kotlin compiler can&rsquo;t infer that the value is not null in some given moment.
 And you are 100% sure that it is safe. For example let&rsquo;s take a look at the <a href="https://krossovochkin.com/posts/2019_09_27_random_interview_coding_task_retrospective/">reverse list function</a>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">Node</span>&lt;T&gt;.reverse(): Node&lt;T&gt; {
-    <span style="color:#66d9ef">if</span> (<span style="color:#66d9ef">this</span>.next <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>
-    }
-
-    <span style="color:#66d9ef">var</span> previousNode: Node&lt;T&gt;? = <span style="color:#66d9ef">null</span>
-    <span style="color:#66d9ef">var</span> currentNode: Node&lt;T&gt;? = <span style="color:#66d9ef">this</span>
-    <span style="color:#66d9ef">var</span> nextNode: Node&lt;T&gt;?
-
-    <span style="color:#66d9ef">while</span> (currentNode <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
-        nextNode = currentNode.next
-        currentNode.next = previousNode
-
-        previousNode = currentNode
-        currentNode = nextNode
-
-    }
-
-    <span style="color:#66d9ef">return</span> previousNode<span style="color:#f92672">!!</span>
-}
-</code></pre></div><p>As variable is nullable, I get nullable result. It is possible to see that if I got to the last return, then <code>previousNode</code> can&rsquo;t be null.
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="nf">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;.</span><span class="n">reverse</span><span class="p">():</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">next</span> <span class="o">==</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">this</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">var</span> <span class="py">previousNode</span><span class="p">:</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;?</span> <span class="p">=</span> <span class="k">null</span>
+</span></span><span class="line"><span class="cl">    <span class="k">var</span> <span class="py">currentNode</span><span class="p">:</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;?</span> <span class="p">=</span> <span class="k">this</span>
+</span></span><span class="line"><span class="cl">    <span class="k">var</span> <span class="py">nextNode</span><span class="p">:</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;?</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="n">currentNode</span> <span class="o">!=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">nextNode</span> <span class="p">=</span> <span class="n">currentNode</span><span class="p">.</span><span class="n">next</span>
+</span></span><span class="line"><span class="cl">        <span class="n">currentNode</span><span class="p">.</span><span class="n">next</span> <span class="p">=</span> <span class="n">previousNode</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">previousNode</span> <span class="p">=</span> <span class="n">currentNode</span>
+</span></span><span class="line"><span class="cl">        <span class="n">currentNode</span> <span class="p">=</span> <span class="n">nextNode</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">previousNode</span><span class="o">!!</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>As variable is nullable, I get nullable result. It is possible to see that if I got to the last return, then <code>previousNode</code> can&rsquo;t be null.
 Compiler can&rsquo;t infer that, but I, as a developer, can.</p>
 <p>This is the case when I think !! is totally legit.</p>
 <p>What are other options:</p>
@@ -254,16 +126,16 @@ Compiler can&rsquo;t infer that, but I, as a developer, can.</p>
 Some people vote for that option because it is more explicit.</li>
 <li>add some assertion before to capture impossible case, like:</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> prev = previousNode
-<span style="color:#66d9ef">if</span> (prev <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
-    <span style="color:#66d9ef">throw</span> IllegalStateException()
-}
-</code></pre></div><p>Yes, we now even more explicit in our intentions, but we have more bytecode for our solution now.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">prev</span> <span class="p">=</span> <span class="n">previousNode</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">prev</span> <span class="o">==</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">throw</span> <span class="n">IllegalStateException</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Yes, we now even more explicit in our intentions, but we have more bytecode for our solution now.</p>
 <ul>
 <li>variation of previous option with default exception:</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">return</span> previousNode <span style="color:#f92672">?:</span> <span style="color:#66d9ef">throw</span> IllegalStateException()
-</code></pre></div><ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">return</span> <span class="n">previousNode</span> <span class="o">?:</span> <span class="k">throw</span> <span class="n">IllegalStateException</span><span class="p">()</span>
+</span></span></code></pre></div><ul>
 <li>return some default value (like empty Node) would be definitely a mistake.</li>
 </ul>
 <p>And probably there are also a lot of many other ways on how to solve that.
@@ -279,37 +151,37 @@ Less lines, less code, better!</p>
 </blockquote>
 <p>In Kotlin it is allowed to omit function body and write <code>=</code>.<br>
 For example these are equivalents:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">hello</span>(): String {
-    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;hello&#34;</span>
-}
-
-<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">hello</span>(): String = <span style="color:#e6db74">&#34;hello&#34;</span>
-</code></pre></div><p>Using the second option saves you two lines! Let&rsquo;s use it everywhere!<br>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">hello</span><span class="p">():</span> <span class="n">String</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="s2">&#34;hello&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">hello</span><span class="p">():</span> <span class="n">String</span> <span class="p">=</span> <span class="s2">&#34;hello&#34;</span>
+</span></span></code></pre></div><p>Using the second option saves you two lines! Let&rsquo;s use it everywhere!<br>
 But there are some caveats.<br>
 First is that it is not required to use <code>=</code> only for one-liners:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">hello</span>(): String =
-    <span style="color:#e6db74">&#34;hello&#34;</span>
-</code></pre></div><p>And this variant might look not that awesome.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">hello</span><span class="p">():</span> <span class="n">String</span> <span class="p">=</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;hello&#34;</span>
+</span></span></code></pre></div><p>And this variant might look not that awesome.</p>
 <p>Second is that we&rsquo;re reading code from top to bottom, right to left. And if we need to &ldquo;scan&rdquo; code to find something we usually go top to bottom first and then when we need details we go to the right.
 Having return might allow you to see relevant information while going in the &ldquo;scanning mode&rdquo;, which is not available if you used one-liner with <code>=</code>.</p>
 <p>I think that it is a matter of taste and agreement in the team. At the same time, I think that there is nothing bad or wrong in using explicit returns.</p>
 <p>One good usage of not-one-liner <code>=</code> I see in maintaining exhaustive <code>when</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">resolve</span>(orientation: Orientation): Int = <span style="color:#66d9ef">when</span> (orientation) {
-    HORIZONTAL <span style="color:#f92672">-&gt;</span> <span style="color:#ae81ff">0</span>
-    VERTICAL <span style="color:#f92672">-&gt;</span> <span style="color:#ae81ff">1</span>
-}
-</code></pre></div><p>Here we save some space and at the same time support our &ldquo;scanning mode&rdquo; because the right part with <code>when</code> here is not that important.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">resolve</span><span class="p">(</span><span class="n">orientation</span><span class="p">:</span> <span class="n">Orientation</span><span class="p">):</span> <span class="n">Int</span> <span class="p">=</span> <span class="k">when</span> <span class="p">(</span><span class="n">orientation</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">HORIZONTAL</span> <span class="o">-&gt;</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">    <span class="n">VERTICAL</span> <span class="o">-&gt;</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Here we save some space and at the same time support our &ldquo;scanning mode&rdquo; because the right part with <code>when</code> here is not that important.</p>
 <h3 id="implicit-return-types">Implicit return types</h3>
 <blockquote>
 <p>If you can omit return type then do that.<br>
 Less code is better.</p>
 </blockquote>
 <p>Also in Kotlin it is possible to omit return type if we used <code>=</code>. If we consider previous example we could write:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">hello</span>() = <span style="color:#e6db74">&#34;hello&#34;</span>
-</code></pre></div><p>It is clear that return result will be String, so why type it?<br>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">hello</span><span class="p">()</span> <span class="p">=</span> <span class="s2">&#34;hello&#34;</span>
+</span></span></code></pre></div><p>It is clear that return result will be String, so why type it?<br>
 In such simple cases, it might be good, but there are also caveats here. If we have non-&ldquo;primitive&rdquo; return type we might face a situation like:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getFactory</span>() = FactoryImpl()
-</code></pre></div><p>Return type will be inferred as <code>FactoryImpl</code> while we might want to have <code>Factory</code> interface instead. It becomes even worse if this method is part of our public API and we exposed implementation instead of an interface, which might lead to issues with later maintenance.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">getFactory</span><span class="p">()</span> <span class="p">=</span> <span class="n">FactoryImpl</span><span class="p">()</span>
+</span></span></code></pre></div><p>Return type will be inferred as <code>FactoryImpl</code> while we might want to have <code>Factory</code> interface instead. It becomes even worse if this method is part of our public API and we exposed implementation instead of an interface, which might lead to issues with later maintenance.</p>
 <p>Again, I see nothing bad in using explicit return types everywhere.<br>
 It is fine to omit return type for private or internal functions, but for public API explicit return types are a must.</p>
 <h3 id="implicit-variable-types">Implicit variable types</h3>
@@ -318,25 +190,25 @@ It is fine to omit return type for private or internal functions, but for public
 Less code is better.</p>
 </blockquote>
 <p>Kotlin compiler can infer types. So when in java we have to write:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">final</span> Object object <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Object<span style="color:#f92672">();</span>
-</code></pre></div><p>in Kotlin it is just:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> object = Object()
-</code></pre></div><p>First note on this is similar to previous note on implicit return type: if you create implementation on the right side, then it might be a good move to declare variable type explicitly. Especially, if that variable is part of public API.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">final</span> <span class="n">Object</span> <span class="n">object</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Object</span><span class="o">();</span>
+</span></span></code></pre></div><p>in Kotlin it is just:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">object</span> <span class="p">=</span> <span class="n">Object</span><span class="p">()</span>
+</span></span></code></pre></div><p>First note on this is similar to previous note on implicit return type: if you create implementation on the right side, then it might be a good move to declare variable type explicitly. Especially, if that variable is part of public API.</p>
 <p>Second note is about primitive numbers initialization.<br>
 Unlike Java in Kotlin there is no auto-convert between primitive numbers. When in Java it is possible to write:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">float</span> a <span style="color:#f92672">=</span> 0<span style="color:#f92672">.</span><span style="color:#a6e22e">4</span><span style="color:#f92672">;</span>
-<span style="color:#66d9ef">int</span> b <span style="color:#f92672">=</span> a<span style="color:#f92672">;</span>
-</code></pre></div><p>in Kotlin explicit conversion is required:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> a: Float = <span style="color:#ae81ff">0.4f</span>
-<span style="color:#66d9ef">val</span> b: Int = a.toInt()
-</code></pre></div><p>And here we get to the caveat: it is so tempting to omit variable type here, because value is <code>0.4f</code> - it is float. If it was <code>0.0</code> then it would be double, if <code>0L</code> then long and if just 0 then Int. It is clear and idiomatic!<br>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">a</span> <span class="o">=</span> <span class="n">0</span><span class="o">.</span><span class="na">4</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">;</span>
+</span></span></code></pre></div><p>in Kotlin explicit conversion is required:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">a</span><span class="p">:</span> <span class="n">Float</span> <span class="p">=</span> <span class="m">0.4f</span>
+</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">b</span><span class="p">:</span> <span class="n">Int</span> <span class="p">=</span> <span class="n">a</span><span class="p">.</span><span class="n">toInt</span><span class="p">()</span>
+</span></span></code></pre></div><p>And here we get to the caveat: it is so tempting to omit variable type here, because value is <code>0.4f</code> - it is float. If it was <code>0.0</code> then it would be double, if <code>0L</code> then long and if just 0 then Int. It is clear and idiomatic!<br>
 But there is nothing wrong with using explicit variable types:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> long1 = <span style="color:#ae81ff">1</span>_000_000L
-<span style="color:#66d9ef">val</span> long2: Long = <span style="color:#ae81ff">1</span>_000_000
-
-<span style="color:#66d9ef">val</span> float1 = <span style="color:#ae81ff">0.004304939340f</span>
-<span style="color:#66d9ef">val</span> float2: Float = <span style="color:#ae81ff">0.004304939340f</span>
-</code></pre></div><p>If the number is big and you use implicit types then reader have to look at the whole line till the very end to infer type instead of looking at the declaration.<br>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">long1</span> <span class="p">=</span> <span class="m">1</span><span class="n">_000_000L</span>
+</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">long2</span><span class="p">:</span> <span class="n">Long</span> <span class="p">=</span> <span class="m">1</span><span class="n">_000_000</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">float1</span> <span class="p">=</span> <span class="m">0.004304939340f</span>
+</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">float2</span><span class="p">:</span> <span class="n">Float</span> <span class="p">=</span> <span class="m">0.004304939340f</span>
+</span></span></code></pre></div><p>If the number is big and you use implicit types then reader have to look at the whole line till the very end to infer type instead of looking at the declaration.<br>
 Remember, we write code not for compiler.</p>
 <h3 id="foreach-vs-for">forEach vs for</h3>
 <blockquote>
@@ -344,48 +216,48 @@ Remember, we write code not for compiler.</p>
 We&rsquo;re doing functional programming, not imperative!</p>
 </blockquote>
 <p>For collections, arrays, and basically, all objects which implement Iterable interface (or even Strings) it is possible to use <code>forEach</code> method instead of explicit <code>for</code> loop. In many cases, it has a decisive advantage. Compare:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">for</span> (i <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">0</span> until list.size) {
-    println(list[i])
-}
-
-list.forEach { println(<span style="color:#66d9ef">it</span>) }
-</code></pre></div><p>Though at the same time it is possible to use:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">for</span> (item <span style="color:#66d9ef">in</span> list) {
-    println(item)
-}
-</code></pre></div><p>Where the difference is not that significant.
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="k">in</span> <span class="m">0</span> <span class="n">until</span> <span class="n">list</span><span class="p">.</span><span class="n">size</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">(</span><span class="n">list</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">list</span><span class="p">.</span><span class="n">forEach</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="k">it</span><span class="p">)</span> <span class="p">}</span>
+</span></span></code></pre></div><p>Though at the same time it is possible to use:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">for</span> <span class="p">(</span><span class="n">item</span> <span class="k">in</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Where the difference is not that significant.
 But we write functional code, right? Functions should be our primary option?</p>
 <p>I see no issues in using <code>for</code> loops instead of <code>forEach</code>.<br>
 In some cases using <code>forEach</code> would be bad:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">(<span style="color:#ae81ff">1.</span>.<span style="color:#ae81ff">10</span>).forEach { <span style="color:#f92672">..</span>. }
-</code></pre></div><p>will create additional object for <code>IntRange</code>, which we won&rsquo;t have if we use just <code>for</code> loop.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="p">(</span><span class="m">1.</span><span class="p">.</span><span class="m">10</span><span class="p">).</span><span class="n">forEach</span> <span class="p">{</span> <span class="o">..</span><span class="p">.</span> <span class="p">}</span>
+</span></span></code></pre></div><p>will create additional object for <code>IntRange</code>, which we won&rsquo;t have if we use just <code>for</code> loop.</p>
 <p>Another important thing is that lambda declares scope. And in such a case Kotlin compiler might not be able to infer types.
 Let&rsquo;s look at the example of finding max value in an array:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">var</span> max: Int? = <span style="color:#66d9ef">null</span>
-<span style="color:#66d9ef">val</span> array = intArrayOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>)
-
-<span style="color:#66d9ef">for</span> (i <span style="color:#66d9ef">in</span> array) {
-    <span style="color:#66d9ef">if</span> (max <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> i &gt; max) {
-        max = i
-    }
-}
-
-array.forEach { i <span style="color:#f92672">-&gt;</span>
-    <span style="color:#66d9ef">if</span> (max <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> i &gt; max) { <span style="color:#75715e">// &lt;- Smart cast to &#39;Int&#39; is impossible, because &#39;max&#39; is a local variable that is captured by a changing closure
-</span><span style="color:#75715e"></span>        max = i
-    }
-}
-</code></pre></div><p>Version with <code>for</code> works well because compiler was able to smart cast from <code>Int?</code> to <code>Int</code>. In case of <code>forEach</code> smart cast was impossible.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">var</span> <span class="py">max</span><span class="p">:</span> <span class="n">Int</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">array</span> <span class="p">=</span> <span class="n">intArrayOf</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="k">in</span> <span class="n">array</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">max</span> <span class="o">==</span> <span class="k">null</span> <span class="o">||</span> <span class="n">i</span> <span class="p">&gt;</span> <span class="n">max</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">max</span> <span class="p">=</span> <span class="n">i</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">array</span><span class="p">.</span><span class="n">forEach</span> <span class="p">{</span> <span class="n">i</span> <span class="o">-&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">max</span> <span class="o">==</span> <span class="k">null</span> <span class="o">||</span> <span class="n">i</span> <span class="p">&gt;</span> <span class="n">max</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// &lt;- Smart cast to &#39;Int&#39; is impossible, because &#39;max&#39; is a local variable that is captured by a changing closure
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">max</span> <span class="p">=</span> <span class="n">i</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Version with <code>for</code> works well because compiler was able to smart cast from <code>Int?</code> to <code>Int</code>. In case of <code>forEach</code> smart cast was impossible.</p>
 <h3 id="it-vs-method-reference">it vs method reference</h3>
 <blockquote>
 <p>If you can use method reference, then do.<br>
 Remember, functional programming.</p>
 </blockquote>
 <p>When we use function which accepts lambda as a parameter (inside which we call some function) it might look better to use method reference:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">list.forEach { println(<span style="color:#66d9ef">it</span>) }
-
-list.forEach(<span style="color:#f92672">::</span>println)
-</code></pre></div><p>Second example is shorter and generally looks better.<br>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">list</span><span class="p">.</span><span class="n">forEach</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="k">it</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">list</span><span class="p">.</span><span class="n">forEach</span><span class="p">(</span><span class="o">::</span><span class="n">println</span><span class="p">)</span>
+</span></span></code></pre></div><p>Second example is shorter and generally looks better.<br>
 But there is nothing wrong with using lambda with it.</p>
 <h3 id="withapply">with/apply</h3>
 <blockquote>
@@ -393,27 +265,27 @@ But there is nothing wrong with using lambda with it.</p>
 Then you can remove curly braces and return type. Cool!</p>
 </blockquote>
 <p>Using with/apply and other similar methods allow grouping code into logically coupled statements:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">recyclerView.apply {
-    adapter = ItemAdapter()
-    layoutManager = LinearLayoutManager(context)
-    addItemDecoration(DividerItemDecoration())
-}
-</code></pre></div><p>And while it is a good option, and I use it almost all the time, there is nothing wrong with:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">recyclerView.adapter = ItemAdapter()
-recyclerView.layoutManager = LinearLayoutManager(context)
-recyclerView.addItemDecoration(DividerItemDecoration())
-</code></pre></div><p>It seems bloated, but at the same time, it is shorter ;)</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">recyclerView</span><span class="p">.</span><span class="n">apply</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">adapter</span> <span class="p">=</span> <span class="n">ItemAdapter</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="n">layoutManager</span> <span class="p">=</span> <span class="n">LinearLayoutManager</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">addItemDecoration</span><span class="p">(</span><span class="n">DividerItemDecoration</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>And while it is a good option, and I use it almost all the time, there is nothing wrong with:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">recyclerView</span><span class="p">.</span><span class="n">adapter</span> <span class="p">=</span> <span class="n">ItemAdapter</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">recyclerView</span><span class="p">.</span><span class="n">layoutManager</span> <span class="p">=</span> <span class="n">LinearLayoutManager</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">recyclerView</span><span class="p">.</span><span class="n">addItemDecoration</span><span class="p">(</span><span class="n">DividerItemDecoration</span><span class="p">())</span>
+</span></span></code></pre></div><p>It seems bloated, but at the same time, it is shorter ;)</p>
 <p>Usage of apply/with/etc. also might lead to some issues with declaring what is <code>this</code> in given scope, in case where we use some nesting:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">object1.apply {
-    object2.apply {
-        value = <span style="color:#ae81ff">0</span>
-        <span style="color:#66d9ef">this</span><span style="color:#a6e22e">@object1</span>.value = <span style="color:#66d9ef">this</span>.value
-    }
-}
-</code></pre></div><p>If you use labeled <code>this</code> you should point yourself that code could look better without <code>apply</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">object2.value = <span style="color:#ae81ff">0</span>
-objet1.value = object2.value
-</code></pre></div><h3 id="conclusion">Conclusion</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">object1</span><span class="p">.</span><span class="n">apply</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">object2</span><span class="p">.</span><span class="n">apply</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">value</span> <span class="p">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="nd">@object1</span><span class="p">.</span><span class="n">value</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="n">value</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>If you use labeled <code>this</code> you should point yourself that code could look better without <code>apply</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">object2</span><span class="p">.</span><span class="n">value</span> <span class="p">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="n">objet1</span><span class="p">.</span><span class="n">value</span> <span class="p">=</span> <span class="n">object2</span><span class="p">.</span><span class="n">value</span>
+</span></span></code></pre></div><h3 id="conclusion">Conclusion</h3>
 <p>Code style is important. Code review is important.<br>
 Discuss among the team what you expect to get from code review: find code style issues or bugs, architectural decisions, and so on.<br>
 It is generally better to discuss code style topics in the team and set up some code style checking tool and do not spend a lot of time in review fixing nitpicks.<br>
@@ -422,79 +294,39 @@ Your code should solve problems, your code should be in one style among team.<br
 Work in a team.</p>
 <p>Happy coding.</p>
 
-  </div>
-  
+</main>
 
-<div class="navigation navigation-single">
+
+<hr/>
+
+<footer>
+<nav>
+  <ul>
     
-    <a href="/posts/2020_05_17_the_real_kotlin_flow_benefits_over_rxjava/" class="navigation-prev">
-      <i aria-hidden="true" class="fa fa-chevron-left"></i>
-      <span class="navigation-tittle">The Real Kotlin Flow benefits over RxJava</span>
-    </a>
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
     
     
-    <a href="/posts/2020_10_17_kotlin_functional_interfaces_function_references_and_sam_conversion/" class="navigation-next">
-      <span class="navigation-tittle">Kotlin Functional Interfaces: Function reference and SAM conversion</span>
-      <i aria-hidden="true" class="fa fa-chevron-right"></i>
-    </a>
+    <li class="menu-right"><a href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-xl"></i></a></li>
     
-</div>
-
-
-  
-
-  
+    <li class="menu-right"><a href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-xl"></i></a></li>
     
-
-
-</article>
-
-
-        </div>
-        
+    <li class="menu-right"><a href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-xl"></i></a></li>
     
-
-  
-  
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'UA-148934073-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-
-<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
-
-
+    <li class="menu-right"><a href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-xl"></i></a></li>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-        
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/bash.min.js"></script>
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/java.min.js"></script>
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
-            
-        
-    <script type="text/javascript">
-        
-        hljs.configure({languages: ["bash, java, kotlin"]});
-        
-        hljs.initHighlightingOnLoad();
-    </script>
+    <li class="menu-right"><a href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-xl"></i></a></li>
     
-
-
-
+    <li class="menu-right"><a href="https://twitter.com/krossovochkin" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a></li>
     
+    <li class="menu-right"><a href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-xl"></i></a></li>
+    
+  </ul>
+</nav>
+</footer>
 
 
+</body>
 
-    </body>
 </html>

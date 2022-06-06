@@ -1,226 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
-    
-    
+<html lang="en-us">
+<head>
+  <title>[Android] Notifications Overview and Pitfalls</title>
 
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <head>
-    <link href="https://gmpg.org/xfn/11" rel="profile">
-    <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<!-- Enable responsiveness on mobile devices -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="generator" content="Hugo 0.79.1" />
+  <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script src="https://kit.fontawesome.com/6d5aec2882.js" crossorigin="anonymous"></script>
 
-    
-    
-    
+  <link rel="stylesheet" href="/css/style.css" />
 
-<title>[Android] Notifications Overview and Pitfalls • Vasya Drobushkov</title>
+  
+  <meta name="theme-color" content="#1e2327">
 
-
-<meta name="twitter:card" content="summary"/>
+  <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[Android] Notifications Overview and Pitfalls"/>
 <meta name="twitter:description" content="Introduction Notifications are widely used in Android applications. Though API is pretty straightforward, there are some key things that one should know and understand. This article will try to be first step into understanding Notifications API.
 Sending Single Notification Notification singleNotification = new NotificationCompat.Builder(this) .setContentTitle(&#34;Title&#34;) .setContentText(&#34;Text&#34;) .setSmallIcon(R.drawable.ic_notification) .build(); NotificationManagerCompat notificationManager = NotificationManagerCompat.*from*(context); notificationManager.notify(notificationId, singleNotification); Key things here:
-  We use NotificationCompat.Builder to have single interface for creating notifications and let Support Library do all compatibility tricks;"/>
-
-<meta property="og:title" content="[Android] Notifications Overview and Pitfalls" />
-<meta property="og:description" content="Introduction Notifications are widely used in Android applications. Though API is pretty straightforward, there are some key things that one should know and understand. This article will try to be first step into understanding Notifications API.
-Sending Single Notification Notification singleNotification = new NotificationCompat.Builder(this) .setContentTitle(&#34;Title&#34;) .setContentText(&#34;Text&#34;) .setSmallIcon(R.drawable.ic_notification) .build(); NotificationManagerCompat notificationManager = NotificationManagerCompat.*from*(context); notificationManager.notify(notificationId, singleNotification); Key things here:
-  We use NotificationCompat.Builder to have single interface for creating notifications and let Support Library do all compatibility tricks;" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://krossovochkin.com/posts/2017_02_11_android_notifications_overview_and_pitfalls/" />
-<meta property="article:published_time" content="2017-02-11T00:00:00+00:00" />
-<meta property="article:modified_time" content="2017-02-11T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
-
-
-    
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
-
-
-
-
-
-
-
-
-<link rel="stylesheet" href="/scss/hyde-hyde.adf8a0af011d3afb07ed907ad3295e1c99f49503bc91d395e38dc3f8dfdf4900.css" integrity="sha256-rfigrwEdOvsH7ZB60yleHJn0lQO8kdOV443D&#43;N/fSQA=">
-
-
-<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
-
-
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <!-- Icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
-    <link rel="shortcut icon" href="/favicon.png">
-    
-    
+We use NotificationCompat.Builder to have single interface for creating notifications and let Support Library do all compatibility tricks;"/>
+<meta name="twitter:site" content="@krossovochkin"/>
 
 </head>
 
+<body>
 
-    <body class="theme-base-0a ">
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<header>
+<nav>
+  <ul>
     
-<div class="sidebar">
-  <div class="container ">
-    <div class="sidebar-about">
-      <span class="site__title">
-        <a href="https://krossovochkin.com/">
-        
-          Vasya Drobushkov
-        
-        </a>
-      </span>
-      
-        
-        
-        
-        <div class="author-image">
-          <img src="https://krossovochkin.com/../img/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
-        </div>
-        
-      
-      
-      <p class="site__description">
-        
-      </p>
-    </div>
-    <div class="collapsible-menu">
-      <input type="checkbox" id="menuToggle">
-      <label for="menuToggle">Vasya Drobushkov</label>
-      <div class="menu-content">
-        <div>
-	<ul class="sidebar-nav">
-		 
-		 
-			 
-				<li>
-					<a href="/posts/">
-						<span>Posts</span>
-					</a>
-				</li>
-			 
-		 
-			 
-				<li>
-					<a href="/about/">
-						<span>About</span>
-					</a>
-				</li>
-			 
-		
-	</ul>
-</div>
-
-        <section class="social">
-	
-	<a href="https://twitter.com/krossovochkin" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	<a href="https://facebook.com/vasya.drobushkov" rel="me"><i class="fab fa-facebook-f"></i></a>
-	
-	
-	<a href="https://github.com/krossovochkin" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	
-	
-	<a href="https://linkedin.com/in/vasyadrobushkov" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	<a href="https://stackoverflow.com/users/1533933/krossovochkin" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	<a href="https://t.me/krossovochkin_newsletter" rel="me"><i class="fab fa-telegram fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	
-	
-</section>
-
-      </div>
-    </div>
+    <li class="menu-left"><a href="/">Posts</a></li>
     
-<div class="copyright">
-  &copy; 2019 - 2021 Vasya Drobushkov
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    
+    <li class="menu-right"><a href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://twitter.com/krossovochkin" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-xl"></i></a></li>
+    
+  </ul>
+</nav>
+</header>
+
+<br/>
+
+<div class="meta">
+
   
-    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
-  
-</div>
-
-
-
-  </div>
-</div>
-
-        <div class="content container">
-            
-    
-<article>
-  <header>
-    <h1>[Android] Notifications Overview and Pitfalls</h1>
-    
-    
-<div class="post__meta">
-    
-    
-      <i class="fas fa-calendar-alt"></i> Feb 11, 2017
-    
-    
-    
-    
-    
-      
-      
-          <br/>
-           <i class="fas fa-tags"></i>
-          
-          <a class="badge badge-tag" href="/tags/android">android</a>
-          
-      
-    
-    
-    <br/>
-    <i class="fas fa-clock"></i> 6 min read
-</div>
-
-
-  </header>
+    <h1><span class="title">[Android] Notifications Overview and Pitfalls</span></h1>
   
   
-  <div class="post">
-    <p><a href="https://medium.com/@krossovochkin/android-notifications-overview-and-pitfalls-517d1118ec83"><img src="https://img.shields.io/badge/original-medium-green#badge" alt=""></a></p>
+    <h3>February 11, 2017</h3>
+  
+
+</div>
+
+<main>
+<p><a href="https://medium.com/@krossovochkin/android-notifications-overview-and-pitfalls-517d1118ec83"><img src="https://img.shields.io/badge/original-medium-green#badge" alt=""></a></p>
 <h1 id="introduction">Introduction</h1>
 <p>Notifications are widely used in Android applications. Though API is pretty straightforward, there are some key things that one should know and understand. This article will try to be first step into understanding Notifications API.</p>
 <h2 id="sending-single-notification">Sending Single Notification</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Notification singleNotification <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> NotificationCompat<span style="color:#f92672">.</span><span style="color:#a6e22e">Builder</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">)</span>
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">setContentTitle</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Title&#34;</span><span style="color:#f92672">)</span>
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">setContentText</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Text&#34;</span><span style="color:#f92672">)</span>
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">setSmallIcon</span><span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">drawable</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ic_notification</span><span style="color:#f92672">)</span>
-        <span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
-NotificationManagerCompat notificationManager <span style="color:#f92672">=</span> NotificationManagerCompat<span style="color:#f92672">.*</span>from<span style="color:#f92672">*(</span>context<span style="color:#f92672">);</span>
-notificationManager<span style="color:#f92672">.</span><span style="color:#a6e22e">notify</span><span style="color:#f92672">(</span>notificationId<span style="color:#f92672">,</span> singleNotification<span style="color:#f92672">);</span>
-</code></pre></div><p><img src="../../img/1_i_FZ2R1UInhmPkXVB1sC9Q.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Notification</span> <span class="n">singleNotification</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NotificationCompat</span><span class="o">.</span><span class="na">Builder</span><span class="o">(</span><span class="k">this</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">setContentTitle</span><span class="o">(</span><span class="s">&#34;Title&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">setContentText</span><span class="o">(</span><span class="s">&#34;Text&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">setSmallIcon</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">drawable</span><span class="o">.</span><span class="na">ic_notification</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl"><span class="n">NotificationManagerCompat</span> <span class="n">notificationManager</span> <span class="o">=</span> <span class="n">NotificationManagerCompat</span><span class="o">.*</span><span class="n">from</span><span class="o">*(</span><span class="n">context</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">notificationManager</span><span class="o">.</span><span class="na">notify</span><span class="o">(</span><span class="n">notificationId</span><span class="o">,</span> <span class="n">singleNotification</span><span class="o">);</span>
+</span></span></code></pre></div><p><img src="../../img/1_i_FZ2R1UInhmPkXVB1sC9Q.png" alt=""></p>
 <p><strong>Key things here:</strong></p>
 <ol>
 <li>
@@ -240,12 +113,12 @@ notificationManager<span style="color:#f92672">.</span><span style="color:#a6e22
 <p>To update notification (that is already showing — <strong>active</strong>) one should just send new notification with the <strong>same id</strong>. Old notification will be replaced with new one.</p>
 <h2 id="handling-clicks-on-notification">Handling clicks on notification</h2>
 <p>To handle clicking on notification one should set content intent.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Intent intent <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Intent<span style="color:#f92672">(</span>context<span style="color:#f92672">,</span> Activity<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
-intent<span style="color:#f92672">.</span><span style="color:#a6e22e">putExtra</span><span style="color:#f92672">(...);</span> <span style="color:#75715e">// add some extras here
-</span><span style="color:#75715e"></span>
-PendingIntent pendingIntent <span style="color:#f92672">=</span> PendingIntent<span style="color:#f92672">.</span><span style="color:#a6e22e">getActivity</span><span style="color:#f92672">(</span>context<span style="color:#f92672">,</span> requestCode<span style="color:#f92672">,</span> intent<span style="color:#f92672">,</span> flags<span style="color:#f92672">);</span>
-builder<span style="color:#f92672">.</span><span style="color:#a6e22e">setContentIntent</span><span style="color:#f92672">(</span>pendingIntent<span style="color:#f92672">);</span>
-</code></pre></div><p><strong>Key things here:</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Intent</span> <span class="n">intent</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Intent</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">Activity</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">intent</span><span class="o">.</span><span class="na">putExtra</span><span class="o">(...);</span> <span class="c1">// add some extras here
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">PendingIntent</span> <span class="n">pendingIntent</span> <span class="o">=</span> <span class="n">PendingIntent</span><span class="o">.</span><span class="na">getActivity</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">requestCode</span><span class="o">,</span> <span class="n">intent</span><span class="o">,</span> <span class="n">flags</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">builder</span><span class="o">.</span><span class="na">setContentIntent</span><span class="o">(</span><span class="n">pendingIntent</span><span class="o">);</span>
+</span></span></code></pre></div><p><strong>Key things here:</strong></p>
 <ol>
 <li>
 <p>PendingIntent is a special “token” (reference to Intent).
@@ -275,41 +148,41 @@ Also different PendingIntents will be created for different requestCodes.</p>
 <p>Example to illustrate common mistake with PendingIntents lifecycle and updating.
 Consider we have MainActivity that prints text from intent extra with key &ldquo;KEY_TEXT&rdquo;.
 And we send notifications like following:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">sendNotification</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> notificationId<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> requestCode<span style="color:#f92672">,</span> String text<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    Intent intent <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Intent<span style="color:#f92672">(</span>context<span style="color:#f92672">,</span> MainActivity<span style="color:#f92672">);</span>
-    intent<span style="color:#f92672">.</span><span style="color:#a6e22e">putExtra</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;KEY_TEXT&#34;</span><span style="color:#f92672">,</span> text<span style="color:#f92672">);</span>
-
-    PendingIntent pendingIntent <span style="color:#f92672">=</span> getActivity<span style="color:#f92672">(</span>context<span style="color:#f92672">,</span> requestCode<span style="color:#f92672">,</span> intent<span style="color:#f92672">,</span> FLAG_UPDATE_CURRENT<span style="color:#f92672">);</span>
-
-    Notification notification <span style="color:#f92672">=</span> <span style="color:#f92672">...</span> <span style="color:#75715e">// create notification as shown above
-</span><span style="color:#75715e"></span>    <span style="color:#f92672">.</span><span style="color:#a6e22e">setContentIntent</span><span style="color:#f92672">(</span>pendingIntent<span style="color:#f92672">);</span>
-
-    notificationManager<span style="color:#f92672">.</span><span style="color:#a6e22e">notify</span><span style="color:#f92672">(</span>notificationId<span style="color:#f92672">,</span> pendingIntent<span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>And let’s send two notifications:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">sendNotification<span style="color:#f92672">(</span>1<span style="color:#f92672">,</span> 0<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Text 1&#34;</span><span style="color:#f92672">);</span>
-sendNotification<span style="color:#f92672">(</span>2<span style="color:#f92672">,</span> 0<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Text 2&#34;</span><span style="color:#f92672">);</span>
-</code></pre></div><p>As a result clicking on any of the notification will end up with opening MainActivity and showing &ldquo;Text 2&rdquo;. Why?
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">sendNotification</span><span class="o">(</span><span class="kt">int</span> <span class="n">notificationId</span><span class="o">,</span> <span class="kt">int</span> <span class="n">requestCode</span><span class="o">,</span> <span class="n">String</span> <span class="n">text</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Intent</span> <span class="n">intent</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Intent</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">MainActivity</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">intent</span><span class="o">.</span><span class="na">putExtra</span><span class="o">(</span><span class="s">&#34;KEY_TEXT&#34;</span><span class="o">,</span> <span class="n">text</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">PendingIntent</span> <span class="n">pendingIntent</span> <span class="o">=</span> <span class="n">getActivity</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">requestCode</span><span class="o">,</span> <span class="n">intent</span><span class="o">,</span> <span class="n">FLAG_UPDATE_CURRENT</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Notification</span> <span class="n">notification</span> <span class="o">=</span> <span class="o">...</span> <span class="c1">// create notification as shown above
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">.</span><span class="na">setContentIntent</span><span class="o">(</span><span class="n">pendingIntent</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">notificationManager</span><span class="o">.</span><span class="na">notify</span><span class="o">(</span><span class="n">notificationId</span><span class="o">,</span> <span class="n">pendingIntent</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><p>And let’s send two notifications:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">sendNotification</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="s">&#34;Text 1&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">sendNotification</span><span class="o">(</span><span class="n">2</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="s">&#34;Text 2&#34;</span><span class="o">);</span>
+</span></span></code></pre></div><p>As a result clicking on any of the notification will end up with opening MainActivity and showing &ldquo;Text 2&rdquo;. Why?
 Because request codes for PendingIntents are the same, and FLAG_UPDATE_CURRENT updated PendingIntent when new notification is sent.
 So, both notifications have the same PendingIntent (with latest original Intent posted) even considering the fact that extras in intents were different.</p>
 <p>One way to avoid this is to use different request codes (e.g. use notificationId as request code).</p>
 <p>Another way is to set different actions, e.g. like this:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">intent<span style="color:#f92672">.</span><span style="color:#a6e22e">setAction</span><span style="color:#f92672">(</span>Long<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(</span>System<span style="color:#f92672">.</span><span style="color:#a6e22e">currentTimeMillis</span><span style="color:#f92672">()))</span>
-</code></pre></div><h2 id="handling-dismissing-notification">Handling dismissing notification</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">intent</span><span class="o">.</span><span class="na">setAction</span><span class="o">(</span><span class="n">Long</span><span class="o">.</span><span class="na">toString</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">()))</span>
+</span></span></code></pre></div><h2 id="handling-dismissing-notification">Handling dismissing notification</h2>
 <p>Handling dismissing notification is the same as handling clicking notifications. But different method in builder is used:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">builder<span style="color:#f92672">.</span><span style="color:#a6e22e">setDeleteIntent</span><span style="color:#f92672">(</span>pendingIntent<span style="color:#f92672">);</span>
-</code></pre></div><p>Delete intent will be sent when user manually dismisses notification or when user clicks on “Clear all notifications” button in notification tray.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">builder</span><span class="o">.</span><span class="na">setDeleteIntent</span><span class="o">(</span><span class="n">pendingIntent</span><span class="o">);</span>
+</span></span></code></pre></div><p>Delete intent will be sent when user manually dismisses notification or when user clicks on “Clear all notifications” button in notification tray.</p>
 <p>Clicking on notification itself dismisses notification, but delete intent will not be sent in this case. Instead content intent will be sent.</p>
 <h2 id="notifications-grouping">Notifications grouping</h2>
 <p>Each notification can be assigned to a group with some GROUP_KEY.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">builder<span style="color:#f92672">.</span><span style="color:#a6e22e">setGroup</span><span style="color:#f92672">(</span>GROUP_KEY<span style="color:#f92672">);</span>
-</code></pre></div><p>Specifying group on some notification does <strong>nothing</strong>, but only marks that notification now is a part of a group.
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">builder</span><span class="o">.</span><span class="na">setGroup</span><span class="o">(</span><span class="n">GROUP_KEY</span><span class="o">);</span>
+</span></span></code></pre></div><p>Specifying group on some notification does <strong>nothing</strong>, but only marks that notification now is a part of a group.
 If you mark two notifications with the same group, these notifications will **not **be grouped automatically.</p>
 <p>There is special notification called “Summary notification”.
 To make notification “Summary notification” one should call:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">builder<span style="color:#f92672">.</span><span style="color:#a6e22e">setGroup</span><span style="color:#f92672">(</span>GROUP_KEY<span style="color:#f92672">);</span>
-builder<span style="color:#f92672">.</span><span style="color:#a6e22e">setGroupSummary</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
-</code></pre></div><p>In this case following will happen:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">builder</span><span class="o">.</span><span class="na">setGroup</span><span class="o">(</span><span class="n">GROUP_KEY</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">builder</span><span class="o">.</span><span class="na">setGroupSummary</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+</span></span></code></pre></div><p>In this case following will happen:</p>
 <ol>
 <li>On phone only Summary notification will be shown. Any other non-summary notification with the same group key as Summary notification will not be shown</li>
 </ol>
@@ -323,11 +196,11 @@ builder<span style="color:#f92672">.</span><span style="color:#a6e22e">setGroupS
 <p>In order to update notifications it is useful to access currently showing notifications.
 For example, if we have Summary notification then we might want to show number of notifications in this group. To do this we should know how many notifications of this group is showing at the moment.</p>
 <p>Unfortunately, there is no way to do that prior to API 23. Since API 23 there is method:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Build<span style="color:#f92672">.</span><span style="color:#a6e22e">VERSION</span><span style="color:#f92672">.</span><span style="color:#a6e22e">SDK_INT</span> <span style="color:#f92672">&gt;=</span> Build<span style="color:#f92672">.</span><span style="color:#a6e22e">VERSION_CODES</span><span style="color:#f92672">.</span><span style="color:#a6e22e">M</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    NotificationManager notificationManager <span style="color:#f92672">=</span> context<span style="color:#f92672">.</span><span style="color:#a6e22e">getSystemService</span><span style="color:#f92672">(</span>NOTIFICATION_MANAGER<span style="color:#f92672">);</span>
-    StatusBarNotification<span style="color:#f92672">[]</span> notifications <span style="color:#f92672">=</span> notificationManager<span style="color:#f92672">.</span><span style="color:#a6e22e">getActiveNotifications</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">if</span> <span class="o">(</span><span class="n">Build</span><span class="o">.</span><span class="na">VERSION</span><span class="o">.</span><span class="na">SDK_INT</span> <span class="o">&gt;=</span> <span class="n">Build</span><span class="o">.</span><span class="na">VERSION_CODES</span><span class="o">.</span><span class="na">M</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">NotificationManager</span> <span class="n">notificationManager</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="na">getSystemService</span><span class="o">(</span><span class="n">NOTIFICATION_MANAGER</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">StatusBarNotification</span><span class="o">[]</span> <span class="n">notifications</span> <span class="o">=</span> <span class="n">notificationManager</span><span class="o">.</span><span class="na">getActiveNotifications</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><blockquote>
 <p><strong>Important</strong>: here we need NotificationManager and not NotificationManagerCompat.</p>
 </blockquote>
 <p><strong>Note</strong>: When only summary notification is currently visible to user in notification tray, getActiveNotifications returns whole list of notifications (including ones that grouped in summary and not visible on phone in notification tray).</p>
@@ -347,69 +220,69 @@ We will use it below.</p>
 <li>If summary notification is showing: send single notification and update group notification</li>
 </ul>
 <p>Call sendNotification multiple times with the same group key, and see what happens.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">sendNotification</span><span style="color:#f92672">(</span>Context context<span style="color:#f92672">,</span> String groupKey<span style="color:#f92672">,</span> String message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    NotificationManager notificationManager <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>NotificationManager<span style="color:#f92672">)</span> getSystemService<span style="color:#f92672">(*</span>NOTIFICATION_SERVICE<span style="color:#f92672">*);</span>
-
-    <span style="color:#66d9ef">boolean</span> shouldShowGroupNotification <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
-    List<span style="color:#f92672">&lt;</span>CharSequence<span style="color:#f92672">&gt;</span> currentNotificationMessages <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;();</span>
-    currentNotificationMessages<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>message<span style="color:#f92672">);</span>
-    
-    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Build<span style="color:#f92672">.</span><span style="color:#a6e22e">VERSION</span><span style="color:#f92672">.*</span>SDK_INT <span style="color:#f92672">*&gt;=</span> Build<span style="color:#f92672">.</span><span style="color:#a6e22e">VERSION_CODES</span><span style="color:#f92672">.*</span>M<span style="color:#f92672">*)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>StatusBarNotification sbn <span style="color:#f92672">:</span> notificationManager<span style="color:#f92672">.</span><span style="color:#a6e22e">getActiveNotifications</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>sbn<span style="color:#f92672">.</span><span style="color:#a6e22e">getId</span><span style="color:#f92672">()</span> <span style="color:#f92672">!=</span> <span style="color:#f92672">*</span>GROUP_ID <span style="color:#f92672">*&amp;&amp;</span> groupKey<span style="color:#f92672">.</span><span style="color:#a6e22e">equalsIgnoreCase</span><span style="color:#f92672">(</span>sbn<span style="color:#f92672">.</span><span style="color:#a6e22e">getNotification</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getGroup</span><span style="color:#f92672">()))</span> <span style="color:#f92672">{</span>
-                CharSequence text <span style="color:#f92672">=</span> sbn<span style="color:#f92672">.</span><span style="color:#a6e22e">getNotification</span><span style="color:#f92672">().</span><span style="color:#a6e22e">extras</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getCharSequence</span><span style="color:#f92672">(*</span>EXTRA_TEXT<span style="color:#f92672">*);</span>
-                currentNotificationMessages<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>text<span style="color:#f92672">);</span>
-                shouldShowGroupNotification <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
-                <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
-            <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">}</span>
-
-    showSingleNotification<span style="color:#f92672">(</span>context<span style="color:#f92672">,</span> groupKey<span style="color:#f92672">,</span> message<span style="color:#f92672">);</span>
-    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>shouldShowGroupNotification<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        showGroupNotification<span style="color:#f92672">(</span>context<span style="color:#f92672">,</span> groupKey<span style="color:#f92672">,</span> currentNotificationMessages<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-<span style="color:#f92672">}</span>
-
-<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">showSingleNotification</span><span style="color:#f92672">(</span>Context context<span style="color:#f92672">,</span> String groupKey<span style="color:#f92672">,</span> String message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">int</span> notificationId <span style="color:#f92672">=</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">)</span> <span style="color:#f92672">(</span>System<span style="color:#f92672">.*</span>currentTimeMillis<span style="color:#f92672">*()</span> <span style="color:#f92672">/</span> 1000<span style="color:#f92672">);</span>
-    
-    Intent intent <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Intent<span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">,</span> MainActivity<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
-    PendingIntent pendingIntent <span style="color:#f92672">=</span> PendingIntent<span style="color:#f92672">.*</span>getActivity<span style="color:#f92672">*(</span>context<span style="color:#f92672">,</span> notificationId<span style="color:#f92672">,</span> intent<span style="color:#f92672">,</span> PendingIntent<span style="color:#f92672">.*</span>FLAG_UPDATE_CURRENT<span style="color:#f92672">*);</span>
-
-    Notification singleNotification <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> NotificationCompat<span style="color:#f92672">.</span><span style="color:#a6e22e">Builder</span><span style="color:#f92672">(</span>context<span style="color:#f92672">)</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">setContentTitle</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Title&#34;</span><span style="color:#f92672">)</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">setContentText</span><span style="color:#f92672">(</span>message<span style="color:#f92672">)</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">setGroup</span><span style="color:#f92672">(</span>groupKey<span style="color:#f92672">)</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">setSmallIcon</span><span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">drawable</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ic_notification</span><span style="color:#f92672">)</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">setContentIntent</span><span style="color:#f92672">(</span>pendingIntent<span style="color:#f92672">)</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
-
-    NotificationManagerCompat notificationManager <span style="color:#f92672">=</span> NotificationManagerCompat<span style="color:#f92672">.*</span>from<span style="color:#f92672">*(</span>context<span style="color:#f92672">);</span>
-    notificationManager<span style="color:#f92672">.</span><span style="color:#a6e22e">notify</span><span style="color:#f92672">(</span>notificationId<span style="color:#f92672">,</span> singleNotification<span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span>
-
-<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">showGroupNotification</span><span style="color:#f92672">(</span>Context context<span style="color:#f92672">,</span> String groupKey<span style="color:#f92672">,</span> List<span style="color:#f92672">&lt;</span>CharSequence<span style="color:#f92672">&gt;</span> previousNotificationsTexts<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    NotificationCompat<span style="color:#f92672">.</span><span style="color:#a6e22e">InboxStyle</span> style <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> NotificationCompat<span style="color:#f92672">.</span><span style="color:#a6e22e">InboxStyle</span><span style="color:#f92672">();</span>
-    <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>CharSequence text<span style="color:#f92672">:</span> previousNotificationsTexts<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        style<span style="color:#f92672">.</span><span style="color:#a6e22e">addLine</span><span style="color:#f92672">(</span>text<span style="color:#f92672">);</span>
-    <span style="color:#f92672">}</span>
-    <span style="color:#66d9ef">int</span> groupCount <span style="color:#f92672">=</span> previousNotificationsTexts<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">()</span> <span style="color:#f92672">+</span> 1<span style="color:#f92672">;</span>
-    style<span style="color:#f92672">.</span><span style="color:#a6e22e">setSummaryText</span><span style="color:#f92672">(</span>groupCount <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; new notifications&#34;</span><span style="color:#f92672">);</span>
-
-    Notification groupNotification <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> NotificationCompat<span style="color:#f92672">.</span><span style="color:#a6e22e">Builder</span><span style="color:#f92672">(</span>context<span style="color:#f92672">)</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">setStyle</span><span style="color:#f92672">(</span>style<span style="color:#f92672">)</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">setContentTitle</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Group Title&#34;</span><span style="color:#f92672">)</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">setContentText</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Group Text&#34;</span><span style="color:#f92672">)</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">setSmallIcon</span><span style="color:#f92672">(</span>R<span style="color:#f92672">.</span><span style="color:#a6e22e">drawable</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ic_notification</span><span style="color:#f92672">)</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">setGroup</span><span style="color:#f92672">(</span>groupKey<span style="color:#f92672">)</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">setGroupSummary</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span>
-            <span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
-
-    NotificationManagerCompat notificationManager <span style="color:#f92672">=</span> NotificationManagerCompat<span style="color:#f92672">.*</span>from<span style="color:#f92672">*(</span>context<span style="color:#f92672">);</span>
-    notificationManager<span style="color:#f92672">.</span><span style="color:#a6e22e">notify</span><span style="color:#f92672">(*</span>GROUP_ID<span style="color:#f92672">*,</span> groupNotification<span style="color:#f92672">);</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p><img src="../../img/1_fSahpzH6zC7WKVATJUAfCw.png" alt=""></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">private</span> <span class="kt">void</span> <span class="nf">sendNotification</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">,</span> <span class="n">String</span> <span class="n">groupKey</span><span class="o">,</span> <span class="n">String</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">NotificationManager</span> <span class="n">notificationManager</span> <span class="o">=</span> <span class="o">(</span><span class="n">NotificationManager</span><span class="o">)</span> <span class="n">getSystemService</span><span class="o">(*</span><span class="n">NOTIFICATION_SERVICE</span><span class="o">*);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">boolean</span> <span class="n">shouldShowGroupNotification</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">List</span><span class="o">&lt;</span><span class="n">CharSequence</span><span class="o">&gt;</span> <span class="n">currentNotificationMessages</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">currentNotificationMessages</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">message</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">(</span><span class="n">Build</span><span class="o">.</span><span class="na">VERSION</span><span class="o">.*</span><span class="n">SDK_INT</span> <span class="o">*&gt;=</span> <span class="n">Build</span><span class="o">.</span><span class="na">VERSION_CODES</span><span class="o">.*</span><span class="n">M</span><span class="o">*)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="n">StatusBarNotification</span> <span class="n">sbn</span> <span class="o">:</span> <span class="n">notificationManager</span><span class="o">.</span><span class="na">getActiveNotifications</span><span class="o">())</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="o">(</span><span class="n">sbn</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">!=</span> <span class="o">*</span><span class="n">GROUP_ID</span> <span class="o">*&amp;&amp;</span> <span class="n">groupKey</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="n">sbn</span><span class="o">.</span><span class="na">getNotification</span><span class="o">().</span><span class="na">getGroup</span><span class="o">()))</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">CharSequence</span> <span class="n">text</span> <span class="o">=</span> <span class="n">sbn</span><span class="o">.</span><span class="na">getNotification</span><span class="o">().</span><span class="na">extras</span><span class="o">.</span><span class="na">getCharSequence</span><span class="o">(*</span><span class="n">EXTRA_TEXT</span><span class="o">*);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">currentNotificationMessages</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">text</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">shouldShowGroupNotification</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">break</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">            <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">showSingleNotification</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">groupKey</span><span class="o">,</span> <span class="n">message</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">(</span><span class="n">shouldShowGroupNotification</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">showGroupNotification</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">groupKey</span><span class="o">,</span> <span class="n">currentNotificationMessages</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">private</span> <span class="kt">void</span> <span class="nf">showSingleNotification</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">,</span> <span class="n">String</span> <span class="n">groupKey</span><span class="o">,</span> <span class="n">String</span> <span class="n">message</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">notificationId</span> <span class="o">=</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span> <span class="o">(</span><span class="n">System</span><span class="o">.*</span><span class="n">currentTimeMillis</span><span class="o">*()</span> <span class="o">/</span> <span class="n">1000</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">Intent</span> <span class="n">intent</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Intent</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="n">MainActivity</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">PendingIntent</span> <span class="n">pendingIntent</span> <span class="o">=</span> <span class="n">PendingIntent</span><span class="o">.*</span><span class="n">getActivity</span><span class="o">*(</span><span class="n">context</span><span class="o">,</span> <span class="n">notificationId</span><span class="o">,</span> <span class="n">intent</span><span class="o">,</span> <span class="n">PendingIntent</span><span class="o">.*</span><span class="n">FLAG_UPDATE_CURRENT</span><span class="o">*);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Notification</span> <span class="n">singleNotification</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NotificationCompat</span><span class="o">.</span><span class="na">Builder</span><span class="o">(</span><span class="n">context</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">setContentTitle</span><span class="o">(</span><span class="s">&#34;Title&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">setContentText</span><span class="o">(</span><span class="n">message</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">setGroup</span><span class="o">(</span><span class="n">groupKey</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">setSmallIcon</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">drawable</span><span class="o">.</span><span class="na">ic_notification</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">setContentIntent</span><span class="o">(</span><span class="n">pendingIntent</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">NotificationManagerCompat</span> <span class="n">notificationManager</span> <span class="o">=</span> <span class="n">NotificationManagerCompat</span><span class="o">.*</span><span class="n">from</span><span class="o">*(</span><span class="n">context</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">notificationManager</span><span class="o">.</span><span class="na">notify</span><span class="o">(</span><span class="n">notificationId</span><span class="o">,</span> <span class="n">singleNotification</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">private</span> <span class="kt">void</span> <span class="nf">showGroupNotification</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">,</span> <span class="n">String</span> <span class="n">groupKey</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">CharSequence</span><span class="o">&gt;</span> <span class="n">previousNotificationsTexts</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">NotificationCompat</span><span class="o">.</span><span class="na">InboxStyle</span> <span class="n">style</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NotificationCompat</span><span class="o">.</span><span class="na">InboxStyle</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="o">(</span><span class="n">CharSequence</span> <span class="n">text</span><span class="o">:</span> <span class="n">previousNotificationsTexts</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">style</span><span class="o">.</span><span class="na">addLine</span><span class="o">(</span><span class="n">text</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">groupCount</span> <span class="o">=</span> <span class="n">previousNotificationsTexts</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">+</span> <span class="n">1</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">style</span><span class="o">.</span><span class="na">setSummaryText</span><span class="o">(</span><span class="n">groupCount</span> <span class="o">+</span> <span class="s">&#34; new notifications&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Notification</span> <span class="n">groupNotification</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NotificationCompat</span><span class="o">.</span><span class="na">Builder</span><span class="o">(</span><span class="n">context</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">setStyle</span><span class="o">(</span><span class="n">style</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">setContentTitle</span><span class="o">(</span><span class="s">&#34;Group Title&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">setContentText</span><span class="o">(</span><span class="s">&#34;Group Text&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">setSmallIcon</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">drawable</span><span class="o">.</span><span class="na">ic_notification</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">setGroup</span><span class="o">(</span><span class="n">groupKey</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">setGroupSummary</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">NotificationManagerCompat</span> <span class="n">notificationManager</span> <span class="o">=</span> <span class="n">NotificationManagerCompat</span><span class="o">.*</span><span class="n">from</span><span class="o">*(</span><span class="n">context</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">notificationManager</span><span class="o">.</span><span class="na">notify</span><span class="o">(*</span><span class="n">GROUP_ID</span><span class="o">*,</span> <span class="n">groupNotification</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><p><img src="../../img/1_fSahpzH6zC7WKVATJUAfCw.png" alt=""></p>
 <p><img src="../../img/1_UY8HQlQ0tNsbwTHCDLZrog.png" alt=""></p>
 <p><img src="../../img/1_ocnLjgr4bpJ93Zf3iY4yWw.png" alt=""></p>
 <h2 id="further-improvements">Further improvements</h2>
@@ -421,74 +294,39 @@ Consider this as a homework :)</p>
 <a href="https://developer.android.com/training/notify-user/index.html"><strong>Notifying the User | Android Developers</strong></a>
 <a href="https://developer.android.com/training/wearables/notifications/index.html"><strong>Adding Wearable Features to Notifications | Android Developers</strong></a></p>
 
-  </div>
-  
+</main>
 
-<div class="navigation navigation-single">
+
+<hr/>
+
+<footer>
+<nav>
+  <ul>
+    
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
     
     
-    <a href="/posts/2017_11_09_neural_networks_and_deep_learning/" class="navigation-next">
-      <span class="navigation-tittle">Neural Networks and Deep Learning</span>
-      <i aria-hidden="true" class="fa fa-chevron-right"></i>
-    </a>
+    <li class="menu-right"><a href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-xl"></i></a></li>
     
-</div>
-
-
-  
-
-  
+    <li class="menu-right"><a href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-xl"></i></a></li>
     
-
-
-</article>
-
-
-        </div>
-        
+    <li class="menu-right"><a href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-xl"></i></a></li>
     
-
-  
-  
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'UA-148934073-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-
-<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
-
-
+    <li class="menu-right"><a href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-xl"></i></a></li>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-        
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/bash.min.js"></script>
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/java.min.js"></script>
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
-            
-        
-    <script type="text/javascript">
-        
-        hljs.configure({languages: ["bash, java, kotlin"]});
-        
-        hljs.initHighlightingOnLoad();
-    </script>
+    <li class="menu-right"><a href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-xl"></i></a></li>
     
-
-
-
+    <li class="menu-right"><a href="https://twitter.com/krossovochkin" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a></li>
     
+    <li class="menu-right"><a href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-xl"></i></a></li>
+    
+  </ul>
+</nav>
+</footer>
 
 
+</body>
 
-    </body>
 </html>

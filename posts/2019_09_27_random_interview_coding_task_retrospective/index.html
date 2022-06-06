@@ -1,211 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
-    
-    
+<html lang="en-us">
+<head>
+  <title>Random interview coding task retrospective</title>
 
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <head>
-    <link href="https://gmpg.org/xfn/11" rel="profile">
-    <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<!-- Enable responsiveness on mobile devices -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="generator" content="Hugo 0.79.1" />
+  <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script src="https://kit.fontawesome.com/6d5aec2882.js" crossorigin="anonymous"></script>
 
-    
-    
-    
+  <link rel="stylesheet" href="/css/style.css" />
 
-<title>Random interview coding task retrospective • Vasya Drobushkov</title>
+  
+  <meta name="theme-color" content="#1e2327">
 
-
-<meta name="twitter:card" content="summary"/>
+  <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Random interview coding task retrospective"/>
 <meta name="twitter:description" content="Introduction It happens often that on interviews you’ve asked to perform some coding task. For unknown reason most of the times you’ve asked to write some code not in the IDE, but on piece of paper. I don’t like such tasks on an interview, because in real life one won’t write any kind of code on a paper. If you need to write something not in IDE you face issues like you can’t quickly change something or write new code in between the lines."/>
-
-<meta property="og:title" content="Random interview coding task retrospective" />
-<meta property="og:description" content="Introduction It happens often that on interviews you’ve asked to perform some coding task. For unknown reason most of the times you’ve asked to write some code not in the IDE, but on piece of paper. I don’t like such tasks on an interview, because in real life one won’t write any kind of code on a paper. If you need to write something not in IDE you face issues like you can’t quickly change something or write new code in between the lines." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://krossovochkin.com/posts/2019_09_27_random_interview_coding_task_retrospective/" />
-<meta property="article:published_time" content="2019-09-27T00:00:00+00:00" />
-<meta property="article:modified_time" content="2019-09-27T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
-
-
-    
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
-
-
-
-
-
-
-
-
-<link rel="stylesheet" href="/scss/hyde-hyde.adf8a0af011d3afb07ed907ad3295e1c99f49503bc91d395e38dc3f8dfdf4900.css" integrity="sha256-rfigrwEdOvsH7ZB60yleHJn0lQO8kdOV443D&#43;N/fSQA=">
-
-
-<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
-
-
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <!-- Icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
-    <link rel="shortcut icon" href="/favicon.png">
-    
-    
+<meta name="twitter:site" content="@krossovochkin"/>
 
 </head>
 
+<body>
 
-    <body class="theme-base-0a ">
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<header>
+<nav>
+  <ul>
     
-<div class="sidebar">
-  <div class="container ">
-    <div class="sidebar-about">
-      <span class="site__title">
-        <a href="https://krossovochkin.com/">
-        
-          Vasya Drobushkov
-        
-        </a>
-      </span>
-      
-        
-        
-        
-        <div class="author-image">
-          <img src="https://krossovochkin.com/../img/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
-        </div>
-        
-      
-      
-      <p class="site__description">
-        
-      </p>
-    </div>
-    <div class="collapsible-menu">
-      <input type="checkbox" id="menuToggle">
-      <label for="menuToggle">Vasya Drobushkov</label>
-      <div class="menu-content">
-        <div>
-	<ul class="sidebar-nav">
-		 
-		 
-			 
-				<li>
-					<a href="/posts/">
-						<span>Posts</span>
-					</a>
-				</li>
-			 
-		 
-			 
-				<li>
-					<a href="/about/">
-						<span>About</span>
-					</a>
-				</li>
-			 
-		
-	</ul>
-</div>
-
-        <section class="social">
-	
-	<a href="https://twitter.com/krossovochkin" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	<a href="https://facebook.com/vasya.drobushkov" rel="me"><i class="fab fa-facebook-f"></i></a>
-	
-	
-	<a href="https://github.com/krossovochkin" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	
-	
-	<a href="https://linkedin.com/in/vasyadrobushkov" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	<a href="https://stackoverflow.com/users/1533933/krossovochkin" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	<a href="https://t.me/krossovochkin_newsletter" rel="me"><i class="fab fa-telegram fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	
-	
-</section>
-
-      </div>
-    </div>
+    <li class="menu-left"><a href="/">Posts</a></li>
     
-<div class="copyright">
-  &copy; 2019 - 2021 Vasya Drobushkov
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    
+    <li class="menu-right"><a href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://twitter.com/krossovochkin" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-xl"></i></a></li>
+    
+  </ul>
+</nav>
+</header>
+
+<br/>
+
+<div class="meta">
+
   
-    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
-  
-</div>
-
-
-
-  </div>
-</div>
-
-        <div class="content container">
-            
-    
-<article>
-  <header>
-    <h1>Random interview coding task retrospective</h1>
-    
-    
-<div class="post__meta">
-    
-    
-      <i class="fas fa-calendar-alt"></i> Sep 27, 2019
-    
-    
-    
-    
-    
-      
-      
-          <br/>
-           <i class="fas fa-tags"></i>
-          
-          <a class="badge badge-tag" href="/tags/other">other</a>
-          
-      
-    
-    
-    <br/>
-    <i class="fas fa-clock"></i> 6 min read
-</div>
-
-
-  </header>
+    <h1><span class="title">Random interview coding task retrospective</span></h1>
   
   
-  <div class="post">
-    <p><a href="https://medium.com/@krossovochkin/random-interview-coding-task-retrospective-befa1b399f0d"><img src="https://img.shields.io/badge/original-medium-green#badge" alt=""></a></p>
+    <h3>September 27, 2019</h3>
+  
+
+</div>
+
+<main>
+<p><a href="https://medium.com/@krossovochkin/random-interview-coding-task-retrospective-befa1b399f0d"><img src="https://img.shields.io/badge/original-medium-green#badge" alt=""></a></p>
 <h1 id="introduction">Introduction</h1>
 <p>It happens often that on interviews you’ve asked to perform some coding task. For unknown reason most of the times you’ve asked to write some code not in the IDE, but on piece of paper. I don’t like such tasks on an interview, because in real life one won’t write any kind of code on a paper. If you need to write something not in IDE you face issues like you can’t quickly change something or write new code in between the lines. You don’t get suggestions or autocomplete. Basically, you are out of you zone of comfort. Considering that interview by itself is a stress (no matter how confident you are in your knowledge) you might not complete the task successfully.
 But anyway such tasks are pretty common so one should be prepared for them.</p>
@@ -230,11 +105,11 @@ But anyway such tasks are pretty common so one should be prepared for them.</p>
 </ul>
 <h2 id="prerequisites">Prerequisites</h2>
 <p>List is described as a Node:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Node</span>&lt;T&gt;(
-    <span style="color:#66d9ef">val</span> value: T,
-    <span style="color:#66d9ef">var</span> next: Node&lt;T&gt;?
-)
-</code></pre></div><h2 id="solution">Solution</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;(</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">value</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="k">var</span> <span class="py">next</span><span class="p">:</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;?</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span></code></pre></div><h2 id="solution">Solution</h2>
 <h3 id="before-start">Before start</h3>
 <p>We’ll start from clarifying some questions:</p>
 <ul>
@@ -254,47 +129,47 @@ But anyway such tasks are pretty common so one should be prepared for them.</p>
 <h3 id="construction">Construction</h3>
 <p>Before reversing the list we should be able to construct it first.
 We’ll do it the following way:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">Node(<span style="color:#ae81ff">1</span>, Node(<span style="color:#ae81ff">2</span>, Node(<span style="color:#ae81ff">3</span>, Node(<span style="color:#ae81ff">4</span>, Node(<span style="color:#ae81ff">5</span>, Node(<span style="color:#ae81ff">6</span>, Node(<span style="color:#ae81ff">7</span>, Node(<span style="color:#ae81ff">8</span>, Node(<span style="color:#ae81ff">9</span>, Node(<span style="color:#ae81ff">10</span>, <span style="color:#66d9ef">null</span>))))))))))
-</code></pre></div><p>It will describe the list of 10 items.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">Node</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">Node</span><span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="n">Node</span><span class="p">(</span><span class="m">3</span><span class="p">,</span> <span class="n">Node</span><span class="p">(</span><span class="m">4</span><span class="p">,</span> <span class="n">Node</span><span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="n">Node</span><span class="p">(</span><span class="m">6</span><span class="p">,</span> <span class="n">Node</span><span class="p">(</span><span class="m">7</span><span class="p">,</span> <span class="n">Node</span><span class="p">(</span><span class="m">8</span><span class="p">,</span> <span class="n">Node</span><span class="p">(</span><span class="m">9</span><span class="p">,</span> <span class="n">Node</span><span class="p">(</span><span class="m">10</span><span class="p">,</span> <span class="k">null</span><span class="p">))))))))))</span>
+</span></span></code></pre></div><p>It will describe the list of 10 items.</p>
 <p>For test and debug purposes we might want to print our list to console, for that following function will be helpful:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">println</span>(list: Node&lt;T&gt;) {
-    <span style="color:#66d9ef">var</span> currentNode: Node&lt;T&gt;? = list
-    <span style="color:#66d9ef">while</span> (currentNode <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
-        print(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${currentNode.value}</span><span style="color:#e6db74"> &#34;</span>)
-        currentNode = currentNode.next
-    }
-    println()
-}
-</code></pre></div><p>The output for our created list will be:</p>
-<pre><code>1 2 3 4 5 6 7 8 9 10
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="nf">println</span><span class="p">(</span><span class="n">list</span><span class="p">:</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">var</span> <span class="py">currentNode</span><span class="p">:</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;?</span> <span class="p">=</span> <span class="n">list</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="n">currentNode</span> <span class="o">!=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">print</span><span class="p">(</span><span class="s2">&#34;</span><span class="si">${currentNode.value}</span><span class="s2"> &#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">currentNode</span> <span class="p">=</span> <span class="n">currentNode</span><span class="p">.</span><span class="n">next</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>The output for our created list will be:</p>
+<pre tabindex="0"><code>1 2 3 4 5 6 7 8 9 10
 </code></pre><h3 id="method-signature">Method signature</h3>
 <p>The method we’ll implement will have the following signature:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">Node</span>&lt;T&gt;.reverse(): Node&lt;T&gt;
-</code></pre></div><p>It will modify existing list, not create new one.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="nf">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;.</span><span class="n">reverse</span><span class="p">():</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>It will modify existing list, not create new one.</p>
 <h3 id="tests">Tests</h3>
 <p>In order to verify our solution, we should have some tests.
 This task will be split into two parts.
 First of all we need to be able to compare two lists, for this we’ll create method assertEquals, it will throw exception if lists don’t have equal content:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">assertEquals</span>(expected: Node&lt;T&gt;, <span style="color:#66d9ef">actual</span>: Node&lt;T&gt;) {
-
-    <span style="color:#66d9ef">var</span> first: Node&lt;T&gt;? = expected
-    <span style="color:#66d9ef">var</span> second: Node&lt;T&gt;? = <span style="color:#66d9ef">actual</span>
-
-    <span style="color:#66d9ef">while</span> (first <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> second <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
-        <span style="color:#66d9ef">if</span> (first.value <span style="color:#f92672">!=</span> second.value) {
-            <span style="color:#66d9ef">throw</span> RuntimeException()
-        }
-        first = first.next
-        second = second.next
-    }
-
-    <span style="color:#66d9ef">if</span> (first<span style="color:#f92672">?.</span>value <span style="color:#f92672">!=</span> second<span style="color:#f92672">?.</span>value) {
-        <span style="color:#66d9ef">throw</span> RuntimeException()
-    }
-
-    println(<span style="color:#e6db74">&#34;OK&#34;</span>)
-}
-</code></pre></div><p>The tests we’ll make are:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="nf">assertEquals</span><span class="p">(</span><span class="n">expected</span><span class="p">:</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;,</span> <span class="k">actual</span><span class="p">:</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">var</span> <span class="py">first</span><span class="p">:</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;?</span> <span class="p">=</span> <span class="n">expected</span>
+</span></span><span class="line"><span class="cl">    <span class="k">var</span> <span class="py">second</span><span class="p">:</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;?</span> <span class="p">=</span> <span class="k">actual</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="n">first</span> <span class="o">!=</span> <span class="k">null</span> <span class="o">&amp;&amp;</span> <span class="n">second</span> <span class="o">!=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">first</span><span class="p">.</span><span class="n">value</span> <span class="o">!=</span> <span class="n">second</span><span class="p">.</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="n">RuntimeException</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">first</span> <span class="p">=</span> <span class="n">first</span><span class="p">.</span><span class="n">next</span>
+</span></span><span class="line"><span class="cl">        <span class="n">second</span> <span class="p">=</span> <span class="n">second</span><span class="p">.</span><span class="n">next</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">first</span><span class="o">?.</span><span class="n">value</span> <span class="o">!=</span> <span class="n">second</span><span class="o">?.</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">throw</span> <span class="n">RuntimeException</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">(</span><span class="s2">&#34;OK&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>The tests we’ll make are:</p>
 <ul>
 <li>
 <p>If list has one item, then reversed list is same as original</p>
@@ -303,63 +178,63 @@ First of all we need to be able to compare two lists, for this we’ll create me
 <p>If list has more than one item, then reversed list is reversed correctly</p>
 </li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">assertEquals(
-    Node(<span style="color:#ae81ff">1</span>, <span style="color:#66d9ef">null</span>),
-    Node(<span style="color:#ae81ff">1</span>, <span style="color:#66d9ef">null</span>).reverse()
-)
-
-
-assertEquals(
-    Node(<span style="color:#ae81ff">10</span>, Node(<span style="color:#ae81ff">9</span>, Node(<span style="color:#ae81ff">8</span>, Node(<span style="color:#ae81ff">7</span>, Node(<span style="color:#ae81ff">6</span>, Node(<span style="color:#ae81ff">5</span>, Node(<span style="color:#ae81ff">4</span>, Node(<span style="color:#ae81ff">3</span>, Node(<span style="color:#ae81ff">2</span>, Node(<span style="color:#ae81ff">1</span>, <span style="color:#66d9ef">null</span>)))))))))),
-    Node(<span style="color:#ae81ff">1</span>, Node(<span style="color:#ae81ff">2</span>, Node(<span style="color:#ae81ff">3</span>, Node(<span style="color:#ae81ff">4</span>, Node(<span style="color:#ae81ff">5</span>, Node(<span style="color:#ae81ff">6</span>, Node(<span style="color:#ae81ff">7</span>, Node(<span style="color:#ae81ff">8</span>, Node(<span style="color:#ae81ff">9</span>, Node(<span style="color:#ae81ff">10</span>, <span style="color:#66d9ef">null</span>))))))))))
-        .reverse()
-)
-</code></pre></div><p>Now we have our list implementation ready, algorithm is clear and tests are ready as well.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">assertEquals</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Node</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="k">null</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Node</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="k">null</span><span class="p">).</span><span class="n">reverse</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">assertEquals</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Node</span><span class="p">(</span><span class="m">10</span><span class="p">,</span> <span class="n">Node</span><span class="p">(</span><span class="m">9</span><span class="p">,</span> <span class="n">Node</span><span class="p">(</span><span class="m">8</span><span class="p">,</span> <span class="n">Node</span><span class="p">(</span><span class="m">7</span><span class="p">,</span> <span class="n">Node</span><span class="p">(</span><span class="m">6</span><span class="p">,</span> <span class="n">Node</span><span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="n">Node</span><span class="p">(</span><span class="m">4</span><span class="p">,</span> <span class="n">Node</span><span class="p">(</span><span class="m">3</span><span class="p">,</span> <span class="n">Node</span><span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="n">Node</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="k">null</span><span class="p">)))))))))),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Node</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">Node</span><span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="n">Node</span><span class="p">(</span><span class="m">3</span><span class="p">,</span> <span class="n">Node</span><span class="p">(</span><span class="m">4</span><span class="p">,</span> <span class="n">Node</span><span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="n">Node</span><span class="p">(</span><span class="m">6</span><span class="p">,</span> <span class="n">Node</span><span class="p">(</span><span class="m">7</span><span class="p">,</span> <span class="n">Node</span><span class="p">(</span><span class="m">8</span><span class="p">,</span> <span class="n">Node</span><span class="p">(</span><span class="m">9</span><span class="p">,</span> <span class="n">Node</span><span class="p">(</span><span class="m">10</span><span class="p">,</span> <span class="k">null</span><span class="p">))))))))))</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">reverse</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span></code></pre></div><p>Now we have our list implementation ready, algorithm is clear and tests are ready as well.</p>
 <h3 id="first-implementation">First implementation</h3>
 <p>The main challenge in this task is that when we change links (current node should point to previous one and next one should point to current one) is that we should not loose the track of Node which is next for our next node. We’ll solve that by keeping reference to the node which is next of the next node.
 The implementation will be like this:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">Node</span>&lt;T&gt;.reverse(): Node&lt;T&gt; {
-    <span style="color:#66d9ef">var</span> previousNode: Node&lt;T&gt;? = <span style="color:#66d9ef">null</span>
-    <span style="color:#66d9ef">var</span> currentNode: Node&lt;T&gt; = <span style="color:#66d9ef">this</span>
-    <span style="color:#66d9ef">var</span> nextNode: Node&lt;T&gt;? = currentNode.next
-
-    <span style="color:#66d9ef">while</span> (nextNode <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
-        <span style="color:#66d9ef">val</span> afterNextNode = nextNode.next
-
-        nextNode.next = currentNode
-        currentNode.next = previousNode
-
-        previousNode = currentNode
-        currentNode = nextNode
-        nextNode = afterNextNode
-    }
-
-    <span style="color:#66d9ef">return</span> currentNode
-}
-</code></pre></div><p>We run our tests and they pass! So we solve the problem.
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="nf">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;.</span><span class="n">reverse</span><span class="p">():</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">var</span> <span class="py">previousNode</span><span class="p">:</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;?</span> <span class="p">=</span> <span class="k">null</span>
+</span></span><span class="line"><span class="cl">    <span class="k">var</span> <span class="py">currentNode</span><span class="p">:</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="p">=</span> <span class="k">this</span>
+</span></span><span class="line"><span class="cl">    <span class="k">var</span> <span class="py">nextNode</span><span class="p">:</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;?</span> <span class="p">=</span> <span class="n">currentNode</span><span class="p">.</span><span class="n">next</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="n">nextNode</span> <span class="o">!=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">val</span> <span class="py">afterNextNode</span> <span class="p">=</span> <span class="n">nextNode</span><span class="p">.</span><span class="n">next</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">nextNode</span><span class="p">.</span><span class="n">next</span> <span class="p">=</span> <span class="n">currentNode</span>
+</span></span><span class="line"><span class="cl">        <span class="n">currentNode</span><span class="p">.</span><span class="n">next</span> <span class="p">=</span> <span class="n">previousNode</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">previousNode</span> <span class="p">=</span> <span class="n">currentNode</span>
+</span></span><span class="line"><span class="cl">        <span class="n">currentNode</span> <span class="p">=</span> <span class="n">nextNode</span>
+</span></span><span class="line"><span class="cl">        <span class="n">nextNode</span> <span class="p">=</span> <span class="n">afterNextNode</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">currentNode</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>We run our tests and they pass! So we solve the problem.
 But can we do better?</p>
 <h3 id="second-implementation">Second implementation</h3>
 <p>The issue with current implementation is that we actually use 4 pointers to the list (previous, current, next, afterNext) to reverse the list. But can we do same with only 3 pointers?</p>
 <p>If we look carefully at our implementation we’ll see that we basically look one item ahead. And we can use 3 pointers by moving our pointers 1 step behind.
 We’ll get rid of afterNextNode pointer and replace references of nextNode to currentNode and currentNode to previousNode.</p>
 <p>The solution will be like:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">Node</span>&lt;T&gt;.reverse(): Node&lt;T&gt; {
-    <span style="color:#66d9ef">var</span> previousNode: Node&lt;T&gt;? = <span style="color:#66d9ef">null</span>
-    <span style="color:#66d9ef">var</span> currentNode: Node&lt;T&gt;? = <span style="color:#66d9ef">this</span>
-    <span style="color:#66d9ef">var</span> nextNode: Node&lt;T&gt;?
-
-    <span style="color:#66d9ef">while</span> (currentNode <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
-        nextNode = currentNode.next
-        currentNode.next = previousNode
-
-        previousNode = currentNode
-        currentNode = nextNode
-
-    }
-
-    <span style="color:#66d9ef">return</span> previousNode<span style="color:#f92672">!!</span>
-}
-</code></pre></div><blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="nf">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;.</span><span class="n">reverse</span><span class="p">():</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">var</span> <span class="py">previousNode</span><span class="p">:</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;?</span> <span class="p">=</span> <span class="k">null</span>
+</span></span><span class="line"><span class="cl">    <span class="k">var</span> <span class="py">currentNode</span><span class="p">:</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;?</span> <span class="p">=</span> <span class="k">this</span>
+</span></span><span class="line"><span class="cl">    <span class="k">var</span> <span class="py">nextNode</span><span class="p">:</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;?</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="n">currentNode</span> <span class="o">!=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">nextNode</span> <span class="p">=</span> <span class="n">currentNode</span><span class="p">.</span><span class="n">next</span>
+</span></span><span class="line"><span class="cl">        <span class="n">currentNode</span><span class="p">.</span><span class="n">next</span> <span class="p">=</span> <span class="n">previousNode</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">previousNode</span> <span class="p">=</span> <span class="n">currentNode</span>
+</span></span><span class="line"><span class="cl">        <span class="n">currentNode</span> <span class="p">=</span> <span class="n">nextNode</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">previousNode</span><span class="o">!!</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><blockquote>
 <p>NOTE: we use !! in the return, because actually we know that result will be non-null and we don’t want to make our implementation more complex by using unnecessary safe calls</p>
 </blockquote>
 <p>So we used only three pointers and the implementation is quite short. Tests are passed. So seems we’re fine.
@@ -367,105 +242,65 @@ But can we do better?</p>
 <h3 id="final-implementation">Final implementation</h3>
 <p>The last improvement we might do is to handle special case when list contains only one item. Currently if list has one item then we’ll still enter while loop and use few references.
 Let’s add additional check at the beginning:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">Node</span>&lt;T&gt;.reverse(): Node&lt;T&gt; {
-    <span style="color:#66d9ef">if</span> (<span style="color:#66d9ef">this</span>.next <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span>
-    }
-
-    <span style="color:#66d9ef">var</span> previousNode: Node&lt;T&gt;? = <span style="color:#66d9ef">null</span>
-    <span style="color:#66d9ef">var</span> currentNode: Node&lt;T&gt;? = <span style="color:#66d9ef">this</span>
-    <span style="color:#66d9ef">var</span> nextNode: Node&lt;T&gt;?
-
-    <span style="color:#66d9ef">while</span> (currentNode <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
-        nextNode = currentNode.next
-        currentNode.next = previousNode
-
-        previousNode = currentNode
-        currentNode = nextNode
-
-    }
-
-    <span style="color:#66d9ef">return</span> previousNode<span style="color:#f92672">!!</span>
-}
-</code></pre></div><p>And it is our final solution.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="nf">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;.</span><span class="n">reverse</span><span class="p">():</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">next</span> <span class="o">==</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">this</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">var</span> <span class="py">previousNode</span><span class="p">:</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;?</span> <span class="p">=</span> <span class="k">null</span>
+</span></span><span class="line"><span class="cl">    <span class="k">var</span> <span class="py">currentNode</span><span class="p">:</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;?</span> <span class="p">=</span> <span class="k">this</span>
+</span></span><span class="line"><span class="cl">    <span class="k">var</span> <span class="py">nextNode</span><span class="p">:</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;?</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="n">currentNode</span> <span class="o">!=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">nextNode</span> <span class="p">=</span> <span class="n">currentNode</span><span class="p">.</span><span class="n">next</span>
+</span></span><span class="line"><span class="cl">        <span class="n">currentNode</span><span class="p">.</span><span class="n">next</span> <span class="p">=</span> <span class="n">previousNode</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">previousNode</span> <span class="p">=</span> <span class="n">currentNode</span>
+</span></span><span class="line"><span class="cl">        <span class="n">currentNode</span> <span class="p">=</span> <span class="n">nextNode</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">previousNode</span><span class="o">!!</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>And it is our final solution.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>Interviews are difficult and always stressful. One can easily make some weird mistakes, not answer some questions or not solve some problems and one can be not prepared enough.
 But it is not that embarrassing to not answer/know something. It is embarrassing to not draw conclusions and not try to revisit the questions/tasks you’ve failed and learn from your mistakes.</p>
 <p>Happy learning.</p>
 
-  </div>
-  
+</main>
 
-<div class="navigation navigation-single">
+
+<hr/>
+
+<footer>
+<nav>
+  <ul>
     
-    <a href="/posts/2019_07_21_simmmmplllledateformat/" class="navigation-prev">
-      <i aria-hidden="true" class="fa fa-chevron-left"></i>
-      <span class="navigation-tittle">SiMMMMpLLLLeDateFormat</span>
-    </a>
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
     
     
-    <a href="/posts/2019_11_02_operator_fusion_in_rxjava_2/" class="navigation-next">
-      <span class="navigation-tittle">Operator fusion in RxJava 2</span>
-      <i aria-hidden="true" class="fa fa-chevron-right"></i>
-    </a>
+    <li class="menu-right"><a href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-xl"></i></a></li>
     
-</div>
-
-
-  
-
-  
+    <li class="menu-right"><a href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-xl"></i></a></li>
     
-
-
-</article>
-
-
-        </div>
-        
+    <li class="menu-right"><a href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-xl"></i></a></li>
     
-
-  
-  
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'UA-148934073-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-
-<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
-
-
+    <li class="menu-right"><a href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-xl"></i></a></li>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-        
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/bash.min.js"></script>
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/java.min.js"></script>
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
-            
-        
-    <script type="text/javascript">
-        
-        hljs.configure({languages: ["bash, java, kotlin"]});
-        
-        hljs.initHighlightingOnLoad();
-    </script>
+    <li class="menu-right"><a href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-xl"></i></a></li>
     
-
-
-
+    <li class="menu-right"><a href="https://twitter.com/krossovochkin" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a></li>
     
+    <li class="menu-right"><a href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-xl"></i></a></li>
+    
+  </ul>
+</nav>
+</footer>
 
 
+</body>
 
-    </body>
 </html>

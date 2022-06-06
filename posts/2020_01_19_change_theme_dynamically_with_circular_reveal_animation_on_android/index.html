@@ -1,215 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
-    
-    
+<html lang="en-us">
+<head>
+  <title>Change Theme Dynamically with Circular Reveal Animation on Android</title>
 
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <head>
-    <link href="https://gmpg.org/xfn/11" rel="profile">
-    <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<!-- Enable responsiveness on mobile devices -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="generator" content="Hugo 0.79.1" />
+  <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script src="https://kit.fontawesome.com/6d5aec2882.js" crossorigin="anonymous"></script>
 
-    
-    
-    
+  <link rel="stylesheet" href="/css/style.css" />
 
-<title>Change Theme Dynamically with Circular Reveal Animation on Android • Vasya Drobushkov</title>
+  
+  <meta name="theme-color" content="#1e2327">
 
-
-<meta name="twitter:card" content="summary"/>
+  <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Change Theme Dynamically with Circular Reveal Animation on Android"/>
 <meta name="twitter:description" content="Introduction Dark theme on Android is on a hype at the moment. More and more apps add support for Dark theme over time allowing users to customize their phones, save battery and provide better accessibility. Though another trend which grows today is animated theme changes. First app I saw support of this was Telegram:
 Source
 After that in different modifications such feature started to appear in other apps, for example VK."/>
-
-<meta property="og:title" content="Change Theme Dynamically with Circular Reveal Animation on Android" />
-<meta property="og:description" content="Introduction Dark theme on Android is on a hype at the moment. More and more apps add support for Dark theme over time allowing users to customize their phones, save battery and provide better accessibility. Though another trend which grows today is animated theme changes. First app I saw support of this was Telegram:
-Source
-After that in different modifications such feature started to appear in other apps, for example VK." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://krossovochkin.com/posts/2020_01_19_change_theme_dynamically_with_circular_reveal_animation_on_android/" />
-<meta property="article:published_time" content="2020-01-19T00:00:00+00:00" />
-<meta property="article:modified_time" content="2020-01-19T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
-
-
-    
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
-
-
-
-
-
-
-
-
-<link rel="stylesheet" href="/scss/hyde-hyde.adf8a0af011d3afb07ed907ad3295e1c99f49503bc91d395e38dc3f8dfdf4900.css" integrity="sha256-rfigrwEdOvsH7ZB60yleHJn0lQO8kdOV443D&#43;N/fSQA=">
-
-
-<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
-
-
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <!-- Icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
-    <link rel="shortcut icon" href="/favicon.png">
-    
-    
+<meta name="twitter:site" content="@krossovochkin"/>
 
 </head>
 
+<body>
 
-    <body class="theme-base-0a ">
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<header>
+<nav>
+  <ul>
     
-<div class="sidebar">
-  <div class="container ">
-    <div class="sidebar-about">
-      <span class="site__title">
-        <a href="https://krossovochkin.com/">
-        
-          Vasya Drobushkov
-        
-        </a>
-      </span>
-      
-        
-        
-        
-        <div class="author-image">
-          <img src="https://krossovochkin.com/../img/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
-        </div>
-        
-      
-      
-      <p class="site__description">
-        
-      </p>
-    </div>
-    <div class="collapsible-menu">
-      <input type="checkbox" id="menuToggle">
-      <label for="menuToggle">Vasya Drobushkov</label>
-      <div class="menu-content">
-        <div>
-	<ul class="sidebar-nav">
-		 
-		 
-			 
-				<li>
-					<a href="/posts/">
-						<span>Posts</span>
-					</a>
-				</li>
-			 
-		 
-			 
-				<li>
-					<a href="/about/">
-						<span>About</span>
-					</a>
-				</li>
-			 
-		
-	</ul>
-</div>
-
-        <section class="social">
-	
-	<a href="https://twitter.com/krossovochkin" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	<a href="https://facebook.com/vasya.drobushkov" rel="me"><i class="fab fa-facebook-f"></i></a>
-	
-	
-	<a href="https://github.com/krossovochkin" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	
-	
-	<a href="https://linkedin.com/in/vasyadrobushkov" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	<a href="https://stackoverflow.com/users/1533933/krossovochkin" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	<a href="https://t.me/krossovochkin_newsletter" rel="me"><i class="fab fa-telegram fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	
-	
-</section>
-
-      </div>
-    </div>
+    <li class="menu-left"><a href="/">Posts</a></li>
     
-<div class="copyright">
-  &copy; 2019 - 2021 Vasya Drobushkov
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    
+    <li class="menu-right"><a href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://twitter.com/krossovochkin" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-xl"></i></a></li>
+    
+  </ul>
+</nav>
+</header>
+
+<br/>
+
+<div class="meta">
+
   
-    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
-  
-</div>
-
-
-
-  </div>
-</div>
-
-        <div class="content container">
-            
-    
-<article>
-  <header>
-    <h1>Change Theme Dynamically with Circular Reveal Animation on Android</h1>
-    
-    
-<div class="post__meta">
-    
-    
-      <i class="fas fa-calendar-alt"></i> Jan 19, 2020
-    
-    
-    
-    
-    
-      
-      
-          <br/>
-           <i class="fas fa-tags"></i>
-          
-          <a class="badge badge-tag" href="/tags/android">android</a>
-          
-      
-    
-    
-    <br/>
-    <i class="fas fa-clock"></i> 8 min read
-</div>
-
-
-  </header>
+    <h1><span class="title">Change Theme Dynamically with Circular Reveal Animation on Android</span></h1>
   
   
-  <div class="post">
-    <p><a href="https://proandroiddev.com/change-theme-dynamically-with-circular-reveal-animation-on-android-8cd574f5f0d8"><img src="https://img.shields.io/badge/original-proandroiddev-green#badge" alt=""></a> <a href="https://proandroiddev.com/proandroiddev-digest-14-b7247f25292f"><img src="https://img.shields.io/badge/proandroiddevdigest-14-green#badge" alt=""></a></p>
+    <h3>January 19, 2020</h3>
+  
+
+</div>
+
+<main>
+<p><a href="https://proandroiddev.com/change-theme-dynamically-with-circular-reveal-animation-on-android-8cd574f5f0d8"><img src="https://img.shields.io/badge/original-proandroiddev-green#badge" alt=""></a> <a href="https://proandroiddev.com/proandroiddev-digest-14-b7247f25292f"><img src="https://img.shields.io/badge/proandroiddevdigest-14-green#badge" alt=""></a></p>
 <h2 id="introduction">Introduction</h2>
 <p>Dark theme on Android is on a hype at the moment. More and more apps add support for Dark theme over time allowing users to customize their phones, save battery and provide better accessibility. Though another trend which grows today is animated theme changes. First app I saw support of this was Telegram:</p>
 <p><img src="../../img/1_JKZ-OapISQlTMhX8Y-VmcA.gif" alt="Source"><em><a href="https://telegram.org/blog#switch-to-night-mode-faster">Source</a></em></p>
@@ -259,74 +132,74 @@ Sounds hacky, though pretty working solution.</p>
 <h2 id="implementation">Implementation</h2>
 <h3 id="layout">Layout</h3>
 <p>We’ll start from describing our test layout:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
-<span style="color:#f92672">&lt;androidx.constraintlayout.widget.ConstraintLayout</span> <span style="color:#a6e22e">xmlns:android=</span><span style="color:#e6db74">&#34;http://schemas.android.com/apk/res/android&#34;</span>
-    <span style="color:#a6e22e">xmlns:tools=</span><span style="color:#e6db74">&#34;http://schemas.android.com/tools&#34;</span>
-    <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
-    <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
-    <span style="color:#a6e22e">tools:context=</span><span style="color:#e6db74">&#34;.MainActivity&#34;</span>
-    <span style="color:#a6e22e">tools:ignore=</span><span style="color:#e6db74">&#34;HardcodedText&#34;</span><span style="color:#f92672">&gt;</span>
-
-    <span style="color:#f92672">&lt;ImageView</span>
-        <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/imageView&#34;</span>
-        <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
-        <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
-        <span style="color:#a6e22e">android:visibility=</span><span style="color:#e6db74">&#34;gone&#34;</span> <span style="color:#f92672">/&gt;</span>
-
-    <span style="color:#f92672">&lt;LinearLayout</span>
-        <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/container&#34;</span>
-        <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
-        <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
-        <span style="color:#a6e22e">android:orientation=</span><span style="color:#e6db74">&#34;vertical&#34;</span>
-        <span style="color:#a6e22e">android:padding=</span><span style="color:#e6db74">&#34;16dp&#34;</span><span style="color:#f92672">&gt;</span>
-
-        <span style="color:#f92672">&lt;TextView</span>
-            <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
-            <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span>
-            <span style="color:#a6e22e">android:layout_marginBottom=</span><span style="color:#e6db74">&#34;100dp&#34;</span>
-            <span style="color:#a6e22e">android:text=</span><span style="color:#e6db74">&#34;Hello world!&#34;</span>
-            <span style="color:#a6e22e">android:textSize=</span><span style="color:#e6db74">&#34;24sp&#34;</span> <span style="color:#f92672">/&gt;</span>
-
-        <span style="color:#f92672">&lt;Button</span>
-            <span style="color:#a6e22e">android:id=</span><span style="color:#e6db74">&#34;@+id/button&#34;</span>
-            <span style="color:#a6e22e">android:layout_width=</span><span style="color:#e6db74">&#34;match_parent&#34;</span>
-            <span style="color:#a6e22e">android:layout_height=</span><span style="color:#e6db74">&#34;wrap_content&#34;</span>
-            <span style="color:#a6e22e">android:text=</span><span style="color:#e6db74">&#34;Button&#34;</span> <span style="color:#f92672">/&gt;</span>
-
-    <span style="color:#f92672">&lt;/LinearLayout&gt;</span>
-
-<span style="color:#f92672">&lt;/androidx.constraintlayout.widget.ConstraintLayout&gt;</span>
-</code></pre></div><p>Here we’ll have our hidden ImageView and container (LinearLayout containing out test TextView and Button which we’ll use in our test).</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;androidx.constraintlayout.widget.ConstraintLayout</span> <span class="na">xmlns:android=</span><span class="s">&#34;http://schemas.android.com/apk/res/android&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">xmlns:tools=</span><span class="s">&#34;http://schemas.android.com/tools&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">android:layout_width=</span><span class="s">&#34;match_parent&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">android:layout_height=</span><span class="s">&#34;match_parent&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">tools:context=</span><span class="s">&#34;.MainActivity&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="na">tools:ignore=</span><span class="s">&#34;HardcodedText&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;ImageView</span>
+</span></span><span class="line"><span class="cl">        <span class="na">android:id=</span><span class="s">&#34;@+id/imageView&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="na">android:layout_width=</span><span class="s">&#34;match_parent&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="na">android:layout_height=</span><span class="s">&#34;match_parent&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="na">android:visibility=</span><span class="s">&#34;gone&#34;</span> <span class="nt">/&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;LinearLayout</span>
+</span></span><span class="line"><span class="cl">        <span class="na">android:id=</span><span class="s">&#34;@+id/container&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="na">android:layout_width=</span><span class="s">&#34;match_parent&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="na">android:layout_height=</span><span class="s">&#34;match_parent&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="na">android:orientation=</span><span class="s">&#34;vertical&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="na">android:padding=</span><span class="s">&#34;16dp&#34;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;TextView</span>
+</span></span><span class="line"><span class="cl">            <span class="na">android:layout_width=</span><span class="s">&#34;match_parent&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="na">android:layout_height=</span><span class="s">&#34;wrap_content&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="na">android:layout_marginBottom=</span><span class="s">&#34;100dp&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="na">android:text=</span><span class="s">&#34;Hello world!&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="na">android:textSize=</span><span class="s">&#34;24sp&#34;</span> <span class="nt">/&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="nt">&lt;Button</span>
+</span></span><span class="line"><span class="cl">            <span class="na">android:id=</span><span class="s">&#34;@+id/button&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="na">android:layout_width=</span><span class="s">&#34;match_parent&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="na">android:layout_height=</span><span class="s">&#34;wrap_content&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="na">android:text=</span><span class="s">&#34;Button&#34;</span> <span class="nt">/&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nt">&lt;/LinearLayout&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/androidx.constraintlayout.widget.ConstraintLayout&gt;</span>
+</span></span></code></pre></div><p>Here we’ll have our hidden ImageView and container (LinearLayout containing out test TextView and Button which we’ll use in our test).</p>
 <h3 id="change-theme">Change Theme</h3>
 <p>Here is our code which is responsible to change theme with animation:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">setTheme</span>(theme: Theme) {
-    <span style="color:#66d9ef">if</span> (imageView.isVisible) {
-        <span style="color:#66d9ef">return</span>
-    }
-
-    <span style="color:#66d9ef">val</span> w = container.measuredWidth
-    <span style="color:#66d9ef">val</span> h = container.measuredHeight
-
-    <span style="color:#66d9ef">val</span> bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
-    <span style="color:#66d9ef">val</span> canvas = Canvas(bitmap)
-    container.draw(canvas)
-
-    imageView.setImageBitmap(bitmap)
-    imageView.isVisible = <span style="color:#66d9ef">true</span>
-
-    <span style="color:#66d9ef">val</span> finalRadius = hypot(w.toFloat(), h.toFloat())
-
-    TODO(<span style="color:#e6db74">&#34;Change theme over all views&#34;</span>)
-
-    <span style="color:#66d9ef">val</span> anim = ViewAnimationUtils.createCircularReveal(container, w / <span style="color:#ae81ff">2</span>, h / <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">0f</span>, finalRadius)
-    anim.duration = <span style="color:#ae81ff">400L</span>
-    anim.doOnEnd {
-        imageView.setImageDrawable(<span style="color:#66d9ef">null</span>)
-        imageView.isVisible = <span style="color:#66d9ef">false</span>
-    }
-    anim.start()
-}
-</code></pre></div><p>Let’s look in details what we do here:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">setTheme</span><span class="p">(</span><span class="n">theme</span><span class="p">:</span> <span class="n">Theme</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">imageView</span><span class="p">.</span><span class="n">isVisible</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">w</span> <span class="p">=</span> <span class="n">container</span><span class="p">.</span><span class="n">measuredWidth</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">h</span> <span class="p">=</span> <span class="n">container</span><span class="p">.</span><span class="n">measuredHeight</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">bitmap</span> <span class="p">=</span> <span class="n">Bitmap</span><span class="p">.</span><span class="n">createBitmap</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">Bitmap</span><span class="p">.</span><span class="n">Config</span><span class="p">.</span><span class="n">ARGB_8888</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">canvas</span> <span class="p">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">bitmap</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">container</span><span class="p">.</span><span class="n">draw</span><span class="p">(</span><span class="n">canvas</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">imageView</span><span class="p">.</span><span class="n">setImageBitmap</span><span class="p">(</span><span class="n">bitmap</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">imageView</span><span class="p">.</span><span class="n">isVisible</span> <span class="p">=</span> <span class="k">true</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">finalRadius</span> <span class="p">=</span> <span class="n">hypot</span><span class="p">(</span><span class="n">w</span><span class="p">.</span><span class="n">toFloat</span><span class="p">(),</span> <span class="n">h</span><span class="p">.</span><span class="n">toFloat</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">TODO</span><span class="p">(</span><span class="s2">&#34;Change theme over all views&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">anim</span> <span class="p">=</span> <span class="n">ViewAnimationUtils</span><span class="p">.</span><span class="n">createCircularReveal</span><span class="p">(</span><span class="n">container</span><span class="p">,</span> <span class="n">w</span> <span class="p">/</span> <span class="m">2</span><span class="p">,</span> <span class="n">h</span> <span class="p">/</span> <span class="m">2</span><span class="p">,</span> <span class="m">0f</span><span class="p">,</span> <span class="n">finalRadius</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">anim</span><span class="p">.</span><span class="n">duration</span> <span class="p">=</span> <span class="m">400L</span>
+</span></span><span class="line"><span class="cl">    <span class="n">anim</span><span class="p">.</span><span class="n">doOnEnd</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">imageView</span><span class="p">.</span><span class="n">setImageDrawable</span><span class="p">(</span><span class="k">null</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">imageView</span><span class="p">.</span><span class="n">isVisible</span> <span class="p">=</span> <span class="k">false</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">anim</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Let’s look in details what we do here:</p>
 <ul>
 <li>
 <p>first of all we make a defensive check to not start new animation when previous is still in progress</p>
@@ -346,215 +219,215 @@ Sounds hacky, though pretty working solution.</p>
 <p>We’ll create single place for managing application theme — ThemeManager, and object which describes the Theme itself.
 Theme will contain different sub-Themes for each design component — TextView, Button etc.</p>
 <p>For example for TextView we can create the following Theme description:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TextViewTheme</span>(
-    <span style="color:#a6e22e">@ColorRes</span>
-    <span style="color:#66d9ef">val</span> textColor: Int
-)
-</code></pre></div><p>Similarly for container (e.g. LinearLayout) we can create:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">data</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ViewGroupTheme</span>(
-    <span style="color:#a6e22e">@ColorRes</span>
-    <span style="color:#66d9ef">val</span> backgroundColor: Int
-)
-</code></pre></div><p>And the Theme itself will be enum containing different combinations mapped over some finite number of themes — for example LIGHT and DARK:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">enum</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Theme</span>(
-    <span style="color:#66d9ef">val</span> buttonTheme: ButtonTheme,
-    <span style="color:#66d9ef">val</span> textViewTheme: TextViewTheme,
-    <span style="color:#66d9ef">val</span> viewGroupTheme: ViewGroupTheme
-) {
-    DARK(
-        buttonTheme = ButtonTheme(
-            backgroundTint = android.R.color.holo_green_dark,
-            textColor = android.R.color.white
-        ),
-        textViewTheme = TextViewTheme(
-            textColor = android.R.color.white
-        ),
-        viewGroupTheme = ViewGroupTheme(
-            backgroundColor = android.R.color.background_dark
-        )
-    ),
-    LIGHT(
-        buttonTheme = ButtonTheme(
-            backgroundTint = android.R.color.holo_green_light,
-            textColor = android.R.color.black
-        ),
-        textViewTheme = TextViewTheme(
-            textColor = android.R.color.black
-        ),
-        viewGroupTheme = ViewGroupTheme(
-            backgroundColor = android.R.color.background_light
-        )
-    )
-}
-</code></pre></div><p>And our ThemeManager will just provide single instance of current theme:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">object</span> <span style="color:#a6e22e">ThemeManager</span> {
-    
-    <span style="color:#66d9ef">var</span> theme = Theme.LIGHT
-
-}
-</code></pre></div><h3 id="custom-views">Custom Views</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">data</span> <span class="k">class</span> <span class="nc">TextViewTheme</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@ColorRes</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">textColor</span><span class="p">:</span> <span class="n">Int</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span></code></pre></div><p>Similarly for container (e.g. LinearLayout) we can create:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">data</span> <span class="k">class</span> <span class="nc">ViewGroupTheme</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@ColorRes</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">backgroundColor</span><span class="p">:</span> <span class="n">Int</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span></code></pre></div><p>And the Theme itself will be enum containing different combinations mapped over some finite number of themes — for example LIGHT and DARK:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">enum</span> <span class="k">class</span> <span class="nc">Theme</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">buttonTheme</span><span class="p">:</span> <span class="n">ButtonTheme</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">textViewTheme</span><span class="p">:</span> <span class="n">TextViewTheme</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">viewGroupTheme</span><span class="p">:</span> <span class="n">ViewGroupTheme</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">DARK</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">buttonTheme</span> <span class="p">=</span> <span class="n">ButtonTheme</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="n">backgroundTint</span> <span class="p">=</span> <span class="n">android</span><span class="p">.</span><span class="n">R</span><span class="p">.</span><span class="n">color</span><span class="p">.</span><span class="n">holo_green_dark</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">textColor</span> <span class="p">=</span> <span class="n">android</span><span class="p">.</span><span class="n">R</span><span class="p">.</span><span class="n">color</span><span class="p">.</span><span class="n">white</span>
+</span></span><span class="line"><span class="cl">        <span class="p">),</span>
+</span></span><span class="line"><span class="cl">        <span class="n">textViewTheme</span> <span class="p">=</span> <span class="n">TextViewTheme</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="n">textColor</span> <span class="p">=</span> <span class="n">android</span><span class="p">.</span><span class="n">R</span><span class="p">.</span><span class="n">color</span><span class="p">.</span><span class="n">white</span>
+</span></span><span class="line"><span class="cl">        <span class="p">),</span>
+</span></span><span class="line"><span class="cl">        <span class="n">viewGroupTheme</span> <span class="p">=</span> <span class="n">ViewGroupTheme</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="n">backgroundColor</span> <span class="p">=</span> <span class="n">android</span><span class="p">.</span><span class="n">R</span><span class="p">.</span><span class="n">color</span><span class="p">.</span><span class="n">background_dark</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">LIGHT</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">buttonTheme</span> <span class="p">=</span> <span class="n">ButtonTheme</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="n">backgroundTint</span> <span class="p">=</span> <span class="n">android</span><span class="p">.</span><span class="n">R</span><span class="p">.</span><span class="n">color</span><span class="p">.</span><span class="n">holo_green_light</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">textColor</span> <span class="p">=</span> <span class="n">android</span><span class="p">.</span><span class="n">R</span><span class="p">.</span><span class="n">color</span><span class="p">.</span><span class="n">black</span>
+</span></span><span class="line"><span class="cl">        <span class="p">),</span>
+</span></span><span class="line"><span class="cl">        <span class="n">textViewTheme</span> <span class="p">=</span> <span class="n">TextViewTheme</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="n">textColor</span> <span class="p">=</span> <span class="n">android</span><span class="p">.</span><span class="n">R</span><span class="p">.</span><span class="n">color</span><span class="p">.</span><span class="n">black</span>
+</span></span><span class="line"><span class="cl">        <span class="p">),</span>
+</span></span><span class="line"><span class="cl">        <span class="n">viewGroupTheme</span> <span class="p">=</span> <span class="n">ViewGroupTheme</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="n">backgroundColor</span> <span class="p">=</span> <span class="n">android</span><span class="p">.</span><span class="n">R</span><span class="p">.</span><span class="n">color</span><span class="p">.</span><span class="n">background_light</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>And our ThemeManager will just provide single instance of current theme:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">object</span> <span class="nc">ThemeManager</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">var</span> <span class="py">theme</span> <span class="p">=</span> <span class="n">Theme</span><span class="p">.</span><span class="n">LIGHT</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="custom-views">Custom Views</h3>
 <p>Next we need to create our own wrappers for views to support changes of dynamic theme changing.
 Let’s make our own custom TextView as example:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyTextView</span>
-<span style="color:#a6e22e">@JvmOverloads</span>
-<span style="color:#66d9ef">constructor</span>(
-    context: Context,
-    attrs: AttributeSet? = <span style="color:#66d9ef">null</span>,
-    defStyleAttr: Int = <span style="color:#ae81ff">0</span>
-) : AppCompatTextView(context, attrs, defStyleAttr) {
-
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">setTheme</span>(theme: ThemeManager.Theme) {
-        setTextColor(
-            ContextCompat.getColor(
-                context,
-                theme.textViewTheme.textColor
-            )
-        )
-    }
-}
-</code></pre></div><p>We just create our view with setTheme method, where we apply all the required fields to be styled.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">MyTextView</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@JvmOverloads</span>
+</span></span><span class="line"><span class="cl"><span class="k">constructor</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">context</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">attrs</span><span class="p">:</span> <span class="n">AttributeSet</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">defStyleAttr</span><span class="p">:</span> <span class="n">Int</span> <span class="p">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span> <span class="p">:</span> <span class="n">AppCompatTextView</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">attrs</span><span class="p">,</span> <span class="n">defStyleAttr</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">setTheme</span><span class="p">(</span><span class="n">theme</span><span class="p">:</span> <span class="n">ThemeManager</span><span class="p">.</span><span class="n">Theme</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">setTextColor</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ContextCompat</span><span class="p">.</span><span class="n">getColor</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">                <span class="n">context</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="n">theme</span><span class="p">.</span><span class="n">textViewTheme</span><span class="p">.</span><span class="n">textColor</span>
+</span></span><span class="line"><span class="cl">            <span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>We just create our view with setTheme method, where we apply all the required fields to be styled.</p>
 <p>Then we replace in xml our TextView with com.MyTextView and in our TODO access that view and set theme.
 Such approach would work, but the issue is that it doesn’t scale and it requires layout files changes. But there is a way to fix all the issues, let’s see how.</p>
 <h3 id="dynamic-theme-changes">Dynamic theme changes</h3>
 <p>Instead of explicitly setting themes on each view it would be better if views subscribed to theme changes and reactively updated by themselves.
 For this we’ll add a bit more functionality into ThemeManager — we’ll add ability to add listeners. Yes, listeners in 2020 :) One can use RxJava or kotlin Flow, it actually doesn’t matter. Listeners will be enough, so, we’ll use them.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">object</span> <span style="color:#a6e22e">ThemeManager</span> {
-
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> listeners = mutableSetOf&lt;ThemeChangedListener&gt;()
-    <span style="color:#66d9ef">var</span> theme = Theme.LIGHT
-        <span style="color:#66d9ef">set</span>(value) {
-            <span style="color:#66d9ef">field</span> = value
-            listeners.forEach { listener <span style="color:#f92672">-&gt;</span> listener.onThemeChanged(value) }
-        }
-        
-    <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ThemeChangedListener</span> {
-
-        <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onThemeChanged</span>(theme: Theme)
-    }
-    
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">addListener</span>(listener: ThemeChangedListener) {
-        listeners.add(listener)
-    }
-
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">removeListener</span>(listener: ThemeChangedListener) {
-        listeners.remove(listener)
-    }
-  
-  <span style="color:#75715e">// ...
-</span><span style="color:#75715e"></span>}
-</code></pre></div><p>Nothing really interesting, just added listeners, ability to add and remove them and we update listeners on each change of theme.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">object</span> <span class="nc">ThemeManager</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">private</span> <span class="k">val</span> <span class="py">listeners</span> <span class="p">=</span> <span class="n">mutableSetOf</span><span class="p">&lt;</span><span class="n">ThemeChangedListener</span><span class="p">&gt;()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">var</span> <span class="py">theme</span> <span class="p">=</span> <span class="n">Theme</span><span class="p">.</span><span class="n">LIGHT</span>
+</span></span><span class="line"><span class="cl">        <span class="k">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">field</span> <span class="p">=</span> <span class="n">value</span>
+</span></span><span class="line"><span class="cl">            <span class="n">listeners</span><span class="p">.</span><span class="n">forEach</span> <span class="p">{</span> <span class="n">listener</span> <span class="o">-&gt;</span> <span class="n">listener</span><span class="p">.</span><span class="n">onThemeChanged</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">    <span class="k">interface</span> <span class="nc">ThemeChangedListener</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">fun</span> <span class="nf">onThemeChanged</span><span class="p">(</span><span class="n">theme</span><span class="p">:</span> <span class="n">Theme</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">addListener</span><span class="p">(</span><span class="n">listener</span><span class="p">:</span> <span class="n">ThemeChangedListener</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">listeners</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">listener</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">removeListener</span><span class="p">(</span><span class="n">listener</span><span class="p">:</span> <span class="n">ThemeChangedListener</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">listeners</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">listener</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></div><p>Nothing really interesting, just added listeners, ability to add and remove them and we update listeners on each change of theme.</p>
 <h3 id="views-with-reactive-theme-changes-support">Views with reactive theme changes support</h3>
 <p>Using these listeners we update our MyTextView to trigger update on theme changed:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyTextView</span>
-<span style="color:#a6e22e">@JvmOverloads</span>
-<span style="color:#66d9ef">constructor</span>(
-    context: Context,
-    attrs: AttributeSet? = <span style="color:#66d9ef">null</span>,
-    defStyleAttr: Int = <span style="color:#ae81ff">0</span>
-) : AppCompatTextView(context, attrs, defStyleAttr),
-    ThemeManager.ThemeChangedListener {
-
-    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onFinishInflate</span>() {
-        <span style="color:#66d9ef">super</span>.onFinishInflate()
-        ThemeManager.addListener(<span style="color:#66d9ef">this</span>)
-    }
-
-    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onAttachedToWindow</span>() {
-        <span style="color:#66d9ef">super</span>.onAttachedToWindow()
-        ThemeManager.addListener(<span style="color:#66d9ef">this</span>)
-    }
-
-    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onDetachedFromWindow</span>() {
-        <span style="color:#66d9ef">super</span>.onDetachedFromWindow()
-        ThemeManager.removeListener(<span style="color:#66d9ef">this</span>)
-    }
-
-    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onThemeChanged</span>(theme: ThemeManager.Theme) {
-        setTextColor(
-            ContextCompat.getColor(
-                context,
-                theme.textViewTheme.textColor
-            )
-        )
-    }
-}
-</code></pre></div><p>Instead of setTheme method we now have onThemeChanged. And in different callbacks of View lifecycle we subscribe and unsubscribe from ThemeManager.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">MyTextView</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@JvmOverloads</span>
+</span></span><span class="line"><span class="cl"><span class="k">constructor</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">context</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">attrs</span><span class="p">:</span> <span class="n">AttributeSet</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">defStyleAttr</span><span class="p">:</span> <span class="n">Int</span> <span class="p">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span> <span class="p">:</span> <span class="n">AppCompatTextView</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">attrs</span><span class="p">,</span> <span class="n">defStyleAttr</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ThemeManager</span><span class="p">.</span><span class="n">ThemeChangedListener</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onFinishInflate</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">super</span><span class="p">.</span><span class="n">onFinishInflate</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ThemeManager</span><span class="p">.</span><span class="n">addListener</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onAttachedToWindow</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">super</span><span class="p">.</span><span class="n">onAttachedToWindow</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ThemeManager</span><span class="p">.</span><span class="n">addListener</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onDetachedFromWindow</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">super</span><span class="p">.</span><span class="n">onDetachedFromWindow</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ThemeManager</span><span class="p">.</span><span class="n">removeListener</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onThemeChanged</span><span class="p">(</span><span class="n">theme</span><span class="p">:</span> <span class="n">ThemeManager</span><span class="p">.</span><span class="n">Theme</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">setTextColor</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ContextCompat</span><span class="p">.</span><span class="n">getColor</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">                <span class="n">context</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="n">theme</span><span class="p">.</span><span class="n">textViewTheme</span><span class="p">.</span><span class="n">textColor</span>
+</span></span><span class="line"><span class="cl">            <span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Instead of setTheme method we now have onThemeChanged. And in different callbacks of View lifecycle we subscribe and unsubscribe from ThemeManager.</p>
 <h3 id="custom-layoutinflater">Custom LayoutInflater</h3>
 <p>In order to not change our layouts we can use custom layout inflater factories. The idea is that we can intercept inflating views based on the names (“TextView”, “Button”, “com.MyTextView” etc.). And we can provide our own implementations for base views. Same approach is done in AppCompat.</p>
 <p>Basic implementation of the LayoutInflater.Factory2 looks like this:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyLayoutInflater</span>(
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> delegate: AppCompatDelegate
-) : LayoutInflater.Factory2 {
-
-    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreateView</span>(
-        parent: View?,
-        name: String,
-        context: Context,
-        attrs: AttributeSet
-    ): View? {
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">when</span> (name) {
-            <span style="color:#e6db74">&#34;TextView&#34;</span> <span style="color:#f92672">-&gt;</span> MyTextView(context, attrs)
-            <span style="color:#e6db74">&#34;LinearLayout&#34;</span> <span style="color:#f92672">-&gt;</span> MyLinearLayout(context, attrs)
-            <span style="color:#e6db74">&#34;Button&#34;</span> <span style="color:#f92672">-&gt;</span> MyButton(context, attrs, R.attr.buttonStyle)
-            <span style="color:#66d9ef">else</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">delegate</span>.createView(parent, name, context, attrs)
-        }
-    }
-
-    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreateView</span>(name: String, context: Context, attrs: AttributeSet): View? {
-        <span style="color:#66d9ef">return</span> onCreateView(<span style="color:#66d9ef">null</span>, name, context, attrs)
-    }
-}
-</code></pre></div><p>We intercept in onCreateView some views which support our dynamic theme changes and other views we ask for AppCompatDelegate to create.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">MyLayoutInflater</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="k">private</span> <span class="k">val</span> <span class="py">delegate</span><span class="p">:</span> <span class="n">AppCompatDelegate</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span> <span class="p">:</span> <span class="n">LayoutInflater</span><span class="p">.</span><span class="n">Factory2</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreateView</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">parent</span><span class="p">:</span> <span class="n">View</span><span class="p">?,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">name</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">context</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">attrs</span><span class="p">:</span> <span class="n">AttributeSet</span>
+</span></span><span class="line"><span class="cl">    <span class="p">):</span> <span class="n">View</span><span class="p">?</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="k">when</span> <span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;TextView&#34;</span> <span class="o">-&gt;</span> <span class="n">MyTextView</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;LinearLayout&#34;</span> <span class="o">-&gt;</span> <span class="n">MyLinearLayout</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Button&#34;</span> <span class="o">-&gt;</span> <span class="n">MyButton</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">attrs</span><span class="p">,</span> <span class="n">R</span><span class="p">.</span><span class="n">attr</span><span class="p">.</span><span class="n">buttonStyle</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">else</span> <span class="o">-&gt;</span> <span class="k">delegate</span><span class="p">.</span><span class="n">createView</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreateView</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span> <span class="n">attrs</span><span class="p">:</span> <span class="n">AttributeSet</span><span class="p">):</span> <span class="n">View</span><span class="p">?</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">onCreateView</span><span class="p">(</span><span class="k">null</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>We intercept in onCreateView some views which support our dynamic theme changes and other views we ask for AppCompatDelegate to create.</p>
 <p>But there is one trick with setting this factory — it should be done before super.onCreate(&hellip;):</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : AppCompatActivity() {
-
-    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
-        LayoutInflaterCompat.setFactory2(
-            LayoutInflater.from(<span style="color:#66d9ef">this</span>),
-            MyLayoutInflater(<span style="color:#66d9ef">delegate</span>)
-        )
-
-        <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
-}
-</code></pre></div><h3 id="finally">Finally</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">MainActivity</span> <span class="p">:</span> <span class="n">AppCompatActivity</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="n">Bundle</span><span class="p">?)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">LayoutInflaterCompat</span><span class="p">.</span><span class="n">setFactory2</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="n">LayoutInflater</span><span class="p">.</span><span class="n">from</span><span class="p">(</span><span class="k">this</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">            <span class="n">MyLayoutInflater</span><span class="p">(</span><span class="k">delegate</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">super</span><span class="p">.</span><span class="n">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">setContentView</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">layout</span><span class="p">.</span><span class="n">activity_main</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="finally">Finally</h3>
 <p>And we’re good! Let’s look at the results <em>(sorry, for artifacts in gif, unfortunately video recorder in Android Studio didn’t want to record without them :( )</em>:</p>
 <p><img src="../../img/1_npozBlc942NNDJXmr4Zhrg.gif" alt=""></p>
 <p>Also if we change our setTheme method we can implement another version:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">setTheme</span>(theme: ThemeManager.Theme, animate: Boolean = <span style="color:#66d9ef">true</span>) {
-    <span style="color:#66d9ef">if</span> (!animate) {
-        ThemeManager.theme = theme
-        <span style="color:#66d9ef">return</span>
-    }
-
-    <span style="color:#66d9ef">if</span> (imageView.isVisible) {
-        <span style="color:#66d9ef">return</span>
-    }
-
-    <span style="color:#66d9ef">val</span> w = container.measuredWidth
-    <span style="color:#66d9ef">val</span> h = container.measuredHeight
-
-    <span style="color:#66d9ef">val</span> bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
-    <span style="color:#66d9ef">val</span> canvas = Canvas(bitmap)
-    container.draw(canvas)
-
-    imageView.setImageBitmap(bitmap)
-    imageView.isVisible = <span style="color:#66d9ef">true</span>
-
-    <span style="color:#66d9ef">val</span> finalRadius = hypot(w.toFloat(), h.toFloat())
-
-    ThemeManager.theme = theme
-
-    <span style="color:#66d9ef">val</span> anim = ViewAnimationUtils.createCircularReveal(imageView, w / <span style="color:#ae81ff">2</span>, h / <span style="color:#ae81ff">2</span>, finalRadius, <span style="color:#ae81ff">0f</span>)
-    anim.duration = <span style="color:#ae81ff">400L</span>
-    anim.doOnEnd {
-        imageView.setImageDrawable(<span style="color:#66d9ef">null</span>)
-        imageView.isVisible = <span style="color:#66d9ef">false</span>
-    }
-    anim.start()
-}
-</code></pre></div><p><img src="../../img/1_BdwF64uCz_vNlva9BXO9Ww.gif" alt=""></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">setTheme</span><span class="p">(</span><span class="n">theme</span><span class="p">:</span> <span class="n">ThemeManager</span><span class="p">.</span><span class="n">Theme</span><span class="p">,</span> <span class="n">animate</span><span class="p">:</span> <span class="n">Boolean</span> <span class="p">=</span> <span class="k">true</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(!</span><span class="n">animate</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ThemeManager</span><span class="p">.</span><span class="n">theme</span> <span class="p">=</span> <span class="n">theme</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">imageView</span><span class="p">.</span><span class="n">isVisible</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">w</span> <span class="p">=</span> <span class="n">container</span><span class="p">.</span><span class="n">measuredWidth</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">h</span> <span class="p">=</span> <span class="n">container</span><span class="p">.</span><span class="n">measuredHeight</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">bitmap</span> <span class="p">=</span> <span class="n">Bitmap</span><span class="p">.</span><span class="n">createBitmap</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">Bitmap</span><span class="p">.</span><span class="n">Config</span><span class="p">.</span><span class="n">ARGB_8888</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">canvas</span> <span class="p">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">bitmap</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">container</span><span class="p">.</span><span class="n">draw</span><span class="p">(</span><span class="n">canvas</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">imageView</span><span class="p">.</span><span class="n">setImageBitmap</span><span class="p">(</span><span class="n">bitmap</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">imageView</span><span class="p">.</span><span class="n">isVisible</span> <span class="p">=</span> <span class="k">true</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">finalRadius</span> <span class="p">=</span> <span class="n">hypot</span><span class="p">(</span><span class="n">w</span><span class="p">.</span><span class="n">toFloat</span><span class="p">(),</span> <span class="n">h</span><span class="p">.</span><span class="n">toFloat</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">ThemeManager</span><span class="p">.</span><span class="n">theme</span> <span class="p">=</span> <span class="n">theme</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">anim</span> <span class="p">=</span> <span class="n">ViewAnimationUtils</span><span class="p">.</span><span class="n">createCircularReveal</span><span class="p">(</span><span class="n">imageView</span><span class="p">,</span> <span class="n">w</span> <span class="p">/</span> <span class="m">2</span><span class="p">,</span> <span class="n">h</span> <span class="p">/</span> <span class="m">2</span><span class="p">,</span> <span class="n">finalRadius</span><span class="p">,</span> <span class="m">0f</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">anim</span><span class="p">.</span><span class="n">duration</span> <span class="p">=</span> <span class="m">400L</span>
+</span></span><span class="line"><span class="cl">    <span class="n">anim</span><span class="p">.</span><span class="n">doOnEnd</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">imageView</span><span class="p">.</span><span class="n">setImageDrawable</span><span class="p">(</span><span class="k">null</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">imageView</span><span class="p">.</span><span class="n">isVisible</span> <span class="p">=</span> <span class="k">false</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">anim</span><span class="p">.</span><span class="n">start</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><img src="../../img/1_BdwF64uCz_vNlva9BXO9Ww.gif" alt=""></p>
 <p>Awesome results, it works pretty smooth and provides a good UX with not that huge effort so far.</p>
 <h3 id="what-next">What next</h3>
 <p>You can find code for these in this <a href="https://gist.github.com/krossovochkin/57ce2d57e23d0a598d016473c4bf4642">gist</a>.
@@ -567,79 +440,39 @@ Thank you</p>
 Don’t forget to try new things, read code written by others, add animations to your app for better UX.</p>
 <p>Happy coding!</p>
 
-  </div>
-  
+</main>
 
-<div class="navigation navigation-single">
+
+<hr/>
+
+<footer>
+<nav>
+  <ul>
     
-    <a href="/posts/2020_01_17_sqlite_triggers_android_room/" class="navigation-prev">
-      <i aria-hidden="true" class="fa fa-chevron-left"></i>
-      <span class="navigation-tittle">SQLite Triggers (&#43; Android Room)</span>
-    </a>
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
     
     
-    <a href="/posts/2020_01_25_from_rxjava_2_to_kotlin_flow_threading/" class="navigation-next">
-      <span class="navigation-tittle">From RxJava 2 to Kotlin Flow: Threading</span>
-      <i aria-hidden="true" class="fa fa-chevron-right"></i>
-    </a>
+    <li class="menu-right"><a href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-xl"></i></a></li>
     
-</div>
-
-
-  
-
-  
+    <li class="menu-right"><a href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-xl"></i></a></li>
     
-
-
-</article>
-
-
-        </div>
-        
+    <li class="menu-right"><a href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-xl"></i></a></li>
     
-
-  
-  
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'UA-148934073-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-
-<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
-
-
+    <li class="menu-right"><a href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-xl"></i></a></li>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-        
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/bash.min.js"></script>
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/java.min.js"></script>
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
-            
-        
-    <script type="text/javascript">
-        
-        hljs.configure({languages: ["bash, java, kotlin"]});
-        
-        hljs.initHighlightingOnLoad();
-    </script>
+    <li class="menu-right"><a href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-xl"></i></a></li>
     
-
-
-
+    <li class="menu-right"><a href="https://twitter.com/krossovochkin" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a></li>
     
+    <li class="menu-right"><a href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-xl"></i></a></li>
+    
+  </ul>
+</nav>
+</footer>
 
 
+</body>
 
-    </body>
 </html>

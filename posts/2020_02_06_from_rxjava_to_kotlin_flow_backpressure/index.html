@@ -1,217 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
-    
-    
+<html lang="en-us">
+<head>
+  <title>From RxJava to Kotlin Flow: Backpressure</title>
 
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <head>
-    <link href="https://gmpg.org/xfn/11" rel="profile">
-    <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<!-- Enable responsiveness on mobile devices -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="generator" content="Hugo 0.79.1" />
+  <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script src="https://kit.fontawesome.com/6d5aec2882.js" crossorigin="anonymous"></script>
 
-    
-    
-    
+  <link rel="stylesheet" href="/css/style.css" />
 
-<title>From RxJava to Kotlin Flow: Backpressure • Vasya Drobushkov</title>
+  
+  <meta name="theme-color" content="#1e2327">
 
-
-<meta name="twitter:card" content="summary"/>
+  <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="From RxJava to Kotlin Flow: Backpressure"/>
 <meta name="twitter:description" content="Quick comparison between backpressure solutions in RxJava and Kotlin Flow"/>
-
-<meta property="og:title" content="From RxJava to Kotlin Flow: Backpressure" />
-<meta property="og:description" content="Quick comparison between backpressure solutions in RxJava and Kotlin Flow" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://krossovochkin.com/posts/2020_02_06_from_rxjava_to_kotlin_flow_backpressure/" />
-<meta property="article:published_time" content="2020-02-06T00:00:00+00:00" />
-<meta property="article:modified_time" content="2020-02-06T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
-
-
-    
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
-
-
-
-
-
-
-
-
-<link rel="stylesheet" href="/scss/hyde-hyde.adf8a0af011d3afb07ed907ad3295e1c99f49503bc91d395e38dc3f8dfdf4900.css" integrity="sha256-rfigrwEdOvsH7ZB60yleHJn0lQO8kdOV443D&#43;N/fSQA=">
-
-
-<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
-
-
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <!-- Icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
-    <link rel="shortcut icon" href="/favicon.png">
-    
-    
+<meta name="twitter:site" content="@krossovochkin"/>
 
 </head>
 
+<body>
 
-    <body class="theme-base-0a ">
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<header>
+<nav>
+  <ul>
     
-<div class="sidebar">
-  <div class="container ">
-    <div class="sidebar-about">
-      <span class="site__title">
-        <a href="https://krossovochkin.com/">
-        
-          Vasya Drobushkov
-        
-        </a>
-      </span>
-      
-        
-        
-        
-        <div class="author-image">
-          <img src="https://krossovochkin.com/../img/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
-        </div>
-        
-      
-      
-      <p class="site__description">
-        
-      </p>
-    </div>
-    <div class="collapsible-menu">
-      <input type="checkbox" id="menuToggle">
-      <label for="menuToggle">Vasya Drobushkov</label>
-      <div class="menu-content">
-        <div>
-	<ul class="sidebar-nav">
-		 
-		 
-			 
-				<li>
-					<a href="/posts/">
-						<span>Posts</span>
-					</a>
-				</li>
-			 
-		 
-			 
-				<li>
-					<a href="/about/">
-						<span>About</span>
-					</a>
-				</li>
-			 
-		
-	</ul>
-</div>
-
-        <section class="social">
-	
-	<a href="https://twitter.com/krossovochkin" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	<a href="https://facebook.com/vasya.drobushkov" rel="me"><i class="fab fa-facebook-f"></i></a>
-	
-	
-	<a href="https://github.com/krossovochkin" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	
-	
-	<a href="https://linkedin.com/in/vasyadrobushkov" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	<a href="https://stackoverflow.com/users/1533933/krossovochkin" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	<a href="https://t.me/krossovochkin_newsletter" rel="me"><i class="fab fa-telegram fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	
-	
-</section>
-
-      </div>
-    </div>
+    <li class="menu-left"><a href="/">Posts</a></li>
     
-<div class="copyright">
-  &copy; 2019 - 2021 Vasya Drobushkov
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    
+    <li class="menu-right"><a href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://twitter.com/krossovochkin" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-xl"></i></a></li>
+    
+  </ul>
+</nav>
+</header>
+
+<br/>
+
+<div class="meta">
+
   
-    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
-  
-</div>
-
-
-
-  </div>
-</div>
-
-        <div class="content container">
-            
-    
-<article>
-  <header>
-    <h1>From RxJava to Kotlin Flow: Backpressure</h1>
-    
-    
-<div class="post__meta">
-    
-    
-      <i class="fas fa-calendar-alt"></i> Feb 6, 2020
-    
-    
-    
-    
-    
-      
-      
-          <br/>
-           <i class="fas fa-tags"></i>
-          
-          <a class="badge badge-tag" href="/tags/rxjava">rxjava</a>
-           
-      
-          <a class="badge badge-tag" href="/tags/kotlin">kotlin</a>
-           
-      
-          <a class="badge badge-tag" href="/tags/kotlin-flow">kotlin flow</a>
-          
-      
-    
-    
-    <br/>
-    <i class="fas fa-clock"></i> 8 min read
-</div>
-
-
-  </header>
+    <h1><span class="title">From RxJava to Kotlin Flow: Backpressure</span></h1>
   
   
-  <div class="post">
-    <p><a href="https://proandroiddev.com/from-rxjava-to-kotlin-flow-backpressure-d1fb91e6dea8"><img src="https://img.shields.io/badge/original-proandroiddev-green#badge" alt=""></a> <a href="https://androidweekly.net/issues/issue-400"><img src="https://img.shields.io/badge/androidweekly-400-blue#badge" alt=""></a> <a href="https://proandroiddev.com/proandroiddev-digest-15-b467005869ce"><img src="https://img.shields.io/badge/proandroiddevdigest-15-green#badge" alt=""></a></p>
+    <h3>February 6, 2020</h3>
+  
+
+</div>
+
+<main>
+<p><a href="https://proandroiddev.com/from-rxjava-to-kotlin-flow-backpressure-d1fb91e6dea8"><img src="https://img.shields.io/badge/original-proandroiddev-green#badge" alt=""></a> <a href="https://androidweekly.net/issues/issue-400"><img src="https://img.shields.io/badge/androidweekly-400-blue#badge" alt=""></a> <a href="https://proandroiddev.com/proandroiddev-digest-15-b467005869ce"><img src="https://img.shields.io/badge/proandroiddevdigest-15-green#badge" alt=""></a></p>
 <blockquote>
 <p>Disclaimer
 This article unfortunately is not that dive deep (because of complexity of internals of coroutines), but instead trying to compare RxJava and Kotlin Flow mostly as black box with trying to find out differences in behavior and how to migrate from RxJava with its backpressure solution to Kotlin Flow.
@@ -228,18 +97,18 @@ In this article we’ll try to compare solutions and find out what one should pa
 <h2 id="rxjava-backpressure">RxJava Backpressure</h2>
 <p>In RxJava there are a lot of reactive types (Observable, Single etc.), but only Flowable is a type which supports backpressure in RxJava.
 It is supported via Subscriber interface:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Subscriber</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onSubscribe</span><span style="color:#f92672">(</span>Subscription s<span style="color:#f92672">);</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onNext</span><span style="color:#f92672">(</span>T t<span style="color:#f92672">);</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onError</span><span style="color:#f92672">(</span>Throwable t<span style="color:#f92672">)</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onComplete</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>The main thing about backpressure is inside Subscripion interface:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Subscription</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">request</span><span style="color:#f92672">(</span><span style="color:#66d9ef">long</span> n<span style="color:#f92672">);</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">cancel</span><span style="color:#f92672">();</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>Particularly request method.
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Subscriber</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onSubscribe</span><span class="o">(</span><span class="n">Subscription</span> <span class="n">s</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onNext</span><span class="o">(</span><span class="n">T</span> <span class="n">t</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onError</span><span class="o">(</span><span class="n">Throwable</span> <span class="n">t</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onComplete</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><p>The main thing about backpressure is inside Subscripion interface:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Subscription</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">request</span><span class="o">(</span><span class="kt">long</span> <span class="n">n</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">cancel</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><p>Particularly request method.
 Whenever downstream is able to consume more events, it sends request to upstream providing number of events it is able to consume.</p>
 <p>So, basic communication is the following:</p>
 <p>on subscribe downstream requests some number of events (say 1)</p>
@@ -253,201 +122,201 @@ Whenever downstream is able to consume more events, it sends request to upstream
 <p>In order to make a comparison we’ll make some setup.
 First of all we’ll make some helper functions which describe some work in progress (like loading some data from network).</p>
 <p>For RxJava it will be blocking:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">doWorkBlocking</span>(i: Int, delay: Long): Int {
-    Thread.sleep(delay)
-    <span style="color:#66d9ef">return</span> i
-}
-</code></pre></div><p>And for Koltlin Flow suspending:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">doWorkDelay</span>(i: Int, timeout: Long): Int {
-    delay(timeout)
-    <span style="color:#66d9ef">return</span> i
-}
-</code></pre></div><p>Next we’ll create some upstreams which produce some events with predefined delay.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">doWorkBlocking</span><span class="p">(</span><span class="n">i</span><span class="p">:</span> <span class="n">Int</span><span class="p">,</span> <span class="n">delay</span><span class="p">:</span> <span class="n">Long</span><span class="p">):</span> <span class="n">Int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Thread</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">i</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>And for Koltlin Flow suspending:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">doWorkDelay</span><span class="p">(</span><span class="n">i</span><span class="p">:</span> <span class="n">Int</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="n">Long</span><span class="p">):</span> <span class="n">Int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">delay</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">i</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Next we’ll create some upstreams which produce some events with predefined delay.</p>
 <p>For RxJava:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">flowable</span>(
-    delay: Long,
-    mode: BackpressureStrategy,
-    limit: Int
-): Flowable&lt;Int&gt; = Flowable
-    .create&lt;Int&gt;(
-        { emitter: FlowableEmitter&lt;Int&gt; <span style="color:#f92672">-&gt;</span>
-            <span style="color:#66d9ef">for</span> (i <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">1.</span>.limit) {
-                Thread.sleep(delay)
-                emitter.onNext(i)
-            }
-            emitter.onComplete()
-        },
-        mode
-    )
-</code></pre></div><p>And for Kotlin Flow:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">flow</span>(
-    timeout: Long,
-    limit: Int
-): Flow&lt;Int&gt; = flow {
-    <span style="color:#66d9ef">for</span> (i <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">1.</span>.limit) {
-        delay(timeout)
-        emit(i)
-    }
-}
-</code></pre></div><p>For these functions we’ll have streams which emit limit + 1 items with timeout delay between each event.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">flowable</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">delay</span><span class="p">:</span> <span class="n">Long</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">mode</span><span class="p">:</span> <span class="n">BackpressureStrategy</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">limit</span><span class="p">:</span> <span class="n">Int</span>
+</span></span><span class="line"><span class="cl"><span class="p">):</span> <span class="n">Flowable</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;</span> <span class="p">=</span> <span class="n">Flowable</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">create</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;(</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span> <span class="n">emitter</span><span class="p">:</span> <span class="n">FlowableEmitter</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;</span> <span class="o">-&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="k">in</span> <span class="m">1.</span><span class="p">.</span><span class="n">limit</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">Thread</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">emitter</span><span class="p">.</span><span class="n">onNext</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="n">emitter</span><span class="p">.</span><span class="n">onComplete</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="n">mode</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span></code></pre></div><p>And for Kotlin Flow:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">flow</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">timeout</span><span class="p">:</span> <span class="n">Long</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">limit</span><span class="p">:</span> <span class="n">Int</span>
+</span></span><span class="line"><span class="cl"><span class="p">):</span> <span class="n">Flow</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;</span> <span class="p">=</span> <span class="n">flow</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="k">in</span> <span class="m">1.</span><span class="p">.</span><span class="n">limit</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>For these functions we’ll have streams which emit limit + 1 items with timeout delay between each event.</p>
 <p>Next we’ll have our test functions which we’ll use to verify output and print some time needed to produce that output (not for benchmark purposes, but to see that time is relatively equal).</p>
 <p>For RxJava it will be:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">testFlowable</span>(
-    mode: BackpressureStrategy,
-    limit: Int = <span style="color:#ae81ff">10</span>
-) {
-    <span style="color:#66d9ef">val</span> latch = CountDownLatch(<span style="color:#ae81ff">1</span>)
-    <span style="color:#66d9ef">val</span> stringBuffer = StringBuffer()
-    <span style="color:#66d9ef">val</span> time = System.currentTimeMillis()
-
-    flowable(delay = <span style="color:#ae81ff">100</span>, mode = mode, limit = limit)
-        .subscribeOn(Schedulers.io())
-        .observeOn(Schedulers.computation(), <span style="color:#66d9ef">false</span>, <span style="color:#ae81ff">1</span>)
-        .map { doWorkBlocking(i = <span style="color:#66d9ef">it</span>, delay = <span style="color:#ae81ff">200</span>) }
-        .map { doWorkBlocking(i = <span style="color:#66d9ef">it</span>, delay = <span style="color:#ae81ff">300</span>) }
-        .doOnComplete { latch.countDown() }
-        .subscribe {
-            stringBuffer.append(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74"> &#34;</span>)
-        }
-
-    latch.await()
-
-    println((System.currentTimeMillis() - time))
-    println(stringBuffer.toString())
-}
-</code></pre></div><p>For Kotlin Flow:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">testFlow</span>(limit: Int = <span style="color:#ae81ff">10</span>, onBackpressure: Flow&lt;Int&gt;.() <span style="color:#f92672">-&gt;</span> Flow&lt;Int&gt;) {
-
-    <span style="color:#66d9ef">val</span> latch = CountDownLatch(<span style="color:#ae81ff">1</span>)
-    <span style="color:#66d9ef">val</span> time = System.currentTimeMillis()
-
-    <span style="color:#66d9ef">val</span> stringBuffer = StringBuffer()
-
-    CoroutineScope(Job() + Dispatchers.Default).launch {
-
-        flow(timeout = <span style="color:#ae81ff">100</span>, limit = limit)
-            .flowOn(Dispatchers.IO)
-            .onBackpressure()
-            .map { doWorkDelay(i = <span style="color:#66d9ef">it</span>, timeout = <span style="color:#ae81ff">200</span>) }
-            .map { doWorkDelay(i = <span style="color:#66d9ef">it</span>, timeout = <span style="color:#ae81ff">300</span>) }
-            .onCompletion { latch.countDown() }
-            .collect {
-                stringBuffer.append(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74"> &#34;</span>)
-            }
-    }
-
-    latch.await()
-
-    println((System.currentTimeMillis() - time))
-    println(stringBuffer.toString())
-}
-</code></pre></div><p>As seen above we’ll have our upstream to produce item each 100ms with processing them sequentially with 200ms and then 300ms.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">testFlowable</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">mode</span><span class="p">:</span> <span class="n">BackpressureStrategy</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">limit</span><span class="p">:</span> <span class="n">Int</span> <span class="p">=</span> <span class="m">10</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">latch</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">stringBuffer</span> <span class="p">=</span> <span class="n">StringBuffer</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">time</span> <span class="p">=</span> <span class="n">System</span><span class="p">.</span><span class="n">currentTimeMillis</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">flowable</span><span class="p">(</span><span class="n">delay</span> <span class="p">=</span> <span class="m">100</span><span class="p">,</span> <span class="n">mode</span> <span class="p">=</span> <span class="n">mode</span><span class="p">,</span> <span class="n">limit</span> <span class="p">=</span> <span class="n">limit</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">subscribeOn</span><span class="p">(</span><span class="n">Schedulers</span><span class="p">.</span><span class="n">io</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">observeOn</span><span class="p">(</span><span class="n">Schedulers</span><span class="p">.</span><span class="n">computation</span><span class="p">(),</span> <span class="k">false</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">doWorkBlocking</span><span class="p">(</span><span class="n">i</span> <span class="p">=</span> <span class="k">it</span><span class="p">,</span> <span class="n">delay</span> <span class="p">=</span> <span class="m">200</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">doWorkBlocking</span><span class="p">(</span><span class="n">i</span> <span class="p">=</span> <span class="k">it</span><span class="p">,</span> <span class="n">delay</span> <span class="p">=</span> <span class="m">300</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">doOnComplete</span> <span class="p">{</span> <span class="n">latch</span><span class="p">.</span><span class="n">countDown</span><span class="p">()</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">subscribe</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">stringBuffer</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&#34;</span><span class="si">$it</span><span class="s2"> &#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">latch</span><span class="p">.</span><span class="n">await</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">((</span><span class="n">System</span><span class="p">.</span><span class="n">currentTimeMillis</span><span class="p">()</span> <span class="p">-</span> <span class="n">time</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">(</span><span class="n">stringBuffer</span><span class="p">.</span><span class="n">toString</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>For Kotlin Flow:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">testFlow</span><span class="p">(</span><span class="n">limit</span><span class="p">:</span> <span class="n">Int</span> <span class="p">=</span> <span class="m">10</span><span class="p">,</span> <span class="n">onBackpressure</span><span class="p">:</span> <span class="n">Flow</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;.()</span> <span class="o">-&gt;</span> <span class="n">Flow</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">latch</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">time</span> <span class="p">=</span> <span class="n">System</span><span class="p">.</span><span class="n">currentTimeMillis</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">stringBuffer</span> <span class="p">=</span> <span class="n">StringBuffer</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">CoroutineScope</span><span class="p">(</span><span class="n">Job</span><span class="p">()</span> <span class="p">+</span> <span class="n">Dispatchers</span><span class="p">.</span><span class="n">Default</span><span class="p">).</span><span class="n">launch</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">flow</span><span class="p">(</span><span class="n">timeout</span> <span class="p">=</span> <span class="m">100</span><span class="p">,</span> <span class="n">limit</span> <span class="p">=</span> <span class="n">limit</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">flowOn</span><span class="p">(</span><span class="n">Dispatchers</span><span class="p">.</span><span class="n">IO</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">onBackpressure</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">doWorkDelay</span><span class="p">(</span><span class="n">i</span> <span class="p">=</span> <span class="k">it</span><span class="p">,</span> <span class="n">timeout</span> <span class="p">=</span> <span class="m">200</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">doWorkDelay</span><span class="p">(</span><span class="n">i</span> <span class="p">=</span> <span class="k">it</span><span class="p">,</span> <span class="n">timeout</span> <span class="p">=</span> <span class="m">300</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">onCompletion</span> <span class="p">{</span> <span class="n">latch</span><span class="p">.</span><span class="n">countDown</span><span class="p">()</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">collect</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">stringBuffer</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&#34;</span><span class="si">$it</span><span class="s2"> &#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">latch</span><span class="p">.</span><span class="n">await</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">((</span><span class="n">System</span><span class="p">.</span><span class="n">currentTimeMillis</span><span class="p">()</span> <span class="p">-</span> <span class="n">time</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">(</span><span class="n">stringBuffer</span><span class="p">.</span><span class="n">toString</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>As seen above we’ll have our upstream to produce item each 100ms with processing them sequentially with 200ms and then 300ms.</p>
 <p>With such setup we expect that (as for consumer it takes about 500ms to process result) that not all events will be consumed.</p>
 <h2 id="backpressure-latest">Backpressure Latest</h2>
 <p>Backpressure Latest is a strategy which discards any item while consumer is still busy while keeping the latest item from producer:</p>
 <p><img src="../../img/0_Vzqk9Z-RsW8USmYD.png" alt="Source"><a href="http://reactivex.io/documentation/operators/images/bp.obp.latest.png">Source</a></p>
 <p>For RxJava in our test will have to run:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">testFlowable(LATEST)
-</code></pre></div><p>For Kotlin Flow the equivalent is:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">testFlow { conflate() }
-</code></pre></div><p>The produced results will be somewhere:</p>
-<pre><code>1759
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">testFlowable</span><span class="p">(</span><span class="n">LATEST</span><span class="p">)</span>
+</span></span></code></pre></div><p>For Kotlin Flow the equivalent is:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">testFlow</span> <span class="p">{</span> <span class="n">conflate</span><span class="p">()</span> <span class="p">}</span>
+</span></span></code></pre></div><p>The produced results will be somewhere:</p>
+<pre tabindex="0"><code>1759
 1 5 10
 </code></pre><h2 id="backpressure-buffer">Backpressure Buffer</h2>
 <p>Backpressure buffer is a strategy where upstream buffers items until they are consumed by consumer.</p>
 <p><img src="../../img/0_-I1YmIr5hkq-syTQ.png" alt="Source"><a href="http://reactivex.io/documentation/operators/images/bp.obp.buffer.png">Source</a></p>
 <p>For RxJava our test will look like:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">testFlowable(BUFFER)
-</code></pre></div><p>And for Kotlin Flow it will be:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">testFlow { buffer() }
-</code></pre></div><p>The result of execution will be printed somewhat like:</p>
-<pre><code>5114
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">testFlowable</span><span class="p">(</span><span class="n">BUFFER</span><span class="p">)</span>
+</span></span></code></pre></div><p>And for Kotlin Flow it will be:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">testFlow</span> <span class="p">{</span> <span class="n">buffer</span><span class="p">()</span> <span class="p">}</span>
+</span></span></code></pre></div><p>The result of execution will be printed somewhat like:</p>
+<pre tabindex="0"><code>5114
 1 2 3 4 5 6 7 8 9 10
 </code></pre><p>And that’s expected: all the items are buffered and consumer is able to consume all items when it is ready.</p>
 <h2 id="backpressure-drop">Backpressure Drop</h2>
 <p>Next strategy is Drop. In this case (similarly to Latest) producer will discard all items consumer is not able to consume with exception that latest item will not be kept:</p>
 <p><img src="../../img/0_rYU9jORYbGPlImvd.png" alt="Source"><a href="http://reactivex.io/documentation/operators/images/bp.obp.drop.png">Source</a></p>
 <p>For RxJava we’ll use:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">testFlowable(DROP)
-</code></pre></div><p>With Kotlin flow it would be more difficult.
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">testFlowable</span><span class="p">(</span><span class="n">DROP</span><span class="p">)</span>
+</span></span></code></pre></div><p>With Kotlin flow it would be more difficult.
 There is no ready to use operator.
 I’ve asked on Stackoverflow and with help of <a href="undefined">Dávid Karnok</a> we now have some implementation for this strategy.</p>
 <p>UPDATE: after various discussions in comments, in StackOverflow etc. seems the most straightforward implementation for drop is:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">Flow</span>&lt;T&gt;.onBackpressureDrop(): Flow&lt;T&gt; {
-    <span style="color:#66d9ef">return</span> channelFlow {
-        collect { offer(<span style="color:#66d9ef">it</span>) }
-    }.buffer(capacity = <span style="color:#ae81ff">0</span>)
-} 
-</code></pre></div><p>This is a combination of offer method over channel which drops values if there is suspension, and buffer with capacity of 0, which suspends on each item received.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="nf">Flow</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;.</span><span class="n">onBackpressureDrop</span><span class="p">():</span> <span class="n">Flow</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">channelFlow</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">collect</span> <span class="p">{</span> <span class="n">offer</span><span class="p">(</span><span class="k">it</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}.</span><span class="n">buffer</span><span class="p">(</span><span class="n">capacity</span> <span class="p">=</span> <span class="m">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> 
+</span></span></code></pre></div><p>This is a combination of offer method over channel which drops values if there is suspension, and buffer with capacity of 0, which suspends on each item received.</p>
 <p>See answers here:
 <a href="https://stackoverflow.com/a/59917873/1533933">Kotlin Flow onBackpressureDrop RxJava2 analog</a></p>
 <p>With that answer in mind we can write something like:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">testFlow { onBackpressureDrop() }
-</code></pre></div><p>And the result will be:</p>
-<pre><code>1104
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">testFlow</span> <span class="p">{</span> <span class="n">onBackpressureDrop</span><span class="p">()</span> <span class="p">}</span>
+</span></span></code></pre></div><p>And the result will be:</p>
+<pre tabindex="0"><code>1104
 1 6
 </code></pre><h2 id="flatmap">flatMap</h2>
 <p>So far so good. We were able to find exact replacements to each backpressure strategy of RxJava in Kotlin Flow.
 Though let’s modify our test sample a bit with including flatMap operator in it.</p>
 <p>For RxJava:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">testFlowable</span>(
-    mode: BackpressureStrategy,
-    limit: Int = <span style="color:#ae81ff">10</span>
-) {
-    <span style="color:#66d9ef">val</span> latch = CountDownLatch(<span style="color:#ae81ff">1</span>)
-    <span style="color:#66d9ef">val</span> stringBuffer = StringBuffer()
-    <span style="color:#66d9ef">val</span> time = System.currentTimeMillis()
-
-    flowable(delay = <span style="color:#ae81ff">100</span>, mode = mode, limit = limit)
-        .subscribeOn(Schedulers.io())
-        .observeOn(Schedulers.computation(), <span style="color:#66d9ef">false</span>, <span style="color:#ae81ff">1</span>)
-        .map { doWorkBlocking(i = <span style="color:#66d9ef">it</span>, delay = <span style="color:#ae81ff">200</span>) }
-        .flatMap {
-            Flowable.just(<span style="color:#66d9ef">it</span>)
-                .map { doWorkBlocking(i = <span style="color:#66d9ef">it</span>, delay = <span style="color:#ae81ff">300</span>) }
-        }
-        .doOnComplete { latch.countDown() }
-        .subscribe {
-            stringBuffer.append(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74"> &#34;</span>)
-        }
-
-    latch.await()
-
-    println((System.currentTimeMillis() - time))
-    println(stringBuffer.toString())
-}
-</code></pre></div><p>And for Kotlin Flow:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">testFlow</span>(limit: Int = <span style="color:#ae81ff">10</span>, onBackpressure: Flow&lt;Int&gt;.() <span style="color:#f92672">-&gt;</span> Flow&lt;Int&gt;) {
-
-    <span style="color:#66d9ef">val</span> latch = CountDownLatch(<span style="color:#ae81ff">1</span>)
-    <span style="color:#66d9ef">val</span> time = System.currentTimeMillis()
-
-    <span style="color:#66d9ef">val</span> stringBuffer = StringBuffer()
-
-    CoroutineScope(Job() + Dispatchers.Default).launch {
-
-        flow(timeout = <span style="color:#ae81ff">100</span>, limit = limit)
-            .flowOn(Dispatchers.IO)
-            .onBackpressure()
-            .map { doWorkDelay(i = <span style="color:#66d9ef">it</span>, timeout = <span style="color:#ae81ff">200</span>) }
-            .flatMapMerge {
-                flowOf(<span style="color:#66d9ef">it</span>)
-                    .map { doWorkDelay(i = <span style="color:#66d9ef">it</span>, timeout = <span style="color:#ae81ff">300</span>) }
-            }
-            .onCompletion { latch.countDown() }
-            .collect {
-                stringBuffer.append(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74"> &#34;</span>)
-            }
-    }
-
-    latch.await()
-
-    println((System.currentTimeMillis() - time))
-    println(stringBuffer.toString())
-}
-</code></pre></div><p>Our expectation is that nothing should be changed, as we’ve just made flatMap over statically done map.
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">testFlowable</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">mode</span><span class="p">:</span> <span class="n">BackpressureStrategy</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">limit</span><span class="p">:</span> <span class="n">Int</span> <span class="p">=</span> <span class="m">10</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">latch</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">stringBuffer</span> <span class="p">=</span> <span class="n">StringBuffer</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">time</span> <span class="p">=</span> <span class="n">System</span><span class="p">.</span><span class="n">currentTimeMillis</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">flowable</span><span class="p">(</span><span class="n">delay</span> <span class="p">=</span> <span class="m">100</span><span class="p">,</span> <span class="n">mode</span> <span class="p">=</span> <span class="n">mode</span><span class="p">,</span> <span class="n">limit</span> <span class="p">=</span> <span class="n">limit</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">subscribeOn</span><span class="p">(</span><span class="n">Schedulers</span><span class="p">.</span><span class="n">io</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">observeOn</span><span class="p">(</span><span class="n">Schedulers</span><span class="p">.</span><span class="n">computation</span><span class="p">(),</span> <span class="k">false</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">doWorkBlocking</span><span class="p">(</span><span class="n">i</span> <span class="p">=</span> <span class="k">it</span><span class="p">,</span> <span class="n">delay</span> <span class="p">=</span> <span class="m">200</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">flatMap</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Flowable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="k">it</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="p">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">doWorkBlocking</span><span class="p">(</span><span class="n">i</span> <span class="p">=</span> <span class="k">it</span><span class="p">,</span> <span class="n">delay</span> <span class="p">=</span> <span class="m">300</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">doOnComplete</span> <span class="p">{</span> <span class="n">latch</span><span class="p">.</span><span class="n">countDown</span><span class="p">()</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">subscribe</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">stringBuffer</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&#34;</span><span class="si">$it</span><span class="s2"> &#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">latch</span><span class="p">.</span><span class="n">await</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">((</span><span class="n">System</span><span class="p">.</span><span class="n">currentTimeMillis</span><span class="p">()</span> <span class="p">-</span> <span class="n">time</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">(</span><span class="n">stringBuffer</span><span class="p">.</span><span class="n">toString</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>And for Kotlin Flow:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">testFlow</span><span class="p">(</span><span class="n">limit</span><span class="p">:</span> <span class="n">Int</span> <span class="p">=</span> <span class="m">10</span><span class="p">,</span> <span class="n">onBackpressure</span><span class="p">:</span> <span class="n">Flow</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;.()</span> <span class="o">-&gt;</span> <span class="n">Flow</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">latch</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">time</span> <span class="p">=</span> <span class="n">System</span><span class="p">.</span><span class="n">currentTimeMillis</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">stringBuffer</span> <span class="p">=</span> <span class="n">StringBuffer</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">CoroutineScope</span><span class="p">(</span><span class="n">Job</span><span class="p">()</span> <span class="p">+</span> <span class="n">Dispatchers</span><span class="p">.</span><span class="n">Default</span><span class="p">).</span><span class="n">launch</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">flow</span><span class="p">(</span><span class="n">timeout</span> <span class="p">=</span> <span class="m">100</span><span class="p">,</span> <span class="n">limit</span> <span class="p">=</span> <span class="n">limit</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">flowOn</span><span class="p">(</span><span class="n">Dispatchers</span><span class="p">.</span><span class="n">IO</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">onBackpressure</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">doWorkDelay</span><span class="p">(</span><span class="n">i</span> <span class="p">=</span> <span class="k">it</span><span class="p">,</span> <span class="n">timeout</span> <span class="p">=</span> <span class="m">200</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">flatMapMerge</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">flowOf</span><span class="p">(</span><span class="k">it</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">doWorkDelay</span><span class="p">(</span><span class="n">i</span> <span class="p">=</span> <span class="k">it</span><span class="p">,</span> <span class="n">timeout</span> <span class="p">=</span> <span class="m">300</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">onCompletion</span> <span class="p">{</span> <span class="n">latch</span><span class="p">.</span><span class="n">countDown</span><span class="p">()</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">collect</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">stringBuffer</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&#34;</span><span class="si">$it</span><span class="s2"> &#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">latch</span><span class="p">.</span><span class="n">await</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">((</span><span class="n">System</span><span class="p">.</span><span class="n">currentTimeMillis</span><span class="p">()</span> <span class="p">-</span> <span class="n">time</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">(</span><span class="n">stringBuffer</span><span class="p">.</span><span class="n">toString</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Our expectation is that nothing should be changed, as we’ve just made flatMap over statically done map.
 But the results will be the following. For RxJava:</p>
-<pre><code>// LATEST
+<pre tabindex="0"><code>// LATEST
 1734
 1 6 10
 // BUFFER
@@ -457,7 +326,7 @@ But the results will be the following. For RxJava:</p>
 1106
 1 6
 </code></pre><p>And for Kotlin Flow:</p>
-<pre><code>// LATEST
+<pre tabindex="0"><code>// LATEST
 1785
 1 3 5 7 9 10
 // BUFFER 
@@ -473,79 +342,39 @@ The reason about that is that each RxJava operator supports backpressure (becaus
 <p>While migration from RxJava to Kotlin Flow pay additional attention to the places where you use Flowables and backpressure and test thoroughly to not have some unexpected behavior.</p>
 <p>Happy coding.</p>
 
-  </div>
-  
+</main>
 
-<div class="navigation navigation-single">
+
+<hr/>
+
+<footer>
+<nav>
+  <ul>
     
-    <a href="/posts/2020_02_02_diving_deep_into_android_dex_bytecode/" class="navigation-prev">
-      <i aria-hidden="true" class="fa fa-chevron-left"></i>
-      <span class="navigation-tittle">Diving deep into Android Dex bytecode</span>
-    </a>
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
     
     
-    <a href="/posts/2020_02_21_vinyls_animation_with_motionlayout/" class="navigation-next">
-      <span class="navigation-tittle">Vinyls animation with MotionLayout</span>
-      <i aria-hidden="true" class="fa fa-chevron-right"></i>
-    </a>
+    <li class="menu-right"><a href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-xl"></i></a></li>
     
-</div>
-
-
-  
-
-  
+    <li class="menu-right"><a href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-xl"></i></a></li>
     
-
-
-</article>
-
-
-        </div>
-        
+    <li class="menu-right"><a href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-xl"></i></a></li>
     
-
-  
-  
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'UA-148934073-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-
-<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
-
-
+    <li class="menu-right"><a href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-xl"></i></a></li>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-        
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/bash.min.js"></script>
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/java.min.js"></script>
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
-            
-        
-    <script type="text/javascript">
-        
-        hljs.configure({languages: ["bash, java, kotlin"]});
-        
-        hljs.initHighlightingOnLoad();
-    </script>
+    <li class="menu-right"><a href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-xl"></i></a></li>
     
-
-
-
+    <li class="menu-right"><a href="https://twitter.com/krossovochkin" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a></li>
     
+    <li class="menu-right"><a href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-xl"></i></a></li>
+    
+  </ul>
+</nav>
+</footer>
 
 
+</body>
 
-    </body>
 </html>

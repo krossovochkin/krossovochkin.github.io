@@ -1,214 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
-    
-    
+<html lang="en-us">
+<head>
+  <title>Android Room Hidden Costs</title>
 
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <head>
-    <link href="https://gmpg.org/xfn/11" rel="profile">
-    <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<!-- Enable responsiveness on mobile devices -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="generator" content="Hugo 0.79.1" />
+  <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script src="https://kit.fontawesome.com/6d5aec2882.js" crossorigin="anonymous"></script>
 
-    
-    
-    
+  <link rel="stylesheet" href="/css/style.css" />
 
-<title>Android Room Hidden Costs • Vasya Drobushkov</title>
+  
+  <meta name="theme-color" content="#1e2327">
 
-
-<meta name="twitter:card" content="summary"/>
+  <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Android Room Hidden Costs"/>
 <meta name="twitter:description" content="Note on how Room might affect performance of you app if you perform many database requests."/>
-
-<meta property="og:title" content="Android Room Hidden Costs" />
-<meta property="og:description" content="Note on how Room might affect performance of you app if you perform many database requests." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://krossovochkin.com/posts/2020_12_18_android_room_hidden_costs/" />
-<meta property="article:published_time" content="2020-12-18T00:00:00+00:00" />
-<meta property="article:modified_time" content="2020-12-18T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
-
-
-    
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
-
-
-
-
-
-
-
-
-<link rel="stylesheet" href="/scss/hyde-hyde.adf8a0af011d3afb07ed907ad3295e1c99f49503bc91d395e38dc3f8dfdf4900.css" integrity="sha256-rfigrwEdOvsH7ZB60yleHJn0lQO8kdOV443D&#43;N/fSQA=">
-
-
-<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
-
-
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <!-- Icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
-    <link rel="shortcut icon" href="/favicon.png">
-    
-    
+<meta name="twitter:site" content="@krossovochkin"/>
 
 </head>
 
+<body>
 
-    <body class="theme-base-0a ">
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<header>
+<nav>
+  <ul>
     
-<div class="sidebar">
-  <div class="container ">
-    <div class="sidebar-about">
-      <span class="site__title">
-        <a href="https://krossovochkin.com/">
-        
-          Vasya Drobushkov
-        
-        </a>
-      </span>
-      
-        
-        
-        
-        <div class="author-image">
-          <img src="https://krossovochkin.com/../img/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
-        </div>
-        
-      
-      
-      <p class="site__description">
-        
-      </p>
-    </div>
-    <div class="collapsible-menu">
-      <input type="checkbox" id="menuToggle">
-      <label for="menuToggle">Vasya Drobushkov</label>
-      <div class="menu-content">
-        <div>
-	<ul class="sidebar-nav">
-		 
-		 
-			 
-				<li>
-					<a href="/posts/">
-						<span>Posts</span>
-					</a>
-				</li>
-			 
-		 
-			 
-				<li>
-					<a href="/about/">
-						<span>About</span>
-					</a>
-				</li>
-			 
-		
-	</ul>
-</div>
-
-        <section class="social">
-	
-	<a href="https://twitter.com/krossovochkin" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	<a href="https://facebook.com/vasya.drobushkov" rel="me"><i class="fab fa-facebook-f"></i></a>
-	
-	
-	<a href="https://github.com/krossovochkin" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	
-	
-	<a href="https://linkedin.com/in/vasyadrobushkov" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	<a href="https://stackoverflow.com/users/1533933/krossovochkin" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	<a href="https://t.me/krossovochkin_newsletter" rel="me"><i class="fab fa-telegram fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	
-	
-</section>
-
-      </div>
-    </div>
+    <li class="menu-left"><a href="/">Posts</a></li>
     
-<div class="copyright">
-  &copy; 2019 - 2021 Vasya Drobushkov
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    
+    <li class="menu-right"><a href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://twitter.com/krossovochkin" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-xl"></i></a></li>
+    
+  </ul>
+</nav>
+</header>
+
+<br/>
+
+<div class="meta">
+
   
-    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
-  
-</div>
-
-
-
-  </div>
-</div>
-
-        <div class="content container">
-            
-    
-<article>
-  <header>
-    <h1>Android Room Hidden Costs</h1>
-    
-    
-<div class="post__meta">
-    
-    
-      <i class="fas fa-calendar-alt"></i> Dec 18, 2020
-    
-    
-    
-    
-    
-      
-      
-          <br/>
-           <i class="fas fa-tags"></i>
-          
-          <a class="badge badge-tag" href="/tags/android">android</a>
-           
-      
-          <a class="badge badge-tag" href="/tags/sqlite">sqlite</a>
-          
-      
-    
-    
-    <br/>
-    <i class="fas fa-clock"></i> 5 min read
-</div>
-
-
-  </header>
+    <h1><span class="title">Android Room Hidden Costs</span></h1>
   
   
-  <div class="post">
-    <p><a href="https://androidweekly.net/issues/issue-445"><img src="https://img.shields.io/badge/androidweekly-445-blue#badge" alt=""></a> <a href="https://mailchi.mp/kotlinweekly/kotlin-weekly-230"><img src="https://img.shields.io/badge/kotlinweekly-230-purple#badge" alt=""></a></p>
+    <h3>December 18, 2020</h3>
+  
+
+</div>
+
+<main>
+<p><a href="https://androidweekly.net/issues/issue-445"><img src="https://img.shields.io/badge/androidweekly-445-blue#badge" alt=""></a> <a href="https://mailchi.mp/kotlinweekly/kotlin-weekly-230"><img src="https://img.shields.io/badge/kotlinweekly-230-purple#badge" alt=""></a></p>
 <h3 id="introduction">Introduction</h3>
 <p>Android Room is an awesome AndroidX library. It is great because it provides a clean way of how to deal with databases without introducing some heavy concepts. Out of the box with Room one gets:</p>
 <ul>
@@ -224,33 +96,33 @@
 <h3 id="problem">Problem</h3>
 <p>Imagine you create a TODO app. It has two simple screens: a list of TODO items and details of a single TODO item. And for simplicity let&rsquo;s say we have only id and title in our TODO item.
 Our app works always offline. We create two simple screens - probably fragments. To get data on the screen we request a Database. Our DAO will be like:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Dao</span>
-<span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">TodoDao</span> {
-    
-    <span style="color:#a6e22e">@Query</span>(<span style="color:#e6db74">&#34;SELECT * FROM items&#34;</span>)
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getItems</span>(): List&lt;TodoItem&gt;
-    
-    <span style="color:#a6e22e">@Query</span>(<span style="color:#e6db74">&#34;SELECT * FROM items WHERE id=:id&#34;</span>)
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getItem</span>(id: Int): TodoItem
-    
-    <span style="color:#a6e22e">@Insert</span>
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">addItem</span>(item: TodoItem)
-}
-</code></pre></div><p>Pretty simple. Our app works well. We open the list, navigate from it to the details screen, and after modification, we re-query our list to show updated list UI. Everything is cool.<br>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="nd">@Dao</span>
+</span></span><span class="line"><span class="cl"><span class="k">interface</span> <span class="nc">TodoDao</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="nd">@Query</span><span class="p">(</span><span class="s2">&#34;SELECT * FROM items&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">getItems</span><span class="p">():</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">TodoItem</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="nd">@Query</span><span class="p">(</span><span class="s2">&#34;SELECT * FROM items WHERE id=:id&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">getItem</span><span class="p">(</span><span class="n">id</span><span class="p">:</span> <span class="n">Int</span><span class="p">):</span> <span class="n">TodoItem</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="nd">@Insert</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">addItem</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="n">TodoItem</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Pretty simple. Our app works well. We open the list, navigate from it to the details screen, and after modification, we re-query our list to show updated list UI. Everything is cool.<br>
 But we see here an option to use reactive streams. Why re-query something manually if we can just subscribe to our Database on the list screen and if something changed immediately update our UI. So we modify our DAO to reflect this:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Dao</span>
-<span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">TodoDao</span> {
-    
-    <span style="color:#a6e22e">@Query</span>(<span style="color:#e6db74">&#34;SELECT * FROM items&#34;</span>)
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getItems</span>(): Observable&lt;TodoItem&gt;
-    
-    <span style="color:#a6e22e">@Query</span>(<span style="color:#e6db74">&#34;SELECT * FROM items WHERE id=:id&#34;</span>)
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getItem</span>(id: Int): TodoItem
-    
-    <span style="color:#a6e22e">@Insert</span>
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">addItem</span>(item: TodoItem)
-}
-</code></pre></div><p>Let&rsquo;s look at how it works under the hood.<br>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="nd">@Dao</span>
+</span></span><span class="line"><span class="cl"><span class="k">interface</span> <span class="nc">TodoDao</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="nd">@Query</span><span class="p">(</span><span class="s2">&#34;SELECT * FROM items&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">getItems</span><span class="p">():</span> <span class="n">Observable</span><span class="p">&lt;</span><span class="n">TodoItem</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="nd">@Query</span><span class="p">(</span><span class="s2">&#34;SELECT * FROM items WHERE id=:id&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">getItem</span><span class="p">(</span><span class="n">id</span><span class="p">:</span> <span class="n">Int</span><span class="p">):</span> <span class="n">TodoItem</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="nd">@Insert</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">addItem</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="n">TodoItem</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Let&rsquo;s look at how it works under the hood.<br>
 The core thing that supports reactiveness is <code>InvalidationTracker</code>. It works the following way:</p>
 <ul>
 <li><code>InvalidationTracker</code> has its own internal table <code>room_table_modification_log</code>, where it keeps track of invalidated tables.</li>
@@ -267,55 +139,55 @@ The core thing that supports reactiveness is <code>InvalidationTracker</code>. I
 <p>So far so good. For our case it works well, but what if we have something more complicated. For example, we have a location tracking app. We subscribe for location changes and write them to a Database, so we can draw the actual path on the map. To draw the path we observe location changes in our database. We might have many location changes to be inserted in the database for a small-time. Having an Observable here might become an issue as not only we&rsquo;ll have to re-query each time but also <code>InvalidationTracker</code> will query its internal table on each transaction end. It might affect performance.</p>
 <h3 id="re-query-optimization">Re-query optimization</h3>
 <p>As we control writes to the database (only our app, and probably some particular class writes to the database) we can create some proxy controller, which will keep track of the latest changes being made and keep relevant information in memory. This allows us to have a Database as a backup for our in-memory solution. And instead of having Observable in DAO we instead might have it in the proxy controller:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ProxyController</span>(<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> dao: LocationDao) {
-
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> locations: MutableList&lt;LocationData&gt; = dao.getLocations().toMutableList()
-
-    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> changesSubject = PublishSubject.create&lt;Unit&gt;()
-    
-    <span style="color:#66d9ef">val</span> locationsObservable: Observable&lt;LocationData&gt;
-        <span style="color:#66d9ef">get</span>() = changesSubject.map { locations }
-        
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">addLocation</span>(location: LocationData) {
-        locations <span style="color:#f92672">+=</span> location
-        dao.addLocation(location)
-        changesSubject.onNext(Unit)
-    }
-}
-</code></pre></div><p>And our DAO will be:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@Dao</span>
-<span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">LocationDao</span> {
-
-    <span style="color:#a6e22e">@Query</span>(<span style="color:#e6db74">&#34;SELECT * FROM locations&#34;</span>)
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">getLocations</span>(): List&lt;LocationData&gt;
-    
-    <span style="color:#a6e22e">@Insert</span>
-    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">addLocation</span>(location: LocationData)
-}
-</code></pre></div><p>This way we removed the necessity in re-querying the Database on each write improving performance. Also, we can remove the dependency on the Room RxJava artifact.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">ProxyController</span><span class="p">(</span><span class="k">private</span> <span class="k">val</span> <span class="py">dao</span><span class="p">:</span> <span class="n">LocationDao</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">private</span> <span class="k">val</span> <span class="py">locations</span><span class="p">:</span> <span class="n">MutableList</span><span class="p">&lt;</span><span class="n">LocationData</span><span class="p">&gt;</span> <span class="p">=</span> <span class="n">dao</span><span class="p">.</span><span class="n">getLocations</span><span class="p">().</span><span class="n">toMutableList</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">private</span> <span class="k">val</span> <span class="py">changesSubject</span> <span class="p">=</span> <span class="n">PublishSubject</span><span class="p">.</span><span class="n">create</span><span class="p">&lt;</span><span class="n">Unit</span><span class="p">&gt;()</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">locationsObservable</span><span class="p">:</span> <span class="n">Observable</span><span class="p">&lt;</span><span class="n">LocationData</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">get</span><span class="p">()</span> <span class="p">=</span> <span class="n">changesSubject</span><span class="p">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">locations</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">addLocation</span><span class="p">(</span><span class="n">location</span><span class="p">:</span> <span class="n">LocationData</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">locations</span> <span class="o">+=</span> <span class="n">location</span>
+</span></span><span class="line"><span class="cl">        <span class="n">dao</span><span class="p">.</span><span class="n">addLocation</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">changesSubject</span><span class="p">.</span><span class="n">onNext</span><span class="p">(</span><span class="n">Unit</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>And our DAO will be:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="nd">@Dao</span>
+</span></span><span class="line"><span class="cl"><span class="k">interface</span> <span class="nc">LocationDao</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nd">@Query</span><span class="p">(</span><span class="s2">&#34;SELECT * FROM locations&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">getLocations</span><span class="p">():</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">LocationData</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="nd">@Insert</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">addLocation</span><span class="p">(</span><span class="n">location</span><span class="p">:</span> <span class="n">LocationData</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>This way we removed the necessity in re-querying the Database on each write improving performance. Also, we can remove the dependency on the Room RxJava artifact.</p>
 <p>To verify that we can debug SQLite queries to our Database by:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">adb shell setprop log.tag.SQLiteLog V
-adb shell setprop log.tag.SQLiteStatements V
-</code></pre></div><p>But even after doing that we still can see that <code>InvalidationTracker</code> queries its internal table:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">V/SQLiteStatements: /data/user/0/com.krossovochkin.test/databases/locations.db: <span style="color:#e6db74">&#34;BEGIN EXCLUSIVE;&#34;</span>
-V/SQLiteStatements: /data/user/0/com.krossovochkin.test/databases/locations.db: <span style="color:#e6db74">&#34;SELECT * FROM room_table_modification_log WHERE invalidated = 1;&#34;</span>
-V/SQLiteStatements: /data/user/0/com.krossovochkin.test/databases/locations.db: <span style="color:#e6db74">&#34;COMMIT;&#34;</span>
-</code></pre></div><p>But we don&rsquo;t use reactive streams and don&rsquo;t use <code>InvalidationTracker</code>. That means that we are not interested in <code>InvalidationTracker</code> to query the internal table as well. How can we remove that overhead as well?</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">adb shell setprop log.tag.SQLiteLog V
+</span></span><span class="line"><span class="cl">adb shell setprop log.tag.SQLiteStatements V
+</span></span></code></pre></div><p>But even after doing that we still can see that <code>InvalidationTracker</code> queries its internal table:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">V/SQLiteStatements: /data/user/0/com.krossovochkin.test/databases/locations.db: <span class="s2">&#34;BEGIN EXCLUSIVE;&#34;</span>
+</span></span><span class="line"><span class="cl">V/SQLiteStatements: /data/user/0/com.krossovochkin.test/databases/locations.db: <span class="s2">&#34;SELECT * FROM room_table_modification_log WHERE invalidated = 1;&#34;</span>
+</span></span><span class="line"><span class="cl">V/SQLiteStatements: /data/user/0/com.krossovochkin.test/databases/locations.db: <span class="s2">&#34;COMMIT;&#34;</span>
+</span></span></code></pre></div><p>But we don&rsquo;t use reactive streams and don&rsquo;t use <code>InvalidationTracker</code>. That means that we are not interested in <code>InvalidationTracker</code> to query the internal table as well. How can we remove that overhead as well?</p>
 <h3 id="disable-invalidationtracker">Disable <code>InvalidationTracker</code></h3>
 <p>In Room, there is no way to effectively disable <code>InvalidationTracker</code>. At least I don&rsquo;t know whether such a possibility exists. There seems no public API for this. Let&rsquo;s try to disable it on our own.</p>
 <p>The code which queries the internal table is located in <code>mRefreshRunnable</code> which is triggered e.g. at the end of each transaction. <code>InvalidationTracker</code> is an abstract class and is created in the code generated for our Database by kapt.<br>
 The solution would be to disable kapt, copy-paste generated code to our sources, and update creating <code>InvalidationTracker</code> stubbing refresh methods:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Override</span>
-<span style="color:#a6e22e">@NonNull</span>
-<span style="color:#66d9ef">protected</span> InvalidationTracker <span style="color:#a6e22e">createInvalidationTracker</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> InvalidationTracker<span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;locations&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">refreshVersionsAsync</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#f92672">}</span>
-        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">refreshVersionsSync</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-        <span style="color:#f92672">}</span>
-    <span style="color:#f92672">};</span>
-<span style="color:#f92672">}</span>
-</code></pre></div><p>By doing that we can verify in SqlLiteStatements that <code>InvalidationTracker</code> queries its internal table no more.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Override</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@NonNull</span>
+</span></span><span class="line"><span class="cl"><span class="kd">protected</span> <span class="n">InvalidationTracker</span> <span class="nf">createInvalidationTracker</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">new</span> <span class="n">InvalidationTracker</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="s">&#34;locations&#34;</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">refreshVersionsAsync</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">refreshVersionsSync</span><span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">};</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><p>By doing that we can verify in SqlLiteStatements that <code>InvalidationTracker</code> queries its internal table no more.</p>
 <blockquote>
 <p><strong>UPDATE</strong><br>
 Thanks to <a href="https://twitter.com/yigitboyar">Yigit Boyar</a> for pointing out that internal table Room uses is in-memory. Indeed, that table is temp. So, the most of the performance impact is related to SQLite triggers, not querying internal temp table. And triggers are not created unless you subscribe to some Observable declared.<br>
@@ -326,79 +198,39 @@ Though the last is still not free, as querying uses android Cursor, which alloca
 And don&rsquo;t forget to profile your app, identify problems, and try to find a way to solve them.</p>
 <p>Happy coding</p>
 
-  </div>
-  
+</main>
 
-<div class="navigation navigation-single">
+
+<hr/>
+
+<footer>
+<nav>
+  <ul>
     
-    <a href="/posts/2020_10_31_boolean_not/" class="navigation-prev">
-      <i aria-hidden="true" class="fa fa-chevron-left"></i>
-      <span class="navigation-tittle">Boolean not</span>
-    </a>
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
     
     
-    <a href="/posts/2021_01_16_optimize_reading_articles_experience/" class="navigation-next">
-      <span class="navigation-tittle">Optimize reading articles experience</span>
-      <i aria-hidden="true" class="fa fa-chevron-right"></i>
-    </a>
+    <li class="menu-right"><a href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-xl"></i></a></li>
     
-</div>
-
-
-  
-
-  
+    <li class="menu-right"><a href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-xl"></i></a></li>
     
-
-
-</article>
-
-
-        </div>
-        
+    <li class="menu-right"><a href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-xl"></i></a></li>
     
-
-  
-  
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'UA-148934073-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-
-<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
-
-
+    <li class="menu-right"><a href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-xl"></i></a></li>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-        
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/bash.min.js"></script>
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/java.min.js"></script>
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
-            
-        
-    <script type="text/javascript">
-        
-        hljs.configure({languages: ["bash, java, kotlin"]});
-        
-        hljs.initHighlightingOnLoad();
-    </script>
+    <li class="menu-right"><a href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-xl"></i></a></li>
     
-
-
-
+    <li class="menu-right"><a href="https://twitter.com/krossovochkin" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a></li>
     
+    <li class="menu-right"><a href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-xl"></i></a></li>
+    
+  </ul>
+</nav>
+</footer>
 
 
+</body>
 
-    </body>
 </html>

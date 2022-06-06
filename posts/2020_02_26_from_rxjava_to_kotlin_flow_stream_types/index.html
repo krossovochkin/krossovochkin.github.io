@@ -1,217 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
-    
-    
+<html lang="en-us">
+<head>
+  <title>From RxJava to Kotlin Flow: Stream Types</title>
 
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <head>
-    <link href="https://gmpg.org/xfn/11" rel="profile">
-    <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<!-- Enable responsiveness on mobile devices -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="generator" content="Hugo 0.79.1" />
+  <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script src="https://kit.fontawesome.com/6d5aec2882.js" crossorigin="anonymous"></script>
 
-    
-    
-    
+  <link rel="stylesheet" href="/css/style.css" />
 
-<title>From RxJava to Kotlin Flow: Stream Types • Vasya Drobushkov</title>
+  
+  <meta name="theme-color" content="#1e2327">
 
-
-<meta name="twitter:card" content="summary"/>
+  <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="From RxJava to Kotlin Flow: Stream Types"/>
 <meta name="twitter:description" content="Comparing Stream Types in RxJava and Kotlin Flow"/>
-
-<meta property="og:title" content="From RxJava to Kotlin Flow: Stream Types" />
-<meta property="og:description" content="Comparing Stream Types in RxJava and Kotlin Flow" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://krossovochkin.com/posts/2020_02_26_from_rxjava_to_kotlin_flow_stream_types/" />
-<meta property="article:published_time" content="2020-02-26T00:00:00+00:00" />
-<meta property="article:modified_time" content="2020-02-26T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
-
-
-    
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
-
-
-
-
-
-
-
-
-<link rel="stylesheet" href="/scss/hyde-hyde.adf8a0af011d3afb07ed907ad3295e1c99f49503bc91d395e38dc3f8dfdf4900.css" integrity="sha256-rfigrwEdOvsH7ZB60yleHJn0lQO8kdOV443D&#43;N/fSQA=">
-
-
-<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
-
-
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <!-- Icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
-    <link rel="shortcut icon" href="/favicon.png">
-    
-    
+<meta name="twitter:site" content="@krossovochkin"/>
 
 </head>
 
+<body>
 
-    <body class="theme-base-0a ">
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<header>
+<nav>
+  <ul>
     
-<div class="sidebar">
-  <div class="container ">
-    <div class="sidebar-about">
-      <span class="site__title">
-        <a href="https://krossovochkin.com/">
-        
-          Vasya Drobushkov
-        
-        </a>
-      </span>
-      
-        
-        
-        
-        <div class="author-image">
-          <img src="https://krossovochkin.com/../img/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
-        </div>
-        
-      
-      
-      <p class="site__description">
-        
-      </p>
-    </div>
-    <div class="collapsible-menu">
-      <input type="checkbox" id="menuToggle">
-      <label for="menuToggle">Vasya Drobushkov</label>
-      <div class="menu-content">
-        <div>
-	<ul class="sidebar-nav">
-		 
-		 
-			 
-				<li>
-					<a href="/posts/">
-						<span>Posts</span>
-					</a>
-				</li>
-			 
-		 
-			 
-				<li>
-					<a href="/about/">
-						<span>About</span>
-					</a>
-				</li>
-			 
-		
-	</ul>
-</div>
-
-        <section class="social">
-	
-	<a href="https://twitter.com/krossovochkin" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	<a href="https://facebook.com/vasya.drobushkov" rel="me"><i class="fab fa-facebook-f"></i></a>
-	
-	
-	<a href="https://github.com/krossovochkin" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	
-	
-	<a href="https://linkedin.com/in/vasyadrobushkov" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	<a href="https://stackoverflow.com/users/1533933/krossovochkin" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	<a href="https://t.me/krossovochkin_newsletter" rel="me"><i class="fab fa-telegram fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	
-	
-</section>
-
-      </div>
-    </div>
+    <li class="menu-left"><a href="/">Posts</a></li>
     
-<div class="copyright">
-  &copy; 2019 - 2021 Vasya Drobushkov
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    
+    <li class="menu-right"><a href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://twitter.com/krossovochkin" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-xl"></i></a></li>
+    
+  </ul>
+</nav>
+</header>
+
+<br/>
+
+<div class="meta">
+
   
-    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
-  
-</div>
-
-
-
-  </div>
-</div>
-
-        <div class="content container">
-            
-    
-<article>
-  <header>
-    <h1>From RxJava to Kotlin Flow: Stream Types</h1>
-    
-    
-<div class="post__meta">
-    
-    
-      <i class="fas fa-calendar-alt"></i> Feb 26, 2020
-    
-    
-    
-    
-    
-      
-      
-          <br/>
-           <i class="fas fa-tags"></i>
-          
-          <a class="badge badge-tag" href="/tags/rxjava">rxjava</a>
-           
-      
-          <a class="badge badge-tag" href="/tags/kotlin">kotlin</a>
-           
-      
-          <a class="badge badge-tag" href="/tags/kotlin-flow">kotlin flow</a>
-          
-      
-    
-    
-    <br/>
-    <i class="fas fa-clock"></i> 12 min read
-</div>
-
-
-  </header>
+    <h1><span class="title">From RxJava to Kotlin Flow: Stream Types</span></h1>
   
   
-  <div class="post">
-    <p><img src="https://images.unsplash.com/photo-1516192891955-70642cf1ac88?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1357&amp;q=80" alt="Source"><em><a href="https://unsplash.com/photos/JcimvPDC3as">Source</a></em></p>
+    <h3>February 26, 2020</h3>
+  
+
+</div>
+
+<main>
+<p><img src="https://images.unsplash.com/photo-1516192891955-70642cf1ac88?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1357&amp;q=80" alt="Source"><em><a href="https://unsplash.com/photos/JcimvPDC3as">Source</a></em></p>
 <blockquote>
 <p>This post is part of series of comparing RxJava to Kotlin Flow. Previous articles were about <a href="https://proandroiddev.com/from-rxjava-2-to-kotlin-flow-threading-8618867e1955">Threading</a>, <a href="https://proandroiddev.com/from-rxjava-to-kotlin-flow-backpressure-d1fb91e6dea8">Backpressure</a>, <a href="https://proandroiddev.com/from-rxjava-to-kotlin-flow-error-handling-da1f6a4f2708">Error Handling</a></p>
 </blockquote>
@@ -286,65 +155,65 @@ The example will be the following:</p>
 <p>As one can see here we&rsquo;ll have three stream types in this example: Maybe will represent cache (as it might have value, but might have not), Single will represent network (as it will always return us single value), Completable will represent storing data into cache (as we don&rsquo;t care about result, we just need to get the callback that work was completed).</p>
 <p>We&rsquo;ll start from defining few helper functions which will emulate requests to cache and network.</p>
 <p>For RxJava it will be:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">readCacheRx</span>(<span style="color:#66d9ef">data</span>: String? = <span style="color:#66d9ef">null</span>): Maybe&lt;String&gt; {
-    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">if</span> (<span style="color:#66d9ef">data</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
-        Maybe
-            .just(<span style="color:#66d9ef">data</span>)
-            .delay(<span style="color:#ae81ff">100</span>, TimeUnit.MILLISECONDS)
-            .doOnSuccess { println(<span style="color:#e6db74">&#34;read from cache: </span><span style="color:#e6db74">$data</span><span style="color:#e6db74">&#34;</span>) }
-    } <span style="color:#66d9ef">else</span> {
-        Maybe
-            .empty&lt;String&gt;()
-            .delay(<span style="color:#ae81ff">100</span>, TimeUnit.MILLISECONDS)
-            .doOnComplete { println(<span style="color:#e6db74">&#34;read from cache: </span><span style="color:#e6db74">$data</span><span style="color:#e6db74">&#34;</span>) }
-    }
-}
-
-<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">readNetworkRx</span>(<span style="color:#66d9ef">data</span>: String = <span style="color:#e6db74">&#34;data&#34;</span>): Single&lt;String&gt; {
-    <span style="color:#66d9ef">return</span> Single
-        .just(<span style="color:#66d9ef">data</span>)
-        .delay(<span style="color:#ae81ff">100</span>, TimeUnit.MILLISECONDS)
-        .doOnSuccess { println(<span style="color:#e6db74">&#34;read from network: </span><span style="color:#e6db74">$data</span><span style="color:#e6db74">&#34;</span>) }
-}
-
-<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">saveCacheRx</span>(<span style="color:#66d9ef">data</span>: String): Completable {
-    <span style="color:#66d9ef">return</span> Completable
-        .fromAction {
-            println(<span style="color:#e6db74">&#34;saved to cache: </span><span style="color:#e6db74">$data</span><span style="color:#e6db74">&#34;</span>)
-        }
-        .delay(<span style="color:#ae81ff">100</span>, TimeUnit.MILLISECONDS)
-}
-</code></pre></div><p><strong>NOTE:</strong> the code could be shorter if we created everything with #create method, though it doesn&rsquo;t matter in the scope of this article</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">readCacheRx</span><span class="p">(</span><span class="k">data</span><span class="p">:</span> <span class="n">String</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span><span class="p">):</span> <span class="n">Maybe</span><span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">if</span> <span class="p">(</span><span class="k">data</span> <span class="o">!=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Maybe</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="k">data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">delay</span><span class="p">(</span><span class="m">100</span><span class="p">,</span> <span class="n">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">doOnSuccess</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;read from cache: </span><span class="si">$data</span><span class="s2">&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Maybe</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">empty</span><span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;()</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">delay</span><span class="p">(</span><span class="m">100</span><span class="p">,</span> <span class="n">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">doOnComplete</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;read from cache: </span><span class="si">$data</span><span class="s2">&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">readNetworkRx</span><span class="p">(</span><span class="k">data</span><span class="p">:</span> <span class="n">String</span> <span class="p">=</span> <span class="s2">&#34;data&#34;</span><span class="p">):</span> <span class="n">Single</span><span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">Single</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="k">data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">delay</span><span class="p">(</span><span class="m">100</span><span class="p">,</span> <span class="n">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">doOnSuccess</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;read from network: </span><span class="si">$data</span><span class="s2">&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">saveCacheRx</span><span class="p">(</span><span class="k">data</span><span class="p">:</span> <span class="n">String</span><span class="p">):</span> <span class="n">Completable</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">Completable</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">fromAction</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">println</span><span class="p">(</span><span class="s2">&#34;saved to cache: </span><span class="si">$data</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">delay</span><span class="p">(</span><span class="m">100</span><span class="p">,</span> <span class="n">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p><strong>NOTE:</strong> the code could be shorter if we created everything with #create method, though it doesn&rsquo;t matter in the scope of this article</p>
 <p>And for Kotlin Flow:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">readCache</span>(<span style="color:#66d9ef">data</span>: String? = <span style="color:#66d9ef">null</span>): String? {
-    delay(<span style="color:#ae81ff">100</span>)
-    println(<span style="color:#e6db74">&#34;read from cache: </span><span style="color:#e6db74">$data</span><span style="color:#e6db74">&#34;</span>)
-    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">data</span>
-}
-
-<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">readNetwork</span>(<span style="color:#66d9ef">data</span>: String = <span style="color:#e6db74">&#34;data&#34;</span>): String {
-    delay(<span style="color:#ae81ff">100</span>)
-    println(<span style="color:#e6db74">&#34;read from network: </span><span style="color:#e6db74">$data</span><span style="color:#e6db74">&#34;</span>)
-    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">data</span>
-}
-
-<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">saveCache</span>(<span style="color:#66d9ef">data</span>: String) {
-    delay(<span style="color:#ae81ff">100</span>)
-    println(<span style="color:#e6db74">&#34;saved to cache: </span><span style="color:#e6db74">$data</span><span style="color:#e6db74">&#34;</span>)
-}
-</code></pre></div><p>So, we wait for some time emulating latency, then we print some debug information and return result if any.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">readCache</span><span class="p">(</span><span class="k">data</span><span class="p">:</span> <span class="n">String</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span><span class="p">):</span> <span class="n">String</span><span class="p">?</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">delay</span><span class="p">(</span><span class="m">100</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">(</span><span class="s2">&#34;read from cache: </span><span class="si">$data</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">data</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">private</span> <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">readNetwork</span><span class="p">(</span><span class="k">data</span><span class="p">:</span> <span class="n">String</span> <span class="p">=</span> <span class="s2">&#34;data&#34;</span><span class="p">):</span> <span class="n">String</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">delay</span><span class="p">(</span><span class="m">100</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">(</span><span class="s2">&#34;read from network: </span><span class="si">$data</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">data</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">private</span> <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">saveCache</span><span class="p">(</span><span class="k">data</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">delay</span><span class="p">(</span><span class="m">100</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">(</span><span class="s2">&#34;saved to cache: </span><span class="si">$data</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>So, we wait for some time emulating latency, then we print some debug information and return result if any.</p>
 <p>Now let&rsquo;s look at the RxJava implementation of given example:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> latch = CountDownLatch(<span style="color:#ae81ff">1</span>)
-
-readCacheRx(<span style="color:#66d9ef">null</span>) <span style="color:#75715e">// pass &#34;data&#34; to check when cache has data
-</span><span style="color:#75715e"></span>    .switchIfEmpty(readNetworkRx())
-    .flatMapCompletable { saveCacheRx(<span style="color:#66d9ef">it</span>) }
-    .doOnComplete { latch.countDown() }
-    .subscribeOn(io())
-    .subscribe()
-
-latch.await()
-</code></pre></div><p>So, what we do here is:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">latch</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">readCacheRx</span><span class="p">(</span><span class="k">null</span><span class="p">)</span> <span class="c1">// pass &#34;data&#34; to check when cache has data
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">.</span><span class="n">switchIfEmpty</span><span class="p">(</span><span class="n">readNetworkRx</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">flatMapCompletable</span> <span class="p">{</span> <span class="n">saveCacheRx</span><span class="p">(</span><span class="k">it</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">doOnComplete</span> <span class="p">{</span> <span class="n">latch</span><span class="p">.</span><span class="n">countDown</span><span class="p">()</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">subscribeOn</span><span class="p">(</span><span class="n">io</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">subscribe</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">latch</span><span class="p">.</span><span class="n">await</span><span class="p">()</span>
+</span></span></code></pre></div><p>So, what we do here is:</p>
 <ul>
 <li>
 <p>read data from cache (providing stubbed result)</p>
@@ -357,20 +226,20 @@ latch.await()
 </li>
 </ul>
 <p>The result printed into console for case when there is no data cached will be:</p>
-<pre><code>read from cache: null
+<pre tabindex="0"><code>read from cache: null
 read from network: data
 saved to cache: data
 </code></pre><p>And if there was cache:</p>
-<pre><code>read from cache: cached
+<pre tabindex="0"><code>read from cache: cached
 saved to cache: cached
 </code></pre><p>Now let&rsquo;s take a look at Kotlin example. It won&rsquo;t include any reactiveness therefore it won&rsquo;t use Kotlin Flow:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlocking {
-    withContext(Dispatchers.IO) {
-        <span style="color:#66d9ef">val</span> data = readCache() <span style="color:#f92672">?:</span> readNetwork()
-        saveCache(<span style="color:#66d9ef">data</span>)
-    }
-}
-</code></pre></div><p>It looks more concise, readability is much better.
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">runBlocking</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">withContext</span><span class="p">(</span><span class="n">Dispatchers</span><span class="p">.</span><span class="n">IO</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">val</span> <span class="py">data</span> <span class="p">=</span> <span class="n">readCache</span><span class="p">()</span> <span class="o">?:</span> <span class="n">readNetwork</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">saveCache</span><span class="p">(</span><span class="k">data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>It looks more concise, readability is much better.
 So here Kotlin coroutines look like a real winner.</p>
 <blockquote>
 <p>If you don&rsquo;t need reactive streams, use kotlin coroutines for async code. It is concise and has great readability</p>
@@ -379,61 +248,61 @@ So here Kotlin coroutines look like a real winner.</p>
 <p>In both RxJava and Kotlin Flow there are general reactive types to represent stream which might have from 0 to (almost) infinite number of events (followed by completion with or without error). In RxJava it is Observable/Flowable, and in Kotlin Flow it is Flow.
 If we need to switch from one stream to another we can use xMap operators in RxJava (flatMap, concatMap etc.) and flatMapX operators in Kotlin Flow (flatMapMerge, flatMapConcat etc.).</p>
 <p>Examples of such can be like this, for RxJava:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">Observable.just(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
-    .flatMap { Observable.just (<span style="color:#e6db74">&#34;a&#34;</span>, <span style="color:#e6db74">&#34;b&#34;</span>, <span style="color:#e6db74">&#34;c&#34;</span>) }
-    .subscribe()
-</code></pre></div><p>And for Kotlin Flow:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
-    .flatMapMerge { flowOf(<span style="color:#e6db74">&#34;a&#34;</span>, <span style="color:#e6db74">&#34;b&#34;</span>, <span style="color:#e6db74">&#34;c&#34;</span>) }
-    .collect()
-</code></pre></div><h3 id="switch-from-non-reactive-to-reactive-stream">Switch from non-reactive* to reactive stream</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">flatMap</span> <span class="p">{</span> <span class="n">Observable</span><span class="p">.</span><span class="n">just</span> <span class="p">(</span><span class="s2">&#34;a&#34;</span><span class="p">,</span> <span class="s2">&#34;b&#34;</span><span class="p">,</span> <span class="s2">&#34;c&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">subscribe</span><span class="p">()</span>
+</span></span></code></pre></div><p>And for Kotlin Flow:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">flowOf</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">flatMapMerge</span> <span class="p">{</span> <span class="n">flowOf</span><span class="p">(</span><span class="s2">&#34;a&#34;</span><span class="p">,</span> <span class="s2">&#34;b&#34;</span><span class="p">,</span> <span class="s2">&#34;c&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">collect</span><span class="p">()</span>
+</span></span></code></pre></div><h3 id="switch-from-non-reactive-to-reactive-stream">Switch from non-reactive* to reactive stream</h3>
 <blockquote>
 <p><strong>NOTE:</strong> here I use ***** to emphasize that equivalents of Maybe/Completable/Single in Kotlin are not reactive streams. In RxJava they of course are.</p>
 </blockquote>
 <p>First let&rsquo;s look at RxJava. Here we&rsquo;ll have an example where we&rsquo;ll read data from cache and then switch to some general observable which will emit some value.
 In RxJava it would look like this:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> latch = CountDownLatch(<span style="color:#ae81ff">1</span>)
-
-readCacheRx()
-    .flatMapObservable { Observable.just(<span style="color:#66d9ef">it</span>) }
-    .doOnComplete {
-        println(<span style="color:#e6db74">&#34;complete&#34;</span>)
-        latch.countDown()
-    }
-    .subscribe { println(<span style="color:#e6db74">&#34;next: </span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>) }
-
-latch.await()
-</code></pre></div><p>As Maybe is reactive type, we can start our chain from it and make switch to any other reactive type.
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">latch</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">readCacheRx</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">flatMapObservable</span> <span class="p">{</span> <span class="n">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="k">it</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">doOnComplete</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">println</span><span class="p">(</span><span class="s2">&#34;complete&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">latch</span><span class="p">.</span><span class="n">countDown</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">subscribe</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;next: </span><span class="si">$it</span><span class="s2">&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">latch</span><span class="p">.</span><span class="n">await</span><span class="p">()</span>
+</span></span></code></pre></div><p>As Maybe is reactive type, we can start our chain from it and make switch to any other reactive type.
 The output will be the following:</p>
-<pre><code>read from cache: null
+<pre tabindex="0"><code>read from cache: null
 complete
 </code></pre><p>We won&rsquo;t have any value emitted because our initial stream was completed without emitting data.</p>
 <p>In order to achieve same behavior we&rsquo;ll have to wrap our suspending function into flow:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlocking {
-    flow { readCache()<span style="color:#f92672">?.</span>let { emit(<span style="color:#66d9ef">it</span>) } }
-        .flatMapMerge { flowOf(<span style="color:#66d9ef">it</span>) }
-        .onCompletion { println(<span style="color:#e6db74">&#34;complete&#34;</span>) }
-        .collect { println(<span style="color:#e6db74">&#34;next: </span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>) }
-}
-</code></pre></div><p>Other than that everything is similar, though wrapping suspending function into flow in each usage looks too verbose.
-We could wrap it once and provide it as a function, but then we&rsquo;ll loose expressivenes, because now our function will return Flow<!-- raw HTML omitted --> and from looking at method signature we&rsquo;re no longer can say whether we have actually Maybe under the hood or some general Flow.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">runBlocking</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flow</span> <span class="p">{</span> <span class="n">readCache</span><span class="p">()</span><span class="o">?.</span><span class="n">let</span> <span class="p">{</span> <span class="n">emit</span><span class="p">(</span><span class="k">it</span><span class="p">)</span> <span class="p">}</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">flatMapMerge</span> <span class="p">{</span> <span class="n">flowOf</span><span class="p">(</span><span class="k">it</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">onCompletion</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;complete&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">collect</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;next: </span><span class="si">$it</span><span class="s2">&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Other than that everything is similar, though wrapping suspending function into flow in each usage looks too verbose.
+We could wrap it once and provide it as a function, but then we&rsquo;ll loose expressivenes, because now our function will return Flow<T> and from looking at method signature we&rsquo;re no longer can say whether we have actually Maybe under the hood or some general Flow.</p>
 <h3 id="switching-from-reactive-stream-to-non-reactive">Switching from reactive stream to non-reactive</h3>
 <p>Now let&rsquo;s look at example where we&rsquo;d like to switch from reactive stream to non-reactive*.
 The example will be the following: we&rsquo;ll have stream of values and on each emit we&rsquo;ll query network. First time we&rsquo;ll do that sequentially and the second concurrently.</p>
 <p>For sequential execution in RxJava we&rsquo;ll use concatMapSingle:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> latch2 = CountDownLatch(<span style="color:#ae81ff">1</span>)
-
-Observable.just(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
-    .concatMapSingle { readNetworkRx(<span style="color:#e6db74">&#34;$</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>) }
-    .doOnComplete {
-        println(<span style="color:#e6db74">&#34;complete&#34;</span>)
-        latch2.countDown()
-    }
-    .subscribe { println(<span style="color:#e6db74">&#34;next: </span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>) }
-
-latch2.await()
-</code></pre></div><p>The result printed will be:</p>
-<pre><code>read from network: $1
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">latch2</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">concatMapSingle</span> <span class="p">{</span> <span class="n">readNetworkRx</span><span class="p">(</span><span class="s2">&#34;$</span><span class="si">$it</span><span class="s2">&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">doOnComplete</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">println</span><span class="p">(</span><span class="s2">&#34;complete&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">latch2</span><span class="p">.</span><span class="n">countDown</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">subscribe</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;next: </span><span class="si">$it</span><span class="s2">&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">latch2</span><span class="p">.</span><span class="n">await</span><span class="p">()</span>
+</span></span></code></pre></div><p>The result printed will be:</p>
+<pre tabindex="0"><code>read from network: $1
 next: $1
 read from network: $2
 next: $2
@@ -442,19 +311,19 @@ next: $3
 complete
 </code></pre><p>Notice that we first process first item till the very end before starting to work with second item.</p>
 <p>For concurrent version we&rsquo;ll use flatMapSingle:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> latch1 = CountDownLatch(<span style="color:#ae81ff">1</span>)
-
-Observable.just(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
-    .flatMapSingle { readNetworkRx(<span style="color:#e6db74">&#34;$</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>) }
-    .doOnComplete {
-        println(<span style="color:#e6db74">&#34;complete&#34;</span>)
-        latch1.countDown()
-    }
-    .subscribe { println(<span style="color:#e6db74">&#34;next: </span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>) }
-
-latch1.await()
-</code></pre></div><p>And the result will be:</p>
-<pre><code>read from network: $2
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">latch1</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">flatMapSingle</span> <span class="p">{</span> <span class="n">readNetworkRx</span><span class="p">(</span><span class="s2">&#34;$</span><span class="si">$it</span><span class="s2">&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">doOnComplete</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">println</span><span class="p">(</span><span class="s2">&#34;complete&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">latch1</span><span class="p">.</span><span class="n">countDown</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">subscribe</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;next: </span><span class="si">$it</span><span class="s2">&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">latch1</span><span class="p">.</span><span class="n">await</span><span class="p">()</span>
+</span></span></code></pre></div><p>And the result will be:</p>
+<pre tabindex="0"><code>read from network: $2
 read from network: $1
 read from network: $3
 next: $2
@@ -463,14 +332,14 @@ next: $3
 complete
 </code></pre><p>As we see we first started querying network concurrently and then process items when they retrieved. Also note that order is not defined in such a case and we can get any kind of order here (not just 1 then 2, then 3).</p>
 <p>For Kotlin Flow we again need to wrap our suspending functions into Flow. Then for sequential execution we&rsquo;ll use flatMapConcat and for concurrent — flatMapMerge:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlocking {
-    flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
-        .flatMapConcat { flow { emit(readNetwork(<span style="color:#e6db74">&#34;$</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>)) } }
-        .onCompletion { println(<span style="color:#e6db74">&#34;complete&#34;</span>) }
-        .collect { println(<span style="color:#e6db74">&#34;next: </span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>) }
-}
-</code></pre></div><p>Result for sequential execution:</p>
-<pre><code>read from network: $1
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">runBlocking</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flowOf</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">flatMapConcat</span> <span class="p">{</span> <span class="n">flow</span> <span class="p">{</span> <span class="n">emit</span><span class="p">(</span><span class="n">readNetwork</span><span class="p">(</span><span class="s2">&#34;$</span><span class="si">$it</span><span class="s2">&#34;</span><span class="p">))</span> <span class="p">}</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">onCompletion</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;complete&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">collect</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;next: </span><span class="si">$it</span><span class="s2">&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Result for sequential execution:</p>
+<pre tabindex="0"><code>read from network: $1
 next: $1
 read from network: $2
 next: $2
@@ -478,14 +347,14 @@ read from network: $3
 next: $3
 complete
 </code></pre><p>And for concurrent:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlocking {
-    flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
-        .flatMapMerge { flow { emit(readNetwork(<span style="color:#e6db74">&#34;$</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>)) } }
-        .onCompletion { println(<span style="color:#e6db74">&#34;complete&#34;</span>) }
-        .collect { println(<span style="color:#e6db74">&#34;next: </span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>) }
-}
-</code></pre></div><p>Result:</p>
-<pre><code>read from network: $1
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">runBlocking</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flowOf</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">flatMapMerge</span> <span class="p">{</span> <span class="n">flow</span> <span class="p">{</span> <span class="n">emit</span><span class="p">(</span><span class="n">readNetwork</span><span class="p">(</span><span class="s2">&#34;$</span><span class="si">$it</span><span class="s2">&#34;</span><span class="p">))</span> <span class="p">}</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">onCompletion</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;complete&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">collect</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;next: </span><span class="si">$it</span><span class="s2">&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Result:</p>
+<pre tabindex="0"><code>read from network: $1
 read from network: $2
 read from network: $3
 next: $1
@@ -493,14 +362,14 @@ next: $2
 next: $3
 complete
 </code></pre><p>Again we have some visual overhead in Kotlin Flow, as we have to wrap everything into flow. But we can try to make implementation without that. Instead we&rsquo;ll use map method where we&rsquo;ll make our background work:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlocking {
-    flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
-        .map { readNetwork(<span style="color:#e6db74">&#34;$</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>) }
-        .onCompletion { println(<span style="color:#e6db74">&#34;complete&#34;</span>) }
-        .collect { println(<span style="color:#e6db74">&#34;next: </span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>) }
-}
-</code></pre></div><p>The result will be:</p>
-<pre><code>read from network: $1
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">runBlocking</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flowOf</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">readNetwork</span><span class="p">(</span><span class="s2">&#34;$</span><span class="si">$it</span><span class="s2">&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">onCompletion</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;complete&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">collect</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;next: </span><span class="si">$it</span><span class="s2">&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>The result will be:</p>
+<pre tabindex="0"><code>read from network: $1
 next: $1
 read from network: $2
 next: $2
@@ -513,20 +382,20 @@ Additional note is that usually functions like map, filter etc. are considered a
 <p>One additional thing I&rsquo;d like to point to is about issues which might happen with completion of the stream. To emphasize that let&rsquo;s take a look at another example.</p>
 <p>In that example we&rsquo;ll have some stream of items, for each item we&rsquo;ll trigger saving it to cache. Then after all items were successfully cached, we&rsquo;ll switch to another stream which will provide us some final result (say &ldquo;done&rdquo; word).</p>
 <p>In RxJava it would look like this:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> latch = CountDownLatch(<span style="color:#ae81ff">1</span>)
-
-Observable.just(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
-    .flatMapCompletable { saveCacheRx(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>) }
-    .andThen(Observable.just(<span style="color:#e6db74">&#34;done&#34;</span>))
-    .doOnComplete {
-        println(<span style="color:#e6db74">&#34;complete&#34;</span>)
-        latch.countDown()
-    }
-    .subscribe { println(<span style="color:#e6db74">&#34;next: </span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>) }
-
-latch.await()
-</code></pre></div><p>The result printed would be:</p>
-<pre><code>saved to cache: 1
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">latch</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">flatMapCompletable</span> <span class="p">{</span> <span class="n">saveCacheRx</span><span class="p">(</span><span class="s2">&#34;</span><span class="si">$it</span><span class="s2">&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">andThen</span><span class="p">(</span><span class="n">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="s2">&#34;done&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">doOnComplete</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">println</span><span class="p">(</span><span class="s2">&#34;complete&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">latch</span><span class="p">.</span><span class="n">countDown</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">subscribe</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;next: </span><span class="si">$it</span><span class="s2">&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">latch</span><span class="p">.</span><span class="n">await</span><span class="p">()</span>
+</span></span></code></pre></div><p>The result printed would be:</p>
+<pre tabindex="0"><code>saved to cache: 1
 saved to cache: 2
 saved to cache: 3
 next: done
@@ -534,15 +403,15 @@ complete
 </code></pre><p>Here we see expected result: we save all the values (1, 2 and 3) into cache, and after that we have &ldquo;done&rdquo; as value emitted in the stream followed by completion event.</p>
 <p>Let&rsquo;s try to implement same functionality with Kotlin.</p>
 <p>In our first implementation we can try to not wrap our suspending function to save cache into flow. We can try to use again map function, but seems better would be to use onEach:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlocking {
-    flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
-        .onEach { saveCache(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>) }
-        .flatMapMerge { flowOf(<span style="color:#e6db74">&#34;done&#34;</span>) }
-        .onCompletion { println(<span style="color:#e6db74">&#34;complete&#34;</span>) }
-        .collect { println(<span style="color:#e6db74">&#34;next: </span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>) }
-}
-</code></pre></div><p>But unfortunately the result would be not as expected:</p>
-<pre><code>saved to cache: 1
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">runBlocking</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flowOf</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">onEach</span> <span class="p">{</span> <span class="n">saveCache</span><span class="p">(</span><span class="s2">&#34;</span><span class="si">$it</span><span class="s2">&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">flatMapMerge</span> <span class="p">{</span> <span class="n">flowOf</span><span class="p">(</span><span class="s2">&#34;done&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">onCompletion</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;complete&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">collect</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;next: </span><span class="si">$it</span><span class="s2">&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>But unfortunately the result would be not as expected:</p>
+<pre tabindex="0"><code>saved to cache: 1
 next: done
 saved to cache: 2
 next: done
@@ -552,27 +421,27 @@ complete
 </code></pre><p>We have too many &ldquo;done&rdquo; events. And usage of map won&rsquo;t fix the issue.
 The reason behind that is that we allow values to be passed through. In RxJava when switching from Observable to Completable we can&rsquo;t get any events except completion (including with error). Doing work in onEach or trying to use map won&rsquo;t work because this way we transform the stream and not changing the stream.</p>
 <p>Then we can try to wrap our saving to cache into flow which will do some work but not emit any value and use flatMapMerge to switch to it:</p>
-<pre><code>runBlocking {
+<pre tabindex="0"><code>runBlocking {
     flowOf(1, 2, 3)
-        .flatMapMerge { flow&lt;String&gt; { saveCache(&quot;$it&quot;) } }
-        .flatMapMerge { flowOf(&quot;done&quot;) }
-        .onCompletion { println(&quot;complete&quot;) }
-        .collect { println(&quot;next: $it&quot;) }
+        .flatMapMerge { flow&lt;String&gt; { saveCache(&#34;$it&#34;) } }
+        .flatMapMerge { flowOf(&#34;done&#34;) }
+        .onCompletion { println(&#34;complete&#34;) }
+        .collect { println(&#34;next: $it&#34;) }
 </code></pre><p>But it won&rsquo;t work as expected either:</p>
-<pre><code>saved to cache: 1
+<pre tabindex="0"><code>saved to cache: 1
 saved to cache: 2
 saved to cache: 3
 complete
 </code></pre><p>We don&rsquo;t have our &ldquo;done&rdquo;, even considering that we switched to new stream with one value of &ldquo;done&rdquo;. This happens because our stream after saving to cache has no items, because of that everything below can&rsquo;t be triggered.
 Instead we should make switch to new flow via onCompletion operator. And implementation might be as following:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">runBlocking {
-    flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
-        .flatMapMerge { flow&lt;String&gt; { saveCache(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>) } }
-        .onCompletion { emitAll(flowOf(<span style="color:#e6db74">&#34;done&#34;</span>)) }
-        .onCompletion { println(<span style="color:#e6db74">&#34;complete&#34;</span>) }
-        .collect { println(<span style="color:#e6db74">&#34;next: </span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>) }
-</code></pre></div><p>And result is as expected:</p>
-<pre><code>saved to cache: 1
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">runBlocking</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flowOf</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">flatMapMerge</span> <span class="p">{</span> <span class="n">flow</span><span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;</span> <span class="p">{</span> <span class="n">saveCache</span><span class="p">(</span><span class="s2">&#34;</span><span class="si">$it</span><span class="s2">&#34;</span><span class="p">)</span> <span class="p">}</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">onCompletion</span> <span class="p">{</span> <span class="n">emitAll</span><span class="p">(</span><span class="n">flowOf</span><span class="p">(</span><span class="s2">&#34;done&#34;</span><span class="p">))</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">onCompletion</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;complete&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">collect</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;next: </span><span class="si">$it</span><span class="s2">&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span></code></pre></div><p>And result is as expected:</p>
+<pre tabindex="0"><code>saved to cache: 1
 saved to cache: 2
 saved to cache: 3
 next: done
@@ -586,79 +455,39 @@ Also pay additional attention to events which come through the stream and stream
 And always test your assumptions. It is better to find tricky things fast than allow them to slip away.</p>
 <p>Happy coding!</p>
 
-  </div>
-  
+</main>
 
-<div class="navigation navigation-single">
+
+<hr/>
+
+<footer>
+<nav>
+  <ul>
     
-    <a href="/posts/2020_02_24_from_rxjava_to_kotlin_flow_error_handling/" class="navigation-prev">
-      <i aria-hidden="true" class="fa fa-chevron-left"></i>
-      <span class="navigation-tittle">From RxJava to Kotlin Flow: Error Handling</span>
-    </a>
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
     
     
-    <a href="/posts/2020_03_02_from_rxjava_to_kotlin_flow_throttling/" class="navigation-next">
-      <span class="navigation-tittle">From RxJava to Kotlin Flow: Throttling</span>
-      <i aria-hidden="true" class="fa fa-chevron-right"></i>
-    </a>
+    <li class="menu-right"><a href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-xl"></i></a></li>
     
-</div>
-
-
-  
-
-  
+    <li class="menu-right"><a href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-xl"></i></a></li>
     
-
-
-</article>
-
-
-        </div>
-        
+    <li class="menu-right"><a href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-xl"></i></a></li>
     
-
-  
-  
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'UA-148934073-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-
-<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
-
-
+    <li class="menu-right"><a href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-xl"></i></a></li>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-        
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/bash.min.js"></script>
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/java.min.js"></script>
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
-            
-        
-    <script type="text/javascript">
-        
-        hljs.configure({languages: ["bash, java, kotlin"]});
-        
-        hljs.initHighlightingOnLoad();
-    </script>
+    <li class="menu-right"><a href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-xl"></i></a></li>
     
-
-
-
+    <li class="menu-right"><a href="https://twitter.com/krossovochkin" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a></li>
     
+    <li class="menu-right"><a href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-xl"></i></a></li>
+    
+  </ul>
+</nav>
+</footer>
 
 
+</body>
 
-    </body>
 </html>

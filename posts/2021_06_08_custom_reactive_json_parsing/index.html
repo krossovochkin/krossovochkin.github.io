@@ -1,214 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
-    
-    
+<html lang="en-us">
+<head>
+  <title>Custom Reactive JSON parsing</title>
 
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <head>
-    <link href="https://gmpg.org/xfn/11" rel="profile">
-    <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<!-- Enable responsiveness on mobile devices -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="generator" content="Hugo 0.79.1" />
+  <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script src="https://kit.fontawesome.com/6d5aec2882.js" crossorigin="anonymous"></script>
 
-    
-    
-    
+  <link rel="stylesheet" href="/css/style.css" />
 
-<title>Custom Reactive JSON parsing • Vasya Drobushkov</title>
+  
+  <meta name="theme-color" content="#1e2327">
 
-
-<meta name="twitter:card" content="summary"/>
+  <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Custom Reactive JSON parsing"/>
 <meta name="twitter:description" content="Sometimes there are situations when simple parsing JSON-string into objects doesn&#39;t work well. Here is a story not about writing custom type adapter for a JSON-parsing library, but a story about some particular tricky use-case for JSON-parsing that I had and how I&#39;ve managed to solve it."/>
-
-<meta property="og:title" content="Custom Reactive JSON parsing" />
-<meta property="og:description" content="Sometimes there are situations when simple parsing JSON-string into objects doesn&#39;t work well. Here is a story not about writing custom type adapter for a JSON-parsing library, but a story about some particular tricky use-case for JSON-parsing that I had and how I&#39;ve managed to solve it." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://krossovochkin.com/posts/2021_06_08_custom_reactive_json_parsing/" />
-<meta property="article:published_time" content="2021-06-08T00:00:00+00:00" />
-<meta property="article:modified_time" content="2021-06-08T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
-
-
-    
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
-
-
-
-
-
-
-
-
-<link rel="stylesheet" href="/scss/hyde-hyde.adf8a0af011d3afb07ed907ad3295e1c99f49503bc91d395e38dc3f8dfdf4900.css" integrity="sha256-rfigrwEdOvsH7ZB60yleHJn0lQO8kdOV443D&#43;N/fSQA=">
-
-
-<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
-
-
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <!-- Icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
-    <link rel="shortcut icon" href="/favicon.png">
-    
-    
+<meta name="twitter:site" content="@krossovochkin"/>
 
 </head>
 
+<body>
 
-    <body class="theme-base-0a ">
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<header>
+<nav>
+  <ul>
     
-<div class="sidebar">
-  <div class="container ">
-    <div class="sidebar-about">
-      <span class="site__title">
-        <a href="https://krossovochkin.com/">
-        
-          Vasya Drobushkov
-        
-        </a>
-      </span>
-      
-        
-        
-        
-        <div class="author-image">
-          <img src="https://krossovochkin.com/../img/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
-        </div>
-        
-      
-      
-      <p class="site__description">
-        
-      </p>
-    </div>
-    <div class="collapsible-menu">
-      <input type="checkbox" id="menuToggle">
-      <label for="menuToggle">Vasya Drobushkov</label>
-      <div class="menu-content">
-        <div>
-	<ul class="sidebar-nav">
-		 
-		 
-			 
-				<li>
-					<a href="/posts/">
-						<span>Posts</span>
-					</a>
-				</li>
-			 
-		 
-			 
-				<li>
-					<a href="/about/">
-						<span>About</span>
-					</a>
-				</li>
-			 
-		
-	</ul>
-</div>
-
-        <section class="social">
-	
-	<a href="https://twitter.com/krossovochkin" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	<a href="https://facebook.com/vasya.drobushkov" rel="me"><i class="fab fa-facebook-f"></i></a>
-	
-	
-	<a href="https://github.com/krossovochkin" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	
-	
-	<a href="https://linkedin.com/in/vasyadrobushkov" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	<a href="https://stackoverflow.com/users/1533933/krossovochkin" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	<a href="https://t.me/krossovochkin_newsletter" rel="me"><i class="fab fa-telegram fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	
-	
-</section>
-
-      </div>
-    </div>
+    <li class="menu-left"><a href="/">Posts</a></li>
     
-<div class="copyright">
-  &copy; 2019 - 2021 Vasya Drobushkov
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    
+    <li class="menu-right"><a href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://twitter.com/krossovochkin" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-xl"></i></a></li>
+    
+  </ul>
+</nav>
+</header>
+
+<br/>
+
+<div class="meta">
+
   
-    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
-  
-</div>
-
-
-
-  </div>
-</div>
-
-        <div class="content container">
-            
-    
-<article>
-  <header>
-    <h1>Custom Reactive JSON parsing</h1>
-    
-    
-<div class="post__meta">
-    
-    
-      <i class="fas fa-calendar-alt"></i> Jun 8, 2021
-    
-    
-    
-    
-    
-      
-      
-          <br/>
-           <i class="fas fa-tags"></i>
-          
-          <a class="badge badge-tag" href="/tags/kotlin">kotlin</a>
-           
-      
-          <a class="badge badge-tag" href="/tags/json">json</a>
-          
-      
-    
-    
-    <br/>
-    <i class="fas fa-clock"></i> 7 min read
-</div>
-
-
-  </header>
+    <h1><span class="title">Custom Reactive JSON parsing</span></h1>
   
   
-  <div class="post">
-    <p><a href="https://mailchi.mp/kotlinweekly/kotlin-weekly-254"><img src="https://img.shields.io/badge/kotlinweekly-254-purple#badge" alt=""></a></p>
+    <h3>June 8, 2021</h3>
+  
+
+</div>
+
+<main>
+<p><a href="https://mailchi.mp/kotlinweekly/kotlin-weekly-254"><img src="https://img.shields.io/badge/kotlinweekly-254-purple#badge" alt=""></a></p>
 <h3 id="introduction">Introduction</h3>
 <p>Parsing JSON strings is a must-have on most Android projects that have server-client communication (of course there are some other formats like XML or <a href="https://developers.google.com/protocol-buffers">Protobuf</a>, but I guess JSON is the most common one at least at the moment). Setting up this communication is relatively straightforward: choose a library, add it to a project, describe models, create mappers, and so on. There are a bunch of various libraries to parse JSON: good old <a href="https://github.com/google/gson">Gson</a>, <a href="https://github.com/FasterXML/jackson">Jackson</a>, or more modern <a href="https://github.com/square/moshi">Moshi</a>, <a href="https://github.com/Kotlin/kotlinx.serialization">kotlinx-serialization</a> and there are more. Set up of these libraries is different, there are differences in the internal implementation, but the general idea is the same for most of them: you can convert JSON-string into a set of objects and vice versa.</p>
 <p>I have a few pet projects where I test various things to be up-to-date with current approaches, have my own opinion on solutions, and better understand pros and cons. One of such pet-projects is a <a href="https://github.com/krossovochkin/KWeather">KWeather</a> - weather app. It is a minimalistic app (with terrible design) that has many things that usually are in many apps: list, details screen, image loading, basic navigation, server-client communication, DB.<br>
@@ -223,15 +95,15 @@ Having a solution based on a bundled JSON and backed by a Database leads to mult
 I used sqldelight and unfortunately it <a href="https://stackoverflow.com/a/57363143/1533933">doesn&rsquo;t support pre-populating database</a> at the moment (unlike <a href="https://medium.com/androiddevelopers/packing-the-room-pre-populate-your-database-with-this-one-method-333ae190e680#:~:text=Starting%20with%20Room%202.2%20(currently,of%20your%20pre-packaged%20database)">Room</a>). The best option is to copy-paste externally pre-populated database from assets to internal folder. This is possible to do, though doesn&rsquo;t work out of the box and requires some additional tweaks. So, I decided to go another way.</p>
 <p>What I decided to do is to introduce setup on the first app launch. We&rsquo;ll parse JSON from assets and populate the database manually showing the user fancy circular progress bar. Yes, the user experience is terrible in such a case (just like the design!), but it is just a one-time setup.
 The first implementation was pretty straightforward: just read the JSON file from assets, parse it and then write each city into the database.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">override</span> <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">setup</span>() {
-	<span style="color:#66d9ef">if</span> (outputCityListDatasource.getCityList(<span style="color:#e6db74">&#34;&#34;</span>, <span style="color:#ae81ff">1</span>).isNotEmpty()) {
-		<span style="color:#66d9ef">return</span>
-	}
-
-	<span style="color:#66d9ef">val</span> cityList = inputCityListDatasource.getCityList(<span style="color:#e6db74">&#34;&#34;</span>)
-	outputCityListDatasource.setCityList(cityList)
-}
-</code></pre></div><p>First, we check whether our database (<code>outputCityListDatasource</code>) is initialized already, and if not - read data from the JSON file (<code>inputCityListDatasource</code>) and write it into the database.<br>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">override</span> <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">setup</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">outputCityListDatasource</span><span class="p">.</span><span class="n">getCityList</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="m">1</span><span class="p">).</span><span class="n">isNotEmpty</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">val</span> <span class="py">cityList</span> <span class="p">=</span> <span class="n">inputCityListDatasource</span><span class="p">.</span><span class="n">getCityList</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">outputCityListDatasource</span><span class="p">.</span><span class="n">setCityList</span><span class="p">(</span><span class="n">cityList</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>First, we check whether our database (<code>outputCityListDatasource</code>) is initialized already, and if not - read data from the JSON file (<code>inputCityListDatasource</code>) and write it into the database.<br>
 It worked like a charm.</p>
 <p>Or did it?</p>
 <h3 id="the-issue">The issue</h3>
@@ -244,124 +116,84 @@ I was a bit upset, but then I realized that even keeping a list of objects in me
 <h3 id="reactive-parsing">Reactive parsing</h3>
 <p>Let&rsquo;s step back and think about requirements. We&rsquo;d like to transfer data from a JSON file into a database. That means that actually, we don&rsquo;t care about the intermediate representation of objects during that process. We don&rsquo;t need a list of objects - we won&rsquo;t work with it. What we need is to take an item from JSON and write it into the database, then take the second item and write it into the database and do that for each item till the JSON end.<br>
 In a pseudocode it could look like:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">val</span> parser = JsonParser(<span style="color:#66d9ef">file</span>.inputStream())
-<span style="color:#66d9ef">while</span> (parser.hasNext()) {
-    database.insert(parser.next())
-}
-</code></pre></div><p>Again, unfortunately, it is difficult to have something like this with kotlinx-serialization because all the parsers are implementation details - all classes are internal and are not accessible for direct usage or for extending. Luckily for me, I had my own kotlin (JVM) JSON parser implementation: <a href="https://github.com/krossovochkin/json.kt">json.kt</a>. So, I decided to take sources, modify them a bit and use them in the project.<br>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">parser</span> <span class="p">=</span> <span class="n">JsonParser</span><span class="p">(</span><span class="k">file</span><span class="p">.</span><span class="n">inputStream</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="p">(</span><span class="n">parser</span><span class="p">.</span><span class="n">hasNext</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">database</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">parser</span><span class="p">.</span><span class="n">next</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Again, unfortunately, it is difficult to have something like this with kotlinx-serialization because all the parsers are implementation details - all classes are internal and are not accessible for direct usage or for extending. Luckily for me, I had my own kotlin (JVM) JSON parser implementation: <a href="https://github.com/krossovochkin/json.kt">json.kt</a>. So, I decided to take sources, modify them a bit and use them in the project.<br>
 The idea was to create a separate implementation of a parsing JsonArray method to, instead of adding values into a list, being able to take them on demand.</p>
 <p>I went one step further and made the parsing code reactive using kotlin <code>Flow</code> API. The parser would parse JSON and instead of adding it to a list, it would emit items to stream instead. In this case, we also handle cancellation during parsing, handle back-pressure by suspending parsing if writing into the database doesn&rsquo;t catch up with parsing.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"><span style="color:#f92672">-val array = JsonArray()
-</span><span style="color:#f92672"></span>
-var nextToken = this.next()
-while (nextToken.type != JsonToken.Type.END_ARRAY) {
-	if (array.children.isNotEmpty()) {
-		nextToken.checkType(JsonToken.Type.COMMA)
-		nextToken = this.next()
-	}
-
-<span style="color:#f92672">-	array.add(this.parseJsonElement(startToken = nextToken))
-</span><span style="color:#f92672"></span><span style="color:#a6e22e">+   emit(this.parseJsonElement(startToken = nextToken))
-</span><span style="color:#a6e22e"></span>
-	nextToken = this.next()
-}
-
-<span style="color:#f92672">-return array
-</span></code></pre></div><p>And the code that transfers data from JSON file into database becomes:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">if</span> (cityListInitializer.isInitialized) {
-	<span style="color:#66d9ef">return</span>
-}
-
-cityListProvider.observe()
-	.onStart { cityListInitializer.startSetup() }
-	.onEach { cityDto <span style="color:#f92672">-&gt;</span> cityListInitializer.insertCity(cityDto) }
-	.onCompletion { cause: Throwable? <span style="color:#f92672">-&gt;</span>
-		<span style="color:#66d9ef">if</span> (cause <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
-			cityListInitializer.rollbackSetup()
-		} <span style="color:#66d9ef">else</span> {
-			cityListInitializer.endSetup()
-		}
-	}
-	.collect()
-</code></pre></div><p>This solves the issue with memory, but we face another issue: time. Setup becomes much longer. It is a usual trade-off in programming: you can write a solution that either consumes more memory or more CPU. Crashing the app because of OOM is anyway worse than making the user wait longer, so I&rsquo;m happy with the result.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-diff" data-lang="diff"><span class="line"><span class="cl"><span class="gd">-val array = JsonArray()
+</span></span></span><span class="line"><span class="cl"><span class="gd"></span>
+</span></span><span class="line"><span class="cl">var nextToken = this.next()
+</span></span><span class="line"><span class="cl">while (nextToken.type != JsonToken.Type.END_ARRAY) {
+</span></span><span class="line"><span class="cl">	if (array.children.isNotEmpty()) {
+</span></span><span class="line"><span class="cl">		nextToken.checkType(JsonToken.Type.COMMA)
+</span></span><span class="line"><span class="cl">		nextToken = this.next()
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gd">-	array.add(this.parseJsonElement(startToken = nextToken))
+</span></span></span><span class="line"><span class="cl"><span class="gd"></span><span class="gi">+   emit(this.parseJsonElement(startToken = nextToken))
+</span></span></span><span class="line"><span class="cl"><span class="gi"></span>
+</span></span><span class="line"><span class="cl">	nextToken = this.next()
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gd">-return array
+</span></span></span></code></pre></div><p>And the code that transfers data from JSON file into database becomes:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">cityListInitializer</span><span class="p">.</span><span class="n">isInitialized</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">cityListProvider</span><span class="p">.</span><span class="n">observe</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="p">.</span><span class="n">onStart</span> <span class="p">{</span> <span class="n">cityListInitializer</span><span class="p">.</span><span class="n">startSetup</span><span class="p">()</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">.</span><span class="n">onEach</span> <span class="p">{</span> <span class="n">cityDto</span> <span class="o">-&gt;</span> <span class="n">cityListInitializer</span><span class="p">.</span><span class="n">insertCity</span><span class="p">(</span><span class="n">cityDto</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">.</span><span class="n">onCompletion</span> <span class="p">{</span> <span class="n">cause</span><span class="p">:</span> <span class="n">Throwable</span><span class="p">?</span> <span class="o">-&gt;</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">cause</span> <span class="o">!=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">cityListInitializer</span><span class="p">.</span><span class="n">rollbackSetup</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">cityListInitializer</span><span class="p">.</span><span class="n">endSetup</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">.</span><span class="n">collect</span><span class="p">()</span>
+</span></span></code></pre></div><p>This solves the issue with memory, but we face another issue: time. Setup becomes much longer. It is a usual trade-off in programming: you can write a solution that either consumes more memory or more CPU. Crashing the app because of OOM is anyway worse than making the user wait longer, so I&rsquo;m happy with the result.</p>
 <p>But why it takes a long time and how it is possible to further improve the situation? Partially that is because my implementation of JSON parser is not that performant. So by optimizing the JSON parser it is possible to make the setup work faster. Also, we can save some time by reducing object creation. Still, we create an intermediate <code>cityDto</code> object - we can get a bit more low-level if we just parse required fields and pass them right away (though it makes code less maintainable). Also, we can skip parsing fields in JSON that we don&rsquo;t care about - it would save us some time as well. Maybe will do that somewhere later.</p>
 <h3 id="conclusion">Conclusion</h3>
 <p>There might be situations where taking the default behavior of libraries is not what you need. Look at your use case and choose the appropriate solution. Keep in mind memory/CPU trade-offs to help you find the best you can do. And always profile your app to find issues.</p>
 <p>Happy coding.</p>
 
-  </div>
-  
+</main>
 
-<div class="navigation navigation-single">
+
+<hr/>
+
+<footer>
+<nav>
+  <ul>
     
-    <a href="/posts/2021_01_25_bad_kotlin_extensions/" class="navigation-prev">
-      <i aria-hidden="true" class="fa fa-chevron-left"></i>
-      <span class="navigation-tittle">Bad Kotlin Extensions</span>
-    </a>
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
     
     
-    <a href="/posts/2021_06_21_why_custom_website_instead_of_medium/" class="navigation-next">
-      <span class="navigation-tittle">Why custom website instead of Medium</span>
-      <i aria-hidden="true" class="fa fa-chevron-right"></i>
-    </a>
+    <li class="menu-right"><a href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-xl"></i></a></li>
     
-</div>
-
-
-  
-
-  
+    <li class="menu-right"><a href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-xl"></i></a></li>
     
-
-
-</article>
-
-
-        </div>
-        
+    <li class="menu-right"><a href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-xl"></i></a></li>
     
-
-  
-  
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'UA-148934073-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-
-<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
-
-
+    <li class="menu-right"><a href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-xl"></i></a></li>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-        
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/bash.min.js"></script>
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/java.min.js"></script>
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
-            
-        
-    <script type="text/javascript">
-        
-        hljs.configure({languages: ["bash, java, kotlin"]});
-        
-        hljs.initHighlightingOnLoad();
-    </script>
+    <li class="menu-right"><a href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-xl"></i></a></li>
     
-
-
-
+    <li class="menu-right"><a href="https://twitter.com/krossovochkin" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a></li>
     
+    <li class="menu-right"><a href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-xl"></i></a></li>
+    
+  </ul>
+</nav>
+</footer>
 
 
+</body>
 
-    </body>
 </html>

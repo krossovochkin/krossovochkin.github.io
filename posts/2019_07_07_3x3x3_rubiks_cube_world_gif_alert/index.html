@@ -1,211 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
-    
-    
+<html lang="en-us">
+<head>
+  <title>3x3x3 Rubik’s cube world (GIF alert)</title>
 
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <head>
-    <link href="https://gmpg.org/xfn/11" rel="profile">
-    <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<!-- Enable responsiveness on mobile devices -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="generator" content="Hugo 0.79.1" />
+  <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script src="https://kit.fontawesome.com/6d5aec2882.js" crossorigin="anonymous"></script>
 
-    
-    
-    
+  <link rel="stylesheet" href="/css/style.css" />
 
-<title>3x3x3 Rubik’s cube world (GIF alert) • Vasya Drobushkov</title>
+  
+  <meta name="theme-color" content="#1e2327">
 
-
-<meta name="twitter:card" content="summary"/>
+  <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="3x3x3 Rubik’s cube world (GIF alert)"/>
 <meta name="twitter:description" content="Introduction I find Rubik’s cube an awesome puzzle. It has simple design, but quite difficult to solve (if you don’t know how to do that). At the same time it is possible to learn how to solve cube — there are a lot of algorithms for solving (for example Fridrich method describes quite a lot of them). These optimized algorithms made popular speedcubing — solving cube on time — with world record of less than 4 seconds."/>
-
-<meta property="og:title" content="3x3x3 Rubik’s cube world (GIF alert)" />
-<meta property="og:description" content="Introduction I find Rubik’s cube an awesome puzzle. It has simple design, but quite difficult to solve (if you don’t know how to do that). At the same time it is possible to learn how to solve cube — there are a lot of algorithms for solving (for example Fridrich method describes quite a lot of them). These optimized algorithms made popular speedcubing — solving cube on time — with world record of less than 4 seconds." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://krossovochkin.com/posts/2019_07_07_3x3x3_rubiks_cube_world_gif_alert/" />
-<meta property="article:published_time" content="2019-07-07T00:00:00+00:00" />
-<meta property="article:modified_time" content="2019-07-07T00:00:00+00:00" /><meta property="og:site_name" content="Krossovochkin" />
-
-
-    
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
-
-
-
-
-
-
-
-
-<link rel="stylesheet" href="/scss/hyde-hyde.adf8a0af011d3afb07ed907ad3295e1c99f49503bc91d395e38dc3f8dfdf4900.css" integrity="sha256-rfigrwEdOvsH7ZB60yleHJn0lQO8kdOV443D&#43;N/fSQA=">
-
-
-<link rel="stylesheet" href="/scss/print.2744dcbf8a0b2e74f8a50e4b34e5f441be7cf93cc7de27029121c6a09f9e77bc.css" integrity="sha256-J0Tcv4oLLnT4pQ5LNOX0Qb58&#43;TzH3icCkSHGoJ&#43;ed7w=" media="print">
-
-
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <!-- Icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
-    <link rel="shortcut icon" href="/favicon.png">
-    
-    
+<meta name="twitter:site" content="@krossovochkin"/>
 
 </head>
 
+<body>
 
-    <body class="theme-base-0a ">
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<header>
+<nav>
+  <ul>
     
-<div class="sidebar">
-  <div class="container ">
-    <div class="sidebar-about">
-      <span class="site__title">
-        <a href="https://krossovochkin.com/">
-        
-          Vasya Drobushkov
-        
-        </a>
-      </span>
-      
-        
-        
-        
-        <div class="author-image">
-          <img src="https://krossovochkin.com/../img/avatar.png" alt="Author Image" class="img--circle img--headshot element--center">
-        </div>
-        
-      
-      
-      <p class="site__description">
-        
-      </p>
-    </div>
-    <div class="collapsible-menu">
-      <input type="checkbox" id="menuToggle">
-      <label for="menuToggle">Vasya Drobushkov</label>
-      <div class="menu-content">
-        <div>
-	<ul class="sidebar-nav">
-		 
-		 
-			 
-				<li>
-					<a href="/posts/">
-						<span>Posts</span>
-					</a>
-				</li>
-			 
-		 
-			 
-				<li>
-					<a href="/about/">
-						<span>About</span>
-					</a>
-				</li>
-			 
-		
-	</ul>
-</div>
-
-        <section class="social">
-	
-	<a href="https://twitter.com/krossovochkin" rel="me"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	<a href="https://facebook.com/vasya.drobushkov" rel="me"><i class="fab fa-facebook-f"></i></a>
-	
-	
-	<a href="https://github.com/krossovochkin" rel="me"><i class="fab fa-github fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	
-	
-	<a href="https://linkedin.com/in/vasyadrobushkov" rel="me"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	<a href="https://stackoverflow.com/users/1533933/krossovochkin" rel="me"><i class="fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	<a href="https://t.me/krossovochkin_newsletter" rel="me"><i class="fab fa-telegram fa-lg" aria-hidden="true"></i></a>
-	
-	
-	
-	
-	
-	
-	
-</section>
-
-      </div>
-    </div>
+    <li class="menu-left"><a href="/">Posts</a></li>
     
-<div class="copyright">
-  &copy; 2019 - 2021 Vasya Drobushkov
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    
+    <li class="menu-right"><a href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://twitter.com/krossovochkin" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a></li>
+    
+    <li class="menu-right"><a href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-xl"></i></a></li>
+    
+  </ul>
+</nav>
+</header>
+
+<br/>
+
+<div class="meta">
+
   
-    <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>
-  
-</div>
-
-
-
-  </div>
-</div>
-
-        <div class="content container">
-            
-    
-<article>
-  <header>
-    <h1>3x3x3 Rubik’s cube world (GIF alert)</h1>
-    
-    
-<div class="post__meta">
-    
-    
-      <i class="fas fa-calendar-alt"></i> Jul 7, 2019
-    
-    
-    
-    
-    
-      
-      
-          <br/>
-           <i class="fas fa-tags"></i>
-          
-          <a class="badge badge-tag" href="/tags/other">other</a>
-          
-      
-    
-    
-    <br/>
-    <i class="fas fa-clock"></i> 14 min read
-</div>
-
-
-  </header>
+    <h1><span class="title">3x3x3 Rubik’s cube world (GIF alert)</span></h1>
   
   
-  <div class="post">
-    <p><a href="https://medium.com/@krossovochkin/3x3x3-rubiks-cube-world-gif-alert-613d016d2ae7"><img src="https://img.shields.io/badge/original-medium-green#badge" alt=""></a></p>
+    <h3>July 7, 2019</h3>
+  
+
+</div>
+
+<main>
+<p><a href="https://medium.com/@krossovochkin/3x3x3-rubiks-cube-world-gif-alert-613d016d2ae7"><img src="https://img.shields.io/badge/original-medium-green#badge" alt=""></a></p>
 <h1 id="introduction">Introduction</h1>
 <p>I find Rubik’s cube an awesome puzzle. It has simple design, but quite difficult to solve (if you don’t know how to do that). At the same time it is possible to learn how to solve cube — there are a lot of algorithms for solving (for example <a href="https://ruwix.com/the-rubiks-cube/advanced-cfop-fridrich/orient-the-last-layer-oll/">Fridrich method</a> describes quite a lot of them). These optimized algorithms made popular speedcubing — solving cube on time — with world record of <a href="https://ruwix.com/blog/yusheng-du-record-347/">less than 4 seconds</a>.
 But solving the cube using formulas is actually boring, because you don’t understand what exactly is happening and how that algorithm was invented. You don’t actually solve the cube by yourself — you apply someone’s solution by yourself. And personally I solve cubes for fun, and understanding what and why you are doing actually increases that fun.</p>
@@ -223,7 +98,7 @@ Here we won’t use many of them, the most important are:</p>
 <p>U — rotating top side clock-wise (from right to left)</p>
 </li>
 <li>
-<p>R' U' — these means rotating counter clock-wise</p>
+<p>R&rsquo; U&rsquo; — these means rotating counter clock-wise</p>
 </li>
 </ul>
 <p>In the article there will be some GIF animations to help you catch up, though if you have issues you can refer to the <a href="https://ruwix.com/the-rubiks-cube/notation/">complete notation</a>.</p>
@@ -274,37 +149,37 @@ Though as a side note it would be also possible with provided solution to solve 
 <p>We start solving cube by understanding it a bit. And we start from “Lambdas”. Lambda is a formula/algorithm with one important property: if you repeat it N times — cube will return to initial state (before lambda was applied).</p>
 <p>Some lambdas have some additional properties, which might help to solve the cube. And lambdas are usually short algorithms which are simple to remember and understand.</p>
 <h3 id="lambda-r-u-r-u">Lambda (R U’ R’ U)</h3>
-<p>The lambda we’ll take a look at is R U' R' U**.
-**As with any lambda if we repeat it N times — we’ll get back to initial state again. For this lambda we should repeat process six times, so basically: 6 * (R U' R' U) will turn cube to initial state. Here is GIF which shows that:</p>
+<p>The lambda we’ll take a look at is R U&rsquo; R&rsquo; U**.
+**As with any lambda if we repeat it N times — we’ll get back to initial state again. For this lambda we should repeat process six times, so basically: 6 * (R U&rsquo; R&rsquo; U) will turn cube to initial state. Here is GIF which shows that:</p>
 <p><img src="../../img/1_w51Rl6Z6jXHJmeEiLDd_6g.gif" alt=""></p>
 <p>Let’s investigate other properties of this lambda.</p>
-<p>First, let’s apply this lambda once R U' R' U:</p>
+<p>First, let’s apply this lambda once R U&rsquo; R&rsquo; U:</p>
 <p><img src="../../img/1_IufC98vxIcymUStDVr2Weg.png" alt=""></p>
 <p>We see that two pair of corners changed their position (and orientation).</p>
 <p>Also three edges were rotated over one corner:</p>
 <p><img src="../../img/1_AetnVRSS1blHKTvrKh12aA.png" alt=""></p>
-<p>If we repeat it twice: 2 * (R U' R' U), then we see that our top-front-left corner is still in original place, though it is rotated:</p>
+<p>If we repeat it twice: 2 * (R U&rsquo; R&rsquo; U), then we see that our top-front-left corner is still in original place, though it is rotated:</p>
 <p><img src="../../img/1_v1lU-HueBbrtIuNKEtjO3g.png" alt=""></p>
-<p>Same happens when we repeat lambda four times: 4 * (R U' R' U):</p>
+<p>Same happens when we repeat lambda four times: 4 * (R U&rsquo; R&rsquo; U):</p>
 <p><img src="../../img/1_9aI3x6YUsp_3nyefEemCeA.png" alt=""></p>
 <p>It is important observation: corner of the cube can be rotated in three possible ways (if we look at blue-red-yellow cube, for example, we’ll see that it can be placed on its original position with red on top, blue on top or yellow on top — three possibilities). To make first state we do lambda 2 times, for second — 4 times, for third — 0 or 6 times.</p>
-<p>If we repeat lambda three times: 3 * (R U' R' U) we’ll see that all edges saved their original orientation and place, though corners changed their positions:</p>
+<p>If we repeat lambda three times: 3 * (R U&rsquo; R&rsquo; U) we’ll see that all edges saved their original orientation and place, though corners changed their positions:</p>
 <p><img src="../../img/1_9DOo6sR1jfcRGpQ0mjyRaw.png" alt=""></p>
 <p>It is also important observation: it is possible to re-position corners without changing orientation and position of edges by applying lambda 3 or 6 times.</p>
 <p>The concept is even stronger if we notice that on left side of the cube there is only one corner which is changing its position or orientation (no other corners or edges on left side are touched). That means that between lambdas invocations we can add rotations of the left side to also make corners on left side change positions (along with orientation).</p>
-<p>For example we can do something like: 2 * (R U' R' U) L' 4 * (R U' R' U) L:</p>
+<p>For example we can do something like: 2 * (R U&rsquo; R&rsquo; U) L&rsquo; 4 * (R U&rsquo; R&rsquo; U) L:</p>
 <p><img src="../../img/1_caW5LkZClqJwR40mEbxSkQ.gif" alt=""></p>
-<p>Also we can do something like: 4 * (R U' R' U) L' 2 * (R U' R' U) L:</p>
+<p>Also we can do something like: 4 * (R U&rsquo; R&rsquo; U) L&rsquo; 2 * (R U&rsquo; R&rsquo; U) L:</p>
 <p><img src="../../img/1_Rsgi8j6ztpag2naj775ICg.png" alt=""></p>
 <p>Having 2+4 or 4+2 patterns we can change orientation of two adjacent corners.</p>
-<p>If we do 3+3 pattern 3 * (R U' R' U) L' 3 * (R U' R' U) L we can change also position of three corners (“rotate” corners):</p>
+<p>If we do 3+3 pattern 3 * (R U&rsquo; R&rsquo; U) L&rsquo; 3 * (R U&rsquo; R&rsquo; U) L we can change also position of three corners (“rotate” corners):</p>
 <p><img src="../../img/1_Oj9D5kTNaL745w8MDvGp0A.png" alt=""></p>
-<p>We already have quite a lot of powerful properties from first lambda, though we have one more. We can not only add rotating of left side between lambda invocations, we also can add whole cube rotations in between. For example if we do (R U' R' U) y' x' 2 * (R U' R' U) x y we’ll get the following:</p>
+<p>We already have quite a lot of powerful properties from first lambda, though we have one more. We can not only add rotating of left side between lambda invocations, we also can add whole cube rotations in between. For example if we do (R U&rsquo; R&rsquo; U) y&rsquo; x&rsquo; 2 * (R U&rsquo; R&rsquo; U) x y we’ll get the following:</p>
 <p><img src="../../img/1_RZiNy_OnPX_4txcqyTUJBQ.gif" alt=""></p>
 <p>If we look closer at result:</p>
 <p><img src="../../img/1_9wwES7tvKrYViB91C3yRMA.png" alt=""></p>
 <p>We’ll see that we changed orientation of two top edges, while preserving orientation of other edges. We changed some positions of corners as well, but it is not that important as we later on can solve corners with same lambda without changing orientation or position of edges.</p>
-<p>And it is not everything, we have one last property: in addition to utility rotation of left side or the whole cube between lambdas we can add rotation of top side as well (R U' R' U) U (R U' R' U) U:</p>
+<p>And it is not everything, we have one last property: in addition to utility rotation of left side or the whole cube between lambdas we can add rotation of top side as well (R U&rsquo; R&rsquo; U) U (R U&rsquo; R&rsquo; U) U:</p>
 <p><img src="../../img/1_TU9ZVX7VIGHFZ7prgftyBA.gif" alt=""></p>
 <p>If we look closer, we’ll see that we’ve rotated three edges:</p>
 <p><img src="../../img/1_quROPJQmZGBJQ5jxGgJ_NA.png" alt=""></p>
@@ -348,7 +223,7 @@ Here we can have four situations:</p>
 <p>all edges already oriented — we don’t need to do anything, skip and go to next step</p>
 </li>
 <li>
-<p>we have two adjacent edges oriented incorrectly — this is exactly the case of our (R U' R' U) y' x' 2 * (R U' R' U) x y lambda, just apply it.</p>
+<p>we have two adjacent edges oriented incorrectly — this is exactly the case of our (R U&rsquo; R&rsquo; U) y&rsquo; x&rsquo; 2 * (R U&rsquo; R&rsquo; U) x y lambda, just apply it.</p>
 </li>
 </ul>
 <p><img src="../../img/1_0wrdSAkFTBd2L6oFlOjyGA.png" alt=""></p>
@@ -368,7 +243,7 @@ Here we also have few situations:</p>
 <p>all edges already placed correctly — nothing to do, move to next step</p>
 </li>
 <li>
-<p>edges are misplaced — you can solve them with rotation lambda: (R U' R' U) U (R U' R' U) U</p>
+<p>edges are misplaced — you can solve them with rotation lambda: (R U&rsquo; R&rsquo; U) U (R U&rsquo; R&rsquo; U) U</p>
 </li>
 </ul>
 <p>You might say that we can have different types of edges misplaced, but the truth is that changing angle of view can help you solve edges with exact that lambda.
@@ -377,15 +252,15 @@ Let’s see how:</p>
 <p>This is our cube and we see that green and orange edges are placed correctly, so that we need to swap blue and red one.
 But if we do additional U rotation, we’ll see the following:</p>
 <p><img src="../../img/1_QzBMHn5Cf5bpHUL0AHHIPQ.png" alt=""></p>
-<p>So, now blue piece is placed correctly and other pieces can be solved by rotating clock-wise. But our lambda rotates pieces counter clock-wise. Then let’s do U' rotation from previous position:</p>
+<p>So, now blue piece is placed correctly and other pieces can be solved by rotating clock-wise. But our lambda rotates pieces counter clock-wise. Then let’s do U&rsquo; rotation from previous position:</p>
 <p><img src="../../img/1_yQfVm9p2BwvgpsVsfBLmgg.png" alt=""></p>
 <p>We see that now red piece is placed correctly and other pieces exactly can be solved with our lambda.</p>
 <h3 id="opcll-orient-and-permute-corners-last-layer">O+PcLL (Orient and Permute corners last layer)</h3>
 <p>This is the most important step, as here we’ll solve the cube. But need to be careful — during this step our cube will become at some points completely unscrambled, so if you loose concentration it might happen that you’ll have to start from scratch.</p>
-<p>The concept is based on the 2 * (R U' R' U) L' 4 * (R U' R' U) L lambda.</p>
+<p>The concept is based on the 2 * (R U&rsquo; R&rsquo; U) L&rsquo; 4 * (R U&rsquo; R&rsquo; U) L lambda.</p>
 <p>Here is how our cube might look like at the beginning of this step:</p>
 <p><img src="../../img/1_ZntvXYtzodLnlD_aL2tkNw.png" alt=""></p>
-<p>We already know that we can with our lambda change the placement of bottom left corner to top right (by using R U' R' U once):</p>
+<p>We already know that we can with our lambda change the placement of bottom left corner to top right (by using R U&rsquo; R&rsquo; U once):</p>
 <p><img src="../../img/1_lNN4L7AFtXHU1VEB3o1ZLQ.png" alt=""></p>
 <p>Though it seems better to rotate the cube like this:</p>
 <p><img src="../../img/1_4XAuhpL6LUJGUgSe8xX53w.gif" alt=""></p>
@@ -514,79 +389,39 @@ Also all of them have same number of corners, centers and edges, though they can
 I hope this article helped you to get more inside into cubes, what are they, how they look like, how they work, how to solve them and how to get fun, so you can give them a try.</p>
 <p>Happy cubing!</p>
 
-  </div>
-  
+</main>
 
-<div class="navigation navigation-single">
+
+<hr/>
+
+<footer>
+<nav>
+  <ul>
     
-    <a href="/posts/2019_07_04_android_version_code_tricks/" class="navigation-prev">
-      <i aria-hidden="true" class="fa fa-chevron-left"></i>
-      <span class="navigation-tittle">Android Version Code Tricks</span>
-    </a>
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
     
     
-    <a href="/posts/2019_07_21_simmmmplllledateformat/" class="navigation-next">
-      <span class="navigation-tittle">SiMMMMpLLLLeDateFormat</span>
-      <i aria-hidden="true" class="fa fa-chevron-right"></i>
-    </a>
+    <li class="menu-right"><a href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-xl"></i></a></li>
     
-</div>
-
-
-  
-
-  
+    <li class="menu-right"><a href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-xl"></i></a></li>
     
-
-
-</article>
-
-
-        </div>
-        
+    <li class="menu-right"><a href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-xl"></i></a></li>
     
-
-  
-  
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'UA-148934073-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-
-<script defer src="https://use.fontawesome.com/releases/v5.12.1/js/all.js" integrity="sha384-ZbbbT1gw3joYkKRqh0kWyRp32UAvdqkpbLedQJSlnI8iLQcFVxaGyrOgOJiDQTTR" crossorigin="anonymous"></script>
-
-
+    <li class="menu-right"><a href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-xl"></i></a></li>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-        
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/bash.min.js"></script>
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/java.min.js"></script>
-            
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/languages/kotlin.min.js"></script>
-            
-        
-    <script type="text/javascript">
-        
-        hljs.configure({languages: ["bash, java, kotlin"]});
-        
-        hljs.initHighlightingOnLoad();
-    </script>
+    <li class="menu-right"><a href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-xl"></i></a></li>
     
-
-
-
+    <li class="menu-right"><a href="https://twitter.com/krossovochkin" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a></li>
     
+    <li class="menu-right"><a href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-xl"></i></a></li>
+    
+  </ul>
+</nav>
+</footer>
 
 
+</body>
 
-    </body>
 </html>
