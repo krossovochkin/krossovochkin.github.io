@@ -150,3 +150,7 @@ tr:nth-child(even) {
 footer {
   margin-bottom: 64px;
 }
+
+p {
+  font-weight: normal;
+}
