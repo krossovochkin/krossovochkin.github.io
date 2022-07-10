@@ -1,24 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Vasya Drobushkov</title>
-    <link>https://krossovochkin.com/</link>
-    <description>Recent content on Vasya Drobushkov</description>
+    <title>Posts on Vasya Drobushkov</title>
+    <link>https://krossovochkin.com/posts/</link>
+    <description>Recent content in Posts on Vasya Drobushkov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 10 Jul 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.com/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Card Soccer</title>
-      <link>https://krossovochkin.com/apps/card_soccer/</link>
-      <pubDate>Sun, 10 Jul 2022 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.com/apps/card_soccer/</guid>
-      <description>How to play The goal of the game is to win AI opponent by scoring more goals.
-The game is turn based.
-On your turn you should move the &amp;ldquo;ball&amp;rdquo; (card opened from your deck) to opponents goal.
-You start from the row that is close to your goal: you should select a card in a row and if it matches by value or suite - proceed to the next row up until the opponent&amp;rsquo;s goal.</description>
-    </item>
-    
+    <lastBuildDate>Tue, 14 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.com/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Controlling TextView MinWidth</title>
       <link>https://krossovochkin.com/posts/2021_09_14_controlling_textview_minwidth/</link>
@@ -537,35 +525,6 @@ One of the main challenges in mobile development is to be in sync with server. S
       <description>Introduction Notifications are widely used in Android applications. Though API is pretty straightforward, there are some key things that one should know and understand. This article will try to be first step into understanding Notifications API.
 Sending Single Notification Notification singleNotification = new NotificationCompat.Builder(this) .setContentTitle(&amp;#34;Title&amp;#34;) .setContentText(&amp;#34;Text&amp;#34;) .setSmallIcon(R.drawable.ic_notification) .build(); NotificationManagerCompat notificationManager = NotificationManagerCompat.*from*(context); notificationManager.notify(notificationId, singleNotification); Key things here:
 We use NotificationCompat.Builder to have single interface for creating notifications and let Support Library do all compatibility tricks;</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://krossovochkin.com/about/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://krossovochkin.com/about/</guid>
-      <description>Vasya Drobushkov @krossovochkin
-About me Android developer with mathematical background. Experienced in developing smart applications for Android, and also in mobile game development. Punctual, always pay attention to details. Fast learner, greedy for knowledge.
-Links LinkedIn
-Github
-StackOverflow
-GoodReads
-Medium
-HackerNoon
-Facebook
-Twitter
-Kaggle
-SpeakerDeck
-Reddit
-HackerRank
-LeetCode
-Projects Fibery Unofficial
-Android client for fibery.io.
-MVVM, Android Architecture components, coroutines.
-KWeather
-Android weather app.
-MVI, Kotlin MPP, Jetpack Compose.</description>
     </item>
     
   </channel>
