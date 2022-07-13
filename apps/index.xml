@@ -9,10 +9,10 @@
     <lastBuildDate>Sun, 10 Jul 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.com/apps/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Card Soccer</title>
-      <link>https://krossovochkin.com/apps/card_soccer/</link>
+      <link>https://krossovochkin.com/apps/card-soccer/</link>
       <pubDate>Sun, 10 Jul 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://krossovochkin.com/apps/card_soccer/</guid>
+      <guid>https://krossovochkin.com/apps/card-soccer/</guid>
       <description>How to play The goal of the game is to win AI opponent by scoring more goals.
 The game is turn based.
 On your turn you should move the &amp;ldquo;ball&amp;rdquo; (card opened from your deck) to opponents goal.
