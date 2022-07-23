@@ -3,12 +3,15 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://krossovochkin.com/apps/</loc>
-    <lastmod>2022-07-10T00:00:00+00:00</lastmod>
+    <lastmod>2022-07-23T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://krossovochkin.com/apps/card-soccer/</loc>
-    <lastmod>2022-07-10T00:00:00+00:00</lastmod>
+    <loc>https://krossovochkin.com/apps/color-utils/</loc>
+    <lastmod>2022-07-23T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://krossovochkin.com/</loc>
+    <lastmod>2022-07-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://krossovochkin.com/apps/card-soccer/</loc>
     <lastmod>2022-07-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://krossovochkin.com/posts/2021_09_14_controlling_textview_minwidth/</loc>
