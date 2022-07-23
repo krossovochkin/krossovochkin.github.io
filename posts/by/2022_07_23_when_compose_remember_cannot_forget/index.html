@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <title>Калі Compose remember ня можа забыць</title>
+
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon-144-precompressed.png"/>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script src="https://kit.fontawesome.com/6d5aec2882.js" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="/css/style.css" />
+
+  
+  <meta name="theme-color" content="#1e2327">
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Калі Compose remember ня можа забыць"/>
+<meta name="twitter:description" content="Што рабіць калі compose remember ня можа забыць значэнне"/>
+<meta name="twitter:site" content="@krossovochkin"/>
+
+</head>
+
+<body>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<header>
+<nav>
+  <ul>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/apps">Apps</a></li>
+    
+    
+    <li class="menu-right"><a href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-l"></i></a></li>
+    
+    <li class="menu-right"><a href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-l"></i></a></li>
+    
+    <li class="menu-right"><a href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-l"></i></a></li>
+    
+    <li class="menu-right"><a href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-l"></i></a></li>
+    
+    <li class="menu-right"><a href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-l"></i></a></li>
+    
+    <li class="menu-right"><a href="https://twitter.com/krossovochkin" target="_blank"><i class="fa-brands fa-twitter fa-l"></i></a></li>
+    
+    <li class="menu-right"><a href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-l"></i></a></li>
+    
+  </ul>
+</nav>
+</header>
+
+<br/>
+
+<div class="meta">
+
+  
+    <h1><span class="title">Калі Compose remember ня можа забыць</span></h1>
+  
+  
+    <h3>July 23, 2022</h3>
+  
+
+</div>
+
+<main>
+<p><a href="../../2022_07_23_when_compose_remember_cannot_forget">Read in English</a></p>
+<h2 id="уводзіны">Уводзіны</h2>
+<p>Пры распрацоўцы прыкладання <a href="https://krossovochkin.com/apps/color-utils/">color-utils</a> з выкарыстаннем Compose для Web я сутыкнуўся з праблемай, што <code>remember</code> не хацеў забываць стан. Гэта быў вельмі раздражняльны вопыт, бо я адчуваў сябе па-дурному: Composable функцыя перакампанавана з новым значэннем, але <code>remember</code> па-ранейшаму захоўвала старое значэнне.
+Як звычайна, ніякай магіі тут няма, і адказ даволі просты, таму гэты артыкул не будзе вельмі доўгі.</p>
+<p>Compose - гэта ўсё аб стане. У прыкладанні ў мяне было два ўзроўні стану:</p>
+<ol>
+<li>&ldquo;domain&rdquo; - бягучае значэнне <code>Color</code>. Гэты аб&rsquo;ект адлюстроўвае сапраўдны колер.</li>
+<li>&ldquo;ui&rdquo; - стан некаторых элементаў кіравання (тэкставых палёў), з дапамогай якіх карыстальнік можа змяняць колер. Трэба адзначыць, што бягучы стан карыстальніцкага інтэрфейсу неабавязкова можна пераўтварыць у правільны аб&rsquo;ект <code>Color</code>. Напрыклад, тэкставае поле можа быць пустым - гэта азначае, што карыстальнік знаходзіцца ў працэсе змены значэння колеру, і мы не можам стварыць аб&rsquo;ект <code>Color</code> з несапраўднымі дадзенымі.</li>
+</ol>
+<p>Значэнне дамена захоўвалася як зменлівы стан, які можа быць зменены пры змене колеру:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">var</span> <span class="py">foregroundColor</span> <span class="k">by</span> <span class="n">remember</span> <span class="p">{</span> <span class="n">mutableStateOf</span><span class="p">(</span><span class="n">Color</span><span class="p">.</span><span class="n">White</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">ColorPicker</span><span class="p">(</span><span class="n">foregroundColor</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">foregroundColor</span> <span class="p">=</span> <span class="k">it</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Значэнне карыстацкага інтэрфейсу было атрымана з дамена і захавала бягучы стан адпаведнага тэкставага поля. Новае значэнне распаўсюджвалася на ўзровень &ldquo;дамена&rdquo; толькі тады, калі яно было сапраўдным:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">var</span> <span class="py">red</span><span class="p">:</span> <span class="n">Int</span><span class="p">?</span> <span class="k">by</span> <span class="n">remember</span> <span class="p">{</span> <span class="n">mutableStateOf</span><span class="p">(</span><span class="n">color</span><span class="p">.</span><span class="n">red</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Input</span><span class="p">(</span><span class="n">InputType</span><span class="p">.</span><span class="n">Number</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">value</span><span class="p">(</span><span class="n">value</span> <span class="o">?:</span> <span class="n">Double</span><span class="p">.</span><span class="n">NaN</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">style</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">onInput</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">val</span> <span class="py">validated</span> <span class="p">=</span> <span class="n">validateRgbValue</span><span class="p">(</span><span class="k">it</span><span class="p">.</span><span class="n">value</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">red</span> <span class="p">=</span> <span class="n">validated</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">validated</span> <span class="o">!=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">onChanged</span><span class="p">(</span><span class="n">color</span><span class="p">.</span><span class="n">copy</span><span class="p">().</span><span class="n">apply</span> <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="n">red</span> <span class="p">=</span> <span class="n">validated</span> <span class="p">})</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Адзін аб&rsquo;ект <code>Color</code> адпавядае некалькім тэкставым палям, якія змяняюць альфа-узровень, чырвоны, зялёны, сіні і hex значэнні. Кожны раз, калі нейкае значэнне змяняецца на сапраўднае, ствараецца і распаўсюджваецца новы аб&rsquo;ект <code>Color</code>. Змена значэння <code>Color</code> запускае рэкампазіцыю ўнутраных Composable функцый з новымі значэннямі, якія змяняюць значэнні тэкставых палёў на новыя.</p>
+<p>Праблема заключалася ў тым, што пры такім змене, напрыклад, чырвонага значэння не выклікалася змена ў hex тэксту з новым значэннем, нават калі выклікалася рэкампазіцыя.
+Я нават паглядзеў на фактычныя значэнні:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">println</span><span class="p">(</span><span class="s2">&#34;</span><span class="si">${color.hex}</span><span class="s2">, </span><span class="si">$hex</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span></code></pre></div><p>Пасля таго, як новы колер быў абраны пасля рэкампазіцыі, ён надрукаваў:</p>
+<pre tabindex="0"><code>ffaaffff, ffffffff
+</code></pre><p>Такім чынам, функцыя была выклікана з новым значэннем <code>Color</code>, але <code>remember</code> па-ранейшаму забяспечвала пачатковае значэнне.</p>
+<p>Прычына гэтага ў тым, што <code>remember</code> запамінае значэнне пры рэкампазіцыі - гэта як асноўная асаблівасць гэтага метаду.
+Каб перапісаць запомненае значэнне, нам трэба яўна сказаць <code>remember</code> абнавіць значэнне, указаўшы ключ:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">public</span> <span class="k">inline</span> <span class="k">fun</span> <span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="nf">remember</span><span class="p">(</span><span class="n">key1</span><span class="p">:</span> <span class="n">kotlin</span><span class="p">.</span><span class="n">Any</span><span class="p">?,</span> <span class="n">calculation</span><span class="p">:</span> <span class="nd">@androidx</span><span class="p">.</span><span class="n">compose</span><span class="p">.</span><span class="n">runtime</span><span class="p">.</span><span class="n">DisallowComposableCalls</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">):</span> <span class="n">T</span> 
+</span></span></code></pre></div><p>Пры змене ключа <code>remember</code> прыме новае значэнне і запомніць яго.</p>
+<p>Такім чынам, калі я дадаў новае значэнне колеру ў якасці ключа, як:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">var</span> <span class="py">red</span><span class="p">:</span> <span class="n">Int</span><span class="p">?</span> <span class="k">by</span> <span class="n">remember</span><span class="p">(</span><span class="n">color</span><span class="p">)</span> <span class="p">{</span> <span class="n">mutableStateOf</span><span class="p">(</span><span class="n">color</span><span class="p">.</span><span class="n">red</span><span class="p">)</span> <span class="p">}</span>
+</span></span></code></pre></div><p>Усё пачало працаваць як трэба.</p>
+<p>Шчаслівага кадавання!</p>
+
+</main>
+
+
+<hr/>
+
+<footer>
+<nav>
+  <ul>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/apps">Apps</a></li>
+    
+    
+    <li class="menu-right"><a href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-l"></i></a></li>
+    
+    <li class="menu-right"><a href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-l"></i></a></li>
+    
+    <li class="menu-right"><a href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-l"></i></a></li>
+    
+    <li class="menu-right"><a href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-l"></i></a></li>
+    
+    <li class="menu-right"><a href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-l"></i></a></li>
+    
+    <li class="menu-right"><a href="https://twitter.com/krossovochkin" target="_blank"><i class="fa-brands fa-twitter fa-l"></i></a></li>
+    
+    <li class="menu-right"><a href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-l"></i></a></li>
+    
+  </ul>
+</nav>
+</footer>
+
+
+</body>
+
+</html>

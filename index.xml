@@ -17,6 +17,29 @@
     </item>
     
     <item>
+      <title>When Compose remember cannot forget</title>
+      <link>https://krossovochkin.com/posts/2022_07_23_when_compose_remember_cannot_forget/</link>
+      <pubDate>Sat, 23 Jul 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.com/posts/2022_07_23_when_compose_remember_cannot_forget/</guid>
+      <description>Чытаць на беларускай мове
+Introduction When developing color-utils app using Compose for Web I faced an issue that remember didn&amp;rsquo;t want to forget the state. It was quite annoying experience as it felt stupid: composable function is recomposed with the new value provided but remember still kept old value.
+As usual, there is no magic there and the answer is quite simple therefore this article won&amp;rsquo;t be that long.
+Compose is all about state.</description>
+    </item>
+    
+    <item>
+      <title>Калі Compose remember ня можа забыць</title>
+      <link>https://krossovochkin.com/posts/by/2022_07_23_when_compose_remember_cannot_forget/</link>
+      <pubDate>Sat, 23 Jul 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.com/posts/by/2022_07_23_when_compose_remember_cannot_forget/</guid>
+      <description>Read in English
+Уводзіны Пры распрацоўцы прыкладання color-utils з выкарыстаннем Compose для Web я сутыкнуўся з праблемай, што remember не хацеў забываць стан. Гэта быў вельмі раздражняльны вопыт, бо я адчуваў сябе па-дурному: Composable функцыя перакампанавана з новым значэннем, але remember па-ранейшаму захоўвала старое значэнне. Як звычайна, ніякай магіі тут няма, і адказ даволі просты, таму гэты артыкул не будзе вельмі доўгі.
+Compose - гэта ўсё аб стане. У прыкладанні ў мяне было два ўзроўні стану:</description>
+    </item>
+    
+    <item>
       <title>Card Soccer</title>
       <link>https://krossovochkin.com/apps/card-soccer/</link>
       <pubDate>Sun, 10 Jul 2022 00:00:00 +0000</pubDate>

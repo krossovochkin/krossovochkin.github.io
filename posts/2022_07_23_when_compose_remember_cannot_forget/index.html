@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <title>When Compose remember cannot forget</title>
+
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon-144-precompressed.png"/>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script src="https://kit.fontawesome.com/6d5aec2882.js" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="/css/style.css" />
+
+  
+  <meta name="theme-color" content="#1e2327">
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="When Compose remember cannot forget"/>
+<meta name="twitter:description" content="What to do if compose remember cannot forget the value"/>
+<meta name="twitter:site" content="@krossovochkin"/>
+
+</head>
+
+<body>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<header>
+<nav>
+  <ul>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/apps">Apps</a></li>
+    
+    
+    <li class="menu-right"><a href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-l"></i></a></li>
+    
+    <li class="menu-right"><a href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-l"></i></a></li>
+    
+    <li class="menu-right"><a href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-l"></i></a></li>
+    
+    <li class="menu-right"><a href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-l"></i></a></li>
+    
+    <li class="menu-right"><a href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-l"></i></a></li>
+    
+    <li class="menu-right"><a href="https://twitter.com/krossovochkin" target="_blank"><i class="fa-brands fa-twitter fa-l"></i></a></li>
+    
+    <li class="menu-right"><a href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-l"></i></a></li>
+    
+  </ul>
+</nav>
+</header>
+
+<br/>
+
+<div class="meta">
+
+  
+    <h1><span class="title">When Compose remember cannot forget</span></h1>
+  
+  
+    <h3>July 23, 2022</h3>
+  
+
+</div>
+
+<main>
+<p><a href="../by/2022_07_23_when_compose_remember_cannot_forget">Чытаць на беларускай мове</a></p>
+<h2 id="introduction">Introduction</h2>
+<p>When developing <a href="https://krossovochkin.com/apps/color-utils/">color-utils</a> app using Compose for Web I faced an issue that <code>remember</code> didn&rsquo;t want to forget the state. It was quite annoying experience as it felt stupid: composable function is recomposed with the new value provided but <code>remember</code> still kept old value.<br>
+As usual, there is no magic there and the answer is quite simple therefore this article won&rsquo;t be that long.</p>
+<p>Compose is all about state. In the app I had two levels of state:</p>
+<ol>
+<li>&ldquo;domain&rdquo; - current <code>Color</code> value. This object represents actual color.</li>
+<li>&ldquo;ui&rdquo; - state of some controls (text fields) using which user is able to modify the color. Need to note that current UI state doesn&rsquo;t necessarily can be converted into correct <code>Color</code> object. For example, text field can be empty - that means that user is in process of modifying color value and we cannot create the <code>Color</code> object with not valid data.</li>
+</ol>
+<p>Domain value was kept as a mutable state that can be mutated when color is changed:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">var</span> <span class="py">foregroundColor</span> <span class="k">by</span> <span class="n">remember</span> <span class="p">{</span> <span class="n">mutableStateOf</span><span class="p">(</span><span class="n">Color</span><span class="p">.</span><span class="n">White</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">ColorPicker</span><span class="p">(</span><span class="n">foregroundColor</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">foregroundColor</span> <span class="p">=</span> <span class="k">it</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>UI value was derived from domain and kept current state of the corresponding text field. New value was propagated to &ldquo;domain&rdquo; level only when it was valid:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">var</span> <span class="py">red</span><span class="p">:</span> <span class="n">Int</span><span class="p">?</span> <span class="k">by</span> <span class="n">remember</span> <span class="p">{</span> <span class="n">mutableStateOf</span><span class="p">(</span><span class="n">color</span><span class="p">.</span><span class="n">red</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Input</span><span class="p">(</span><span class="n">InputType</span><span class="p">.</span><span class="n">Number</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">value</span><span class="p">(</span><span class="n">value</span> <span class="o">?:</span> <span class="n">Double</span><span class="p">.</span><span class="n">NaN</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">style</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">onInput</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">val</span> <span class="py">validated</span> <span class="p">=</span> <span class="n">validateRgbValue</span><span class="p">(</span><span class="k">it</span><span class="p">.</span><span class="n">value</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">red</span> <span class="p">=</span> <span class="n">validated</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">validated</span> <span class="o">!=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">onChanged</span><span class="p">(</span><span class="n">color</span><span class="p">.</span><span class="n">copy</span><span class="p">().</span><span class="n">apply</span> <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="n">red</span> <span class="p">=</span> <span class="n">validated</span> <span class="p">})</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Single <code>Color</code> object corresponds to multiple text fields that change alpha, red, green, blue and hex values. Whenever some value is changed to a valid value new <code>Color</code> object is created and propagated up. Changing of the <code>Color</code> value triggers recomposion of inner composables with new values changing text fields&rsquo; values to a new ones.</p>
+<p>The issue was that with such a code changing e.g. red value didn&rsquo;t trigger hex text input with the new value even though recomposition was called.<br>
+I even looked at the actual values provided:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">println</span><span class="p">(</span><span class="s2">&#34;</span><span class="si">${color.hex}</span><span class="s2">, </span><span class="si">$hex</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span></code></pre></div><p>After new color is picked after recomposition it printed:</p>
+<pre tabindex="0"><code>ffaaffff, ffffffff
+</code></pre><p>So, function was called with the new <code>Color</code> value but <code>remember</code> still provided initial value.</p>
+<p>The reason of that is that <code>remember</code> remembers value across recompositions - this is like the core feature of that method.<br>
+In order to re-write remembered value we need to explicitly tell <code>remember</code> to update the value by providing the key:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">public</span> <span class="k">inline</span> <span class="k">fun</span> <span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="nf">remember</span><span class="p">(</span><span class="n">key1</span><span class="p">:</span> <span class="n">kotlin</span><span class="p">.</span><span class="n">Any</span><span class="p">?,</span> <span class="n">calculation</span><span class="p">:</span> <span class="nd">@androidx</span><span class="p">.</span><span class="n">compose</span><span class="p">.</span><span class="n">runtime</span><span class="p">.</span><span class="n">DisallowComposableCalls</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">):</span> <span class="n">T</span> 
+</span></span></code></pre></div><p>When the key is changed <code>remember</code> will take new value and remember it.</p>
+<p>So, when I added new color value as a key like this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">var</span> <span class="py">red</span><span class="p">:</span> <span class="n">Int</span><span class="p">?</span> <span class="k">by</span> <span class="n">remember</span><span class="p">(</span><span class="n">color</span><span class="p">)</span> <span class="p">{</span> <span class="n">mutableStateOf</span><span class="p">(</span><span class="n">color</span><span class="p">.</span><span class="n">red</span><span class="p">)</span> <span class="p">}</span>
+</span></span></code></pre></div><p>Everything started working as needed.</p>
+<p>Happy coding!</p>
+
+</main>
+
+
+<hr/>
+
+<footer>
+<nav>
+  <ul>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/apps">Apps</a></li>
+    
+    
+    <li class="menu-right"><a href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-l"></i></a></li>
+    
+    <li class="menu-right"><a href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-l"></i></a></li>
+    
+    <li class="menu-right"><a href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-l"></i></a></li>
+    
+    <li class="menu-right"><a href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-l"></i></a></li>
+    
+    <li class="menu-right"><a href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-l"></i></a></li>
+    
+    <li class="menu-right"><a href="https://twitter.com/krossovochkin" target="_blank"><i class="fa-brands fa-twitter fa-l"></i></a></li>
+    
+    <li class="menu-right"><a href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-l"></i></a></li>
+    
+  </ul>
+</nav>
+</footer>
+
+
+</body>
+
+</html>
