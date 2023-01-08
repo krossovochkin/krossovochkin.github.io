@@ -6,7 +6,16 @@
     <description>Recent content in Posts on Vasya Drobushkov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 23 Jul 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 08 Jan 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Reactive streams testing</title>
+      <link>https://krossovochkin.com/posts/2023_01_08_reactive_streams_testing/</link>
+      <pubDate>Sun, 08 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.com/posts/2023_01_08_reactive_streams_testing/</guid>
+      <description>Introduction We should test the code to guarantee that it does exactly what it is expected to do. Tests not only verify correctness of the program but also set expectations. This becomes especially useful for public API, where tests can be treated as part of documentation that describes not only results but also behavior. Such things help do less painful migrations and refactoring as it becomes clear what behaviors are changing and what we should do about that.</description>
+    </item>
+    
     <item>
       <title>When Compose remember cannot forget</title>
       <link>https://krossovochkin.com/posts/2022_07_23_when_compose_remember_cannot_forget/</link>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <title>Reactive streams testing</title>
+
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon-144-precompressed.png"/>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script src="https://kit.fontawesome.com/6d5aec2882.js" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <link rel="me" href="https://androiddev.social/@krossovochkin" />
+
+  
+  <meta name="theme-color" content="#1e2327">
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Reactive streams testing"/>
+<meta name="twitter:description" content="Practical considerations for reactive streams testing."/>
+<meta name="twitter:site" content="@krossovochkin"/>
+
+</head>
+
+<body>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-148934073-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<header>
+<nav>
+  <ul>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/apps">Apps</a></li>
+    
+    
+    <li class="menu-right"><a rel="me" href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://androiddev.social/@krossovochkin" target="_blank"><i class="fa-brands fa-mastodon fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-l"></i></a></li>
+    
+  </ul>
+</nav>
+
+</header>
+
+<br/>
+
+
+<div class="meta">
+
+  
+    <h1><span class="title">Reactive streams testing</span></h1>
+  
+  
+    <h3>January 8, 2023</h3>
+  
+
+</div>
+
+<main>
+<h2 id="introduction">Introduction</h2>
+<p>We should test the code to guarantee that it does exactly what it is expected to do. Tests not only verify correctness of the program but also set expectations. This becomes especially useful for public API, where tests can be treated as part of documentation that describes not only results but also behavior. Such things help do less painful migrations and refactoring as it becomes clear what behaviors are changing and what we should do about that.</p>
+<p>General note: while many of the items discussed below are important, it doesn’t mean that all of them should be applied blindly to every situation. Adding too many constraints on public API might lead to less flexibility in the future and provide additional maintenance overhead. As usual, be pragmatic.</p>
+<p>When we talk about testing, reactive streams - whether it is RxJava or Kotlin Flow - developers tend to write just a little of tests to verify that values emitted and control flow works as expected. But there are quite a lot of other things that might be worth to test.</p>
+<p>The key difference between the reactive and non-reactive API method is that reactive API has more implicit features that, when not documented, can lead to misunderstanding in the future. Generally speaking, similar points can be applied to the callback-based API as well, though here we’ll take reactive streams as an example.</p>
+<p>In this article, we’ll go briefly through such things and point out why it might be important to extend the test suite with such tests.</p>
+<p>We’ll take some class with the method that returns reactive stream and look what we might want to test in order to document its behavior.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">LocationProvider</span><span class="p">(</span><span class="cm">/* dependencies */</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">observeLocations</span><span class="p">():</span> <span class="n">Flowable</span><span class="p">&lt;</span><span class="n">Location</span><span class="p">&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// implementation
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>We don’t care about implementation of the class (as it might be different depending on the use-case) and are more interested in looking at the public API and how we might want to test it.</p>
+<h3 id="values-emission">Values emission</h3>
+<p>For the sake of completeness, the first thing we test is that values are emitted when expected. Our location provider most likely wraps some platform API and emits value when platform API provides us some.</p>
+<p>This is a very basic test that usually is written always. It looks like this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">`when platform provides location then value is emitted`</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// setup platform test double to provide location
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// verify value is emitted by provider
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">provider</span><span class="p">.</span><span class="n">observeLocations</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">test</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertValue</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Not writing test like this might not catch case when location is not emitted when expected - this will lead to all consumers be basically broken as locations won’t be provided.</p>
+<p>The opposite logic of verifying that values are not emitted when they should not - also falls into this section, though it might be more difficult to check. It is always easier to prove existence than to prove that something doesn’t exist. We might think that value was not emitted, but it actually will be a bit later, e.g. because of concurrency. Therefore, testing that value is not emitted should be done carefully.</p>
+<h3 id="errors">Errors</h3>
+<p>Starting from this item, things start to complicate.</p>
+<p>During computation, there might be some errors - for example, the provider can be designed to return only valid locations and what location is considered being valid might depend on the particular business logic. When such error values are provided by platform API, there are different strategies our provider might implement:</p>
+<ul>
+<li>we might skip invalid values</li>
+<li>or terminate stream with error (this will effectively stop the stream)</li>
+<li>or emit fallback value</li>
+<li>etc.</li>
+</ul>
+<p>Also, it might be that platform API instead of providing a value throws an exception - if we don’t handle it inside provider, that exception might also terminate the stream.</p>
+<p>It is useful to declare what strategy we use so that consumers are aware of that.</p>
+<p>Usually, it is not that good to pass error downstream, because if consumers don’t handle it the error might not be got caught at all and crash the app. Better to either handle errors inside or change signature to something like <code>Result&lt;Location, Error&gt;</code> making consumers to explicitly handle error situations.</p>
+<p>In both cases, we might want to write tests ensuring that the stream is not terminating with error. It might look like this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">`when platform fails to provide location then stream has no errors`</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// setup platform test double to fail
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    
+</span></span><span class="line"><span class="cl">    <span class="c1">// verify error is not terminated with error 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">provider</span><span class="p">.</span><span class="n">observeLocations</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">test</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>We also can add <code>assertNoErrors</code> to each stream verification to ensure that in all cases stream is not terminated with error.</p>
+<p>Not writing tests like these might not catch an error that is passed downstream that potentially can crash the app.</p>
+<h3 id="completion">Completion</h3>
+<p>It might happen so that our stream emits some number of elements and then completes. Some consumers might rely on that and if it is not documented properly, this might lead to issues in the future. Consider, the consumer does something like:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">provider</span><span class="p">.</span><span class="n">observeLocations</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">toList</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">doOnNext</span> <span class="p">{</span> <span class="cm">/* do sth with list of locations */</span> <span class="p">}</span>
+</span></span></code></pre></div><p>If at some point in the future we change implementation so that it doesn’t complete anymore - such consumer code will basically hang forever as <code>toList</code> expects the stream to be completed. This might lead to app hangs or OOMs if the number of locations grows.</p>
+<p>Therefore, in such cases better to be explicit - we can write tests declaring when stream completes or adding <code>assertNotComplete</code> to ensure that our stream is not completed.</p>
+<h3 id="duplicates">Duplicates</h3>
+<p>Imagine we have a stream providing locations and we expect that new value will always be different from the previous one. From an implementation standpoint, it is as simple as adding <code>distinctUntilChanged</code> to the stream. But consider we haven’t added it in the first place thinking that platform API does that already. We give our API to consumers and they start using it. Later on, we find that platform API might provide duplicate locations and add <code>distinctUntilChanged</code> to our implementation. Such a simple change already can break some consumers if they e.g. expected to get values at some particular rate (e.g. once per second) and instead now they have gaps that might lead to some weird behaviors on the client side.</p>
+<p>That is why it is important to state whether the stream emits duplicate values or not. If we want our stream to emit new value only if it is different from previous we can write test like:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">`when duplicate value provided then skips duplicate`</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// setup platform test double to emit two duplicate items
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// verify only the first item is emitted by provider
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">provider</span><span class="p">.</span><span class="n">observeLocations</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">test</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertValue</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertNotComplete</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="threading">Threading</h3>
+<p>Streams are always operating on some thread. This thread is usually part of some thread pool defined by schedulers. Stream might operate on some particular scheduler (e.g. io) or use caller’s thread. Not being explicit about this might lead to issues in case threading is changed in the implementation. Say, in the beginning there is no particular threading applied and stream basically works on the consumer’s thread. If consumer subscribes to values to be on the main thread (to update some UI component) and later on we change threading to io consumers can crash as UI components should be touched only by main thread. We can state that our implementation works on io and emits values on io - this way it is client&rsquo;s responsibility to switch to other scheduler if needed.</p>
+<p>For that we can write test like this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">`values are emitted on io`</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">provider</span><span class="p">.</span><span class="n">observeLocations</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">doOnNext</span> <span class="p">{</span> <span class="n">assertTrue</span><span class="p">(</span><span class="n">Thread</span><span class="p">.</span><span class="n">currentThread</span><span class="p">().</span><span class="n">name</span><span class="p">.</span><span class="n">startsWith</span><span class="p">(</span><span class="err">“</span><span class="n">io</span><span class="err">”</span><span class="p">))</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">test</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="hot-vs-cold">Hot vs cold</h3>
+<p>In order to provide more optimized experience, we can provide a hot implementation that will ensure that consumers don’t add CPU and memory pressure by subscribing to <code>observeLocations</code> too many times. At the same time, we can not do that if having many subscriptions doesn’t have such an overhead. Being explicit here gives clear expectations for consumers on whether they need to provide additional sharing or not.</p>
+<p>Covering this with tests is less obvious and most likely should just ensure that platform API is not called multiple times for each subscriber, something like this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">`subscriptions are shared between subscribers`</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">provider</span><span class="p">.</span><span class="n">observeLocations</span><span class="p">().</span><span class="n">test</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="n">provider</span><span class="p">.</span><span class="n">observeLocations</span><span class="p">().</span><span class="n">test</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// verify that platform API was called only once
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></div><h3 id="disposal">Disposal</h3>
+<p>When sharing subscriptions as an implementation detail, we might want to add test to ensure that if there are no subscribers - we don’t listen for platform API calls to not consume resources. Not doing so, we might end up with a provider being running in the background even if nobody listens to its values. To cover this, we can write the following test:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">`disposes when no subscribers`</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">observer1</span> <span class="p">=</span> <span class="n">provider</span><span class="p">.</span><span class="n">observeLocations</span><span class="p">().</span><span class="n">test</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">observer2</span> <span class="p">=</span> <span class="n">provider</span><span class="p">.</span><span class="n">observeLocations</span><span class="p">().</span><span class="n">test</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">observer1</span><span class="p">.</span><span class="n">dispose</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="n">observer2</span><span class="p">.</span><span class="n">dispose</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// verify that platform API was unsubscribed
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></div><h3 id="throttling">Throttling</h3>
+<p>If we don’t want to overwhelm consumers with a lot of data, we can apply throttling to emit location e.g. every second. Again, not stating this explicitly might break consumers if the rate is changed afterwards. To ensure correct throttling is applied, one needs to add tests for that:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">`throttles by one second`</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">observer</span> <span class="p">=</span> <span class="n">provider</span><span class="p">.</span><span class="n">observeLocations</span><span class="p">().</span><span class="n">test</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// make platform to emit few items 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// verify only first item emitted
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">observer</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertValue</span><span class="p">(</span><span class="n">location1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertNotComplete</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">testScheduler</span><span class="p">.</span><span class="n">advanceTimeBy</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">SECOND</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// make platform to emit a few more items
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// verify only one new item emitted
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">observer</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="n">location1</span><span class="p">,</span> <span class="n">locationN</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertNotComplete</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="conclusion">Conclusion</h3>
+<p>In this article, we took a look at the different angles which it might be useful to consider when covering public API with tests.</p>
+<p>Of course, there are different situations and use cases, so examples above are just examples - sometimes we might want our stream to complete, sometimes we don’t care about termination with error and so on.</p>
+<p>At the same time, designing API thinking about different aspects helps to make better APIs and have easier refactorings in the future.</p>
+<p>If somebody changes the behavior of the implementation, then corresponding test will fail and it will indicate that one should go through the usages of API and check whether some bug will be introduced by such a change. Knowing what to look for simplifies work and the probability of having hidden bugs becomes smaller.</p>
+<p>Happy coding!</p>
+
+</main>
+
+
+<hr/>
+
+<footer>
+<nav>
+  <ul>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/apps">Apps</a></li>
+    
+    
+    <li class="menu-right"><a rel="me" href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://androiddev.social/@krossovochkin" target="_blank"><i class="fa-brands fa-mastodon fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-l"></i></a></li>
+    
+  </ul>
+</nav>
+
+</footer>
+
+
+</body>
+
+</html>
