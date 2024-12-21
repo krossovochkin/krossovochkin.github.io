@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <title>Relatively Non-Obvious Tricks in Solving Simple Algorithmic Problems</title>
+
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon-144-precompressed.png"/>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script src="https://kit.fontawesome.com/6d5aec2882.js" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <link rel="me" href="https://androiddev.social/@krossovochkin" />
+
+  
+  <meta name="theme-color" content="#1e2327">
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Relatively Non-Obvious Tricks in Solving Simple Algorithmic Problems"/>
+<meta name="twitter:description" content="Relatively Non-Obvious Tricks in Solving Simple Algorithmic Problems Blowing the dust off LeetCode once again, I found myself, as in the past, struggling with coding relatively simple algorithms. Just like with anything else, if you don’t practice for years, you lose some of the hands-on experience.
+On the positive side, I noticed that for some problems, my new submissions were much better and more concise compared to my old ones. That’s an awesome feeling—a tangible measure of growth."/>
+<meta name="twitter:site" content="@krossovochkin"/>
+
+</head>
+
+<body>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-YEWQ4T95D5', { 'anonymize_ip': false });
+}
+</script>
+
+
+<header>
+<nav>
+  <ul>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/apps">Apps</a></li>
+    
+    
+    <li class="menu-right"><a rel="me" href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://androiddev.social/@krossovochkin" target="_blank"><i class="fa-brands fa-mastodon fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-l"></i></a></li>
+    
+  </ul>
+</nav>
+
+</header>
+
+<br/>
+
+
+<div class="meta">
+
+  
+    <h1><span class="title">Relatively Non-Obvious Tricks in Solving Simple Algorithmic Problems</span></h1>
+  
+  
+    <h3>December 21, 2024</h3>
+  
+
+</div>
+
+<main>
+<h1 id="relatively-non-obvious-tricks-in-solving-simple-algorithmic-problems">Relatively Non-Obvious Tricks in Solving Simple Algorithmic Problems</h1>
+<p>Blowing the dust off LeetCode once again, I found myself, as in the <a href="https://krossovochkin.com/posts/2019_09_27_random_interview_coding_task_retrospective/">past</a>, struggling with coding relatively simple algorithms. Just like with anything else, if you don’t practice for years, you lose some of the hands-on experience.</p>
+<p>On the positive side, I noticed that for some problems, my new submissions were much better and more concise compared to my old ones. That’s an awesome feeling—a tangible measure of growth.</p>
+<p>While tackling certain easy problems, I realized that &ldquo;easy&rdquo; usually just means &ldquo;doesn&rsquo;t require much code.&rdquo; However, the idea behind the optimal solution might still not be very intuitive. Sure, one can use brute force or additional collections, but in most cases, this leads to either a &ldquo;time limit exceeded&rdquo; or an &ldquo;out of memory&rdquo; error.</p>
+<p>In this article, I’d like to walk through a few examples and provide simple, intuitive proofs for why these solutions work. It’s surprising how many resources focus on implementation while barely explaining why the algorithms work.</p>
+<hr>
+<h2 id="detect-whether-a-singly-linked-list-contains-a-loop">Detect Whether a Singly Linked List Contains a Loop</h2>
+<p><a href="https://leetcode.com/problems/linked-list-cycle/">LeetCode</a></p>
+<p>This is a classic problem with a two-pointer solution. We initialize a slow and a fast pointer at the beginning of the list. The slow pointer moves one step at a time, while the fast pointer moves two steps at a time.</p>
+<ul>
+<li>If the fast pointer reaches the end of the list, there is no loop. (If a loop existed, the list wouldn&rsquo;t have an &ldquo;end.&rdquo;)</li>
+<li>If the slow and fast pointers meet at some point, there is a loop.</li>
+</ul>
+<p>But why can we guarantee that the pointers will meet if there is a loop?</p>
+<p>The answer lies in the fact that at each iteration, the distance between the slow and fast pointers increases by one. Eventually, both pointers will be inside the loop. Once they’re in the loop, the distance between them decreases by one on each iteration. Therefore, they are guaranteed to meet.</p>
+<hr>
+<h2 id="find-the-majority-element-in-an-array">Find the Majority Element in an Array</h2>
+<p><a href="https://leetcode.com/problems/majority-element/">LeetCode</a></p>
+<p>To solve this, we iterate through the array once using a counter that starts at zero.</p>
+<ul>
+<li>If the counter is zero, we set the current element as the candidate.</li>
+<li>If the counter is non-zero, we check whether the current element matches the candidate: if it does, we increment the counter; if not, we decrement it.</li>
+</ul>
+<p>By the end, the candidate will be the majority element.</p>
+<p>The trickiest part of this solution is understanding why it works. The key is the definition of a majority element: it appears in the array more than half the time. This gives the array an interesting property:</p>
+<ul>
+<li>If you remove two different numbers (one majority and one non-majority, or two non-majority), the majority element’s frequency remains unaffected.</li>
+</ul>
+<p>We don’t explicitly remove pairs, but the counter emulates this.</p>
+<ul>
+<li>Incrementing the counter corresponds to finding the same number again.</li>
+<li>Decrementing corresponds to encountering a different number.</li>
+<li>Resetting the counter to zero means we’ve found some number of pairs of different numbers that we can remove or ignore and start over.</li>
+</ul>
+<p>Finally, the majority element’s count minus the count of all other elements will always be positive, ensuring that the algorithm identifies it correctly.</p>
+<hr>
+<h2 id="climbing-stairs">Climbing Stairs</h2>
+<p><a href="https://leetcode.com/problems/climbing-stairs/">LeetCode</a></p>
+<p>You’re given a staircase, and on each step, you can climb one or two stairs. You need to calculate how many distinct ways you can reach the top.</p>
+<p>At first, this problem seems confusing. Then, realizing the solution involves the Fibonacci sequence might make it seem even more mysterious.</p>
+<p>Here’s why:</p>
+<p>When you&rsquo;re on the i-th step, there are only two ways to get there:</p>
+<ol>
+<li>From the i-1-th step by taking one step.</li>
+<li>From the i-2-th step by taking two steps.</li>
+</ol>
+<p>Thus, the number of ways to reach the i-th step is simply the sum of the ways to reach the i-1-th and i-2-th steps. That’s exactly the definition of the Fibonacci sequence.</p>
+<p>With this induction step established, all we need are the base cases:</p>
+<ul>
+<li>There’s only one way to reach the first step.</li>
+<li>There are two ways to reach the second step (1+1 or 2).</li>
+</ul>
+<p>And that’s it.</p>
+<hr>
+<h2 id="maximum-subarray-sum">Maximum Subarray Sum</h2>
+<p><a href="https://leetcode.com/problems/maximum-subarray/">LeetCode</a></p>
+<p>This problem asks us to find the maximum sum of a subarray. Brute-forcing through all subarrays would be too slow, so we use a linear-time solution with constant memory.</p>
+<p>We maintain two variables:</p>
+<ol>
+<li><strong><code>currentSum</code></strong>: Keeps track of the running sum.</li>
+<li><strong><code>maxSum</code></strong>: Stores the highest sum found so far.</li>
+</ol>
+<p>At each step:</p>
+<ul>
+<li>If <code>currentSum</code> is positive, we add the next item to it.</li>
+<li>If <code>currentSum</code> is negative, we discard it and start over from the next item.</li>
+</ul>
+<p>Why does this work?</p>
+<ul>
+<li>If all elements are non-negative, the max sum is simply the sum of all elements. The algorithm handles this well, as <code>currentSum</code> never becomes negative.</li>
+<li>If all elements are negative, the max sum is the largest single element. The algorithm also handles this correctly, as <code>currentSum</code> resets for each element, ensuring <code>maxSum</code> stores the largest value.</li>
+<li>In mixed cases, when <code>currentSum</code> becomes negative, discarding it is safe because adding any element to a negative sum would result in a smaller value than just starting fresh.</li>
+</ul>
+<hr>
+<p>And that’s it for this time.</p>
+<p>Happy coding!</p>
+
+</main>
+
+
+<hr/>
+
+<footer>
+<nav>
+  <ul>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/apps">Apps</a></li>
+    
+    
+    <li class="menu-right"><a rel="me" href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://androiddev.social/@krossovochkin" target="_blank"><i class="fa-brands fa-mastodon fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-l"></i></a></li>
+    
+  </ul>
+</nav>
+
+</footer>
+
+
+</body>
+
+</html>

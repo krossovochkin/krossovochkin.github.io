@@ -6,7 +6,17 @@
     <description>Recent content in Posts on Vasya Drobushkov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 08 Jan 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 21 Dec 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Relatively Non-Obvious Tricks in Solving Simple Algorithmic Problems</title>
+      <link>https://krossovochkin.com/posts/2024_12_21_relatively_non_obvious_tricks_in_solving_simple_algorithmic_problems/</link>
+      <pubDate>Sat, 21 Dec 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://krossovochkin.com/posts/2024_12_21_relatively_non_obvious_tricks_in_solving_simple_algorithmic_problems/</guid>
+      <description>Relatively Non-Obvious Tricks in Solving Simple Algorithmic Problems Blowing the dust off LeetCode once again, I found myself, as in the past, struggling with coding relatively simple algorithms. Just like with anything else, if you don’t practice for years, you lose some of the hands-on experience.
+On the positive side, I noticed that for some problems, my new submissions were much better and more concise compared to my old ones. That’s an awesome feeling—a tangible measure of growth.</description>
+    </item>
+    
     <item>
       <title>Reactive streams testing</title>
       <link>https://krossovochkin.com/posts/2023_01_08_reactive_streams_testing/</link>
