@@ -22,29 +22,32 @@
   
   <meta name="theme-color" content="#1e2327">
 
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="SiMMMMpLLLLeDateFormat"/>
-<meta name="twitter:description" content="Introduction Using SimpleDateFormat to format dates and times is a common thing (as Java 8 Time API is not that available on Android yet). Usually it looks like:
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="SiMMMMpLLLLeDateFormat">
+  <meta name="twitter:description" content="Introduction Using SimpleDateFormat to format dates and times is a common thing (as Java 8 Time API is not that available on Android yet). Usually it looks like:
 val formatter = SimpleDateFormat(&#34;dd MMMM yyyy&#34;, Locale.ENGLISH) formatter.format(date) We can use different formats and locales with not only providing correct translations, but also some additional locale-specific formatting rules.
-One tricky thing about SimpleDateFormat formats is why we have M and L when they look identical?"/>
-<meta name="twitter:site" content="@krossovochkin"/>
+One tricky thing about SimpleDateFormat formats is why we have M and L when they look identical?">
 
 </head>
 
 <body>
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-YEWQ4T95D5', { 'anonymize_ip': false });
-}
-</script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-YEWQ4T95D5');
+        }
+      </script>
 
 <header>
 <nav>
@@ -94,7 +97,7 @@ if (!doNotTrack) {
 <p><a href="https://proandroiddev.com/simmmmplllledateformat-6bd326d17012"><img src="https://img.shields.io/badge/original-proandroiddev-green#badge" alt=""></a></p>
 <h2 id="introduction">Introduction</h2>
 <p>Using SimpleDateFormat to format dates and times is a common thing (as Java 8 Time API is not that available on Android yet). Usually it looks like:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">formatter</span> <span class="p">=</span> <span class="n">SimpleDateFormat</span><span class="p">(</span><span class="s2">&#34;dd MMMM yyyy&#34;</span><span class="p">,</span> <span class="n">Locale</span><span class="p">.</span><span class="n">ENGLISH</span><span class="p">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">formatter</span> <span class="p">=</span> <span class="n">SimpleDateFormat</span><span class="p">(</span><span class="s2">&#34;dd MMMM yyyy&#34;</span><span class="p">,</span> <span class="nc">Locale</span><span class="p">.</span><span class="n">ENGLISH</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">formatter</span><span class="p">.</span><span class="n">format</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
 </span></span></code></pre></div><p>We can use different formats and locales with not only providing correct translations, but also some additional locale-specific formatting rules.</p>
 <p>One tricky thing about SimpleDateFormat formats is why we have M and L when they look identical?</p>

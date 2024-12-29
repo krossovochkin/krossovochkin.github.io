@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Json on Vasya Drobushkov</title>
+    <link>https://krossovochkin.com/tags/json/</link>
+    <description>Recent content in Json on Vasya Drobushkov</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 08 Jun 2021 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://krossovochkin.com/tags/json/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Custom Reactive JSON parsing</title>
+      <link>https://krossovochkin.com/posts/2021_06_08_custom_reactive_json_parsing/</link>
+      <pubDate>Tue, 08 Jun 2021 00:00:00 +0000</pubDate>
+      <guid>https://krossovochkin.com/posts/2021_06_08_custom_reactive_json_parsing/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://mailchi.mp/kotlinweekly/kotlin-weekly-254&#34;&gt;&lt;img src=&#34;https://img.shields.io/badge/kotlinweekly-254-purple#badge&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3 id=&#34;introduction&#34;&gt;Introduction&lt;/h3&gt;&#xA;&lt;p&gt;Parsing JSON strings is a must-have on most Android projects that have server-client communication (of course there are some other formats like XML or &lt;a href=&#34;https://developers.google.com/protocol-buffers&#34;&gt;Protobuf&lt;/a&gt;, but I guess JSON is the most common one at least at the moment). Setting up this communication is relatively straightforward: choose a library, add it to a project, describe models, create mappers, and so on. There are a bunch of various libraries to parse JSON: good old &lt;a href=&#34;https://github.com/google/gson&#34;&gt;Gson&lt;/a&gt;, &lt;a href=&#34;https://github.com/FasterXML/jackson&#34;&gt;Jackson&lt;/a&gt;, or more modern &lt;a href=&#34;https://github.com/square/moshi&#34;&gt;Moshi&lt;/a&gt;, &lt;a href=&#34;https://github.com/Kotlin/kotlinx.serialization&#34;&gt;kotlinx-serialization&lt;/a&gt; and there are more. Set up of these libraries is different, there are differences in the internal implementation, but the general idea is the same for most of them: you can convert JSON-string into a set of objects and vice versa.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

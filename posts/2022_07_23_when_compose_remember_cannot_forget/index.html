@@ -22,27 +22,30 @@
   
   <meta name="theme-color" content="#1e2327">
 
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="When Compose remember cannot forget"/>
-<meta name="twitter:description" content="What to do if compose remember cannot forget the value"/>
-<meta name="twitter:site" content="@krossovochkin"/>
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="When Compose remember cannot forget">
+  <meta name="twitter:description" content="What to do if compose remember cannot forget the value">
 
 </head>
 
 <body>
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-YEWQ4T95D5', { 'anonymize_ip': false });
-}
-</script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-YEWQ4T95D5');
+        }
+      </script>
 
 <header>
 <nav>
@@ -100,7 +103,7 @@ As usual, there is no magic there and the answer is quite simple therefore this 
 <li>&ldquo;ui&rdquo; - state of some controls (text fields) using which user is able to modify the color. Need to note that current UI state doesn&rsquo;t necessarily can be converted into correct <code>Color</code> object. For example, text field can be empty - that means that user is in process of modifying color value and we cannot create the <code>Color</code> object with not valid data.</li>
 </ol>
 <p>Domain value was kept as a mutable state that can be mutated when color is changed:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">var</span> <span class="py">foregroundColor</span> <span class="k">by</span> <span class="n">remember</span> <span class="p">{</span> <span class="n">mutableStateOf</span><span class="p">(</span><span class="n">Color</span><span class="p">.</span><span class="n">White</span><span class="p">)</span> <span class="p">}</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">var</span> <span class="py">foregroundColor</span> <span class="k">by</span> <span class="n">remember</span> <span class="p">{</span> <span class="n">mutableStateOf</span><span class="p">(</span><span class="nc">Color</span><span class="p">.</span><span class="n">White</span><span class="p">)</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">ColorPicker</span><span class="p">(</span><span class="n">foregroundColor</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="n">foregroundColor</span> <span class="p">=</span> <span class="k">it</span>
@@ -108,11 +111,11 @@ As usual, there is no magic there and the answer is quite simple therefore this 
 </span></span></code></pre></div><p>UI value was derived from domain and kept current state of the corresponding text field. New value was propagated to &ldquo;domain&rdquo; level only when it was valid:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">var</span> <span class="py">red</span><span class="p">:</span> <span class="n">Int</span><span class="p">?</span> <span class="k">by</span> <span class="n">remember</span> <span class="p">{</span> <span class="n">mutableStateOf</span><span class="p">(</span><span class="n">color</span><span class="p">.</span><span class="n">red</span><span class="p">)</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">Input</span><span class="p">(</span><span class="n">InputType</span><span class="p">.</span><span class="n">Number</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">value</span><span class="p">(</span><span class="n">value</span> <span class="o">?:</span> <span class="n">Double</span><span class="p">.</span><span class="n">NaN</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Input</span><span class="p">(</span><span class="nc">InputType</span><span class="p">.</span><span class="n">Number</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">value</span><span class="p">(</span><span class="k">value</span> <span class="o">?:</span> <span class="nc">Double</span><span class="p">.</span><span class="n">NaN</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="n">style</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">onInput</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="k">val</span> <span class="py">validated</span> <span class="p">=</span> <span class="n">validateRgbValue</span><span class="p">(</span><span class="k">it</span><span class="p">.</span><span class="n">value</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">val</span> <span class="py">validated</span> <span class="p">=</span> <span class="n">validateRgbValue</span><span class="p">(</span><span class="k">it</span><span class="p">.</span><span class="k">value</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="n">red</span> <span class="p">=</span> <span class="n">validated</span>
 </span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">validated</span> <span class="o">!=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">                <span class="n">onChanged</span><span class="p">(</span><span class="n">color</span><span class="p">.</span><span class="n">copy</span><span class="p">().</span><span class="n">apply</span> <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="n">red</span> <span class="p">=</span> <span class="n">validated</span> <span class="p">})</span>

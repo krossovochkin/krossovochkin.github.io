@@ -22,27 +22,30 @@
   
   <meta name="theme-color" content="#1e2327">
 
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Middle Point"/>
-<meta name="twitter:description" content="Introduction Working with numbers in programming never was a simple thing. In math, we deal with various sets of numbers - whole numbers, rational, complex. All these sets are infinite - that means that for any number we can find another smaller one and one which is bigger. In programming when we work with numbers we deal with some subset of these sets - that many that can be represented with a given amount of bits."/>
-<meta name="twitter:site" content="@krossovochkin"/>
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Middle Point">
+  <meta name="twitter:description" content="Introduction Working with numbers in programming never was a simple thing. In math, we deal with various sets of numbers - whole numbers, rational, complex. All these sets are infinite - that means that for any number we can find another smaller one and one which is bigger. In programming when we work with numbers we deal with some subset of these sets - that many that can be represented with a given amount of bits. When we want to work with whole numbers we can use e.g. Integer, which are the numbers being able to be represented usually with 4 bits. For floating-point numbers - say Double - it is 8 bits. There is no plus or minus infinity (in Double there are &#43;/- infinity, though they are used for special cases).">
 
 </head>
 
 <body>
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-YEWQ4T95D5', { 'anonymize_ip': false });
-}
-</script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-YEWQ4T95D5');
+        }
+      </script>
 
 <header>
 <nav>
@@ -172,7 +175,7 @@ For handling this there is a good trick:</p>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">`if start greater than 0 and end greater than 0 and has overflow`</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="n">assertEquals</span><span class="p">(</span><span class="n">Int</span><span class="p">.</span><span class="n">MAX_VALUE</span> <span class="p">-</span> <span class="m">1</span><span class="p">,</span> <span class="n">middle</span><span class="p">(</span><span class="n">Int</span><span class="p">.</span><span class="n">MAX_VALUE</span> <span class="p">-</span> <span class="m">2</span><span class="p">,</span> <span class="n">Int</span><span class="p">.</span><span class="n">MAX_VALUE</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">	<span class="n">assertEquals</span><span class="p">(</span><span class="nc">Int</span><span class="p">.</span><span class="n">MAX_VALUE</span> <span class="p">-</span> <span class="m">1</span><span class="p">,</span> <span class="n">middle</span><span class="p">(</span><span class="nc">Int</span><span class="p">.</span><span class="n">MAX_VALUE</span> <span class="p">-</span> <span class="m">2</span><span class="p">,</span> <span class="nc">Int</span><span class="p">.</span><span class="n">MAX_VALUE</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nd">@Test</span>
@@ -182,7 +185,7 @@ For handling this there is a good trick:</p>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">`if start less than 0 and end less than 0 and has overflow`</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="n">assertEquals</span><span class="p">(</span><span class="n">Int</span><span class="p">.</span><span class="n">MIN_VALUE</span> <span class="p">+</span> <span class="m">1</span><span class="p">,</span> <span class="n">middle</span><span class="p">(</span><span class="n">Int</span><span class="p">.</span><span class="n">MIN_VALUE</span> <span class="p">+</span> <span class="m">1</span><span class="p">,</span> <span class="n">Int</span><span class="p">.</span><span class="n">MIN_VALUE</span> <span class="p">+</span> <span class="m">2</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">	<span class="n">assertEquals</span><span class="p">(</span><span class="nc">Int</span><span class="p">.</span><span class="n">MIN_VALUE</span> <span class="p">+</span> <span class="m">1</span><span class="p">,</span> <span class="n">middle</span><span class="p">(</span><span class="nc">Int</span><span class="p">.</span><span class="n">MIN_VALUE</span> <span class="p">+</span> <span class="m">1</span><span class="p">,</span> <span class="nc">Int</span><span class="p">.</span><span class="n">MIN_VALUE</span> <span class="p">+</span> <span class="m">2</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nd">@Test</span>
@@ -192,7 +195,7 @@ For handling this there is a good trick:</p>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">`if start less than 0 and end greater than 0 and has overflow`</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="n">assertEquals</span><span class="p">(-</span><span class="m">1</span><span class="p">,</span> <span class="n">middle</span><span class="p">(</span><span class="n">Int</span><span class="p">.</span><span class="n">MIN_VALUE</span><span class="p">,</span> <span class="n">Int</span><span class="p">.</span><span class="n">MAX_VALUE</span> <span class="p">-</span> <span class="m">1</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">	<span class="n">assertEquals</span><span class="p">(-</span><span class="m">1</span><span class="p">,</span> <span class="n">middle</span><span class="p">(</span><span class="nc">Int</span><span class="p">.</span><span class="n">MIN_VALUE</span><span class="p">,</span> <span class="nc">Int</span><span class="p">.</span><span class="n">MAX_VALUE</span> <span class="p">-</span> <span class="m">1</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>Not as simple as was at first thought.</p>
 <h3 id="double-naive-approach">Double naive approach</h3>
@@ -224,32 +227,32 @@ For example, if we have <code>start = Double.NEGATIVE_INFINITY</code> and <code>
 <p>And our set of tests is now should have:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="nd">@Test</span><span class="p">(</span><span class="n">expected</span> <span class="p">=</span> <span class="n">IllegalArgumentException</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">`double start is negative infinity and end is positive infinity then throws exception`</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="n">middle</span><span class="p">(</span><span class="n">Double</span><span class="p">.</span><span class="n">NEGATIVE_INFINITY</span><span class="p">,</span> <span class="n">Double</span><span class="p">.</span><span class="n">POSITIVE_INFINITY</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">middle</span><span class="p">(</span><span class="nc">Double</span><span class="p">.</span><span class="n">NEGATIVE_INFINITY</span><span class="p">,</span> <span class="nc">Double</span><span class="p">.</span><span class="n">POSITIVE_INFINITY</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">`double start is negative infinity and end is not infinity then negative infinity`</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="n">assertEquals</span><span class="p">(</span><span class="n">Double</span><span class="p">.</span><span class="n">NEGATIVE_INFINITY</span><span class="p">,</span> <span class="n">middle</span><span class="p">(</span><span class="n">Double</span><span class="p">.</span><span class="n">NEGATIVE_INFINITY</span><span class="p">,</span> <span class="n">Double</span><span class="p">.</span><span class="n">MAX_VALUE</span><span class="p">),</span> <span class="m">1.0e-16</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">assertEquals</span><span class="p">(</span><span class="nc">Double</span><span class="p">.</span><span class="n">NEGATIVE_INFINITY</span><span class="p">,</span> <span class="n">middle</span><span class="p">(</span><span class="nc">Double</span><span class="p">.</span><span class="n">NEGATIVE_INFINITY</span><span class="p">,</span> <span class="nc">Double</span><span class="p">.</span><span class="n">MAX_VALUE</span><span class="p">),</span> <span class="m">1.0e-16</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">`double start is not infinity and end is positive infinity then positive infinity`</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="n">assertEquals</span><span class="p">(</span><span class="n">Double</span><span class="p">.</span><span class="n">POSITIVE_INFINITY</span><span class="p">,</span> <span class="n">middle</span><span class="p">(</span><span class="n">Double</span><span class="p">.</span><span class="n">MIN_VALUE</span><span class="p">,</span> <span class="n">Double</span><span class="p">.</span><span class="n">POSITIVE_INFINITY</span><span class="p">),</span> <span class="m">1.0e-16</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">assertEquals</span><span class="p">(</span><span class="nc">Double</span><span class="p">.</span><span class="n">POSITIVE_INFINITY</span><span class="p">,</span> <span class="n">middle</span><span class="p">(</span><span class="nc">Double</span><span class="p">.</span><span class="n">MIN_VALUE</span><span class="p">,</span> <span class="nc">Double</span><span class="p">.</span><span class="n">POSITIVE_INFINITY</span><span class="p">),</span> <span class="m">1.0e-16</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">`double start == end == negative infinity then negative infinity`</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="n">assertEquals</span><span class="p">(</span><span class="n">Double</span><span class="p">.</span><span class="n">NEGATIVE_INFINITY</span><span class="p">,</span> <span class="n">middle</span><span class="p">(</span><span class="n">Double</span><span class="p">.</span><span class="n">NEGATIVE_INFINITY</span><span class="p">,</span> <span class="n">Double</span><span class="p">.</span><span class="n">NEGATIVE_INFINITY</span><span class="p">),</span> <span class="m">1.0e-16</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">assertEquals</span><span class="p">(</span><span class="nc">Double</span><span class="p">.</span><span class="n">NEGATIVE_INFINITY</span><span class="p">,</span> <span class="n">middle</span><span class="p">(</span><span class="nc">Double</span><span class="p">.</span><span class="n">NEGATIVE_INFINITY</span><span class="p">,</span> <span class="nc">Double</span><span class="p">.</span><span class="n">NEGATIVE_INFINITY</span><span class="p">),</span> <span class="m">1.0e-16</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">`double start == end == positive infinity then positive infinity`</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="n">assertEquals</span><span class="p">(</span><span class="n">Double</span><span class="p">.</span><span class="n">POSITIVE_INFINITY</span><span class="p">,</span> <span class="n">middle</span><span class="p">(</span><span class="n">Double</span><span class="p">.</span><span class="n">POSITIVE_INFINITY</span><span class="p">,</span> <span class="n">Double</span><span class="p">.</span><span class="n">POSITIVE_INFINITY</span><span class="p">),</span> <span class="m">1.0e-16</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">assertEquals</span><span class="p">(</span><span class="nc">Double</span><span class="p">.</span><span class="n">POSITIVE_INFINITY</span><span class="p">,</span> <span class="n">middle</span><span class="p">(</span><span class="nc">Double</span><span class="p">.</span><span class="n">POSITIVE_INFINITY</span><span class="p">,</span> <span class="nc">Double</span><span class="p">.</span><span class="n">POSITIVE_INFINITY</span><span class="p">),</span> <span class="m">1.0e-16</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>And our fixed solution for Double now looks like:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">middle</span><span class="p">(</span><span class="n">start</span><span class="p">:</span> <span class="n">Double</span><span class="p">,</span> <span class="n">end</span><span class="p">:</span> <span class="n">Double</span><span class="p">):</span> <span class="n">Double</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">when</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">start</span> <span class="o">==</span> <span class="n">Double</span><span class="p">.</span><span class="n">NEGATIVE_INFINITY</span> <span class="o">&amp;&amp;</span> <span class="n">end</span> <span class="o">==</span> <span class="n">Double</span><span class="p">.</span><span class="n">POSITIVE_INFINITY</span> <span class="o">-&gt;</span> <span class="k">throw</span> <span class="n">IllegalArgumentException</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">start</span> <span class="o">==</span> <span class="nc">Double</span><span class="p">.</span><span class="n">NEGATIVE_INFINITY</span> <span class="o">&amp;&amp;</span> <span class="n">end</span> <span class="o">==</span> <span class="nc">Double</span><span class="p">.</span><span class="n">POSITIVE_INFINITY</span> <span class="o">-&gt;</span> <span class="k">throw</span> <span class="n">IllegalArgumentException</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">        <span class="n">start</span> <span class="p">&gt;</span> <span class="n">end</span> <span class="o">-&gt;</span> <span class="k">throw</span> <span class="n">IllegalArgumentException</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">        <span class="n">start</span> <span class="o">==</span> <span class="n">end</span> <span class="o">-&gt;</span> <span class="n">start</span>
 </span></span><span class="line"><span class="cl">        <span class="n">start</span> <span class="p">&lt;</span> <span class="m">0</span> <span class="o">&amp;&amp;</span> <span class="n">end</span> <span class="p">&gt;</span> <span class="m">0</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">start</span> <span class="p">+</span> <span class="n">end</span><span class="p">)</span> <span class="p">/</span> <span class="m">2</span>
@@ -261,19 +264,19 @@ For example, if we have <code>start = Double.NEGATIVE_INFINITY</code> and <code>
 <p>We add two more test cases:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="nd">@Test</span><span class="p">(</span><span class="n">expected</span> <span class="p">=</span> <span class="n">IllegalArgumentException</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">`start == NaN then throws exception`</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="n">middle</span><span class="p">(</span><span class="n">Double</span><span class="p">.</span><span class="n">NaN</span><span class="p">,</span> <span class="m">1.0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">middle</span><span class="p">(</span><span class="nc">Double</span><span class="p">.</span><span class="n">NaN</span><span class="p">,</span> <span class="m">1.0</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nd">@Test</span><span class="p">(</span><span class="n">expected</span> <span class="p">=</span> <span class="n">IllegalArgumentException</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">`end == NaN then throws exception`</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="n">middle</span><span class="p">(</span><span class="m">1.0</span><span class="p">,</span> <span class="n">Double</span><span class="p">.</span><span class="n">NaN</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">middle</span><span class="p">(</span><span class="m">1.0</span><span class="p">,</span> <span class="nc">Double</span><span class="p">.</span><span class="n">NaN</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>And adjust our function to handle that:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">middle</span><span class="p">(</span><span class="n">start</span><span class="p">:</span> <span class="n">Double</span><span class="p">,</span> <span class="n">end</span><span class="p">:</span> <span class="n">Double</span><span class="p">):</span> <span class="n">Double</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">when</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">start</span><span class="p">.</span><span class="n">isNaN</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="k">throw</span> <span class="n">IllegalArgumentException</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">        <span class="n">end</span><span class="p">.</span><span class="n">isNaN</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="k">throw</span> <span class="n">IllegalArgumentException</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">        <span class="n">start</span> <span class="o">==</span> <span class="n">Double</span><span class="p">.</span><span class="n">NEGATIVE_INFINITY</span> <span class="o">&amp;&amp;</span> <span class="n">end</span> <span class="o">==</span> <span class="n">Double</span><span class="p">.</span><span class="n">POSITIVE_INFINITY</span> <span class="o">-&gt;</span> <span class="k">throw</span> <span class="n">IllegalArgumentException</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">start</span> <span class="o">==</span> <span class="nc">Double</span><span class="p">.</span><span class="n">NEGATIVE_INFINITY</span> <span class="o">&amp;&amp;</span> <span class="n">end</span> <span class="o">==</span> <span class="nc">Double</span><span class="p">.</span><span class="n">POSITIVE_INFINITY</span> <span class="o">-&gt;</span> <span class="k">throw</span> <span class="n">IllegalArgumentException</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">        <span class="n">start</span> <span class="p">&gt;</span> <span class="n">end</span> <span class="o">-&gt;</span> <span class="k">throw</span> <span class="n">IllegalArgumentException</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">        <span class="n">start</span> <span class="o">==</span> <span class="n">end</span> <span class="o">-&gt;</span> <span class="n">start</span>
 </span></span><span class="line"><span class="cl">        <span class="n">start</span> <span class="p">&lt;</span> <span class="m">0</span> <span class="o">&amp;&amp;</span> <span class="n">end</span> <span class="p">&gt;</span> <span class="m">0</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">start</span> <span class="p">+</span> <span class="n">end</span><span class="p">)</span> <span class="p">/</span> <span class="m">2</span>
@@ -282,10 +285,10 @@ For example, if we have <code>start = Double.NEGATIVE_INFINITY</code> and <code>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>One thing to note is that it is tempting to make a comparison with <code>start == Double.NaN</code>, but it would be a mistake.<br>
 If we look at implementation of <code>isNan</code> method, we&rsquo;ll see the following:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">static</span> <span class="kt">boolean</span> <span class="nf">isNaN</span><span class="o">(</span><span class="kt">double</span> <span class="n">v</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="o">(</span><span class="n">v</span> <span class="o">!=</span> <span class="n">v</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></div><p><code>Double.NaN</code> is not equal to itself, so <code>start == Double.NaN</code> would be incorrect.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">isNaN</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">v</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p><code>Double.NaN</code> is not equal to itself, so <code>start == Double.NaN</code> would be incorrect.</p>
 <blockquote>
 <p>With Double it is possible to not throw an exception but instead in exceptional cases return <code>Double.NaN</code>. It is again totally acceptable and depends on the API designer&rsquo;s decision.</p>
 </blockquote>
@@ -306,7 +309,7 @@ If we look at implementation of <code>isNan</code> method, we&rsquo;ll see the f
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">when</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">a</span> <span class="p">&gt;</span> <span class="n">b</span> <span class="o">-&gt;</span> <span class="k">throw</span> <span class="n">IllegalArgumentException</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">        <span class="n">a</span> <span class="p">&lt;</span> <span class="n">BigDecimal</span><span class="p">.</span><span class="n">ZERO</span> <span class="o">&amp;&amp;</span> <span class="n">b</span> <span class="p">&gt;</span> <span class="n">BigDecimal</span><span class="p">.</span><span class="n">ZERO</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="p">+</span> <span class="n">b</span><span class="p">)</span> <span class="p">/</span> <span class="m">2.</span><span class="n">toBigDecimal</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">a</span> <span class="p">&lt;</span> <span class="nc">BigDecimal</span><span class="p">.</span><span class="n">ZERO</span> <span class="o">&amp;&amp;</span> <span class="n">b</span> <span class="p">&gt;</span> <span class="nc">BigDecimal</span><span class="p">.</span><span class="n">ZERO</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="p">+</span> <span class="n">b</span><span class="p">)</span> <span class="p">/</span> <span class="m">2.</span><span class="n">toBigDecimal</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">        <span class="k">else</span> <span class="o">-&gt;</span> <span class="n">a</span> <span class="p">+</span> <span class="p">(</span><span class="n">b</span> <span class="p">-</span> <span class="n">a</span><span class="p">)</span> <span class="p">/</span> <span class="m">2.</span><span class="n">toBigDecimal</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>

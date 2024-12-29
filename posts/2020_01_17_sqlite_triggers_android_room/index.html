@@ -22,28 +22,31 @@
   
   <meta name="theme-color" content="#1e2327">
 
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="SQLite Triggers (&#43; Android Room)"/>
-<meta name="twitter:description" content="Introduction SQLite is one of the most used database. This is because it is used on almost all mobile devices in the world. As SQLite is very similar to SQL everyone already knows the basic concepts like querying, inserting, updating, deleting data; databases and tables; joining tables etc. But SQLite also has some advanced features and this article is about one of such called Trigger.
-If we try to speculate on the name “Trigger” we might say that probably something will be done when some changes are made to the database."/>
-<meta name="twitter:site" content="@krossovochkin"/>
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="SQLite Triggers (&#43; Android Room)">
+  <meta name="twitter:description" content="Introduction SQLite is one of the most used database. This is because it is used on almost all mobile devices in the world. As SQLite is very similar to SQL everyone already knows the basic concepts like querying, inserting, updating, deleting data; databases and tables; joining tables etc. But SQLite also has some advanced features and this article is about one of such called Trigger.
+If we try to speculate on the name “Trigger” we might say that probably something will be done when some changes are made to the database. And we’re pretty close to the truth.">
 
 </head>
 
 <body>
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-YEWQ4T95D5', { 'anonymize_ip': false });
-}
-</script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-YEWQ4T95D5');
+        }
+      </script>
 
 <header>
 <nav>
@@ -312,7 +315,7 @@ Therefore in order to work with triggers on Android we have to return to the bas
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">db</span><span class="p">.</span><span class="n">logDao</span><span class="p">().</span><span class="n">read</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.*</span><span class="n">forEach</span> <span class="p">*{</span>
-</span></span><span class="line"><span class="cl">            <span class="n">Log</span><span class="p">.</span><span class="n">e</span><span class="p">(</span><span class="s2">&#34;TEST_DB&#34;</span><span class="p">,</span> <span class="s2">&#34;log: </span><span class="si">$it</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="nc">Log</span><span class="p">.</span><span class="n">e</span><span class="p">(</span><span class="s2">&#34;TEST_DB&#34;</span><span class="p">,</span> <span class="s2">&#34;log: </span><span class="si">$it</span><span class="s2">&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>The results printed in logs will be:</p>
@@ -331,7 +334,7 @@ E/TEST_DB: log: OrderInsertedLog(id=2, timestamp=2020-01-03 08:20:01, payload=2 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">db</span><span class="p">.</span><span class="n">logDao</span><span class="p">().</span><span class="n">read</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">collect</span> <span class="p">{</span> <span class="k">data</span> <span class="o">-&gt;</span>
 </span></span><span class="line"><span class="cl">        <span class="k">data</span><span class="p">.</span><span class="n">forEach</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="n">Log</span><span class="p">.</span><span class="n">e</span><span class="p">(</span><span class="s2">&#34;TEST_DB&#34;</span><span class="p">,</span> <span class="s2">&#34;log: </span><span class="si">$it</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="nc">Log</span><span class="p">.</span><span class="n">e</span><span class="p">(</span><span class="s2">&#34;TEST_DB&#34;</span><span class="p">,</span> <span class="s2">&#34;log: </span><span class="si">$it</span><span class="s2">&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span></code></pre></div><p>After we execute the program, we’ll see that nothing will be changed so far. First, our program inserts values into data table, then our trigger writes into log, after that we start the Flow from log table and receive new values.</p>
@@ -345,7 +348,7 @@ Here is short snippet of how this method looks like:</p>
 </span></span><span class="line"><span class="cl">    <span class="n">tableNames</span><span class="p">:</span> <span class="n">Array</span><span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;,</span>
 </span></span><span class="line"><span class="cl">    <span class="n">callable</span><span class="p">:</span> <span class="n">Callable</span><span class="p">&lt;</span><span class="n">R</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="p">):</span> <span class="n">Flow</span><span class="p">&lt;</span><span class="nd">@JvmSuppressWildcards</span><span class="p">)</span> <span class="n">R</span><span class="p">&gt;</span> <span class="p">=</span> <span class="n">flow</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">observerChannel</span> <span class="p">=</span> <span class="n">Channel</span><span class="p">&lt;</span><span class="n">Unit</span><span class="p">&gt;(</span><span class="n">Channel</span><span class="p">.</span><span class="n">CONFLATED</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">observerChannel</span> <span class="p">=</span> <span class="n">Channel</span><span class="p">&lt;</span><span class="n">Unit</span><span class="p">&gt;(</span><span class="nc">Channel</span><span class="p">.</span><span class="n">CONFLATED</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">observer</span> <span class="p">=</span> <span class="k">object</span> <span class="err">: </span><span class="nc">InvalidationTracker</span><span class="p">.</span><span class="n">Observer</span><span class="p">(</span><span class="n">tableNames</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="k">override</span> <span class="k">fun</span> <span class="nf">onInvalidated</span><span class="p">(</span><span class="n">tables</span><span class="p">:</span> <span class="n">MutableSet</span><span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">            <span class="n">observerChannel</span><span class="p">.</span><span class="n">offer</span><span class="p">(</span><span class="n">Unit</span><span class="p">)</span>
@@ -378,48 +381,48 @@ Here is short snippet of how this method looks like:</p>
 </blockquote>
 <p>If we go to InvalidationTracker <a href="https://android.googlesource.com/platform/frameworks/support/+/refs/heads/androidx-master-dev/room/runtime/src/main/java/androidx/room/InvalidationTracker.java">sources </a>we’ll see that it is actually not that small class. Here I’ll highlight main things for understanding what it is and how it works.</p>
 <p>First thing is that tracker creates its own utility temp table in database for writing there all the changes made in tables:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">CREATE_TRACKING_TABLE_SQL</span> <span class="o">=</span> 
-</span></span><span class="line"><span class="cl">    <span class="s">&#34;CREATE TEMP TABLE &#34;</span> <span class="o">+</span> <span class="n">UPDATE_TABLE_NAME</span> <span class="o">+</span> <span class="s">&#34;(&#34;</span> 
-</span></span><span class="line"><span class="cl">    <span class="o">+</span> <span class="n">TABLE_ID_COLUMN_NAME</span> <span class="o">+</span> <span class="s">&#34; INTEGER PRIMARY KEY, &#34;</span> 
-</span></span><span class="line"><span class="cl">    <span class="o">+</span> <span class="n">INVALIDATED_COLUMN_NAME</span> <span class="o">+</span> <span class="s">&#34; INTEGER NOT NULL DEFAULT 0)&#34;</span><span class="o">;</span>
-</span></span></code></pre></div><p>Then there is a method to start tracking some table in database for changes:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">private</span> <span class="kt">void</span> <span class="nf">startTrackingTable</span><span class="o">(</span><span class="n">SupportSQLiteDatabase</span> <span class="n">writableDb</span><span class="o">,</span> <span class="kt">int</span> <span class="n">tableId</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">writableDb</span><span class="o">.</span><span class="na">execSQL</span><span class="o">(</span>
-</span></span><span class="line"><span class="cl">            <span class="s">&#34;INSERT OR IGNORE INTO &#34;</span> <span class="o">+</span> <span class="n">UPDATE_TABLE_NAME</span> <span class="o">+</span> <span class="s">&#34; VALUES(&#34;</span> <span class="o">+</span> <span class="n">tableId</span> <span class="o">+</span> <span class="s">&#34;, 0)&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">final</span> <span class="n">String</span> <span class="n">tableName</span> <span class="o">=</span> <span class="n">mTableNames</span><span class="o">[</span><span class="n">tableId</span><span class="o">];</span>
-</span></span><span class="line"><span class="cl">    <span class="n">StringBuilder</span> <span class="n">stringBuilder</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">trigger</span> <span class="o">:</span> <span class="n">TRIGGERS</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">stringBuilder</span><span class="o">.</span><span class="na">setLength</span><span class="o">(</span><span class="n">0</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">stringBuilder</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&#34;CREATE TEMP TRIGGER IF NOT EXISTS &#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">appendTriggerName</span><span class="o">(</span><span class="n">stringBuilder</span><span class="o">,</span> <span class="n">tableName</span><span class="o">,</span> <span class="n">trigger</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">stringBuilder</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&#34; AFTER &#34;</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">trigger</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&#34; ON `&#34;</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">tableName</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&#34;` BEGIN UPDATE &#34;</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">UPDATE_TABLE_NAME</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&#34; SET &#34;</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="n">INVALIDATED_COLUMN_NAME</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">&#34; = 1&#34;</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&#34; WHERE &#34;</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="n">TABLE_ID_COLUMN_NAME</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">&#34; = &#34;</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="n">tableId</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&#34; AND &#34;</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="n">INVALIDATED_COLUMN_NAME</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">&#34; = 0&#34;</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&#34;; END&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">writableDb</span><span class="o">.</span><span class="na">execSQL</span><span class="o">(</span><span class="n">stringBuilder</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></div><p>And whoa! Tracker creates trigger for any update, insert or delete for a given table with copying table name and column to the tracking table. Sounds familiar!</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">CREATE_TRACKING_TABLE_SQL</span><span class="w"> </span><span class="o">=</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;CREATE TEMP TABLE &#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">UPDATE_TABLE_NAME</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&#34;(&#34;</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="o">+</span><span class="w"> </span><span class="n">TABLE_ID_COLUMN_NAME</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&#34; INTEGER PRIMARY KEY, &#34;</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="o">+</span><span class="w"> </span><span class="n">INVALIDATED_COLUMN_NAME</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&#34; INTEGER NOT NULL DEFAULT 0)&#34;</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>Then there is a method to start tracking some table in database for changes:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">private</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">startTrackingTable</span><span class="p">(</span><span class="n">SupportSQLiteDatabase</span><span class="w"> </span><span class="n">writableDb</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">tableId</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">writableDb</span><span class="p">.</span><span class="na">execSQL</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="s">&#34;INSERT OR IGNORE INTO &#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">UPDATE_TABLE_NAME</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&#34; VALUES(&#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">tableId</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&#34;, 0)&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">tableName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mTableNames</span><span class="o">[</span><span class="n">tableId</span><span class="o">]</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">StringBuilder</span><span class="w"> </span><span class="n">stringBuilder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringBuilder</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">trigger</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">TRIGGERS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">stringBuilder</span><span class="p">.</span><span class="na">setLength</span><span class="p">(</span><span class="n">0</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">stringBuilder</span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="s">&#34;CREATE TEMP TRIGGER IF NOT EXISTS &#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">appendTriggerName</span><span class="p">(</span><span class="n">stringBuilder</span><span class="p">,</span><span class="w"> </span><span class="n">tableName</span><span class="p">,</span><span class="w"> </span><span class="n">trigger</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">stringBuilder</span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="s">&#34; AFTER &#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="n">trigger</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="s">&#34; ON `&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="n">tableName</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="s">&#34;` BEGIN UPDATE &#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="n">UPDATE_TABLE_NAME</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="s">&#34; SET &#34;</span><span class="p">).</span><span class="na">append</span><span class="p">(</span><span class="n">INVALIDATED_COLUMN_NAME</span><span class="p">).</span><span class="na">append</span><span class="p">(</span><span class="s">&#34; = 1&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="s">&#34; WHERE &#34;</span><span class="p">).</span><span class="na">append</span><span class="p">(</span><span class="n">TABLE_ID_COLUMN_NAME</span><span class="p">).</span><span class="na">append</span><span class="p">(</span><span class="s">&#34; = &#34;</span><span class="p">).</span><span class="na">append</span><span class="p">(</span><span class="n">tableId</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="s">&#34; AND &#34;</span><span class="p">).</span><span class="na">append</span><span class="p">(</span><span class="n">INVALIDATED_COLUMN_NAME</span><span class="p">).</span><span class="na">append</span><span class="p">(</span><span class="s">&#34; = 0&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="s">&#34;; END&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">writableDb</span><span class="p">.</span><span class="na">execSQL</span><span class="p">(</span><span class="n">stringBuilder</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>And whoa! Tracker creates trigger for any update, insert or delete for a given table with copying table name and column to the tracking table. Sounds familiar!</p>
 <p>This method is called in:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">syncTriggers</span><span class="o">(</span><span class="n">SupportSQLiteDatabase</span> <span class="n">database</span><span class="o">)</span>
-</span></span></code></pre></div><p>This method in short checks all the registered observers and based on that either creates triggers or removes them.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kt">void</span><span class="w"> </span><span class="nf">syncTriggers</span><span class="p">(</span><span class="n">SupportSQLiteDatabase</span><span class="w"> </span><span class="n">database</span><span class="p">)</span><span class="w">
+</span></span></span></code></pre></div><p>This method in short checks all the registered observers and based on that either creates triggers or removes them.</p>
 <p>Also tracker has:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Runnable</span> <span class="n">mRefreshRunnable</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Runnable</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">   <span class="o">...</span>
-</span></span><span class="line"><span class="cl">     <span class="kd">synchronized</span> <span class="o">(</span><span class="n">mObserverMap</span><span class="o">)</span> <span class="o">{</span>                    
-</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="n">entry</span> <span class="o">:</span> <span class="n">mObserverMap</span><span class="o">)</span> <span class="o">{</span>               
-</span></span><span class="line"><span class="cl">            <span class="n">entry</span><span class="o">.</span><span class="na">getValue</span><span class="o">()</span>
-</span></span><span class="line"><span class="cl">                <span class="o">.</span><span class="na">notifyByTableInvalidStatus</span><span class="o">(</span><span class="n">invalidatedTableIds</span><span class="o">);</span>  
-</span></span><span class="line"><span class="cl">        <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">...</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></div><p>In which actual checks on what was updated are made and where all the registered observers are notified.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">Runnable</span><span class="w"> </span><span class="n">mRefreshRunnable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Runnable</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="p">...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">     </span><span class="kd">synchronized</span><span class="w"> </span><span class="p">(</span><span class="n">mObserverMap</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">                    
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">entry</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">mObserverMap</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">               
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">entry</span><span class="p">.</span><span class="na">getValue</span><span class="p">()</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">.</span><span class="na">notifyByTableInvalidStatus</span><span class="p">(</span><span class="n">invalidatedTableIds</span><span class="p">);</span><span class="w">  
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>In which actual checks on what was updated are made and where all the registered observers are notified.</p>
 <blockquote>
 <p>Cases in which all these methods (such as syncTriggers, or running refresh runnable) called are out of scope of this article. It is better to check the source code directly</p>
 </blockquote>
@@ -432,10 +435,10 @@ The case we’re interested in is whether custom SQLite trigger’s operation ca
 </span></span><span class="line"><span class="cl">    <span class="n">db</span><span class="p">.</span><span class="n">logDao</span><span class="p">().</span><span class="n">read</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.*</span><span class="n">onEach</span> <span class="p">*{</span> <span class="k">data</span> <span class="o">-&gt;</span>
 </span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="k">data</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">                <span class="n">Log</span><span class="p">.</span><span class="n">e</span><span class="p">(</span><span class="s2">&#34;TEST_DB&#34;</span><span class="p">,</span> <span class="s2">&#34;log empty&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="nc">Log</span><span class="p">.</span><span class="n">e</span><span class="p">(</span><span class="s2">&#34;TEST_DB&#34;</span><span class="p">,</span> <span class="s2">&#34;log empty&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="p">}</span>
 </span></span><span class="line"><span class="cl">            <span class="k">data</span><span class="p">.*</span><span class="n">forEach</span> <span class="p">*{</span>
-</span></span><span class="line"><span class="cl">                <span class="n">Log</span><span class="p">.</span><span class="n">e</span><span class="p">(</span><span class="s2">&#34;TEST_DB&#34;</span><span class="p">,</span> <span class="s2">&#34;log: </span><span class="si">$it</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="nc">Log</span><span class="p">.</span><span class="n">e</span><span class="p">(</span><span class="s2">&#34;TEST_DB&#34;</span><span class="p">,</span> <span class="s2">&#34;log: </span><span class="si">$it</span><span class="s2">&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="p">}</span>
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">launchIn</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>

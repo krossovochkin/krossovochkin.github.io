@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Programming on Vasya Drobushkov</title>
+    <link>https://krossovochkin.com/tags/programming/</link>
+    <description>Recent content in Programming on Vasya Drobushkov</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 28 Oct 2020 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://krossovochkin.com/tags/programming/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Middle Point</title>
+      <link>https://krossovochkin.com/posts/2020_10_28_middle_point/</link>
+      <pubDate>Wed, 28 Oct 2020 00:00:00 +0000</pubDate>
+      <guid>https://krossovochkin.com/posts/2020_10_28_middle_point/</guid>
+      <description>&lt;h3 id=&#34;introduction&#34;&gt;Introduction&lt;/h3&gt;&#xA;&lt;p&gt;Working with numbers in programming never was a simple thing. In math, we deal with various sets of numbers - whole numbers, rational, complex. All these sets are infinite - that means that for any number we can find another smaller one and one which is bigger. In programming when we work with numbers we deal with some subset of these sets - that many that can be represented with a given amount of bits.&#xA;When we want to work with whole numbers we can use e.g. Integer, which are the numbers being able to be represented usually with 4 bits. For floating-point numbers - say Double - it is 8 bits. There is no plus or minus infinity (in Double there are +/- infinity, though they are used for special cases).&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Kotlin Nitpicker&#39;s guide</title>
+      <link>https://krossovochkin.com/posts/2020_10_14_kotlin_nitpickers_guide/</link>
+      <pubDate>Wed, 14 Oct 2020 00:00:00 +0000</pubDate>
+      <guid>https://krossovochkin.com/posts/2020_10_14_kotlin_nitpickers_guide/</guid>
+      <description>&lt;h3 id=&#34;introduction&#34;&gt;Introduction&lt;/h3&gt;&#xA;&lt;p&gt;Code review is an essential tool for a development team, which helps ensure high-quality standards of code. While reviewing others&amp;rsquo; code one might find bugs, design issues, and so on. One another part of reviewing is getting used to the codebase and following team&amp;rsquo;s code style for better maintenance.&#xA;Though it is pretty cool in theory, in practice team might face few issues, one of which is nitpicking. When review is bloated with dozens of similar comments related to e.g. how beautifully code looks like.&#xA;Common code style is important, but having a lot of similar comments in each review doesn&amp;rsquo;t help. Instead of trying to understand what code is doing, nitpicker writes a lot of similar comments on the style. Back and forth discussions or fixes of such slow down development process and overall make team&amp;rsquo;s morale worse.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Unit Testing Best Practices</title>
+      <link>https://krossovochkin.com/posts/2020_03_19_unit_testing_best_practices/</link>
+      <pubDate>Thu, 19 Mar 2020 00:00:00 +0000</pubDate>
+      <guid>https://krossovochkin.com/posts/2020_03_19_unit_testing_best_practices/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://images.unsplash.com/photo-1547637589-f54c34f5d7a4?ixlib=rb-1.2.1&amp;amp;auto=format&amp;amp;fit=crop&amp;amp;w=1357&amp;amp;q=80&#34; alt=&#34;Source&#34;&gt;&lt;em&gt;&lt;a href=&#34;https://unsplash.com/photos/IiEFmIXZWSw&#34;&gt;Source&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://medium.com/better-programming/unit-testing-best-practices-9bceeafe6edf&#34;&gt;&lt;img src=&#34;https://img.shields.io/badge/original-medium-green#badge&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Disclaimer&lt;/strong&gt;: This is a set of things I consider very useful when writing unit tests. I call them &lt;em&gt;best practices&lt;/em&gt; because they allow me to write good, quality tests that are easier to read, more maintainable, and better describe business needs.&lt;/p&gt;&#xA;&lt;p&gt;These points might be subjective, you might have other opinions or have more items. That’s fine. Do not hesitate to put your opinions in the comments.&lt;/p&gt;&#xA;&lt;h2 id=&#34;tests-in-the-development-process&#34;&gt;Tests in the Development Process&lt;/h2&gt;&#xA;&lt;p&gt;Tests are very important in the development process. They give you a lot of benefits:&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

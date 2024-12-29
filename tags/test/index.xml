@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Test on Vasya Drobushkov</title>
+    <link>https://krossovochkin.com/tags/test/</link>
+    <description>Recent content in Test on Vasya Drobushkov</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 11 Sep 2021 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://krossovochkin.com/tags/test/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mocking Matchers API</title>
+      <link>https://krossovochkin.com/posts/2021_09_11_mocking_matchers_api/</link>
+      <pubDate>Sat, 11 Sep 2021 00:00:00 +0000</pubDate>
+      <guid>https://krossovochkin.com/posts/2021_09_11_mocking_matchers_api/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://androidweekly.net/issues/issue-483&#34;&gt;&lt;img src=&#34;https://img.shields.io/badge/androidweekly-483-blue#badge&#34; alt=&#34;&#34;&gt;&lt;/a&gt; &lt;a href=&#34;https://mailchi.mp/kotlinweekly/kotlin-weekly-268&#34;&gt;&lt;img src=&#34;https://img.shields.io/badge/kotlinweekly-268-purple#badge&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3 id=&#34;introduction&#34;&gt;Introduction&lt;/h3&gt;&#xA;&lt;p&gt;Recently, I faced an issue that in the first place I found weird. I even considered that the behavior is generally incorrect. Diving deeper I got few insights on the problem - and this is what I&amp;rsquo;d like to share with you.&lt;br&gt;&#xA;This is a story about the interesting behavior of mocking library and the difficulties of defining API surface for a library.&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;Disclaimer&lt;/strong&gt;&lt;br&gt;&#xA;In general, I favor fakes over mocks. In other words, instead of trying to implement emulation of the behavior as a mock - it is generally easier and safer to implement a simple fake object with all the logic (that can be covered with tests if needed).&lt;br&gt;&#xA;Though that doesn&amp;rsquo;t mean that one should not use mocks at all. In my opinion, it depends on the use case. If you would like to stub some values - then going with a fake object sounds like a wise choice, but for verifying behavior (e.g. whether there were interactions with a particular object or not) using mocking libraries might provide a fast solution.&lt;br&gt;&#xA;Needed to say that even when trying to verify interactions one can use fake objects wrapped with spies.&lt;br&gt;&#xA;Regardless, this article is not about what approach is better, it is more about the behavior of mocking libraries and how their API is designed.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>JUnit Coroutines Runner</title>
+      <link>https://krossovochkin.com/posts/2021_07_10_junit_coroutines_runner/</link>
+      <pubDate>Sat, 10 Jul 2021 00:00:00 +0000</pubDate>
+      <guid>https://krossovochkin.com/posts/2021_07_10_junit_coroutines_runner/</guid>
+      <description>&lt;h3 id=&#34;introduction&#34;&gt;Introduction&lt;/h3&gt;&#xA;&lt;p&gt;Recently while writing tests for kotlin code with coroutines I found one annoying thing: almost all the tests start with &lt;code&gt;runBlockingTest&lt;/code&gt;. Typing the same stuff repeatedly is something we can&amp;rsquo;t accept! So, I decided to think about how to improve this.&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;Disclaimer. Yes, this is an example of how to spend few hours to optimize some task that requires you 2 seconds to complete each time. Even on a scale of hundreds of usages such optimization most likely won&amp;rsquo;t pay your time back. But it is always fun to do some weird things even if you understand that they are stupid.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -22,27 +22,30 @@
   
   <meta name="theme-color" content="#1e2327">
 
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="JUnit Coroutines Runner"/>
-<meta name="twitter:description" content="Writing tests for kotlin code with coroutines requires adding runBlockingTest for each test method. In the article we&#39;ll try to work around that so that we don&#39;t need to write it."/>
-<meta name="twitter:site" content="@krossovochkin"/>
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="JUnit Coroutines Runner">
+  <meta name="twitter:description" content="Writing tests for kotlin code with coroutines requires adding runBlockingTest for each test method. In the article we&#39;ll try to work around that so that we don&#39;t need to write it.">
 
 </head>
 
 <body>
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-YEWQ4T95D5', { 'anonymize_ip': false });
-}
-</script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-YEWQ4T95D5');
+        }
+      </script>
 
 <header>
 <nav>
@@ -180,20 +183,20 @@ Looking at the stack trace we find the place where validation checks happen - <c
 </span></span></span><span class="line"><span class="cl"><span class="cm"> * &lt;li&gt;is static (given {@code isStatic is false}), or
 </span></span></span><span class="line"><span class="cl"><span class="cm"> * &lt;li&gt;is not static (given {@code isStatic is true}).
 </span></span></span><span class="line"><span class="cl"><span class="cm"> * &lt;/ul&gt;
-</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
-</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">validatePublicVoid</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">isStatic</span><span class="o">,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Throwable</span><span class="o">&gt;</span> <span class="n">errors</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">(</span><span class="n">isStatic</span><span class="o">()</span> <span class="o">!=</span> <span class="n">isStatic</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">String</span> <span class="n">state</span> <span class="o">=</span> <span class="n">isStatic</span> <span class="o">?</span> <span class="s">&#34;should&#34;</span> <span class="o">:</span> <span class="s">&#34;should not&#34;</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">        <span class="n">errors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">Exception</span><span class="o">(</span><span class="s">&#34;Method &#34;</span> <span class="o">+</span> <span class="n">method</span><span class="o">.</span><span class="na">getName</span><span class="o">()</span> <span class="o">+</span> <span class="s">&#34;() &#34;</span> <span class="o">+</span> <span class="n">state</span> <span class="o">+</span> <span class="s">&#34; be static&#34;</span><span class="o">));</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">(!</span><span class="n">isPublic</span><span class="o">())</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">errors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">Exception</span><span class="o">(</span><span class="s">&#34;Method &#34;</span> <span class="o">+</span> <span class="n">method</span><span class="o">.</span><span class="na">getName</span><span class="o">()</span> <span class="o">+</span> <span class="s">&#34;() should be public&#34;</span><span class="o">));</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">(</span><span class="n">method</span><span class="o">.</span><span class="na">getReturnType</span><span class="o">()</span> <span class="o">!=</span> <span class="n">Void</span><span class="o">.</span><span class="na">TYPE</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">errors</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">Exception</span><span class="o">(</span><span class="s">&#34;Method &#34;</span> <span class="o">+</span> <span class="n">method</span><span class="o">.</span><span class="na">getName</span><span class="o">()</span> <span class="o">+</span> <span class="s">&#34;() should be void&#34;</span><span class="o">));</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></div><p>What we need is to be able to override the behavior of that method. Looking more at that class we can find the <code>validatePublicVoidNoArg</code> method. We immediately notice that we should also suppress the validation check that verifies that the method has no arguments. Yes, in general, the test method doesn&rsquo;t have arguments, but after adding <code>suspend</code> kotlin compiler will add the <code>continuation</code> argument automatically. So, we need to suppress that check as well.</p>
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">validatePublicVoid</span><span class="p">(</span><span class="kt">boolean</span><span class="w"> </span><span class="n">isStatic</span><span class="p">,</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Throwable</span><span class="o">&gt;</span><span class="w"> </span><span class="n">errors</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isStatic</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">isStatic</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">isStatic</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s">&#34;should&#34;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s">&#34;should not&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">errors</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Exception</span><span class="p">(</span><span class="s">&#34;Method &#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">method</span><span class="p">.</span><span class="na">getName</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&#34;() &#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&#34; be static&#34;</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">isPublic</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">errors</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Exception</span><span class="p">(</span><span class="s">&#34;Method &#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">method</span><span class="p">.</span><span class="na">getName</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&#34;() should be public&#34;</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">method</span><span class="p">.</span><span class="na">getReturnType</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">Void</span><span class="p">.</span><span class="na">TYPE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">errors</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Exception</span><span class="p">(</span><span class="s">&#34;Method &#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">method</span><span class="p">.</span><span class="na">getName</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&#34;() should be void&#34;</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>What we need is to be able to override the behavior of that method. Looking more at that class we can find the <code>validatePublicVoidNoArg</code> method. We immediately notice that we should also suppress the validation check that verifies that the method has no arguments. Yes, in general, the test method doesn&rsquo;t have arguments, but after adding <code>suspend</code> kotlin compiler will add the <code>continuation</code> argument automatically. So, we need to suppress that check as well.</p>
 <p>The easiest way to do that is to wrap <code>FrameworkMethod</code> into our class, which we&rsquo;ll call <code>SuspendFrameworkMethod</code>, and override the method with a new implementation:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">internal</span> <span class="k">class</span> <span class="nc">SuspendFrameworkMethod</span><span class="p">(</span><span class="k">val</span> <span class="py">frameworkMethod</span><span class="p">:</span> <span class="n">FrameworkMethod</span><span class="p">)</span> <span class="p">:</span> <span class="n">FrameworkMethod</span><span class="p">(</span><span class="n">frameworkMethod</span><span class="p">.</span><span class="n">method</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">
@@ -262,17 +265,17 @@ We can see how it is done by looking at the <code>FrameworkMethod#invokeExplosiv
 </span></span></span><span class="line"><span class="cl"><span class="cm"> * Returns the result of invoking this method on {@code target} with
 </span></span></span><span class="line"><span class="cl"><span class="cm"> * parameters {@code params}. {@link InvocationTargetException}s thrown are
 </span></span></span><span class="line"><span class="cl"><span class="cm"> * unwrapped, and their causes rethrown.
-</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
-</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="n">Object</span> <span class="nf">invokeExplosively</span><span class="o">(</span><span class="kd">final</span> <span class="n">Object</span> <span class="n">target</span><span class="o">,</span> <span class="kd">final</span> <span class="n">Object</span><span class="o">...</span> <span class="n">params</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">        <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">new</span> <span class="n">ReflectiveCallable</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="nd">@Override</span>
-</span></span><span class="line"><span class="cl">        <span class="kd">protected</span> <span class="n">Object</span> <span class="nf">runReflectiveCall</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Throwable</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">method</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="n">target</span><span class="o">,</span> <span class="n">params</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">        <span class="o">}</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}.</span><span class="na">run</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></div><p>We have the wrong number of arguments because we need to provide <code>continuation</code> as a parameter. An attentive reader could spot that we haven&rsquo;t added <code>runBlockingTest</code> yet.<br>
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="n">Object</span><span class="w"> </span><span class="nf">invokeExplosively</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">Object</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Object</span><span class="p">...</span><span class="w"> </span><span class="n">params</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">throws</span><span class="w"> </span><span class="n">Throwable</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ReflectiveCallable</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">protected</span><span class="w"> </span><span class="n">Object</span><span class="w"> </span><span class="nf">runReflectiveCall</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Throwable</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">method</span><span class="p">.</span><span class="na">invoke</span><span class="p">(</span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="n">params</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}.</span><span class="na">run</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>We have the wrong number of arguments because we need to provide <code>continuation</code> as a parameter. An attentive reader could spot that we haven&rsquo;t added <code>runBlockingTest</code> yet.<br>
 Let&rsquo;s do that in our <code>SuspendFrameworkMethod</code>:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="nd">@Throws</span><span class="p">(</span><span class="n">Throwable</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="k">override</span> <span class="k">fun</span> <span class="nf">invokeExplosively</span><span class="p">(</span><span class="n">target</span><span class="p">:</span> <span class="n">Any</span><span class="p">?,</span> <span class="k">vararg</span> <span class="n">params</span><span class="p">:</span> <span class="n">Any</span><span class="p">?):</span> <span class="n">Any</span><span class="p">?</span> <span class="p">{</span>

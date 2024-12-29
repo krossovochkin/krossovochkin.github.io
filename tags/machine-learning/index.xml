@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Machine Learning on Vasya Drobushkov</title>
+    <link>https://krossovochkin.com/tags/machine-learning/</link>
+    <description>Recent content in Machine Learning on Vasya Drobushkov</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 09 Nov 2017 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://krossovochkin.com/tags/machine-learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Neural Networks and Deep Learning</title>
+      <link>https://krossovochkin.com/posts/2017_11_09_neural_networks_and_deep_learning/</link>
+      <pubDate>Thu, 09 Nov 2017 00:00:00 +0000</pubDate>
+      <guid>https://krossovochkin.com/posts/2017_11_09_neural_networks_and_deep_learning/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://medium.com/@krossovochkin/neural-networks-and-deep-learning-38aaca43ae0f&#34;&gt;&lt;img src=&#34;https://img.shields.io/badge/original-medium-green#badge&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h1 id=&#34;disclaimer&#34;&gt;Disclaimer&lt;/h1&gt;&#xA;&lt;p&gt;It is brief synopsis of &lt;a href=&#34;https://www.coursera.org/learn/neural-networks-deep-learning/home/welcome&#34;&gt;Neural Networks and Deep learning&lt;/a&gt; course on Coursera.&#xA;That course is a first part of Deep learning specialization.&#xA;Though course is great and very useful, I found that it has a lot of mathematics explanation (linear algebra — matrices, derivatives etc.), so sometimes it was difficult to wait for the actual useful information I didn’t know.&#xA;So, I think I might be interested in reviewing neural networks in the future, but won’t be able to review course information as there will be a lot of such noise.&#xA;So, I decided to briefly put everything into one page, so I will be able to quickly review this topic in the future.&#xA;There will be no code, just formulas as they were explained in a course with some notes on how I understood it.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

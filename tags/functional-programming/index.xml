@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Functional Programming on Vasya Drobushkov</title>
+    <link>https://krossovochkin.com/tags/functional-programming/</link>
+    <description>Recent content in Functional Programming on Vasya Drobushkov</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 26 Apr 2020 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://krossovochkin.com/tags/functional-programming/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Category theory</title>
+      <link>https://krossovochkin.com/posts/2020_04_26_category_theory/</link>
+      <pubDate>Sun, 26 Apr 2020 00:00:00 +0000</pubDate>
+      <guid>https://krossovochkin.com/posts/2020_04_26_category_theory/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://images.unsplash.com/photo-1453733190371-0a9bedd82893?ixlib=rb-1.2.1&amp;amp;auto=format&amp;amp;fit=crop&amp;amp;w=1357&amp;amp;q=80&#34; alt=&#34;Source&#34;&gt;&lt;em&gt;&lt;a href=&#34;https://unsplash.com/photos/5mZ_M06Fc9g&#34;&gt;Source&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://medium.com/@krossovochkin/category-theory-90b89ec9f2ab&#34;&gt;&lt;img src=&#34;https://img.shields.io/badge/original-medium-green#badge&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;disclaimer&#34;&gt;Disclaimer&lt;/h2&gt;&#xA;&lt;p&gt;This is short synopsis of great &lt;a href=&#34;https://www.youtube.com/playlist?list=PLbgaMIhjbmEnaH_LTkxLI7FMa2HsnawM_&#34;&gt;set of lectures&lt;/a&gt;. What is written here is by no means true, one should refer to original lectures or some books etc. This is written mostly for myself in case I wanted to revisit the topic in the future.&#xA;Everything below is not “what it is” but mostly “how I understood that”. So, there might be mistakes and so on.&lt;/p&gt;&#xA;&lt;h2 id=&#34;category&#34;&gt;Category&lt;/h2&gt;&#xA;&lt;p&gt;Category consists of:&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

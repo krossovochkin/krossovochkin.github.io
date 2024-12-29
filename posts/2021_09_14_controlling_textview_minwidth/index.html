@@ -22,27 +22,30 @@
   
   <meta name="theme-color" content="#1e2327">
 
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Controlling TextView MinWidth"/>
-<meta name="twitter:description" content="Full investigation on controlling minimum width of a TextView"/>
-<meta name="twitter:site" content="@krossovochkin"/>
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Controlling TextView MinWidth">
+  <meta name="twitter:description" content="Full investigation on controlling minimum width of a TextView">
 
 </head>
 
 <body>
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-YEWQ4T95D5', { 'anonymize_ip': false });
-}
-</script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-YEWQ4T95D5');
+        }
+      </script>
 
 <header>
 <nav>
@@ -121,14 +124,14 @@ But controlling minimum width programmatically has one caveat that I&rsquo;d lik
 <h3 id="resetting-minwidth">Resetting minWidth</h3>
 <p>Suppose, that we have the following task: by default make our TextView occupy at least 200dp, but under some circumstances reset minWidth and make our TextView adhere wrap_content.</p>
 <p>In this case we can do something like:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">textView</span> <span class="p">=</span> <span class="n">findViewById</span><span class="p">&lt;</span><span class="n">TextView</span><span class="p">&gt;(</span><span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">textView</span><span class="p">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">textView</span> <span class="p">=</span> <span class="n">findViewById</span><span class="p">&lt;</span><span class="n">TextView</span><span class="p">&gt;(</span><span class="nc">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">textView</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">textView</span><span class="p">.</span><span class="n">minWidth</span> <span class="p">=</span> <span class="m">0</span>
 </span></span></code></pre></div><p>We run our app but still see that TextView takes 200dp width:</p>
 <p><img src="../../img/control_textview_minwidth_200.png" alt=""></p>
 <p>Seems like it didn&rsquo;t work. Why is this the case?</p>
 <p>The reason is that while TextView has method <code>setMinWidth</code> it also has <code>setMinimumWidth</code>, so if we instead do:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">textView</span> <span class="p">=</span> <span class="n">findViewById</span><span class="p">&lt;</span><span class="n">TextView</span><span class="p">&gt;(</span><span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">textView</span><span class="p">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">textView</span> <span class="p">=</span> <span class="n">findViewById</span><span class="p">&lt;</span><span class="n">TextView</span><span class="p">&gt;(</span><span class="nc">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">textView</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">textView</span><span class="p">.</span><span class="n">minWidth</span> <span class="p">=</span> <span class="m">0</span>
 </span></span><span class="line"><span class="cl"><span class="n">textView</span><span class="p">.</span><span class="n">minimumWidth</span> <span class="p">=</span> <span class="m">0</span>
@@ -139,14 +142,14 @@ But controlling minimum width programmatically has one caveat that I&rsquo;d lik
 <p>The reason why it happens so is that there are two separate APIs. As mentioned before there is <code>TextView#setMinWidth</code>, but at the same time there is <code>View#setMinimumWidth</code>. Though these methods look similar and refer to the same parameter, using them separately doesn&rsquo;t provide wanted behavior.<br>
 When we declare minWidth in the XML both of these properties are set.</p>
 <p>During inflation of View:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">case</span> <span class="n">R</span><span class="o">.</span><span class="na">styleable</span><span class="o">.</span><span class="na">View_minWidth</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">    <span class="n">mMinWidth</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="na">getDimensionPixelSize</span><span class="o">(</span><span class="n">attr</span><span class="o">,</span> <span class="n">0</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="k">break</span><span class="o">;</span>
-</span></span></code></pre></div><p>And during inflation of TextView:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">case</span> <span class="n">com</span><span class="o">.</span><span class="na">android</span><span class="o">.</span><span class="na">internal</span><span class="o">.</span><span class="na">R</span><span class="o">.</span><span class="na">styleable</span><span class="o">.</span><span class="na">TextView_minWidth</span><span class="o">:</span>
-</span></span><span class="line"><span class="cl">    <span class="n">setMinWidth</span><span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="na">getDimensionPixelSize</span><span class="o">(</span><span class="n">attr</span><span class="o">,</span> <span class="o">-</span><span class="n">1</span><span class="o">));</span>
-</span></span><span class="line"><span class="cl">    <span class="k">break</span><span class="o">;</span>
-</span></span></code></pre></div><p>So, when we set either minWidth or minimumWidth to 0 separately - another property still has a value set. We can see that in debug:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">case</span><span class="w"> </span><span class="n">R</span><span class="p">.</span><span class="na">styleable</span><span class="p">.</span><span class="na">View_minWidth</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">mMinWidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="na">getDimensionPixelSize</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span><span class="w"> </span><span class="n">0</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">break</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>And during inflation of TextView:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">case</span><span class="w"> </span><span class="n">com</span><span class="p">.</span><span class="na">android</span><span class="p">.</span><span class="na">internal</span><span class="p">.</span><span class="na">R</span><span class="p">.</span><span class="na">styleable</span><span class="p">.</span><span class="na">TextView_minWidth</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">setMinWidth</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="na">getDimensionPixelSize</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="n">1</span><span class="p">));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">break</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>So, when we set either minWidth or minimumWidth to 0 separately - another property still has a value set. We can see that in debug:</p>
 <pre tabindex="0"><code>mMinWidth = 500
 mMinWidthMode = 2
 View.mMinWidth = 500
@@ -155,31 +158,31 @@ View.mMinWidth = 500
 </span></span></span><span class="line"><span class="cl"><span class="cm"> * The value given here is different than {@link #setMinimumWidth(int)}. Between
 </span></span></span><span class="line"><span class="cl"><span class="cm"> * {@code minWidth} and the value set in {@link #setMinimumWidth(int)}, the greater one is used
 </span></span></span><span class="line"><span class="cl"><span class="cm"> * to decide the final width.
-</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
-</span></span></code></pre></div><p>That is why to clear minimum width we need to call both methods.</p>
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span><span class="w">
+</span></span></span></code></pre></div><p>That is why to clear minimum width we need to call both methods.</p>
 <h3 id="side-notes">Side notes</h3>
 <p>I don&rsquo;t have an answer to why <code>setMinWidth</code> was introduced for TextView if we already have <code>setMinimumWidth</code> in the View. Feels like in TextView it could be possible to override the <code>setMinimumWidth</code> method and provide adjusted logic. Maybe it is because of historical reasons. But at least it is good to know about this caveat.<br>
 Of course, everything is the same when we talk about height and <code>maxWidth</code>, <code>maxHeight</code>.</p>
 <p>One additional note is that if we take a look at how TextView resolves its width:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">if</span> <span class="o">(</span><span class="n">mMaxWidthMode</span> <span class="o">==</span> <span class="n">EMS</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">width</span> <span class="o">=</span> <span class="n">Math</span><span class="o">.</span><span class="na">min</span><span class="o">(</span><span class="n">width</span><span class="o">,</span> <span class="n">mMaxWidth</span> <span class="o">*</span> <span class="n">getLineHeight</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">width</span> <span class="o">=</span> <span class="n">Math</span><span class="o">.</span><span class="na">min</span><span class="o">(</span><span class="n">width</span><span class="o">,</span> <span class="n">mMaxWidth</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">(</span><span class="n">mMinWidthMode</span> <span class="o">==</span> <span class="n">EMS</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">width</span> <span class="o">=</span> <span class="n">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="n">width</span><span class="o">,</span> <span class="n">mMinWidth</span> <span class="o">*</span> <span class="n">getLineHeight</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">width</span> <span class="o">=</span> <span class="n">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="n">width</span><span class="o">,</span> <span class="n">mMinWidth</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">// Check against our minimum width
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">width</span> <span class="o">=</span> <span class="n">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="n">width</span><span class="o">,</span> <span class="n">getSuggestedMinimumWidth</span><span class="o">());</span>
-</span></span></code></pre></div><p>Here we see not only code to work around max/min width set, but also <code>getSuggestedMinimumWidth</code>. If we take a look at that method we&rsquo;ll see:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">protected</span> <span class="kt">int</span> <span class="nf">getSuggestedMinimumWidth</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">(</span><span class="n">mBackground</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">?</span> <span class="n">mMinWidth</span> <span class="o">:</span> <span class="n">max</span><span class="o">(</span><span class="n">mMinWidth</span><span class="o">,</span> <span class="n">mBackground</span><span class="o">.</span><span class="na">getMinimumWidth</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></div><p>So, not only <code>View#minimumWidth</code> is taken into consideration, but also background width.
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mMaxWidthMode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">EMS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Math</span><span class="p">.</span><span class="na">min</span><span class="p">(</span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">mMaxWidth</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">getLineHeight</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Math</span><span class="p">.</span><span class="na">min</span><span class="p">(</span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">mMaxWidth</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mMinWidthMode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">EMS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Math</span><span class="p">.</span><span class="na">max</span><span class="p">(</span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">mMinWidth</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">getLineHeight</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Math</span><span class="p">.</span><span class="na">max</span><span class="p">(</span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">mMinWidth</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">// Check against our minimum width</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Math</span><span class="p">.</span><span class="na">max</span><span class="p">(</span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">getSuggestedMinimumWidth</span><span class="p">());</span><span class="w">
+</span></span></span></code></pre></div><p>Here we see not only code to work around max/min width set, but also <code>getSuggestedMinimumWidth</code>. If we take a look at that method we&rsquo;ll see:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">protected</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">getSuggestedMinimumWidth</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">mBackground</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">mMinWidth</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">max</span><span class="p">(</span><span class="n">mMinWidth</span><span class="p">,</span><span class="w"> </span><span class="n">mBackground</span><span class="p">.</span><span class="na">getMinimumWidth</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>So, not only <code>View#minimumWidth</code> is taken into consideration, but also background width.
 That means that if we set some width on a background:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="nt">&lt;shape</span> <span class="na">xmlns:android=</span><span class="s">&#34;http://schemas.android.com/apk/res/android&#34;</span>

@@ -22,27 +22,30 @@
   
   <meta name="theme-color" content="#1e2327">
 
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Kotlin Nitpicker&#39;s guide"/>
-<meta name="twitter:description" content="Guide on how not to do code review of Kotlin code."/>
-<meta name="twitter:site" content="@krossovochkin"/>
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Kotlin Nitpicker&#39;s guide">
+  <meta name="twitter:description" content="Guide on how not to do code review of Kotlin code.">
 
 </head>
 
 <body>
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-YEWQ4T95D5', { 'anonymize_ip': false });
-}
-</script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-YEWQ4T95D5');
+        }
+      </script>
 
 <header>
 <nav>
@@ -199,15 +202,15 @@ It is fine to omit return type for private or internal functions, but for public
 Less code is better.</p>
 </blockquote>
 <p>Kotlin compiler can infer types. So when in java we have to write:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">final</span> <span class="n">Object</span> <span class="n">object</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Object</span><span class="o">();</span>
-</span></span></code></pre></div><p>in Kotlin it is just:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">final</span><span class="w"> </span><span class="n">Object</span><span class="w"> </span><span class="n">object</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="p">();</span><span class="w">
+</span></span></span></code></pre></div><p>in Kotlin it is just:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">object</span> <span class="p">=</span> <span class="n">Object</span><span class="p">()</span>
 </span></span></code></pre></div><p>First note on this is similar to previous note on implicit return type: if you create implementation on the right side, then it might be a good move to declare variable type explicitly. Especially, if that variable is part of public API.</p>
 <p>Second note is about primitive numbers initialization.<br>
 Unlike Java in Kotlin there is no auto-convert between primitive numbers. When in Java it is possible to write:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kt">float</span> <span class="n">a</span> <span class="o">=</span> <span class="n">0</span><span class="o">.</span><span class="na">4</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">;</span>
-</span></span></code></pre></div><p>in Kotlin explicit conversion is required:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kt">float</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">0</span><span class="p">.</span><span class="na">4</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>in Kotlin explicit conversion is required:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">a</span><span class="p">:</span> <span class="n">Float</span> <span class="p">=</span> <span class="m">0.4f</span>
 </span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">b</span><span class="p">:</span> <span class="n">Int</span> <span class="p">=</span> <span class="n">a</span><span class="p">.</span><span class="n">toInt</span><span class="p">()</span>
 </span></span></code></pre></div><p>And here we get to the caveat: it is so tempting to omit variable type here, because value is <code>0.4f</code> - it is float. If it was <code>0.0</code> then it would be double, if <code>0L</code> then long and if just 0 then Int. It is clear and idiomatic!<br>
@@ -287,13 +290,13 @@ Then you can remove curly braces and return type. Cool!</p>
 <p>Usage of apply/with/etc. also might lead to some issues with declaring what is <code>this</code> in given scope, in case where we use some nesting:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">object1</span><span class="p">.</span><span class="n">apply</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="n">object2</span><span class="p">.</span><span class="n">apply</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">value</span> <span class="p">=</span> <span class="m">0</span>
-</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="nd">@object1</span><span class="p">.</span><span class="n">value</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="n">value</span>
+</span></span><span class="line"><span class="cl">        <span class="k">value</span> <span class="p">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="nd">@object1</span><span class="p">.</span><span class="k">value</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="k">value</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>If you use labeled <code>this</code> you should point yourself that code could look better without <code>apply</code>:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">object2</span><span class="p">.</span><span class="n">value</span> <span class="p">=</span> <span class="m">0</span>
-</span></span><span class="line"><span class="cl"><span class="n">objet1</span><span class="p">.</span><span class="n">value</span> <span class="p">=</span> <span class="n">object2</span><span class="p">.</span><span class="n">value</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">object2</span><span class="p">.</span><span class="k">value</span> <span class="p">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="n">objet1</span><span class="p">.</span><span class="k">value</span> <span class="p">=</span> <span class="n">object2</span><span class="p">.</span><span class="k">value</span>
 </span></span></code></pre></div><h3 id="conclusion">Conclusion</h3>
 <p>Code style is important. Code review is important.<br>
 Discuss among the team what you expect to get from code review: find code style issues or bugs, architectural decisions, and so on.<br>

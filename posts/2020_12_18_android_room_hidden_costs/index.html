@@ -22,27 +22,30 @@
   
   <meta name="theme-color" content="#1e2327">
 
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Android Room Hidden Costs"/>
-<meta name="twitter:description" content="Note on how Room might affect performance of you app if you perform many database requests."/>
-<meta name="twitter:site" content="@krossovochkin"/>
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Android Room Hidden Costs">
+  <meta name="twitter:description" content="Note on how Room might affect performance of you app if you perform many database requests.">
 
 </head>
 
 <body>
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-YEWQ4T95D5', { 'anonymize_ip': false });
-}
-</script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-YEWQ4T95D5');
+        }
+      </script>
 
 <header>
 <nav>
@@ -152,7 +155,7 @@ The core thing that supports reactiveness is <code>InvalidationTracker</code>. I
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">private</span> <span class="k">val</span> <span class="py">locations</span><span class="p">:</span> <span class="n">MutableList</span><span class="p">&lt;</span><span class="n">LocationData</span><span class="p">&gt;</span> <span class="p">=</span> <span class="n">dao</span><span class="p">.</span><span class="n">getLocations</span><span class="p">().</span><span class="n">toMutableList</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">private</span> <span class="k">val</span> <span class="py">changesSubject</span> <span class="p">=</span> <span class="n">PublishSubject</span><span class="p">.</span><span class="n">create</span><span class="p">&lt;</span><span class="n">Unit</span><span class="p">&gt;()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">private</span> <span class="k">val</span> <span class="py">changesSubject</span> <span class="p">=</span> <span class="nc">PublishSubject</span><span class="p">.</span><span class="n">create</span><span class="p">&lt;</span><span class="n">Unit</span><span class="p">&gt;()</span>
 </span></span><span class="line"><span class="cl">    
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">locationsObservable</span><span class="p">:</span> <span class="n">Observable</span><span class="p">&lt;</span><span class="n">LocationData</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl">        <span class="k">get</span><span class="p">()</span> <span class="p">=</span> <span class="n">changesSubject</span><span class="p">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">locations</span> <span class="p">}</span>
@@ -186,17 +189,17 @@ The core thing that supports reactiveness is <code>InvalidationTracker</code>. I
 <p>In Room, there is no way to effectively disable <code>InvalidationTracker</code>. At least I don&rsquo;t know whether such a possibility exists. There seems no public API for this. Let&rsquo;s try to disable it on our own.</p>
 <p>The code which queries the internal table is located in <code>mRefreshRunnable</code> which is triggered e.g. at the end of each transaction. <code>InvalidationTracker</code> is an abstract class and is created in the code generated for our Database by kapt.<br>
 The solution would be to disable kapt, copy-paste generated code to our sources, and update creating <code>InvalidationTracker</code> stubbing refresh methods:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Override</span>
-</span></span><span class="line"><span class="cl"><span class="nd">@NonNull</span>
-</span></span><span class="line"><span class="cl"><span class="kd">protected</span> <span class="n">InvalidationTracker</span> <span class="nf">createInvalidationTracker</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">new</span> <span class="n">InvalidationTracker</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="s">&#34;locations&#34;</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">refreshVersionsAsync</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="o">}</span>
-</span></span><span class="line"><span class="cl">        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">refreshVersionsSync</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="o">}</span>
-</span></span><span class="line"><span class="cl">    <span class="o">};</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></div><p>By doing that we can verify in SqlLiteStatements that <code>InvalidationTracker</code> queries its internal table no more.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nd">@NonNull</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">protected</span><span class="w"> </span><span class="n">InvalidationTracker</span><span class="w"> </span><span class="nf">createInvalidationTracker</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">InvalidationTracker</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;locations&#34;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">refreshVersionsAsync</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">refreshVersionsSync</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">};</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>By doing that we can verify in SqlLiteStatements that <code>InvalidationTracker</code> queries its internal table no more.</p>
 <blockquote>
 <p><strong>UPDATE</strong><br>
 Thanks to <a href="https://twitter.com/yigitboyar">Yigit Boyar</a> for pointing out that internal table Room uses is in-memory. Indeed, that table is temp. So, the most of the performance impact is related to SQLite triggers, not querying internal temp table. And triggers are not created unless you subscribe to some Observable declared.<br>

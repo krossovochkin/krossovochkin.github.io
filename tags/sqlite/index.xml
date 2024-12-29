@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sqlite on Vasya Drobushkov</title>
+    <link>https://krossovochkin.com/tags/sqlite/</link>
+    <description>Recent content in Sqlite on Vasya Drobushkov</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 18 Dec 2020 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://krossovochkin.com/tags/sqlite/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Android Room Hidden Costs</title>
+      <link>https://krossovochkin.com/posts/2020_12_18_android_room_hidden_costs/</link>
+      <pubDate>Fri, 18 Dec 2020 00:00:00 +0000</pubDate>
+      <guid>https://krossovochkin.com/posts/2020_12_18_android_room_hidden_costs/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://androidweekly.net/issues/issue-445&#34;&gt;&lt;img src=&#34;https://img.shields.io/badge/androidweekly-445-blue#badge&#34; alt=&#34;&#34;&gt;&lt;/a&gt; &lt;a href=&#34;https://mailchi.mp/kotlinweekly/kotlin-weekly-230&#34;&gt;&lt;img src=&#34;https://img.shields.io/badge/kotlinweekly-230-purple#badge&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3 id=&#34;introduction&#34;&gt;Introduction&lt;/h3&gt;&#xA;&lt;p&gt;Android Room is an awesome AndroidX library. It is great because it provides a clean way of how to deal with databases without introducing some heavy concepts. Out of the box with Room one gets:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;simplified code comparing with raw SQLite queries&lt;/li&gt;&#xA;&lt;li&gt;working via DAO interfaces and models instead of Cursors&lt;/li&gt;&#xA;&lt;li&gt;auto-generated &amp;ldquo;boilerplate&amp;rdquo; code for queries&lt;/li&gt;&#xA;&lt;li&gt;migration support&lt;/li&gt;&#xA;&lt;li&gt;Android Studio tooling (compile-time verification of queries and highlight)&lt;/li&gt;&#xA;&lt;li&gt;support for reactive streams (RxJava, Kotlin Flow)&lt;/li&gt;&#xA;&lt;li&gt;and more&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;In this article, I&amp;rsquo;d like to discover some hidden costs Room applies to support reactive streams and how one can try to avoid them.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>SQLite Triggers (&#43; Android Room)</title>
+      <link>https://krossovochkin.com/posts/2020_01_17_sqlite_triggers_android_room/</link>
+      <pubDate>Fri, 17 Jan 2020 00:00:00 +0000</pubDate>
+      <guid>https://krossovochkin.com/posts/2020_01_17_sqlite_triggers_android_room/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://proandroiddev.com/sqlite-triggers-android-room-2e7120bb3e3a&#34;&gt;&lt;img src=&#34;https://img.shields.io/badge/original-proandroiddev-green#badge&#34; alt=&#34;&#34;&gt;&lt;/a&gt; &lt;a href=&#34;https://androidweekly.net/issues/issue-397&#34;&gt;&lt;img src=&#34;https://img.shields.io/badge/androidweekly-397-blue#badge&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;SQLite is one of the &lt;a href=&#34;https://www.sqlite.org/mostdeployed.html&#34;&gt;most used&lt;/a&gt; database. This is because it is used on almost all mobile devices in the world. As SQLite is very similar to SQL everyone already knows the basic concepts like querying, inserting, updating, deleting data; databases and tables; joining tables etc.&#xA;But SQLite also has some advanced features and this article is about one of such called Trigger.&lt;/p&gt;&#xA;&lt;p&gt;If we try to speculate on the name “Trigger” we might say that probably something will be done when some changes are made to the database. And we’re pretty close to the truth.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

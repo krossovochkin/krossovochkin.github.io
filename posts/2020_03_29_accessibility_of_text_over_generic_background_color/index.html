@@ -22,27 +22,30 @@
   
   <meta name="theme-color" content="#1e2327">
 
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Accessibility of text over generic background color"/>
-<meta name="twitter:description" content="Investigating issues which might result in poor accessibility with text drawn over a random background color"/>
-<meta name="twitter:site" content="@krossovochkin"/>
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Accessibility of text over generic background color">
+  <meta name="twitter:description" content="Investigating issues which might result in poor accessibility with text drawn over a random background color">
 
 </head>
 
 <body>
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-YEWQ4T95D5', { 'anonymize_ip': false });
-}
-</script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-YEWQ4T95D5');
+        }
+      </script>
 
 <header>
 <nav>
@@ -112,9 +115,9 @@ Also there is a way to add tint over images, so action icons in the toolbar can 
 <h2 id="text-color">Text color</h2>
 <p>To fix this we need to apply simple logic.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">bgColor</span><span class="p">.</span><span class="n">isDark</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">   <span class="n">toolbar</span><span class="p">.</span><span class="n">setTitleTextColor</span><span class="p">(</span><span class="n">Color</span><span class="p">.</span><span class="n">WHITE</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="n">toolbar</span><span class="p">.</span><span class="n">setTitleTextColor</span><span class="p">(</span><span class="nc">Color</span><span class="p">.</span><span class="n">WHITE</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">   <span class="n">toolbar</span><span class="p">.</span><span class="n">setTitleTextColor</span><span class="p">(</span><span class="n">Color</span><span class="p">.</span><span class="n">BLACK</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="n">toolbar</span><span class="p">.</span><span class="n">setTitleTextColor</span><span class="p">(</span><span class="nc">Color</span><span class="p">.</span><span class="n">BLACK</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>The only thing left is to define how to understand whether bgColor is dark or light.</p>
 <h3 id="alternative-color-models">Alternative color models</h3>
@@ -123,10 +126,10 @@ But there are also other color models, among which there are <a href="https://en
 Here we’re interested in <a href="https://en.wikipedia.org/wiki/Color_model#CIE_XYZ_color_space">XYZ</a>.
 Y parameter (which is luminance) is exactly the parameter we need to identify whether our color is dark or light. This value is defined in a range [0, 1], where 0 means the darkest color and 1 the lightest one.
 Luckily for us, we don’t need to do the color conversion ourselves, there is a handy utility method in the Android SDK already:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">ColorUtils</span><span class="p">.</span><span class="n">calculateLuminance</span><span class="p">(</span><span class="n">bgColor</span><span class="p">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="nc">ColorUtils</span><span class="p">.</span><span class="n">calculateLuminance</span><span class="p">(</span><span class="n">bgColor</span><span class="p">)</span>
 </span></span></code></pre></div><p>It will return a float value between 0 and 1. The simplest logic of defining whether bgColor is dark or not is to compare with the middle value — 0.5:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">isDarkColor</span><span class="p">(</span><span class="nd">@ColorInt</span> <span class="n">color</span><span class="p">:</span> <span class="n">Int</span><span class="p">):</span> <span class="n">Boolean</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">ColorUtils</span><span class="p">.</span><span class="n">calculateLuminance</span><span class="p">(</span><span class="n">color</span><span class="p">)</span> <span class="p">&lt;</span> <span class="m">0.5</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nc">ColorUtils</span><span class="p">.</span><span class="n">calculateLuminance</span><span class="p">(</span><span class="n">color</span><span class="p">)</span> <span class="p">&lt;</span> <span class="m">0.5</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><blockquote>
 <p><strong>NOTE</strong>: this is exactly what <a href="https://stackoverflow.com/a/48267387">one can find on StackOverflow</a> after searching for dark color checking.</p>
@@ -142,9 +145,9 @@ This time we’ll do some manual work by creating a special method for de-satura
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="nd">@ColorInt</span>
 </span></span><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">getDesaturatedColor</span><span class="p">(</span><span class="nd">@ColorInt</span> <span class="n">color</span><span class="p">:</span> <span class="n">Int</span><span class="p">):</span> <span class="n">Int</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">result</span> <span class="p">=</span> <span class="n">FloatArray</span><span class="p">(</span><span class="n">size</span> <span class="p">=</span> <span class="m">3</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="n">Color</span><span class="p">.</span><span class="n">colorToHSV</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nc">Color</span><span class="p">.</span><span class="n">colorToHSV</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="n">result</span><span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="o">*=</span> <span class="p">*</span><span class="m">0.6</span>
-</span></span><span class="line"><span class="cl">    <span class="p">*</span><span class="k">return</span> <span class="n">Color</span><span class="p">.</span><span class="n">HSVToColor</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">*</span><span class="k">return</span> <span class="nc">Color</span><span class="p">.</span><span class="n">HSVToColor</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>We’ll multiply saturation by 0.6. It is just the experimentally taken value.</p>
 <blockquote>
@@ -163,7 +166,7 @@ This refers to <a href="https://www.w3.org/TR/WCAG20/">WCAG</a>, which says that
 <p><img src="../../img/1_3O_SRTd17NDUrhtvvdZAAg.png" alt=""></p>
 <p><img src="../../img/1_1i5UWjf4Avj6dNIa5hy-5g.png" alt=""></p>
 <p>But again, we don’t need to calculate them manually, as there is a ready to use method:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">ColorUtils</span><span class="p">.</span><span class="n">calculateContrast</span><span class="p">(</span><span class="n">foreground</span><span class="p">,</span> <span class="n">background</span><span class="p">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="nc">ColorUtils</span><span class="p">.</span><span class="n">calculateContrast</span><span class="p">(</span><span class="n">foreground</span><span class="p">,</span> <span class="n">background</span><span class="p">)</span>
 </span></span></code></pre></div><p>Our background color which had an issue is: #7f6fad.
 If we calculate its luminance, we’ll get 0.1889803503770053 which means that this color should be considered as dark.
 Let’s calculate contrast between white and this color, and black and this color.
@@ -177,10 +180,10 @@ The result will be:</p>
 <h3 id="final-touch">Final touch</h3>
 <p>OK, so now we have a new idea on how to choose better color (white or black) — we’ll calculate contrasts between white and background color and black and background color and choose one with the highest value.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">getContrastColor</span><span class="p">(</span><span class="nd">@ColorInt</span> <span class="n">color</span><span class="p">:</span> <span class="n">Int</span><span class="p">):</span> <span class="n">Int</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">whiteContrast</span> <span class="p">=</span> <span class="n">ColorUtils</span><span class="p">.</span><span class="n">calculateContrast</span><span class="p">(</span><span class="n">Color</span><span class="p">.</span><span class="n">WHITE</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">blackContrast</span> <span class="p">=</span> <span class="n">ColorUtils</span><span class="p">.</span><span class="n">calculateContrast</span><span class="p">(</span><span class="n">Color</span><span class="p">.</span><span class="n">BLACK</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">whiteContrast</span> <span class="p">=</span> <span class="nc">ColorUtils</span><span class="p">.</span><span class="n">calculateContrast</span><span class="p">(</span><span class="nc">Color</span><span class="p">.</span><span class="n">WHITE</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">blackContrast</span> <span class="p">=</span> <span class="nc">ColorUtils</span><span class="p">.</span><span class="n">calculateContrast</span><span class="p">(</span><span class="nc">Color</span><span class="p">.</span><span class="n">BLACK</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">if</span> <span class="p">(</span><span class="n">whiteContrast</span> <span class="p">&gt;</span> <span class="n">blackContrast</span><span class="p">)</span> <span class="n">Color</span><span class="p">.</span><span class="n">WHITE</span> <span class="k">else</span> <span class="n">Color</span><span class="p">.</span><span class="n">BLACK</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">if</span> <span class="p">(</span><span class="n">whiteContrast</span> <span class="p">&gt;</span> <span class="n">blackContrast</span><span class="p">)</span> <span class="nc">Color</span><span class="p">.</span><span class="n">WHITE</span> <span class="k">else</span> <span class="nc">Color</span><span class="p">.</span><span class="n">BLACK</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>One question which is left is whether it is possible for both white and black colors to not meet contrast requirements of 4.5:1?
 Let’s do some math. We’ll remember the formula from WSAG and check it.

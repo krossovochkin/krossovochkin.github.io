@@ -22,31 +22,34 @@
   
   <meta name="theme-color" content="#1e2327">
 
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Kotlin-android-synthetics performance analysis (with ButterKnife)"/>
-<meta name="twitter:description" content="Introduction After comment that synthetic is no longer recommended practice and some arguments I decided to go deeper into issue with performance of kotlin-android-synthetics by analyzing generated Java and byte code and comparing to other approaches (such as vanilla-*findViewById *and ButterKnife).
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Kotlin-android-synthetics performance analysis (with ButterKnife)">
+  <meta name="twitter:description" content="Introduction After comment that synthetic is no longer recommended practice and some arguments I decided to go deeper into issue with performance of kotlin-android-synthetics by analyzing generated Java and byte code and comparing to other approaches (such as vanilla-*findViewById *and ButterKnife).
 Vanilla-findViewById This is sample Activity we’ll work with throughout the article. Approach with *findViewById *will be our baseline.
 Sample consists of:
 *Activity *class
-One *TextView *property inside *Activity *with *lateinit *modifier"/>
-<meta name="twitter:site" content="@krossovochkin"/>
+One *TextView *property inside *Activity *with *lateinit *modifier">
 
 </head>
 
 <body>
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-YEWQ4T95D5', { 'anonymize_ip': false });
-}
-</script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-YEWQ4T95D5');
+        }
+      </script>
 
 <header>
 <nav>
@@ -120,76 +123,76 @@ Approach with *findViewById *will be our baseline.</p>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="n">Bundle</span><span class="p">?)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="k">super</span><span class="p">.</span><span class="n">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">setContentView</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">layout</span><span class="p">.</span><span class="n">activity_main</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">setContentView</span><span class="p">(</span><span class="nc">R</span><span class="p">.</span><span class="n">layout</span><span class="p">.</span><span class="n">activity_main</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="n">textView</span> <span class="p">=</span> <span class="n">findViewById</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">textView</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">textView</span> <span class="p">=</span> <span class="n">findViewById</span><span class="p">(</span><span class="nc">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">textView</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="n">update</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">private</span> <span class="k">fun</span> <span class="nf">update</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">textView</span><span class="p">.</span><span class="n">text</span> <span class="p">=</span> <span class="s2">&#34;Text&#34;</span>
-</span></span><span class="line"><span class="cl">        <span class="n">textView</span><span class="p">.</span><span class="n">setTextColor</span><span class="p">(</span><span class="n">Color</span><span class="p">.</span><span class="n">RED</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">textView</span><span class="p">.</span><span class="n">setTextColor</span><span class="p">(</span><span class="nc">Color</span><span class="p">.</span><span class="n">RED</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="n">textView</span><span class="p">.</span><span class="n">textSize</span> <span class="p">=</span> <span class="m">14.0f</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>Here is what we’ll get if we try to look at generated java code:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">MainActivity</span> <span class="kd">extends</span> <span class="n">AppCompatActivity</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">   <span class="kd">private</span> <span class="n">TextView</span> <span class="n">textView</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">   <span class="kd">private</span> <span class="n">HashMap</span> <span class="n">_$_findViewCache</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">   <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="nd">@Nullable</span> <span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">      <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">(</span><span class="n">savedInstanceState</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="o">.</span><span class="na">setContentView</span><span class="o">(-</span><span class="n">1300009</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="n">View</span> <span class="n">var10001</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">findViewById</span><span class="o">(-</span><span class="n">1000050</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="n">Intrinsics</span><span class="o">.</span><span class="na">checkExpressionValueIsNotNull</span><span class="o">(</span><span class="n">var10001</span><span class="o">,</span> <span class="s">&#34;findViewById(R.id.textView)&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="o">.</span><span class="na">textView</span> <span class="o">=</span> <span class="o">(</span><span class="n">TextView</span><span class="o">)</span><span class="n">var10001</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="o">.</span><span class="na">update</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">   <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">   <span class="kd">private</span> <span class="kd">final</span> <span class="kt">void</span> <span class="nf">update</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">      <span class="n">TextView</span> <span class="n">var10000</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">textView</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">textView</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">         <span class="n">Intrinsics</span><span class="o">.</span><span class="na">throwUninitializedPropertyAccessException</span><span class="o">(</span><span class="s">&#34;textView&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">      <span class="n">var10000</span><span class="o">.</span><span class="na">setText</span><span class="o">((</span><span class="n">CharSequence</span><span class="o">)</span><span class="s">&#34;Text&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="n">var10000</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">textView</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">textView</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">         <span class="n">Intrinsics</span><span class="o">.</span><span class="na">throwUninitializedPropertyAccessException</span><span class="o">(</span><span class="s">&#34;textView&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">      <span class="n">var10000</span><span class="o">.</span><span class="na">setTextColor</span><span class="o">(-</span><span class="n">65536</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="n">var10000</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">textView</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">textView</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">         <span class="n">Intrinsics</span><span class="o">.</span><span class="na">throwUninitializedPropertyAccessException</span><span class="o">(</span><span class="s">&#34;textView&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">      <span class="n">var10000</span><span class="o">.</span><span class="na">setTextSize</span><span class="o">(</span><span class="n">14</span><span class="o">.</span><span class="na">0F</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">   <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">   <span class="kd">public</span> <span class="n">View</span> <span class="nf">_$_findCachedViewById</span><span class="o">(</span><span class="kt">int</span> <span class="n">var1</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">_$_findViewCache</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">         <span class="k">this</span><span class="o">.</span><span class="na">_$_findViewCache</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">      <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">      <span class="n">View</span> <span class="n">var2</span> <span class="o">=</span> <span class="o">(</span><span class="n">View</span><span class="o">)</span><span class="k">this</span><span class="o">.</span><span class="na">_$_findViewCache</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">var1</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="o">(</span><span class="n">var2</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">         <span class="n">var2</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">findViewById</span><span class="o">(</span><span class="n">var1</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">         <span class="k">this</span><span class="o">.</span><span class="na">_$_findViewCache</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">var1</span><span class="o">,</span> <span class="n">var2</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="n">var2</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">   <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">   <span class="kd">public</span> <span class="kt">void</span> <span class="nf">_$_clearFindViewByIdCache</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">_$_findViewCache</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">         <span class="k">this</span><span class="o">.</span><span class="na">_$_findViewCache</span><span class="o">.</span><span class="na">clear</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">      <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">   <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></div><p>We immediately have a number of questions:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kd">class</span> <span class="nc">MainActivity</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">AppCompatActivity</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="kd">private</span><span class="w"> </span><span class="n">TextView</span><span class="w"> </span><span class="n">textView</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="kd">private</span><span class="w"> </span><span class="n">HashMap</span><span class="w"> </span><span class="n">_$_findViewCache</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="kd">protected</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onCreate</span><span class="p">(</span><span class="nd">@Nullable</span><span class="w"> </span><span class="n">Bundle</span><span class="w"> </span><span class="n">savedInstanceState</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="kd">super</span><span class="p">.</span><span class="na">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="na">setContentView</span><span class="p">(</span><span class="o">-</span><span class="n">1300009</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">View</span><span class="w"> </span><span class="n">var10001</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">findViewById</span><span class="p">(</span><span class="o">-</span><span class="n">1000050</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">Intrinsics</span><span class="p">.</span><span class="na">checkExpressionValueIsNotNull</span><span class="p">(</span><span class="n">var10001</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;findViewById(R.id.textView)&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="na">textView</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">TextView</span><span class="p">)</span><span class="n">var10001</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="na">update</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">update</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">TextView</span><span class="w"> </span><span class="n">var10000</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">textView</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">textView</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="n">Intrinsics</span><span class="p">.</span><span class="na">throwUninitializedPropertyAccessException</span><span class="p">(</span><span class="s">&#34;textView&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">var10000</span><span class="p">.</span><span class="na">setText</span><span class="p">((</span><span class="n">CharSequence</span><span class="p">)</span><span class="s">&#34;Text&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">var10000</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">textView</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">textView</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="n">Intrinsics</span><span class="p">.</span><span class="na">throwUninitializedPropertyAccessException</span><span class="p">(</span><span class="s">&#34;textView&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">var10000</span><span class="p">.</span><span class="na">setTextColor</span><span class="p">(</span><span class="o">-</span><span class="n">65536</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">var10000</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">textView</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">textView</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="n">Intrinsics</span><span class="p">.</span><span class="na">throwUninitializedPropertyAccessException</span><span class="p">(</span><span class="s">&#34;textView&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">var10000</span><span class="p">.</span><span class="na">setTextSize</span><span class="p">(</span><span class="n">14</span><span class="p">.</span><span class="na">0F</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="kd">public</span><span class="w"> </span><span class="n">View</span><span class="w"> </span><span class="nf">_$_findCachedViewById</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">var1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">_$_findViewCache</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="k">this</span><span class="p">.</span><span class="na">_$_findViewCache</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">View</span><span class="w"> </span><span class="n">var2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">View</span><span class="p">)</span><span class="k">this</span><span class="p">.</span><span class="na">_$_findViewCache</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">var1</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">var2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="n">var2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">findViewById</span><span class="p">(</span><span class="n">var1</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="k">this</span><span class="p">.</span><span class="na">_$_findViewCache</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="n">var1</span><span class="p">,</span><span class="w"> </span><span class="n">var2</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">var2</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">_$_clearFindViewByIdCache</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">_$_findViewCache</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="k">this</span><span class="p">.</span><span class="na">_$_findViewCache</span><span class="p">.</span><span class="na">clear</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>We immediately have a number of questions:</p>
 <ul>
 <li>
 <p>We haven’t used synthetics in this <em>Activity</em>, we just have apply plugin: &lsquo;kolin-android-extensions&rsquo; in our <em>build.gradle</em> (which is added by default).
@@ -219,23 +222,23 @@ But it is something we know, not the compiler.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">update</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="n">textView</span><span class="p">.</span><span class="n">apply</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">text</span> <span class="p">=</span> <span class="s2">&#34;Text&#34;</span>
-</span></span><span class="line"><span class="cl">        <span class="n">setTextColor</span><span class="p">(</span><span class="n">Color</span><span class="p">.*</span><span class="n">RED</span><span class="p">*)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">setTextColor</span><span class="p">(</span><span class="nc">Color</span><span class="p">.*</span><span class="n">RED</span><span class="p">*)</span>
 </span></span><span class="line"><span class="cl">        <span class="n">textSize</span> <span class="p">=</span> <span class="m">14.0f</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>So the resulting Java code will be:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">private</span> <span class="kd">final</span> <span class="kt">void</span> <span class="nf">update</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">   <span class="n">TextView</span> <span class="n">var10000</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">textView</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">   <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">textView</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">      <span class="n">Intrinsics</span><span class="o">.*</span><span class="n">throwUninitializedPropertyAccessException</span><span class="o">*(</span><span class="s">&#34;textView&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">   <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">   <span class="n">TextView</span> <span class="n">var1</span> <span class="o">=</span> <span class="n">var10000</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">   <span class="n">var1</span><span class="o">.</span><span class="na">setText</span><span class="o">((</span><span class="n">CharSequence</span><span class="o">)</span><span class="s">&#34;Text&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">   <span class="n">var1</span><span class="o">.</span><span class="na">setTextColor</span><span class="o">(-</span><span class="n">65536</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">   <span class="n">var1</span><span class="o">.</span><span class="na">setTextSize</span><span class="o">(</span><span class="n">14</span><span class="o">.</span><span class="na">0F</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></div><p>So we have only one check and then update all properties on local property. Neat.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">update</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="n">TextView</span><span class="w"> </span><span class="n">var10000</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">textView</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">textView</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">Intrinsics</span><span class="p">.</span><span class="o">*</span><span class="n">throwUninitializedPropertyAccessException</span><span class="o">*</span><span class="p">(</span><span class="s">&#34;textView&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="n">TextView</span><span class="w"> </span><span class="n">var1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">var10000</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="n">var1</span><span class="p">.</span><span class="na">setText</span><span class="p">((</span><span class="n">CharSequence</span><span class="p">)</span><span class="s">&#34;Text&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="n">var1</span><span class="p">.</span><span class="na">setTextColor</span><span class="p">(</span><span class="o">-</span><span class="n">65536</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="n">var1</span><span class="p">.</span><span class="na">setTextSize</span><span class="p">(</span><span class="n">14</span><span class="p">.</span><span class="na">0F</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>So we have only one check and then update all properties on local property. Neat.</p>
 <p>Though such optimizations are definitely premature as anyway in release build ProGuard will do better optimization work without making your code look a bit weird.</p>
 <h3 id="hashmapsparsearray">HashMap/SparseArray</h3>
 <p>Why <em>HashMap</em> is used instead of <em>SparseArray</em>?</p>
@@ -258,100 +261,100 @@ Seems *SparseArray *is better option because we’ll have primitive integers as 
 <p>Let’s look at the same example with ButterKnife:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">ButterKnifeAcivity</span> <span class="p">:</span> <span class="n">AppCompatActivity</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nd">@BindView</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">textView</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nd">@BindView</span><span class="p">(</span><span class="nc">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">textView</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="k">lateinit</span> <span class="k">var</span> <span class="py">textView</span><span class="p">:</span> <span class="n">TextView</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="n">Bundle</span><span class="p">?)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="k">super</span><span class="p">.</span><span class="n">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">setContentView</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">layout</span><span class="p">.</span><span class="n">activity_main</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">setContentView</span><span class="p">(</span><span class="nc">R</span><span class="p">.</span><span class="n">layout</span><span class="p">.</span><span class="n">activity_main</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="n">ButterKnife</span><span class="p">.</span><span class="n">bind</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nc">ButterKnife</span><span class="p">.</span><span class="n">bind</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="n">update</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">private</span> <span class="k">fun</span> <span class="nf">update</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">textView</span><span class="p">.</span><span class="n">text</span> <span class="p">=</span> <span class="s2">&#34;Text&#34;</span>
-</span></span><span class="line"><span class="cl">        <span class="n">textView</span><span class="p">.</span><span class="n">setTextColor</span><span class="p">(</span><span class="n">Color</span><span class="p">.</span><span class="n">RED</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">textView</span><span class="p">.</span><span class="n">setTextColor</span><span class="p">(</span><span class="nc">Color</span><span class="p">.</span><span class="n">RED</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="n">textView</span><span class="p">.</span><span class="n">textSize</span> <span class="p">=</span> <span class="m">14.0f</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>Generated Java code (synthetics part is removed):</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">ButterKnifeAcivity</span> <span class="kd">extends</span> <span class="n">AppCompatActivity</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">   <span class="nd">@BindView</span><span class="o">(-</span><span class="n">1000050</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">   <span class="nd">@NotNull</span>
-</span></span><span class="line"><span class="cl">   <span class="kd">public</span> <span class="n">TextView</span> <span class="n">textView</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">   <span class="nd">@NotNull</span>
-</span></span><span class="line"><span class="cl">   <span class="kd">public</span> <span class="kd">final</span> <span class="n">TextView</span> <span class="nf">getTextView</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">      <span class="n">TextView</span> <span class="n">var10000</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">textView</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">textView</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">         <span class="n">Intrinsics</span><span class="o">.</span><span class="na">throwUninitializedPropertyAccessException</span><span class="o">(</span><span class="s">&#34;textView&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="n">var10000</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">   <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">   <span class="kd">public</span> <span class="kd">final</span> <span class="kt">void</span> <span class="nf">setTextView</span><span class="o">(</span><span class="nd">@NotNull</span> <span class="n">TextView</span> <span class="n">var1</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">      <span class="n">Intrinsics</span><span class="o">.</span><span class="na">checkParameterIsNotNull</span><span class="o">(</span><span class="n">var1</span><span class="o">,</span> <span class="s">&#34;&lt;set-?&gt;&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="o">.</span><span class="na">textView</span> <span class="o">=</span> <span class="n">var1</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">   <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">   <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="nd">@Nullable</span> <span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">      <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">(</span><span class="n">savedInstanceState</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="o">.</span><span class="na">setContentView</span><span class="o">(-</span><span class="n">1300009</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="n">ButterKnife</span><span class="o">.</span><span class="na">bind</span><span class="o">((</span><span class="n">Activity</span><span class="o">)</span><span class="k">this</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="o">.</span><span class="na">update</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">   <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">   <span class="kd">private</span> <span class="kd">final</span> <span class="kt">void</span> <span class="nf">update</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">      <span class="n">TextView</span> <span class="n">var10000</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">textView</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">textView</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">         <span class="n">Intrinsics</span><span class="o">.</span><span class="na">throwUninitializedPropertyAccessException</span><span class="o">(</span><span class="s">&#34;textView&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">      <span class="n">var10000</span><span class="o">.</span><span class="na">setText</span><span class="o">((</span><span class="n">CharSequence</span><span class="o">)</span><span class="s">&#34;Text&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="n">var10000</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">textView</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">textView</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">         <span class="n">Intrinsics</span><span class="o">.</span><span class="na">throwUninitializedPropertyAccessException</span><span class="o">(</span><span class="s">&#34;textView&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">      <span class="n">var10000</span><span class="o">.</span><span class="na">setTextColor</span><span class="o">(-</span><span class="n">65536</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="n">var10000</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">textView</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">textView</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">         <span class="n">Intrinsics</span><span class="o">.</span><span class="na">throwUninitializedPropertyAccessException</span><span class="o">(</span><span class="s">&#34;textView&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">      <span class="n">var10000</span><span class="o">.</span><span class="na">setTextSize</span><span class="o">(</span><span class="n">14</span><span class="o">.</span><span class="na">0F</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">   <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></div><p>So, basically everything is the same. The difference is only that additional getter and setter for our *TextView *was generated.
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ButterKnifeAcivity</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">AppCompatActivity</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="nd">@BindView</span><span class="p">(</span><span class="o">-</span><span class="n">1000050</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="nd">@NotNull</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="kd">public</span><span class="w"> </span><span class="n">TextView</span><span class="w"> </span><span class="n">textView</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="nd">@NotNull</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="kd">public</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">TextView</span><span class="w"> </span><span class="nf">getTextView</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">TextView</span><span class="w"> </span><span class="n">var10000</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">textView</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">textView</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="n">Intrinsics</span><span class="p">.</span><span class="na">throwUninitializedPropertyAccessException</span><span class="p">(</span><span class="s">&#34;textView&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">var10000</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="kd">public</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">setTextView</span><span class="p">(</span><span class="nd">@NotNull</span><span class="w"> </span><span class="n">TextView</span><span class="w"> </span><span class="n">var1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">Intrinsics</span><span class="p">.</span><span class="na">checkParameterIsNotNull</span><span class="p">(</span><span class="n">var1</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;&lt;set-?&gt;&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="na">textView</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">var1</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="kd">protected</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onCreate</span><span class="p">(</span><span class="nd">@Nullable</span><span class="w"> </span><span class="n">Bundle</span><span class="w"> </span><span class="n">savedInstanceState</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="kd">super</span><span class="p">.</span><span class="na">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="na">setContentView</span><span class="p">(</span><span class="o">-</span><span class="n">1300009</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">ButterKnife</span><span class="p">.</span><span class="na">bind</span><span class="p">((</span><span class="n">Activity</span><span class="p">)</span><span class="k">this</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="na">update</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">update</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">TextView</span><span class="w"> </span><span class="n">var10000</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">textView</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">textView</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="n">Intrinsics</span><span class="p">.</span><span class="na">throwUninitializedPropertyAccessException</span><span class="p">(</span><span class="s">&#34;textView&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">var10000</span><span class="p">.</span><span class="na">setText</span><span class="p">((</span><span class="n">CharSequence</span><span class="p">)</span><span class="s">&#34;Text&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">var10000</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">textView</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">textView</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="n">Intrinsics</span><span class="p">.</span><span class="na">throwUninitializedPropertyAccessException</span><span class="p">(</span><span class="s">&#34;textView&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">var10000</span><span class="p">.</span><span class="na">setTextColor</span><span class="p">(</span><span class="o">-</span><span class="n">65536</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">var10000</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">textView</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">textView</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="n">Intrinsics</span><span class="p">.</span><span class="na">throwUninitializedPropertyAccessException</span><span class="p">(</span><span class="s">&#34;textView&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">var10000</span><span class="p">.</span><span class="na">setTextSize</span><span class="p">(</span><span class="n">14</span><span class="p">.</span><span class="na">0F</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>So, basically everything is the same. The difference is only that additional getter and setter for our *TextView *was generated.
 It is actually redundant (and will be removed by <em>ProGuard</em>), because *ButterKnife *injector will work directly on field:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">ButterKnifeAcivity_ViewBinding</span> <span class="kd">implements</span> <span class="n">Unbinder</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">  <span class="kd">private</span> <span class="n">ButterKnifeAcivity</span> <span class="n">target</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">  <span class="nd">@UiThread</span>
-</span></span><span class="line"><span class="cl">  <span class="kd">public</span> <span class="nf">ButterKnifeAcivity_ViewBinding</span><span class="o">(</span><span class="n">ButterKnifeAcivity</span> <span class="n">target</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="o">(</span><span class="n">target</span><span class="o">,</span> <span class="n">target</span><span class="o">.</span><span class="na">getWindow</span><span class="o">().</span><span class="na">getDecorView</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">  <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">  <span class="nd">@UiThread</span>
-</span></span><span class="line"><span class="cl">  <span class="kd">public</span> <span class="nf">ButterKnifeAcivity_ViewBinding</span><span class="o">(</span><span class="n">ButterKnifeAcivity</span> <span class="n">target</span><span class="o">,</span> <span class="n">View</span> <span class="n">source</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="o">.</span><span class="na">target</span> <span class="o">=</span> <span class="n">target</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">target</span><span class="o">.</span><span class="na">textView</span> <span class="o">=</span> <span class="n">Utils</span><span class="o">.</span><span class="na">findRequiredViewAsType</span><span class="o">(</span><span class="n">source</span><span class="o">,</span> <span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">textView</span><span class="o">,</span> <span class="s">&#34;field &#39;textView&#39;&#34;</span><span class="o">,</span> <span class="n">TextView</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">  <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">  <span class="nd">@Override</span>
-</span></span><span class="line"><span class="cl">  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">unbind</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">ButterKnifeAcivity</span> <span class="n">target</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">target</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">(</span><span class="n">target</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="k">throw</span> <span class="k">new</span> <span class="n">IllegalStateException</span><span class="o">(</span><span class="s">&#34;Bindings already cleared.&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="o">.</span><span class="na">target</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">target</span><span class="o">.</span><span class="na">textView</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">  <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></div><p>So, basically using <em>ButterKnife</em> is similar to vanilla approach. The only difference is that we don’t have to write a lot of *findViewById *calls (though we still need to write one line per property — *Binds *annotation — but it is anyway better as we have actual property and view id near to each other).</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ButterKnifeAcivity_ViewBinding</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">Unbinder</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="kd">private</span><span class="w"> </span><span class="n">ButterKnifeAcivity</span><span class="w"> </span><span class="n">target</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nd">@UiThread</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="nf">ButterKnifeAcivity_ViewBinding</span><span class="p">(</span><span class="n">ButterKnifeAcivity</span><span class="w"> </span><span class="n">target</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">this</span><span class="p">(</span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="p">.</span><span class="na">getWindow</span><span class="p">().</span><span class="na">getDecorView</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nd">@UiThread</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="nf">ButterKnifeAcivity_ViewBinding</span><span class="p">(</span><span class="n">ButterKnifeAcivity</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="n">View</span><span class="w"> </span><span class="n">source</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="na">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">target</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">target</span><span class="p">.</span><span class="na">textView</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utils</span><span class="p">.</span><span class="na">findRequiredViewAsType</span><span class="p">(</span><span class="n">source</span><span class="p">,</span><span class="w"> </span><span class="n">R</span><span class="p">.</span><span class="na">id</span><span class="p">.</span><span class="na">textView</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;field &#39;textView&#39;&#34;</span><span class="p">,</span><span class="w"> </span><span class="n">TextView</span><span class="p">.</span><span class="na">class</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">unbind</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">ButterKnifeAcivity</span><span class="w"> </span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">target</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">target</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">IllegalStateException</span><span class="p">(</span><span class="s">&#34;Bindings already cleared.&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="na">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">target</span><span class="p">.</span><span class="na">textView</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>So, basically using <em>ButterKnife</em> is similar to vanilla approach. The only difference is that we don’t have to write a lot of *findViewById *calls (though we still need to write one line per property — *Binds *annotation — but it is anyway better as we have actual property and view id near to each other).</p>
 <p>There is small downside that *ButterKnife *uses reflection to instantiate *ViewBinding *class. But this is usual trade-off between reflection and code generation.</p>
 <h3 id="result-1">Result</h3>
 <p>To conclude, evaluation of *ButterKnife *approach:</p>
@@ -368,68 +371,68 @@ It is actually redundant (and will be removed by <em>ProGuard</em>), because *Bu
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="n">Bundle</span><span class="p">?)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="k">super</span><span class="p">.</span><span class="n">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">setContentView</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">layout</span><span class="p">.</span><span class="n">activity_main</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">setContentView</span><span class="p">(</span><span class="nc">R</span><span class="p">.</span><span class="n">layout</span><span class="p">.</span><span class="n">activity_main</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="n">update</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">private</span> <span class="k">fun</span> <span class="nf">update</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">textView</span><span class="p">.</span><span class="n">text</span> <span class="p">=</span> <span class="s2">&#34;Text&#34;</span>
-</span></span><span class="line"><span class="cl">        <span class="n">textView</span><span class="p">.</span><span class="n">setTextColor</span><span class="p">(</span><span class="n">Color</span><span class="p">.</span><span class="n">RED</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">textView</span><span class="p">.</span><span class="n">setTextColor</span><span class="p">(</span><span class="nc">Color</span><span class="p">.</span><span class="n">RED</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="n">textView</span><span class="p">.</span><span class="n">textSize</span> <span class="p">=</span> <span class="m">14.0f</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>Generated Java code:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">ExtensionsActivity</span> <span class="kd">extends</span> <span class="n">AppCompatActivity</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">   <span class="kd">private</span> <span class="n">SparseArray</span> <span class="n">_$_findViewCache</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">   <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="nd">@Nullable</span> <span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">      <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">(</span><span class="n">savedInstanceState</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="o">.</span><span class="na">setContentView</span><span class="o">(-</span><span class="n">1300009</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="o">.</span><span class="na">update</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">   <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">   <span class="kd">private</span> <span class="kd">final</span> <span class="kt">void</span> <span class="nf">update</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">      <span class="n">TextView</span> <span class="n">var10000</span> <span class="o">=</span> <span class="o">(</span><span class="n">TextView</span><span class="o">)</span><span class="k">this</span><span class="o">.</span><span class="na">_$_findCachedViewById</span><span class="o">(</span><span class="n">id</span><span class="o">.</span><span class="na">textView</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="n">Intrinsics</span><span class="o">.</span><span class="na">checkExpressionValueIsNotNull</span><span class="o">(</span><span class="n">var10000</span><span class="o">,</span> <span class="s">&#34;textView&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="n">var10000</span><span class="o">.</span><span class="na">setText</span><span class="o">((</span><span class="n">CharSequence</span><span class="o">)</span><span class="s">&#34;Text&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="o">((</span><span class="n">TextView</span><span class="o">)</span><span class="k">this</span><span class="o">.</span><span class="na">_$_findCachedViewById</span><span class="o">(</span><span class="n">id</span><span class="o">.</span><span class="na">textView</span><span class="o">)).</span><span class="na">setTextColor</span><span class="o">(-</span><span class="n">65536</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="n">var10000</span> <span class="o">=</span> <span class="o">(</span><span class="n">TextView</span><span class="o">)</span><span class="k">this</span><span class="o">.</span><span class="na">_$_findCachedViewById</span><span class="o">(</span><span class="n">id</span><span class="o">.</span><span class="na">textView</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="n">Intrinsics</span><span class="o">.</span><span class="na">checkExpressionValueIsNotNull</span><span class="o">(</span><span class="n">var10000</span><span class="o">,</span> <span class="s">&#34;textView&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="n">var10000</span><span class="o">.</span><span class="na">setTextSize</span><span class="o">(</span><span class="n">14</span><span class="o">.</span><span class="na">0F</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">   <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">   <span class="kd">public</span> <span class="n">View</span> <span class="nf">_$_findCachedViewById</span><span class="o">(</span><span class="kt">int</span> <span class="n">var1</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">_$_findViewCache</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">         <span class="k">this</span><span class="o">.</span><span class="na">_$_findViewCache</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SparseArray</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">      <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">      <span class="n">View</span> <span class="n">var2</span> <span class="o">=</span> <span class="o">(</span><span class="n">View</span><span class="o">)</span><span class="k">this</span><span class="o">.</span><span class="na">_$_findViewCache</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">var1</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="o">(</span><span class="n">var2</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">         <span class="n">var2</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">findViewById</span><span class="o">(</span><span class="n">var1</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">         <span class="k">this</span><span class="o">.</span><span class="na">_$_findViewCache</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">var1</span><span class="o">,</span> <span class="n">var2</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">      <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="n">var2</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">   <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">   <span class="kd">public</span> <span class="kt">void</span> <span class="nf">_$_clearFindViewByIdCache</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">_$_findViewCache</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">         <span class="k">this</span><span class="o">.</span><span class="na">_$_findViewCache</span><span class="o">.</span><span class="na">clear</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">      <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">   <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></div><p>Here we have version with *SparseArray *to not have, as discussed above, useless autoboxing of integer keys.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ExtensionsActivity</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">AppCompatActivity</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="kd">private</span><span class="w"> </span><span class="n">SparseArray</span><span class="w"> </span><span class="n">_$_findViewCache</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="kd">protected</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onCreate</span><span class="p">(</span><span class="nd">@Nullable</span><span class="w"> </span><span class="n">Bundle</span><span class="w"> </span><span class="n">savedInstanceState</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="kd">super</span><span class="p">.</span><span class="na">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="na">setContentView</span><span class="p">(</span><span class="o">-</span><span class="n">1300009</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="na">update</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">update</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">TextView</span><span class="w"> </span><span class="n">var10000</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">TextView</span><span class="p">)</span><span class="k">this</span><span class="p">.</span><span class="na">_$_findCachedViewById</span><span class="p">(</span><span class="n">id</span><span class="p">.</span><span class="na">textView</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">Intrinsics</span><span class="p">.</span><span class="na">checkExpressionValueIsNotNull</span><span class="p">(</span><span class="n">var10000</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;textView&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">var10000</span><span class="p">.</span><span class="na">setText</span><span class="p">((</span><span class="n">CharSequence</span><span class="p">)</span><span class="s">&#34;Text&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="p">((</span><span class="n">TextView</span><span class="p">)</span><span class="k">this</span><span class="p">.</span><span class="na">_$_findCachedViewById</span><span class="p">(</span><span class="n">id</span><span class="p">.</span><span class="na">textView</span><span class="p">)).</span><span class="na">setTextColor</span><span class="p">(</span><span class="o">-</span><span class="n">65536</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">var10000</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">TextView</span><span class="p">)</span><span class="k">this</span><span class="p">.</span><span class="na">_$_findCachedViewById</span><span class="p">(</span><span class="n">id</span><span class="p">.</span><span class="na">textView</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">Intrinsics</span><span class="p">.</span><span class="na">checkExpressionValueIsNotNull</span><span class="p">(</span><span class="n">var10000</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;textView&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">var10000</span><span class="p">.</span><span class="na">setTextSize</span><span class="p">(</span><span class="n">14</span><span class="p">.</span><span class="na">0F</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="kd">public</span><span class="w"> </span><span class="n">View</span><span class="w"> </span><span class="nf">_$_findCachedViewById</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">var1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">_$_findViewCache</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="k">this</span><span class="p">.</span><span class="na">_$_findViewCache</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SparseArray</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">View</span><span class="w"> </span><span class="n">var2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">View</span><span class="p">)</span><span class="k">this</span><span class="p">.</span><span class="na">_$_findViewCache</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">var1</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">var2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="n">var2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">findViewById</span><span class="p">(</span><span class="n">var1</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="k">this</span><span class="p">.</span><span class="na">_$_findViewCache</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="n">var1</span><span class="p">,</span><span class="w"> </span><span class="n">var2</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">var2</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">_$_clearFindViewByIdCache</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">_$_findViewCache</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="k">this</span><span class="p">.</span><span class="na">_$_findViewCache</span><span class="p">.</span><span class="na">clear</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>Here we have version with *SparseArray *to not have, as discussed above, useless autoboxing of integer keys.</p>
 <p>The main issue with generated code is that even as we call three methods on same property sequentially, we still have 3 lookups in view cache (yes, *findViewById *will be called just once — at first time, but why to get value from cache all the time?).</p>
 <p>Again, we can work-around this by using <em>.apply</em>, as we did in vanilla approach. Then generated code will be like:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">private</span> <span class="kd">final</span> <span class="kt">void</span> <span class="nf">update</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">   <span class="n">TextView</span> <span class="n">var1</span> <span class="o">=</span> <span class="o">(</span><span class="n">TextView</span><span class="o">)</span><span class="k">this</span><span class="o">.</span><span class="na">_$_findCachedViewById</span><span class="o">(</span><span class="n">id</span><span class="o">.</span><span class="na">textView</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">   <span class="n">var1</span><span class="o">.</span><span class="na">setText</span><span class="o">((</span><span class="n">CharSequence</span><span class="o">)</span><span class="s">&#34;Text&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">   <span class="n">var1</span><span class="o">.</span><span class="na">setTextColor</span><span class="o">(-</span><span class="n">65536</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">   <span class="n">var1</span><span class="o">.</span><span class="na">setTextSize</span><span class="o">(</span><span class="n">14</span><span class="o">.</span><span class="na">0F</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></div><p>Looks like we’ve improved our code a bit, as now we’ll call cache only once (and if HashMap is used, then we’ll not have two additional boxing of integer primitive).
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">update</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="n">TextView</span><span class="w"> </span><span class="n">var1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">TextView</span><span class="p">)</span><span class="k">this</span><span class="p">.</span><span class="na">_$_findCachedViewById</span><span class="p">(</span><span class="n">id</span><span class="p">.</span><span class="na">textView</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="n">var1</span><span class="p">.</span><span class="na">setText</span><span class="p">((</span><span class="n">CharSequence</span><span class="p">)</span><span class="s">&#34;Text&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="n">var1</span><span class="p">.</span><span class="na">setTextColor</span><span class="p">(</span><span class="o">-</span><span class="n">65536</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="n">var1</span><span class="p">.</span><span class="na">setTextSize</span><span class="p">(</span><span class="n">14</span><span class="p">.</span><span class="na">0F</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>Looks like we’ve improved our code a bit, as now we’ll call cache only once (and if HashMap is used, then we’ll not have two additional boxing of integer primitive).
 That actually looks pretty good.</p>
 <p>But if we look at generated *dex *byte-code for release build, then it turns out everything is not that easy and straightforward.
 Below are two listings, first one is byte-code from decompiled release APK of original example, second one for case with “optimization” of <em>.apply</em>.</p>

@@ -22,27 +22,30 @@
   
   <meta name="theme-color" content="#1e2327">
 
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Boolean not"/>
-<meta name="twitter:description" content="It happens so that developers might want to use Boolean#not method. In this article I try to give a clear vision why there is no need to do so."/>
-<meta name="twitter:site" content="@krossovochkin"/>
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Boolean not">
+  <meta name="twitter:description" content="It happens so that developers might want to use Boolean#not method. In this article I try to give a clear vision why there is no need to do so.">
 
 </head>
 
 <body>
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-YEWQ4T95D5', { 'anonymize_ip': false });
-}
-</script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-YEWQ4T95D5');
+        }
+      </script>
 
 <header>
 <nav>
@@ -133,7 +136,7 @@ Say, you have class <code>Connection</code> and you&rsquo;d like to check whethe
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>That will allow us to write:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">result</span> <span class="p">=</span> <span class="p">!</span><span class="n">MyBoolean</span><span class="p">.</span><span class="n">True</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">result</span> <span class="p">=</span> <span class="p">!</span><span class="nc">MyBoolean</span><span class="p">.</span><span class="n">True</span>
 </span></span></code></pre></div><blockquote>
 <p>Operator function <code>not</code> allows you to write <code>!</code> before expression. Function <code>not</code> is not something that is expected to be used directly, as it doesn&rsquo;t improve readability and has no other advantages.</p>
 </blockquote>

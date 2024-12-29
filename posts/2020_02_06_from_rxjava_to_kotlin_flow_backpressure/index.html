@@ -22,27 +22,30 @@
   
   <meta name="theme-color" content="#1e2327">
 
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="From RxJava to Kotlin Flow: Backpressure"/>
-<meta name="twitter:description" content="Quick comparison between backpressure solutions in RxJava and Kotlin Flow"/>
-<meta name="twitter:site" content="@krossovochkin"/>
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="From RxJava to Kotlin Flow: Backpressure">
+  <meta name="twitter:description" content="Quick comparison between backpressure solutions in RxJava and Kotlin Flow">
 
 </head>
 
 <body>
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-YEWQ4T95D5', { 'anonymize_ip': false });
-}
-</script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-YEWQ4T95D5');
+        }
+      </script>
 
 <header>
 <nav>
@@ -106,18 +109,18 @@ In this article we’ll try to compare solutions and find out what one should pa
 <h2 id="rxjava-backpressure">RxJava Backpressure</h2>
 <p>In RxJava there are a lot of reactive types (Observable, Single etc.), but only Flowable is a type which supports backpressure in RxJava.
 It is supported via Subscriber interface:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Subscriber</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onSubscribe</span><span class="o">(</span><span class="n">Subscription</span> <span class="n">s</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onNext</span><span class="o">(</span><span class="n">T</span> <span class="n">t</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onError</span><span class="o">(</span><span class="n">Throwable</span> <span class="n">t</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onComplete</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></div><p>The main thing about backpressure is inside Subscripion interface:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Subscription</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">request</span><span class="o">(</span><span class="kt">long</span> <span class="n">n</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">cancel</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></div><p>Particularly request method.
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">Subscriber</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onSubscribe</span><span class="p">(</span><span class="n">Subscription</span><span class="w"> </span><span class="n">s</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onNext</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">t</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onError</span><span class="p">(</span><span class="n">Throwable</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onComplete</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>The main thing about backpressure is inside Subscripion interface:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">Subscription</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">request</span><span class="p">(</span><span class="kt">long</span><span class="w"> </span><span class="n">n</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">cancel</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>Particularly request method.
 Whenever downstream is able to consume more events, it sends request to upstream providing number of events it is able to consume.</p>
 <p>So, basic communication is the following:</p>
 <p>on subscribe downstream requests some number of events (say 1)</p>
@@ -132,7 +135,7 @@ Whenever downstream is able to consume more events, it sends request to upstream
 First of all we’ll make some helper functions which describe some work in progress (like loading some data from network).</p>
 <p>For RxJava it will be blocking:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">doWorkBlocking</span><span class="p">(</span><span class="n">i</span><span class="p">:</span> <span class="n">Int</span><span class="p">,</span> <span class="n">delay</span><span class="p">:</span> <span class="n">Long</span><span class="p">):</span> <span class="n">Int</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">Thread</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nc">Thread</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">i</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>And for Koltlin Flow suspending:</p>
@@ -150,7 +153,7 @@ First of all we’ll make some helper functions which describe some work in prog
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">create</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;(</span>
 </span></span><span class="line"><span class="cl">        <span class="p">{</span> <span class="n">emitter</span><span class="p">:</span> <span class="n">FlowableEmitter</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;</span> <span class="o">-&gt;</span>
 </span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="k">in</span> <span class="m">1.</span><span class="p">.</span><span class="n">limit</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">                <span class="n">Thread</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="nc">Thread</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">                <span class="n">emitter</span><span class="p">.</span><span class="n">onNext</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="p">}</span>
 </span></span><span class="line"><span class="cl">            <span class="n">emitter</span><span class="p">.</span><span class="n">onComplete</span><span class="p">()</span>
@@ -176,11 +179,11 @@ First of all we’ll make some helper functions which describe some work in prog
 </span></span><span class="line"><span class="cl"><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">latch</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">stringBuffer</span> <span class="p">=</span> <span class="n">StringBuffer</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">time</span> <span class="p">=</span> <span class="n">System</span><span class="p">.</span><span class="n">currentTimeMillis</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">time</span> <span class="p">=</span> <span class="nc">System</span><span class="p">.</span><span class="n">currentTimeMillis</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">flowable</span><span class="p">(</span><span class="n">delay</span> <span class="p">=</span> <span class="m">100</span><span class="p">,</span> <span class="n">mode</span> <span class="p">=</span> <span class="n">mode</span><span class="p">,</span> <span class="n">limit</span> <span class="p">=</span> <span class="n">limit</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">subscribeOn</span><span class="p">(</span><span class="n">Schedulers</span><span class="p">.</span><span class="n">io</span><span class="p">())</span>
-</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">observeOn</span><span class="p">(</span><span class="n">Schedulers</span><span class="p">.</span><span class="n">computation</span><span class="p">(),</span> <span class="k">false</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">subscribeOn</span><span class="p">(</span><span class="nc">Schedulers</span><span class="p">.</span><span class="n">io</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">observeOn</span><span class="p">(</span><span class="nc">Schedulers</span><span class="p">.</span><span class="n">computation</span><span class="p">(),</span> <span class="k">false</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">doWorkBlocking</span><span class="p">(</span><span class="n">i</span> <span class="p">=</span> <span class="k">it</span><span class="p">,</span> <span class="n">delay</span> <span class="p">=</span> <span class="m">200</span><span class="p">)</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">doWorkBlocking</span><span class="p">(</span><span class="n">i</span> <span class="p">=</span> <span class="k">it</span><span class="p">,</span> <span class="n">delay</span> <span class="p">=</span> <span class="m">300</span><span class="p">)</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">doOnComplete</span> <span class="p">{</span> <span class="n">latch</span><span class="p">.</span><span class="n">countDown</span><span class="p">()</span> <span class="p">}</span>
@@ -190,21 +193,21 @@ First of all we’ll make some helper functions which describe some work in prog
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">latch</span><span class="p">.</span><span class="n">await</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">((</span><span class="n">System</span><span class="p">.</span><span class="n">currentTimeMillis</span><span class="p">()</span> <span class="p">-</span> <span class="n">time</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">((</span><span class="nc">System</span><span class="p">.</span><span class="n">currentTimeMillis</span><span class="p">()</span> <span class="p">-</span> <span class="n">time</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">(</span><span class="n">stringBuffer</span><span class="p">.</span><span class="n">toString</span><span class="p">())</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>For Kotlin Flow:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">testFlow</span><span class="p">(</span><span class="n">limit</span><span class="p">:</span> <span class="n">Int</span> <span class="p">=</span> <span class="m">10</span><span class="p">,</span> <span class="n">onBackpressure</span><span class="p">:</span> <span class="n">Flow</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;.()</span> <span class="o">-&gt;</span> <span class="n">Flow</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">latch</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">time</span> <span class="p">=</span> <span class="n">System</span><span class="p">.</span><span class="n">currentTimeMillis</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">time</span> <span class="p">=</span> <span class="nc">System</span><span class="p">.</span><span class="n">currentTimeMillis</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">stringBuffer</span> <span class="p">=</span> <span class="n">StringBuffer</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">CoroutineScope</span><span class="p">(</span><span class="n">Job</span><span class="p">()</span> <span class="p">+</span> <span class="n">Dispatchers</span><span class="p">.</span><span class="n">Default</span><span class="p">).</span><span class="n">launch</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">CoroutineScope</span><span class="p">(</span><span class="n">Job</span><span class="p">()</span> <span class="p">+</span> <span class="nc">Dispatchers</span><span class="p">.</span><span class="n">Default</span><span class="p">).</span><span class="n">launch</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="n">flow</span><span class="p">(</span><span class="n">timeout</span> <span class="p">=</span> <span class="m">100</span><span class="p">,</span> <span class="n">limit</span> <span class="p">=</span> <span class="n">limit</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">flowOn</span><span class="p">(</span><span class="n">Dispatchers</span><span class="p">.</span><span class="n">IO</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">flowOn</span><span class="p">(</span><span class="nc">Dispatchers</span><span class="p">.</span><span class="n">IO</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">onBackpressure</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">doWorkDelay</span><span class="p">(</span><span class="n">i</span> <span class="p">=</span> <span class="k">it</span><span class="p">,</span> <span class="n">timeout</span> <span class="p">=</span> <span class="m">200</span><span class="p">)</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">doWorkDelay</span><span class="p">(</span><span class="n">i</span> <span class="p">=</span> <span class="k">it</span><span class="p">,</span> <span class="n">timeout</span> <span class="p">=</span> <span class="m">300</span><span class="p">)</span> <span class="p">}</span>
@@ -216,7 +219,7 @@ First of all we’ll make some helper functions which describe some work in prog
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">latch</span><span class="p">.</span><span class="n">await</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">((</span><span class="n">System</span><span class="p">.</span><span class="n">currentTimeMillis</span><span class="p">()</span> <span class="p">-</span> <span class="n">time</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">((</span><span class="nc">System</span><span class="p">.</span><span class="n">currentTimeMillis</span><span class="p">()</span> <span class="p">-</span> <span class="n">time</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">(</span><span class="n">stringBuffer</span><span class="p">.</span><span class="n">toString</span><span class="p">())</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>As seen above we’ll have our upstream to produce item each 100ms with processing them sequentially with 200ms and then 300ms.</p>
@@ -274,14 +277,14 @@ Though let’s modify our test sample a bit with including flatMap operator in i
 </span></span><span class="line"><span class="cl"><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">latch</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">stringBuffer</span> <span class="p">=</span> <span class="n">StringBuffer</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">time</span> <span class="p">=</span> <span class="n">System</span><span class="p">.</span><span class="n">currentTimeMillis</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">time</span> <span class="p">=</span> <span class="nc">System</span><span class="p">.</span><span class="n">currentTimeMillis</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">flowable</span><span class="p">(</span><span class="n">delay</span> <span class="p">=</span> <span class="m">100</span><span class="p">,</span> <span class="n">mode</span> <span class="p">=</span> <span class="n">mode</span><span class="p">,</span> <span class="n">limit</span> <span class="p">=</span> <span class="n">limit</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">subscribeOn</span><span class="p">(</span><span class="n">Schedulers</span><span class="p">.</span><span class="n">io</span><span class="p">())</span>
-</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">observeOn</span><span class="p">(</span><span class="n">Schedulers</span><span class="p">.</span><span class="n">computation</span><span class="p">(),</span> <span class="k">false</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">subscribeOn</span><span class="p">(</span><span class="nc">Schedulers</span><span class="p">.</span><span class="n">io</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">observeOn</span><span class="p">(</span><span class="nc">Schedulers</span><span class="p">.</span><span class="n">computation</span><span class="p">(),</span> <span class="k">false</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">doWorkBlocking</span><span class="p">(</span><span class="n">i</span> <span class="p">=</span> <span class="k">it</span><span class="p">,</span> <span class="n">delay</span> <span class="p">=</span> <span class="m">200</span><span class="p">)</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">flatMap</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="n">Flowable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="k">it</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="nc">Flowable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="k">it</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">                <span class="p">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">doWorkBlocking</span><span class="p">(</span><span class="n">i</span> <span class="p">=</span> <span class="k">it</span><span class="p">,</span> <span class="n">delay</span> <span class="p">=</span> <span class="m">300</span><span class="p">)</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">doOnComplete</span> <span class="p">{</span> <span class="n">latch</span><span class="p">.</span><span class="n">countDown</span><span class="p">()</span> <span class="p">}</span>
@@ -291,21 +294,21 @@ Though let’s modify our test sample a bit with including flatMap operator in i
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">latch</span><span class="p">.</span><span class="n">await</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">((</span><span class="n">System</span><span class="p">.</span><span class="n">currentTimeMillis</span><span class="p">()</span> <span class="p">-</span> <span class="n">time</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">((</span><span class="nc">System</span><span class="p">.</span><span class="n">currentTimeMillis</span><span class="p">()</span> <span class="p">-</span> <span class="n">time</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">(</span><span class="n">stringBuffer</span><span class="p">.</span><span class="n">toString</span><span class="p">())</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>And for Kotlin Flow:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">testFlow</span><span class="p">(</span><span class="n">limit</span><span class="p">:</span> <span class="n">Int</span> <span class="p">=</span> <span class="m">10</span><span class="p">,</span> <span class="n">onBackpressure</span><span class="p">:</span> <span class="n">Flow</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;.()</span> <span class="o">-&gt;</span> <span class="n">Flow</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">latch</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">time</span> <span class="p">=</span> <span class="n">System</span><span class="p">.</span><span class="n">currentTimeMillis</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">time</span> <span class="p">=</span> <span class="nc">System</span><span class="p">.</span><span class="n">currentTimeMillis</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">stringBuffer</span> <span class="p">=</span> <span class="n">StringBuffer</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">CoroutineScope</span><span class="p">(</span><span class="n">Job</span><span class="p">()</span> <span class="p">+</span> <span class="n">Dispatchers</span><span class="p">.</span><span class="n">Default</span><span class="p">).</span><span class="n">launch</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">CoroutineScope</span><span class="p">(</span><span class="n">Job</span><span class="p">()</span> <span class="p">+</span> <span class="nc">Dispatchers</span><span class="p">.</span><span class="n">Default</span><span class="p">).</span><span class="n">launch</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="n">flow</span><span class="p">(</span><span class="n">timeout</span> <span class="p">=</span> <span class="m">100</span><span class="p">,</span> <span class="n">limit</span> <span class="p">=</span> <span class="n">limit</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">flowOn</span><span class="p">(</span><span class="n">Dispatchers</span><span class="p">.</span><span class="n">IO</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">flowOn</span><span class="p">(</span><span class="nc">Dispatchers</span><span class="p">.</span><span class="n">IO</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">onBackpressure</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">doWorkDelay</span><span class="p">(</span><span class="n">i</span> <span class="p">=</span> <span class="k">it</span><span class="p">,</span> <span class="n">timeout</span> <span class="p">=</span> <span class="m">200</span><span class="p">)</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">flatMapMerge</span> <span class="p">{</span>
@@ -320,7 +323,7 @@ Though let’s modify our test sample a bit with including flatMap operator in i
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">latch</span><span class="p">.</span><span class="n">await</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">((</span><span class="n">System</span><span class="p">.</span><span class="n">currentTimeMillis</span><span class="p">()</span> <span class="p">-</span> <span class="n">time</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">((</span><span class="nc">System</span><span class="p">.</span><span class="n">currentTimeMillis</span><span class="p">()</span> <span class="p">-</span> <span class="n">time</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">(</span><span class="n">stringBuffer</span><span class="p">.</span><span class="n">toString</span><span class="p">())</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>Our expectation is that nothing should be changed, as we’ve just made flatMap over statically done map.

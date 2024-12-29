@@ -22,30 +22,33 @@
   
   <meta name="theme-color" content="#1e2327">
 
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Kotlin-Java interop: function references and SAM conversions"/>
-<meta name="twitter:description" content="Though all the things below are pretty obvious if being careful while dealing with Kotlin-Java interop, I decided still to write short note about one particular issue with function references (from Kotlin side) and SAM conversions (from Java side).
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Kotlin-Java interop: function references and SAM conversions">
+  <meta name="twitter:description" content="Though all the things below are pretty obvious if being careful while dealing with Kotlin-Java interop, I decided still to write short note about one particular issue with function references (from Kotlin side) and SAM conversions (from Java side).
 Function reference Function reference is a good way to pass function as a parameter without explicitly using lambdas.
 For example, if we have function:
-fun method(callback: (Input) -&gt; Output) { ."/>
-<meta name="twitter:site" content="@krossovochkin"/>
+fun method(callback: (Input) -&gt; Output) { ... } then we can pass our function as a lambda with function call or as a function reference:">
 
 </head>
 
 <body>
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-YEWQ4T95D5', { 'anonymize_ip': false });
-}
-</script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-YEWQ4T95D5');
+        }
+      </script>
 
 <header>
 <nav>
@@ -114,53 +117,53 @@ And this article is about issues function references can produce when they touch
 </blockquote>
 <p>That means that when you call some Java method from Kotlin, and that method satisfies conditions described above, you can pass lambda or method reference instead.</p>
 <p>So example (from the same reference):</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">// Executor.java:
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
-</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">execute</span><span class="o">(</span><span class="n">Runnable</span> <span class="n">command</span><span class="o">)</span> <span class="o">{</span> <span class="o">...</span> <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">// Kotlin:
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
-</span></span><span class="line"><span class="cl"><span class="n">executor</span><span class="o">.</span><span class="na">execute</span> <span class="o">{</span> <span class="n">doSomething</span><span class="o">()</span> <span class="o">}</span>
-</span></span></code></pre></div><h3 id="issue-description">Issue description</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">// Executor.java:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kt">void</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="n">Runnable</span><span class="w"> </span><span class="n">command</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">// Kotlin:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">executor</span><span class="p">.</span><span class="na">execute</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">doSomething</span><span class="p">()</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><h3 id="issue-description">Issue description</h3>
 <p>So, let’s take a look at the example, which shows the issue.
 Consider we have some ThirdParty Java class with some listeners inside.
 One can register some listeners in ThirdParty class and have updates passed through them.
 Later on you can unregister listeners.
 ThirdParty class might look like this (code with business logic of calculating some data and passing it through listeners is not presented in the code as it doesn’t matter):</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ThirdParty</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="o">*</span><span class="n">TAG</span> <span class="o">*=</span> <span class="s">&#34;ThirdParty&#34;</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Callback</span><span class="o">&gt;</span> <span class="n">callbacks</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addCallback</span><span class="o">(</span><span class="n">Callback</span> <span class="n">callback</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">Log</span><span class="o">.*</span><span class="n">d</span><span class="o">*(*</span><span class="n">TAG</span><span class="o">*,</span> <span class="s">&#34;addCallback: &#34;</span> <span class="o">+</span> <span class="n">callback</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="n">callbacks</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">callback</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">removeCallback</span><span class="o">(</span><span class="n">Callback</span> <span class="n">callback</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">Log</span><span class="o">.*</span><span class="n">d</span><span class="o">*(*</span><span class="n">TAG</span><span class="o">*,</span> <span class="s">&#34;removeCallback: &#34;</span> <span class="o">+</span> <span class="n">callback</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="n">callbacks</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">callback</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">printState</span><span class="o">()</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">Log</span><span class="o">.*</span><span class="n">d</span><span class="o">*(</span><span class="s">&#34;ThirdParty&#34;</span><span class="o">,</span> <span class="s">&#34;Callbacks count&#34;</span> <span class="o">+</span> <span class="n">callbacks</span><span class="o">.</span><span class="na">size</span><span class="o">());</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kd">interface</span> <span class="nc">Callback</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">void</span> <span class="nf">onValueChanged</span><span class="o">(</span><span class="kt">int</span> <span class="n">value</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">    <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></div><p>So we have <strong>Callback</strong> interface which satisfied SAM conversion rules, so as a result we can pass lambdas and method references to **addCallback **and **removeCallback **methods from Kotlin code.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ThirdParty</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="o">*</span><span class="n">TAG</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="s">&#34;ThirdParty&#34;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Callback</span><span class="o">&gt;</span><span class="w"> </span><span class="n">callbacks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">addCallback</span><span class="p">(</span><span class="n">Callback</span><span class="w"> </span><span class="n">callback</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Log</span><span class="p">.</span><span class="o">*</span><span class="n">d</span><span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="n">TAG</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;addCallback: &#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">callback</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">callbacks</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">callback</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">removeCallback</span><span class="p">(</span><span class="n">Callback</span><span class="w"> </span><span class="n">callback</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Log</span><span class="p">.</span><span class="o">*</span><span class="n">d</span><span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="n">TAG</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;removeCallback: &#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">callback</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">callbacks</span><span class="p">.</span><span class="na">remove</span><span class="p">(</span><span class="n">callback</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">printState</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">Log</span><span class="p">.</span><span class="o">*</span><span class="n">d</span><span class="o">*</span><span class="p">(</span><span class="s">&#34;ThirdParty&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;Callbacks count&#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">callbacks</span><span class="p">.</span><span class="na">size</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">interface</span> <span class="nc">Callback</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">onValueChanged</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>So we have <strong>Callback</strong> interface which satisfied SAM conversion rules, so as a result we can pass lambdas and method references to **addCallback **and **removeCallback **methods from Kotlin code.</p>
 <p>Then let’s look at the client code.
 We will create callback, register it in the ThirdParty class and then immediately unregister it.
 After each step we’ll look at the state of ThirdParty class (using logs).</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">callback</span> <span class="p">=</span> <span class="o">::</span><span class="n">onValueChanged</span>
-</span></span><span class="line"><span class="cl">    <span class="n">Log</span><span class="p">.</span><span class="n">d</span><span class="p">(</span><span class="n">ThirdParty</span><span class="p">.*</span><span class="n">TAG</span><span class="p">*,</span> <span class="s2">&#34;callback created: </span><span class="si">$callback</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nc">Log</span><span class="p">.</span><span class="n">d</span><span class="p">(</span><span class="nc">ThirdParty</span><span class="p">.*</span><span class="n">TAG</span><span class="p">*,</span> <span class="s2">&#34;callback created: </span><span class="si">$callback</span><span class="s2">&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">thirdParty</span> <span class="p">=</span> <span class="n">ThirdParty</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
@@ -171,7 +174,7 @@ After each step we’ll look at the state of ThirdParty class (using logs).</p>
 </span></span><span class="line"><span class="cl">    <span class="n">thirdParty</span><span class="p">.</span><span class="n">printState</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">onValueChanged</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">onValueChanged</span><span class="p">(</span><span class="k">value</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// do something
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
 </span></span></code></pre></div><p>So, here we’ve created callback (we store value in the property, so that we can unregister that callback later).</p>
@@ -196,14 +199,14 @@ E/ThirdParty: Callbacks **count1**
 <p>To fix this issue (and leak) we should have our callback to be ThirdParty.Callback from the beginning and not a function reference.
 There are few ways to do that:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">callback</span> <span class="p">=</span> <span class="k">object</span> <span class="err">: </span><span class="nc">ThirdParty</span><span class="p">.</span><span class="n">Callback</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onValueChanged</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="nd">@App</span><span class="p">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onValueChanged</span><span class="p">(</span><span class="k">value</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="nd">@App</span><span class="p">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">value</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">callback</span> <span class="p">=</span> <span class="n">ThirdParty</span><span class="p">.</span><span class="n">Callback</span> <span class="p">{</span> <span class="n">value</span> <span class="o">-&gt;</span> <span class="n">onValueChanged</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">callback</span> <span class="p">=</span> <span class="nc">ThirdParty</span><span class="p">.</span><span class="n">Callback</span> <span class="p">{</span> <span class="k">value</span> <span class="o">-&gt;</span> <span class="n">onValueChanged</span><span class="p">(</span><span class="k">value</span><span class="p">)</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">callback</span> <span class="p">=</span> <span class="n">ThirdParty</span><span class="p">.</span><span class="n">Callback</span><span class="p">(</span><span class="o">::</span><span class="n">onValueChanged</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">callback</span> <span class="p">=</span> <span class="nc">ThirdParty</span><span class="p">.</span><span class="n">Callback</span><span class="p">(</span><span class="o">::</span><span class="n">onValueChanged</span><span class="p">)</span>
 </span></span></code></pre></div><p>All of them are the same, though third one again looks a bit better.</p>
 <p>Let’s look at resulting logs:</p>
 <pre tabindex="0"><code>D/ThirdParty: callback created: $sam$ThirdParty_Callback$0@6a2e0a7
@@ -221,8 +224,8 @@ If we had ThirdParty class written in Kotlin (or just converted from Java to Kot
 </code></pre><p>That’s because SAM conversion works only with Java and not with Kotlin. So in this case we’re pretty much safe and won’t make such errors.</p>
 <p>But at the same time we have only one option to create callback:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">callback</span> <span class="p">=</span> <span class="k">object</span> <span class="err">: </span><span class="nc">ThirdParty</span><span class="p">.</span><span class="n">Callback</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onValueChanged</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="nd">@App</span><span class="p">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onValueChanged</span><span class="p">(</span><span class="k">value</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="nd">@App</span><span class="p">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">value</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>Other ways won’t work, because SAM conversion is not available and interfaces don’t have constructors.

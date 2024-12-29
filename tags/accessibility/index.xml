@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Accessibility on Vasya Drobushkov</title>
+    <link>https://krossovochkin.com/tags/accessibility/</link>
+    <description>Recent content in Accessibility on Vasya Drobushkov</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 29 Mar 2020 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://krossovochkin.com/tags/accessibility/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Accessibility of text over generic background color</title>
+      <link>https://krossovochkin.com/posts/2020_03_29_accessibility_of_text_over_generic_background_color/</link>
+      <pubDate>Sun, 29 Mar 2020 00:00:00 +0000</pubDate>
+      <guid>https://krossovochkin.com/posts/2020_03_29_accessibility_of_text_over_generic_background_color/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://images.unsplash.com/photo-1465403843003-b277b46a1120?ixlib=rb-1.2.1&amp;amp;auto=format&amp;amp;fit=crop&amp;amp;w=1357&amp;amp;q=80&#34; alt=&#34;Source&#34;&gt;&lt;em&gt;&lt;a href=&#34;https://unsplash.com/photos/Jky9coxzeHI&#34;&gt;Source&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://proandroiddev.com/accessibility-of-text-over-generic-background-color-e82e9546731a&#34;&gt;&lt;img src=&#34;https://img.shields.io/badge/original-proandroiddev-green#badge&#34; alt=&#34;&#34;&gt;&lt;/a&gt; &lt;a href=&#34;https://proandroiddev.com/proandroiddev-digest-18-4c6a096fc7e8&#34;&gt;&lt;img src=&#34;https://img.shields.io/badge/proandroiddevdigest-18-green#badge&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;One of the important parts of application development is to make it accessible to as many users as possible. This includes people with impaired vision, color blindness, impaired hearing, impaired dexterity, cognitive disabilities, and many other disabilities.&#xA;Making an app accessible is challenging but rewarding. The difficulty is because the development team should pay attention to some details which often might be overlooked. Though besides some advanced accessibility support might be too expensive to add, there are still some basic best practices to ensure that your app development is heading in the right direction (and can be improved later over time).&#xA;Basic accessibility support includes providing content descriptions, large enough touchable areas and ensuring good color contrast between foreground and background components.&#xA;In this article, we’ll go in detail on the latest — color contrast. We’ll take a look at one specific situation I faced while developing &lt;a href=&#34;https://github.com/krossovochkin/FiberyUnofficial&#34;&gt;FiberyUnofficial&lt;/a&gt; — my pet project, Android companion app for &lt;a href=&#34;https://fibery.io&#34;&gt;https://fibery.io&lt;/a&gt;.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

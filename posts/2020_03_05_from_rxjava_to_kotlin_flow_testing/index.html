@@ -22,27 +22,30 @@
   
   <meta name="theme-color" content="#1e2327">
 
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="From RxJava to Kotlin Flow: Testing"/>
-<meta name="twitter:description" content="Comparing approaches to testing in RxJava and Kotlin Flow"/>
-<meta name="twitter:site" content="@krossovochkin"/>
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="From RxJava to Kotlin Flow: Testing">
+  <meta name="twitter:description" content="Comparing approaches to testing in RxJava and Kotlin Flow">
 
 </head>
 
 <body>
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-YEWQ4T95D5', { 'anonymize_ip': false });
-}
-</script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-YEWQ4T95D5');
+        }
+      </script>
 
 <header>
 <nav>
@@ -109,7 +112,7 @@ With Test schedulers we can either provide blocking work in places where it was 
 <h3 id="simple-assert-on-stream">Simple assert on stream</h3>
 <p>We’ll start from simple assertion of the stream values. We might want to verify that subscribing to some stream (e.g. repository method) provides required items and for example has no errors but completes in the end.</p>
 <p>Test for Rxjava in this case will look like the following:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="nc">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">test</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
@@ -129,7 +132,7 @@ With Test schedulers we can either provide blocking work in places where it was 
 Consider the case when you have some function which is triggered when user clicked on some button. Your function might be in one class and original stream of UI events be in a separate class (for example on view). In this case when you want to test your class you have Observable of streams as a dependency. And in test we won’t have any user, we even won’t have UI. So, we need a way to emulate user events. And we’ll do that using “dynamic stream”, where we can send events on demand.
 In RxJava for that we’ll use Subject. If we want to send some event to our class, we’ll just send event to that Subject. And we’ll provide that subject to the class we’re testing.</p>
 <p>Let’s see how it looks in test example:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">subject</span> <span class="p">=</span> <span class="n">PublishSubject</span><span class="p">.</span><span class="n">create</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;()</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">subject</span> <span class="p">=</span> <span class="nc">PublishSubject</span><span class="p">.</span><span class="n">create</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;()</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">observer</span> <span class="p">=</span> <span class="n">subject</span><span class="p">.</span><span class="n">test</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
@@ -223,10 +226,10 @@ After using our test observer we’ll have such a test:</p>
 It is good pattern to provide dependencies instead of using singletons, so it can also be applied to schedulers.
 For example if we have some load function which works on some particular scheduler, to make it testable, we can provide that scheduler as a dependency:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">load</span><span class="p">(</span>
-</span></span><span class="line"><span class="cl">    <span class="n">scheduler</span><span class="p">:</span> <span class="n">Scheduler</span> <span class="p">=</span> <span class="n">Schedulers</span><span class="p">.</span><span class="n">computation</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="n">scheduler</span><span class="p">:</span> <span class="n">Scheduler</span> <span class="p">=</span> <span class="nc">Schedulers</span><span class="p">.</span><span class="n">computation</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl"><span class="p">):</span> <span class="n">Observable</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">delay</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">TimeUnit</span><span class="p">.</span><span class="n">SECONDS</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nc">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">delay</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="nc">TimeUnit</span><span class="p">.</span><span class="n">SECONDS</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>By default delay works on computation scheduler, which might make testing more difficult.
 For example if we write such a test:</p>
@@ -237,7 +240,7 @@ For example if we write such a test:</p>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertComplete</span><span class="p">()</span>
 </span></span></code></pre></div><p>It will fail, because test will be completed before separate computation thread finished.
 In tests we can provide separate scheduler and one option is to use trampoline.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">load</span><span class="p">(</span><span class="n">Schedulers</span><span class="p">.</span><span class="n">trampoline</span><span class="p">())</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">load</span><span class="p">(</span><span class="nc">Schedulers</span><span class="p">.</span><span class="n">trampoline</span><span class="p">())</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">test</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertComplete</span><span class="p">()</span>
@@ -274,9 +277,9 @@ For that there is virtual clock which can be advanced on demand by requested amo
 Let’s look at the final example where we’ll test debounce operator with our TestScheduler:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">scheduler</span> <span class="p">=</span> <span class="n">TestScheduler</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">subject</span> <span class="p">=</span> <span class="n">PublishSubject</span><span class="p">.</span><span class="n">create</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;()</span>
+</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">subject</span> <span class="p">=</span> <span class="nc">PublishSubject</span><span class="p">.</span><span class="n">create</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;()</span>
 </span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">observer</span> <span class="p">=</span> <span class="n">subject</span>
-</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">debounce</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">TimeUnit</span><span class="p">.</span><span class="n">SECONDS</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">debounce</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="nc">TimeUnit</span><span class="p">.</span><span class="n">SECONDS</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">test</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">observer</span>
@@ -291,14 +294,14 @@ Let’s look at the final example where we’ll test debounce operator with our 
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNotComplete</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">scheduler</span><span class="p">.</span><span class="n">advanceTimeBy</span><span class="p">(</span><span class="m">500</span><span class="p">,</span> <span class="n">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">scheduler</span><span class="p">.</span><span class="n">advanceTimeBy</span><span class="p">(</span><span class="m">500</span><span class="p">,</span> <span class="nc">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">observer</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNoValues</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNotComplete</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">scheduler</span><span class="p">.</span><span class="n">advanceTimeBy</span><span class="p">(</span><span class="m">500</span><span class="p">,</span> <span class="n">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">scheduler</span><span class="p">.</span><span class="n">advanceTimeBy</span><span class="p">(</span><span class="m">500</span><span class="p">,</span> <span class="nc">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">observer</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>

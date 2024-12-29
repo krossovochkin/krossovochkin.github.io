@@ -22,27 +22,30 @@
   
   <meta name="theme-color" content="#1e2327">
 
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Калі Compose remember ня можа забыць"/>
-<meta name="twitter:description" content="Што рабіць калі compose remember ня можа забыць значэнне"/>
-<meta name="twitter:site" content="@krossovochkin"/>
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Калі Compose remember ня можа забыць">
+  <meta name="twitter:description" content="Што рабіць калі compose remember ня можа забыць значэнне">
 
 </head>
 
 <body>
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-YEWQ4T95D5', { 'anonymize_ip': false });
-}
-</script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-YEWQ4T95D5');
+        }
+      </script>
 
 <header>
 <nav>
@@ -100,7 +103,7 @@ if (!doNotTrack) {
 <li>&ldquo;ui&rdquo; - стан некаторых элементаў кіравання (тэкставых палёў), з дапамогай якіх карыстальнік можа змяняць колер. Трэба адзначыць, што бягучы стан карыстальніцкага інтэрфейсу неабавязкова можна пераўтварыць у правільны аб&rsquo;ект <code>Color</code>. Напрыклад, тэкставае поле можа быць пустым - гэта азначае, што карыстальнік знаходзіцца ў працэсе змены значэння колеру, і мы не можам стварыць аб&rsquo;ект <code>Color</code> з несапраўднымі дадзенымі.</li>
 </ol>
 <p>Значэнне дамена захоўвалася як зменлівы стан, які можа быць зменены пры змене колеру:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">var</span> <span class="py">foregroundColor</span> <span class="k">by</span> <span class="n">remember</span> <span class="p">{</span> <span class="n">mutableStateOf</span><span class="p">(</span><span class="n">Color</span><span class="p">.</span><span class="n">White</span><span class="p">)</span> <span class="p">}</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">var</span> <span class="py">foregroundColor</span> <span class="k">by</span> <span class="n">remember</span> <span class="p">{</span> <span class="n">mutableStateOf</span><span class="p">(</span><span class="nc">Color</span><span class="p">.</span><span class="n">White</span><span class="p">)</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">ColorPicker</span><span class="p">(</span><span class="n">foregroundColor</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="n">foregroundColor</span> <span class="p">=</span> <span class="k">it</span>
@@ -108,11 +111,11 @@ if (!doNotTrack) {
 </span></span></code></pre></div><p>Значэнне карыстацкага інтэрфейсу было атрымана з дамена і захавала бягучы стан адпаведнага тэкставага поля. Новае значэнне распаўсюджвалася на ўзровень &ldquo;дамена&rdquo; толькі тады, калі яно было сапраўдным:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">var</span> <span class="py">red</span><span class="p">:</span> <span class="n">Int</span><span class="p">?</span> <span class="k">by</span> <span class="n">remember</span> <span class="p">{</span> <span class="n">mutableStateOf</span><span class="p">(</span><span class="n">color</span><span class="p">.</span><span class="n">red</span><span class="p">)</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">Input</span><span class="p">(</span><span class="n">InputType</span><span class="p">.</span><span class="n">Number</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">value</span><span class="p">(</span><span class="n">value</span> <span class="o">?:</span> <span class="n">Double</span><span class="p">.</span><span class="n">NaN</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Input</span><span class="p">(</span><span class="nc">InputType</span><span class="p">.</span><span class="n">Number</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">value</span><span class="p">(</span><span class="k">value</span> <span class="o">?:</span> <span class="nc">Double</span><span class="p">.</span><span class="n">NaN</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="n">style</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">onInput</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="k">val</span> <span class="py">validated</span> <span class="p">=</span> <span class="n">validateRgbValue</span><span class="p">(</span><span class="k">it</span><span class="p">.</span><span class="n">value</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">val</span> <span class="py">validated</span> <span class="p">=</span> <span class="n">validateRgbValue</span><span class="p">(</span><span class="k">it</span><span class="p">.</span><span class="k">value</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="n">red</span> <span class="p">=</span> <span class="n">validated</span>
 </span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">validated</span> <span class="o">!=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">                <span class="n">onChanged</span><span class="p">(</span><span class="n">color</span><span class="p">.</span><span class="n">copy</span><span class="p">().</span><span class="n">apply</span> <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="n">red</span> <span class="p">=</span> <span class="n">validated</span> <span class="p">})</span>

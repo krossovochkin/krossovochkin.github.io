@@ -22,27 +22,30 @@
   
   <meta name="theme-color" content="#1e2327">
 
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="The Real Kotlin Flow benefits over RxJava"/>
-<meta name="twitter:description" content="Attempt to analyze the benefits of Kotlin Flow over RxJava."/>
-<meta name="twitter:site" content="@krossovochkin"/>
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Real Kotlin Flow benefits over RxJava">
+  <meta name="twitter:description" content="Attempt to analyze the benefits of Kotlin Flow over RxJava.">
 
 </head>
 
 <body>
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-YEWQ4T95D5', { 'anonymize_ip': false });
-}
-</script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-YEWQ4T95D5');
+        }
+      </script>
 
 <header>
 <nav>
@@ -151,7 +154,7 @@ Also flatMap allows concurrency (by merging various streams), when map is for di
 <p>In Kotlin there is only one stream type: Flow. Instead of Single etc. there are just general suspending functions. And this is exactly why map in Kotlin Flow accepts lambdas with suspend — because somehow () -&gt; T (analog of Single) has to be supported in the chain. flatMap version works with Flow, so it seems there is not much choice.</p>
 <p>The issue with having map to accept suspending functions is that now we can do something like this:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">suspend</span> <span class="k">fun</span> <span class="nf">hiThere</span><span class="p">():</span> <span class="n">Int</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">withContext</span><span class="p">(</span><span class="n">Dispatchers</span><span class="p">.</span><span class="n">Default</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">withContext</span><span class="p">(</span><span class="nc">Dispatchers</span><span class="p">.</span><span class="n">Default</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="m">1000</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="m">40</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
@@ -161,18 +164,18 @@ Also flatMap allows concurrency (by merging various streams), when map is for di
 </span></span><span class="line"><span class="cl">    <span class="n">CoroutineScope</span><span class="p">(</span><span class="n">Job</span><span class="p">()).</span><span class="n">launch</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">flowOf</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">hiThere</span><span class="p">()</span> <span class="p">}</span>
-</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">flowOn</span><span class="p">(</span><span class="n">Dispatchers</span><span class="p">.</span><span class="n">IO</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">flowOn</span><span class="p">(</span><span class="nc">Dispatchers</span><span class="p">.</span><span class="n">IO</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">collect</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="k">it</span><span class="p">)</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>In RxJava we would do something like:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">hiThere</span><span class="p">():</span> <span class="n">Single</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">Completable</span><span class="p">.</span><span class="n">timer</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">TimeUnit</span><span class="p">.</span><span class="n">SECONDS</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">andThen</span><span class="p">(</span><span class="n">Single</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="m">40</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nc">Completable</span><span class="p">.</span><span class="n">timer</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="nc">TimeUnit</span><span class="p">.</span><span class="n">SECONDS</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">andThen</span><span class="p">(</span><span class="nc">Single</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="m">40</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">subscribeOn</span><span class="p">(</span><span class="n">computation</span><span class="p">())</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">test</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nc">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">flatMapSingle</span> <span class="p">{</span> <span class="n">hiThere</span><span class="p">()</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">subscribeOn</span><span class="p">(</span><span class="n">io</span><span class="p">())</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">subscribe</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="k">it</span><span class="p">)</span> <span class="p">}</span>
@@ -222,16 +225,16 @@ More info on the threading in the article:
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">init</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">scope</span><span class="p">.</span><span class="n">launch</span><span class="p">(</span>
-</span></span><span class="line"><span class="cl">            <span class="n">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="s2">&#34;10&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="nc">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="s2">&#34;10&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">                <span class="p">.</span><span class="n">subscribe</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;Something&#34;</span><span class="p">)</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">        <span class="p">)</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="n">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="s2">&#34;10&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nc">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="s2">&#34;10&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">doOnNext</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;something&#34;</span><span class="p">)</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">launchIn</span><span class="p">(</span><span class="n">scope</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// beware, still possible to run without scope
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="s2">&#34;10&#34;</span><span class="p">)</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nc">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="s2">&#34;10&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">subscribe</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;Something&#34;</span><span class="p">)</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
@@ -245,8 +248,8 @@ More info on the threading in the article:
 </span></span><span class="line"><span class="cl">        <span class="n">observers</span><span class="p">.</span><span class="n">clear</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">setObserver</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Closeable</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">observers</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="p">=</span> <span class="n">value</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">setObserver</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span> <span class="k">value</span><span class="p">:</span> <span class="n">Closeable</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">observers</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="p">=</span> <span class="k">value</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">getObserver</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="n">String</span><span class="p">):</span> <span class="n">Closeable</span><span class="p">?</span> <span class="p">{</span>

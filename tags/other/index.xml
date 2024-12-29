@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Other on Vasya Drobushkov</title>
+    <link>https://krossovochkin.com/tags/other/</link>
+    <description>Recent content in Other on Vasya Drobushkov</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 21 Dec 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://krossovochkin.com/tags/other/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Relatively Non-Obvious Tricks in Solving Simple Algorithmic Problems</title>
+      <link>https://krossovochkin.com/posts/2024_12_21_relatively_non_obvious_tricks_in_solving_simple_algorithmic_problems/</link>
+      <pubDate>Sat, 21 Dec 2024 00:00:00 +0000</pubDate>
+      <guid>https://krossovochkin.com/posts/2024_12_21_relatively_non_obvious_tricks_in_solving_simple_algorithmic_problems/</guid>
+      <description>&lt;p&gt;Blowing the dust off LeetCode once again, I found myself, as in the &lt;a href=&#34;https://krossovochkin.com/posts/2019_09_27_random_interview_coding_task_retrospective/&#34;&gt;past&lt;/a&gt;, struggling with coding relatively simple algorithms. Just like with anything else, if you don’t practice for years, you lose some of the hands-on experience.&lt;/p&gt;&#xA;&lt;p&gt;On the positive side, I noticed that for some problems, my new submissions were much better and more concise compared to my old ones. That’s an awesome feeling—a tangible measure of growth.&lt;/p&gt;&#xA;&lt;p&gt;While tackling certain easy problems, I realized that &amp;ldquo;easy&amp;rdquo; usually just means &amp;ldquo;doesn&amp;rsquo;t require much code.&amp;rdquo; However, the idea behind the optimal solution might still not be very intuitive. Sure, one can use brute force or additional collections, but in most cases, this leads to either a &amp;ldquo;time limit exceeded&amp;rdquo; or an &amp;ldquo;out of memory&amp;rdquo; error.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Raising old project from the depth</title>
+      <link>https://krossovochkin.com/posts/2020_05_07_raising_old_project_from_the_depth/</link>
+      <pubDate>Thu, 07 May 2020 00:00:00 +0000</pubDate>
+      <guid>https://krossovochkin.com/posts/2020_05_07_raising_old_project_from_the_depth/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://medium.com/@krossovochkin/raising-old-project-from-the-depth-22f3084ed82e&#34;&gt;&lt;img src=&#34;https://img.shields.io/badge/original-medium-green#badge&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;I am an Android Developer from the beginning of my professional career. Straight from the University, I’ve jumped into Android development, and to this day continue my journey. During that time I’ve worked in different areas: enterprise, product business applications, SDK development. But all that started with mobile game development.&lt;/p&gt;&#xA;&lt;p&gt;The first project I took part in was called “nICE”. It was a match-3-like game. It was at the time when there was Android Market and not Google Play Store, when we used Eclipse and not Android Studio and, of course, used Java. The game was already available in the Market, but we wanted to develop it more by adding some power-ups to make game experience richer (and gain more from in-app purchases) and introduce some additional game modes (like puzzles).&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Random interview coding task retrospective</title>
+      <link>https://krossovochkin.com/posts/2019_09_27_random_interview_coding_task_retrospective/</link>
+      <pubDate>Fri, 27 Sep 2019 00:00:00 +0000</pubDate>
+      <guid>https://krossovochkin.com/posts/2019_09_27_random_interview_coding_task_retrospective/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://medium.com/@krossovochkin/random-interview-coding-task-retrospective-befa1b399f0d&#34;&gt;&lt;img src=&#34;https://img.shields.io/badge/original-medium-green#badge&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;&#xA;&lt;p&gt;It happens often that on interviews you’ve asked to perform some coding task. For unknown reason most of the times you’ve asked to write some code not in the IDE, but on piece of paper. I don’t like such tasks on an interview, because in real life one won’t write any kind of code on a paper. If you need to write something not in IDE you face issues like you can’t quickly change something or write new code in between the lines. You don’t get suggestions or autocomplete. Basically, you are out of you zone of comfort. Considering that interview by itself is a stress (no matter how confident you are in your knowledge) you might not complete the task successfully.&#xA;But anyway such tasks are pretty common so one should be prepared for them.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>3x3x3 Rubik’s cube world (GIF alert)</title>
+      <link>https://krossovochkin.com/posts/2019_07_07_3x3x3_rubiks_cube_world_gif_alert/</link>
+      <pubDate>Sun, 07 Jul 2019 00:00:00 +0000</pubDate>
+      <guid>https://krossovochkin.com/posts/2019_07_07_3x3x3_rubiks_cube_world_gif_alert/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://medium.com/@krossovochkin/3x3x3-rubiks-cube-world-gif-alert-613d016d2ae7&#34;&gt;&lt;img src=&#34;https://img.shields.io/badge/original-medium-green#badge&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;&#xA;&lt;p&gt;I find Rubik’s cube an awesome puzzle. It has simple design, but quite difficult to solve (if you don’t know how to do that). At the same time it is possible to learn how to solve cube — there are a lot of algorithms for solving (for example &lt;a href=&#34;https://ruwix.com/the-rubiks-cube/advanced-cfop-fridrich/orient-the-last-layer-oll/&#34;&gt;Fridrich method&lt;/a&gt; describes quite a lot of them). These optimized algorithms made popular speedcubing — solving cube on time — with world record of &lt;a href=&#34;https://ruwix.com/blog/yusheng-du-record-347/&#34;&gt;less than 4 seconds&lt;/a&gt;.&#xA;But solving the cube using formulas is actually boring, because you don’t understand what exactly is happening and how that algorithm was invented. You don’t actually solve the cube by yourself — you apply someone’s solution by yourself. And personally I solve cubes for fun, and understanding what and why you are doing actually increases that fun.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Java-C-Assembly Matryoshka</title>
+      <link>https://krossovochkin.com/posts/2019_06_04_java_c_assembly_matryoshka/</link>
+      <pubDate>Tue, 04 Jun 2019 00:00:00 +0000</pubDate>
+      <guid>https://krossovochkin.com/posts/2019_06_04_java_c_assembly_matryoshka/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://images.unsplash.com/photo-1544885353-f3e1da5bc721?ixlib=rb-1.2.1&amp;amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;amp;auto=format&amp;amp;fit=crop&amp;amp;w=1288&amp;amp;q=80&#34; alt=&#34;&#34;&gt;&#xA;&lt;em&gt;&lt;a href=&#34;https://unsplash.com/photos/9hhOVsf1lpU&#34;&gt;Source&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://medium.com/hackernoon/java-c-assembly-matryoshka-932193f071d3&#34;&gt;&lt;img src=&#34;https://img.shields.io/badge/original-medium-green#badge&#34; alt=&#34;&#34;&gt;&lt;/a&gt; &lt;a href=&#34;https://hackernoon.com/java-c-assembly-matryoshka-932193f071d3&#34;&gt;&lt;img src=&#34;https://img.shields.io/badge/original-hackernoon-green#badge&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;Disclaimers&lt;/strong&gt;:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;I’ll use Windows and more particularly Visual C++ with its Inline Assembler. If you use MacOs or Linux you will have significant differences comparing to what is described in the article.&lt;/li&gt;&#xA;&lt;li&gt;Everything below is shown mostly for demonstration purposes&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;Java is mature self-sufficient language, though as we all know it is possible to “connect” java to C (via Java-Native-Interface or JNI) to speed up some critical pieces of code.&#xA;Also for C/C++ it is possible to delegate some even more critical pieces of code directly to Assembly.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Scary movies</title>
+      <link>https://krossovochkin.com/posts/2019_10_15_scary_movies/</link>
+      <pubDate>Mon, 15 Oct 2018 00:00:00 +0000</pubDate>
+      <guid>https://krossovochkin.com/posts/2019_10_15_scary_movies/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://medium.com/@krossovochkin/scary-movies-2c018cd6cca4&#34;&gt;&lt;img src=&#34;https://img.shields.io/badge/original-medium-green#badge&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;I don’t like horror movies.&#xA;But this short story is not about that particularly.&#xA;Horror movies are different: murders, ghosts, fantasy etc.&lt;/p&gt;&#xA;&lt;p&gt;I don’t like horror movies of any kind.&#xA;But I still can watch them.&#xA;1408, final destination, the saw etc.&lt;/p&gt;&#xA;&lt;p&gt;The only thing that scares me in horror movies are people.&#xA;Not blood, not ghosts.&lt;/p&gt;&#xA;&lt;p&gt;Here I’d like to share few movies, which traumatized my psyche in the childhood (and not only).&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Программирование и музыка</title>
+      <link>https://krossovochkin.com/posts/2018_06_24_programming_and_music/</link>
+      <pubDate>Sun, 24 Jun 2018 00:00:00 +0000</pubDate>
+      <guid>https://krossovochkin.com/posts/2018_06_24_programming_and_music/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://medium.com/@krossovochkin/%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%B8-%D0%BC%D1%83%D0%B7%D1%8B%D0%BA%D0%B0-88f1abbd21ae&#34;&gt;&lt;img src=&#34;https://img.shields.io/badge/original-medium-green#badge&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h1 id=&#34;предисловие&#34;&gt;Предисловие&lt;/h1&gt;&#xA;&lt;p&gt;Наушники — лучший друг разработчика (спасибо открытым пространствам и людям вокруг). Шум и разговоры отвлекают от работы и не дают сосредоточиться.&#xA;Решением являются отдельные комнаты для небольших команд (что встречается редко и все равно не является стопроцентным, потому что отвлекать может и просто клацание коллегами по клавиатуре) либо наушники плюс музыка в них.&#xA;Также у музыки на работе есть и другие преимущества. Например, она может выступать в роли якоря. Важные события могут вводить человека в определенные состояния, которые могут завязываться на какие-то внешние вещи — например музыку, которая играла в тот момент. Тогда песня становится своеобразным якорем и в следующий раз услышав её человек может вернуть себя в то состояние.&#xA;Поэтому песни, которые слушаешь на работе, становятся “рабочими” песнями. Услышав их вне работы можно случайно перейти в рабочий режим.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Сказки</title>
+      <link>https://krossovochkin.com/posts/2018_06_17_fairytales/</link>
+      <pubDate>Sun, 17 Jun 2018 00:00:00 +0000</pubDate>
+      <guid>https://krossovochkin.com/posts/2018_06_17_fairytales/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://medium.com/@krossovochkin/%D1%81%D0%BA%D0%B0%D0%B7%D0%BA%D0%B8-d34dc346856a&#34;&gt;&lt;img src=&#34;https://img.shields.io/badge/original-medium-green#badge&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;В детстве я читал много сказок, и я думаю, что это оказало некоторое влияние на развитие моего мировоззрения.&#xA;По крайней мере неявно.&#xA;Конечно, не факт, что в лучшую сторону.&#xA;У меня было несколько книг, зачитанных до дыр, и собственно ими я хотел сейчас поделиться.&lt;/p&gt;&#xA;&lt;h2 id=&#34;прежде-всего&#34;&gt;&lt;strong&gt;Прежде всего:&lt;/strong&gt;&lt;/h2&gt;&#xA;&lt;p&gt;Да, я читал и знаю большинство популярных русских народных сказок вроде Колобка, различных вариаций сказок про Бабу Ягу и Кощея Бессмертного, всяких Красных Шапочек и Волков с козлятами Братьев Гримм и Гадких утят, Дюймовочек (хотя “Новое платье короля” — это очень сильная сказка) Андерсена и прочих известных сказок.&#xA;Мне вообще иногда кажется, что немногие могут со мной посоревнваться в знании сказок.&#xA;Но тут речь больше не про них. Из-за их популярности сказки очень быстро приедаются, возможно поэтому сборники менее известных сказок меня привлекали больше.&#xA;Если посмотреть ниже по описаниям, то вероятно можно будет сделать вывод, что мне больше нравились сказки Азии. Отчасти это так и есть.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

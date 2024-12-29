@@ -22,27 +22,30 @@
   
   <meta name="theme-color" content="#1e2327">
 
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Debugging Proguard configuration issues"/>
-<meta name="twitter:description" content="Proguard configuration was never an easy task. Especially it strikes when some issue leaks to the production. In the article I try to provide simple algorithm on how to track down what exactly might be an issue in proguard configuration"/>
-<meta name="twitter:site" content="@krossovochkin"/>
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Debugging Proguard configuration issues">
+  <meta name="twitter:description" content="Proguard configuration was never an easy task. Especially it strikes when some issue leaks to the production. In the article I try to provide simple algorithm on how to track down what exactly might be an issue in proguard configuration">
 
 </head>
 
 <body>
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-YEWQ4T95D5', { 'anonymize_ip': false });
-}
-</script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-YEWQ4T95D5');
+        }
+      </script>
 
 <header>
 <nav>
@@ -116,34 +119,34 @@ The basic setup for release build is:</p>
 <p>One of the most advanced ways of investigating issues in release builds is analyzing the content of the APK file. This can be done via <code>Build &gt; Analyze APK ...</code>.
 There one can see <code>classes.dex</code> containing all the bytecode, <code>resources.arsc</code> which contains the mapping between original resources IDs and obfuscated and all resources under <code>/res</code> folder.<br>
 This method is advanced because for example bytecode will be shown to you as:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="o">.</span><span class="na">class</span> <span class="kd">public</span> <span class="kd">final</span> <span class="n">Lcom</span><span class="o">/</span><span class="n">krossovochkin</span><span class="o">/</span><span class="n">proguardtest</span><span class="o">/</span><span class="n">MainActivity</span><span class="o">;</span> 
-</span></span><span class="line"><span class="cl"><span class="o">.</span><span class="na">super</span> <span class="n">La</span><span class="o">/</span><span class="n">b</span><span class="o">/</span><span class="n">c</span><span class="o">/</span><span class="n">e</span><span class="o">;</span> 
-</span></span><span class="line"><span class="cl"><span class="o">.</span><span class="na">source</span> <span class="s">&#34;&#34;</span> 
-</span></span><span class="line"><span class="cl"> 
-</span></span><span class="line"><span class="cl"> 
-</span></span><span class="line"><span class="cl"><span class="err">#</span> <span class="n">direct</span> <span class="n">methods</span> 
-</span></span><span class="line"><span class="cl"><span class="o">.</span><span class="na">method</span> <span class="kd">public</span> <span class="n">constructor</span> <span class="o">&lt;</span><span class="n">init</span><span class="o">&gt;()</span><span class="n">V</span> 
-</span></span><span class="line"><span class="cl">    <span class="o">.</span><span class="na">registers</span> <span class="n">1</span> 
-</span></span><span class="line"><span class="cl"> 
-</span></span><span class="line"><span class="cl">    <span class="n">invoke</span><span class="o">-</span><span class="n">direct</span> <span class="o">{</span><span class="n">p0</span><span class="o">},</span> <span class="n">La</span><span class="o">/</span><span class="n">b</span><span class="o">/</span><span class="n">c</span><span class="o">/</span><span class="n">e</span><span class="o">;-&gt;&lt;</span><span class="n">init</span><span class="o">&gt;()</span><span class="n">V</span> 
-</span></span><span class="line"><span class="cl"> 
-</span></span><span class="line"><span class="cl">    <span class="k">return</span><span class="o">-</span><span class="kt">void</span> 
-</span></span><span class="line"><span class="cl"><span class="o">.</span><span class="na">end</span> <span class="n">method</span> 
-</span></span><span class="line"><span class="cl"> 
-</span></span><span class="line"><span class="cl"> 
-</span></span><span class="line"><span class="cl"><span class="err">#</span> <span class="n">virtual</span> <span class="n">methods</span> 
-</span></span><span class="line"><span class="cl"><span class="o">.</span><span class="na">method</span> <span class="kd">public</span> <span class="nf">onCreate</span><span class="o">(</span><span class="n">Landroid</span><span class="o">/</span><span class="n">os</span><span class="o">/</span><span class="n">Bundle</span><span class="o">;)</span><span class="n">V</span> 
-</span></span><span class="line"><span class="cl">    <span class="o">.</span><span class="na">registers</span> <span class="n">2</span> 
-</span></span><span class="line"><span class="cl"> 
-</span></span><span class="line"><span class="cl">    <span class="n">invoke</span><span class="o">-</span><span class="kd">super</span> <span class="o">{</span><span class="n">p0</span><span class="o">,</span> <span class="n">p1</span><span class="o">},</span> <span class="n">La</span><span class="o">/</span><span class="n">b</span><span class="o">/</span><span class="n">c</span><span class="o">/</span><span class="n">e</span><span class="o">;-&gt;</span><span class="n">onCreate</span><span class="o">(</span><span class="n">Landroid</span><span class="o">/</span><span class="n">os</span><span class="o">/</span><span class="n">Bundle</span><span class="o">;)</span><span class="n">V</span> 
-</span></span><span class="line"><span class="cl"> 
-</span></span><span class="line"><span class="cl">    <span class="kd">const</span> <span class="n">p1</span><span class="o">,</span> <span class="n">0x7f0b001c</span> 
-</span></span><span class="line"><span class="cl"> 
-</span></span><span class="line"><span class="cl">    <span class="n">invoke</span><span class="o">-</span><span class="n">virtual</span> <span class="o">{</span><span class="n">p0</span><span class="o">,</span> <span class="n">p1</span><span class="o">},</span> <span class="n">La</span><span class="o">/</span><span class="n">b</span><span class="o">/</span><span class="n">c</span><span class="o">/</span><span class="n">e</span><span class="o">;-&gt;</span><span class="n">setContentView</span><span class="o">(</span><span class="n">I</span><span class="o">)</span><span class="n">V</span> 
-</span></span><span class="line"><span class="cl"> 
-</span></span><span class="line"><span class="cl">    <span class="k">return</span><span class="o">-</span><span class="kt">void</span> 
-</span></span><span class="line"><span class="cl"><span class="o">.</span><span class="na">end</span> <span class="n">method</span>
-</span></span></code></pre></div><p>Which while not being much readable still might provide you some hints.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="p">.</span><span class="na">class</span><span class="w"> </span><span class="kd">public</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Lcom</span><span class="o">/</span><span class="n">krossovochkin</span><span class="o">/</span><span class="n">proguardtest</span><span class="o">/</span><span class="n">MainActivity</span><span class="p">;</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">.</span><span class="na">super</span><span class="w"> </span><span class="n">La</span><span class="o">/</span><span class="n">b</span><span class="o">/</span><span class="n">c</span><span class="o">/</span><span class="n">e</span><span class="p">;</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">.</span><span class="na">source</span><span class="w"> </span><span class="s">&#34;&#34;</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">#</span><span class="w"> </span><span class="n">direct</span><span class="w"> </span><span class="n">methods</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">.</span><span class="na">method</span><span class="w"> </span><span class="kd">public</span><span class="w"> </span><span class="n">constructor</span><span class="w"> </span><span class="o">&lt;</span><span class="n">init</span><span class="o">&gt;</span><span class="p">()</span><span class="n">V</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">.</span><span class="na">registers</span><span class="w"> </span><span class="n">1</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">invoke</span><span class="o">-</span><span class="n">direct</span><span class="w"> </span><span class="p">{</span><span class="n">p0</span><span class="p">},</span><span class="w"> </span><span class="n">La</span><span class="o">/</span><span class="n">b</span><span class="o">/</span><span class="n">c</span><span class="o">/</span><span class="n">e</span><span class="p">;</span><span class="o">-&gt;&lt;</span><span class="n">init</span><span class="o">&gt;</span><span class="p">()</span><span class="n">V</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="o">-</span><span class="kt">void</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">.</span><span class="na">end</span><span class="w"> </span><span class="n">method</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">#</span><span class="w"> </span><span class="n">virtual</span><span class="w"> </span><span class="n">methods</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">.</span><span class="na">method</span><span class="w"> </span><span class="kd">public</span><span class="w"> </span><span class="nf">onCreate</span><span class="p">(</span><span class="n">Landroid</span><span class="o">/</span><span class="n">os</span><span class="o">/</span><span class="n">Bundle</span><span class="p">;)</span><span class="n">V</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">.</span><span class="na">registers</span><span class="w"> </span><span class="n">2</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">invoke</span><span class="o">-</span><span class="kd">super</span><span class="w"> </span><span class="p">{</span><span class="n">p0</span><span class="p">,</span><span class="w"> </span><span class="n">p1</span><span class="p">},</span><span class="w"> </span><span class="n">La</span><span class="o">/</span><span class="n">b</span><span class="o">/</span><span class="n">c</span><span class="o">/</span><span class="n">e</span><span class="p">;</span><span class="o">-&gt;</span><span class="n">onCreate</span><span class="p">(</span><span class="n">Landroid</span><span class="o">/</span><span class="n">os</span><span class="o">/</span><span class="n">Bundle</span><span class="p">;)</span><span class="n">V</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="n">p1</span><span class="p">,</span><span class="w"> </span><span class="n">0x7f0b001c</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">invoke</span><span class="o">-</span><span class="n">virtual</span><span class="w"> </span><span class="p">{</span><span class="n">p0</span><span class="p">,</span><span class="w"> </span><span class="n">p1</span><span class="p">},</span><span class="w"> </span><span class="n">La</span><span class="o">/</span><span class="n">b</span><span class="o">/</span><span class="n">c</span><span class="o">/</span><span class="n">e</span><span class="p">;</span><span class="o">-&gt;</span><span class="n">setContentView</span><span class="p">(</span><span class="n">I</span><span class="p">)</span><span class="n">V</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="o">-</span><span class="kt">void</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">.</span><span class="na">end</span><span class="w"> </span><span class="n">method</span><span class="w">
+</span></span></span></code></pre></div><p>Which while not being much readable still might provide you some hints.</p>
 <p>To debug Proguard/R8 configuration one can assemble release build and navigate to <code>app\build\outputs\mapping\release</code>. There you&rsquo;ll see the following files:</p>
 <ul>
 <li><code>configuration.txt</code> – merged file with all configurations – from your app, default Android, AAPT, all the libraries, etc. Here you can find what rules might cause an issue.</li>
@@ -183,9 +186,9 @@ Look for classes or methods you use via reflection and looking at <code>mapping.
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">MainActivity</span> <span class="p">:</span> <span class="n">AppCompatActivity</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="n">Bundle</span><span class="p">?)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="k">super</span><span class="p">.</span><span class="n">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">setContentView</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">layout</span><span class="p">.</span><span class="n">activity_main</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">setContentView</span><span class="p">(</span><span class="nc">R</span><span class="p">.</span><span class="n">layout</span><span class="p">.</span><span class="n">activity_main</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(!</span><span class="n">BuildConfig</span><span class="p">.</span><span class="n">DEBUG</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(!</span><span class="nc">BuildConfig</span><span class="p">.</span><span class="n">DEBUG</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">            <span class="k">throw</span> <span class="n">RuntimeException</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
@@ -214,7 +217,7 @@ Look for classes or methods you use via reflection and looking at <code>mapping.
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>Shrinker won&rsquo;t remove the <code>test.xml</code> layout resource.</p>
 <p>Usually, an issue might happen when we receive ids from outside of the APK (say from the server). For our test example we can do some weird calculation which won&rsquo;t be optimized:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">shrinker</span><span class="p">(</span><span class="n">Class</span><span class="p">.</span><span class="n">forName</span><span class="p">(</span><span class="s2">&#34;com.krossovochkin.proguardtest.MainActivity&#34;</span><span class="p">).</span><span class="n">simpleName</span><span class="p">[</span><span class="m">6</span><span class="p">])</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">shrinker</span><span class="p">(</span><span class="nc">Class</span><span class="p">.</span><span class="n">forName</span><span class="p">(</span><span class="s2">&#34;com.krossovochkin.proguardtest.MainActivity&#34;</span><span class="p">).</span><span class="n">simpleName</span><span class="p">[</span><span class="m">6</span><span class="p">])</span>
 </span></span></code></pre></div><p>If we launch the release build app will crash. In <code>resources.xml</code> we&rsquo;ll see the message:</p>
 <pre tabindex="0"><code>Skipped unused resource res/layout/test.xml: 880 bytes (replaced with small dummy file of size 104 bytes)
 </code></pre><p>And if we look inside the APK we&rsquo;ll see that our resource will look like:</p>
@@ -250,7 +253,7 @@ Going with our algorithm:</p>
 <h3 id="optimization-issue">Optimization issue</h3>
 <p>Optimization issues usually happen when we rely on some class via reflection only and it was removed during code optimization. For example, if we have in our app:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">optimizer</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="n">Class</span><span class="p">.</span><span class="n">forName</span><span class="p">(</span><span class="s2">&#34;com.krossovochkin.proguardtest.TestClass&#34;</span><span class="p">).</span><span class="n">newInstance</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="nc">Class</span><span class="p">.</span><span class="n">forName</span><span class="p">(</span><span class="s2">&#34;com.krossovochkin.proguardtest.TestClass&#34;</span><span class="p">).</span><span class="n">newInstance</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">TestClass</span> <span class="p">{</span>
@@ -259,7 +262,7 @@ Going with our algorithm:</p>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>Then everything is fine. Because code optimization is smart and it doesn&rsquo;t remove as much as it could. It can determine that class is used by analyzing strings we have in our app. So, let&rsquo;s emulate the issue by hiding the exact class we need:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">optimizer</span><span class="p">(</span><span class="n">char</span><span class="p">:</span> <span class="n">Char</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="n">Class</span><span class="p">.</span><span class="n">forName</span><span class="p">(</span><span class="s2">&#34;com.krossovochkin.proguardtest.</span><span class="si">${char}</span><span class="s2">estClass&#34;</span><span class="p">).</span><span class="n">newInstance</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="nc">Class</span><span class="p">.</span><span class="n">forName</span><span class="p">(</span><span class="s2">&#34;com.krossovochkin.proguardtest.</span><span class="si">${char}</span><span class="s2">estClass&#34;</span><span class="p">).</span><span class="n">newInstance</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>App crashes in release because there is no such a class in the release build.<br>
 We even can see that by looking at logs:</p>

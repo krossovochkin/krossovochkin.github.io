@@ -22,27 +22,30 @@
   
   <meta name="theme-color" content="#1e2327">
 
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="From RxJava to Kotlin Flow: Stream Types"/>
-<meta name="twitter:description" content="Comparing Stream Types in RxJava and Kotlin Flow"/>
-<meta name="twitter:site" content="@krossovochkin"/>
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="From RxJava to Kotlin Flow: Stream Types">
+  <meta name="twitter:description" content="Comparing Stream Types in RxJava and Kotlin Flow">
 
 </head>
 
 <body>
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-YEWQ4T95D5', { 'anonymize_ip': false });
-}
-</script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-YEWQ4T95D5');
+        }
+      </script>
 
 <header>
 <nav>
@@ -168,12 +171,12 @@ The example will be the following:</p>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">if</span> <span class="p">(</span><span class="k">data</span> <span class="o">!=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">Maybe</span>
 </span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="k">data</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">delay</span><span class="p">(</span><span class="m">100</span><span class="p">,</span> <span class="n">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">delay</span><span class="p">(</span><span class="m">100</span><span class="p">,</span> <span class="nc">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">doOnSuccess</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;read from cache: </span><span class="si">$data</span><span class="s2">&#34;</span><span class="p">)</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">Maybe</span>
 </span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">empty</span><span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;()</span>
-</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">delay</span><span class="p">(</span><span class="m">100</span><span class="p">,</span> <span class="n">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">delay</span><span class="p">(</span><span class="m">100</span><span class="p">,</span> <span class="nc">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">doOnComplete</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;read from cache: </span><span class="si">$data</span><span class="s2">&#34;</span><span class="p">)</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
@@ -181,7 +184,7 @@ The example will be the following:</p>
 </span></span><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">readNetworkRx</span><span class="p">(</span><span class="k">data</span><span class="p">:</span> <span class="n">String</span> <span class="p">=</span> <span class="s2">&#34;data&#34;</span><span class="p">):</span> <span class="n">Single</span><span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">Single</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="k">data</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">delay</span><span class="p">(</span><span class="m">100</span><span class="p">,</span> <span class="n">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">delay</span><span class="p">(</span><span class="m">100</span><span class="p">,</span> <span class="nc">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">doOnSuccess</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;read from network: </span><span class="si">$data</span><span class="s2">&#34;</span><span class="p">)</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
@@ -190,7 +193,7 @@ The example will be the following:</p>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">fromAction</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">            <span class="n">println</span><span class="p">(</span><span class="s2">&#34;saved to cache: </span><span class="si">$data</span><span class="s2">&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">delay</span><span class="p">(</span><span class="m">100</span><span class="p">,</span> <span class="n">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">delay</span><span class="p">(</span><span class="m">100</span><span class="p">,</span> <span class="nc">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p><strong>NOTE:</strong> the code could be shorter if we created everything with #create method, though it doesn&rsquo;t matter in the scope of this article</p>
 <p>And for Kotlin Flow:</p>
@@ -243,7 +246,7 @@ saved to cache: data
 saved to cache: cached
 </code></pre><p>Now let&rsquo;s take a look at Kotlin example. It won&rsquo;t include any reactiveness therefore it won&rsquo;t use Kotlin Flow:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">runBlocking</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">withContext</span><span class="p">(</span><span class="n">Dispatchers</span><span class="p">.</span><span class="n">IO</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">withContext</span><span class="p">(</span><span class="nc">Dispatchers</span><span class="p">.</span><span class="n">IO</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="k">val</span> <span class="py">data</span> <span class="p">=</span> <span class="n">readCache</span><span class="p">()</span> <span class="o">?:</span> <span class="n">readNetwork</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">        <span class="n">saveCache</span><span class="p">(</span><span class="k">data</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
@@ -257,8 +260,8 @@ So here Kotlin coroutines look like a real winner.</p>
 <p>In both RxJava and Kotlin Flow there are general reactive types to represent stream which might have from 0 to (almost) infinite number of events (followed by completion with or without error). In RxJava it is Observable/Flowable, and in Kotlin Flow it is Flow.
 If we need to switch from one stream to another we can use xMap operators in RxJava (flatMap, concatMap etc.) and flatMapX operators in Kotlin Flow (flatMapMerge, flatMapConcat etc.).</p>
 <p>Examples of such can be like this, for RxJava:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">flatMap</span> <span class="p">{</span> <span class="n">Observable</span><span class="p">.</span><span class="n">just</span> <span class="p">(</span><span class="s2">&#34;a&#34;</span><span class="p">,</span> <span class="s2">&#34;b&#34;</span><span class="p">,</span> <span class="s2">&#34;c&#34;</span><span class="p">)</span> <span class="p">}</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="nc">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">flatMap</span> <span class="p">{</span> <span class="nc">Observable</span><span class="p">.</span><span class="n">just</span> <span class="p">(</span><span class="s2">&#34;a&#34;</span><span class="p">,</span> <span class="s2">&#34;b&#34;</span><span class="p">,</span> <span class="s2">&#34;c&#34;</span><span class="p">)</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">subscribe</span><span class="p">()</span>
 </span></span></code></pre></div><p>And for Kotlin Flow:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">flowOf</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
@@ -273,7 +276,7 @@ In RxJava it would look like this:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">latch</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">readCacheRx</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">flatMapObservable</span> <span class="p">{</span> <span class="n">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="k">it</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">flatMapObservable</span> <span class="p">{</span> <span class="nc">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="k">it</span><span class="p">)</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">doOnComplete</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">println</span><span class="p">(</span><span class="s2">&#34;complete&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="n">latch</span><span class="p">.</span><span class="n">countDown</span><span class="p">()</span>
@@ -301,7 +304,7 @@ The example will be the following: we&rsquo;ll have stream of values and on each
 <p>For sequential execution in RxJava we&rsquo;ll use concatMapSingle:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">latch2</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nc">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">concatMapSingle</span> <span class="p">{</span> <span class="n">readNetworkRx</span><span class="p">(</span><span class="s2">&#34;$</span><span class="si">$it</span><span class="s2">&#34;</span><span class="p">)</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">doOnComplete</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">println</span><span class="p">(</span><span class="s2">&#34;complete&#34;</span><span class="p">)</span>
@@ -322,7 +325,7 @@ complete
 <p>For concurrent version we&rsquo;ll use flatMapSingle:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">latch1</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nc">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">flatMapSingle</span> <span class="p">{</span> <span class="n">readNetworkRx</span><span class="p">(</span><span class="s2">&#34;$</span><span class="si">$it</span><span class="s2">&#34;</span><span class="p">)</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">doOnComplete</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">println</span><span class="p">(</span><span class="s2">&#34;complete&#34;</span><span class="p">)</span>
@@ -393,9 +396,9 @@ Additional note is that usually functions like map, filter etc. are considered a
 <p>In RxJava it would look like this:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">latch</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nc">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">flatMapCompletable</span> <span class="p">{</span> <span class="n">saveCacheRx</span><span class="p">(</span><span class="s2">&#34;</span><span class="si">$it</span><span class="s2">&#34;</span><span class="p">)</span> <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">andThen</span><span class="p">(</span><span class="n">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="s2">&#34;done&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">andThen</span><span class="p">(</span><span class="nc">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="s2">&#34;done&#34;</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">doOnComplete</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">println</span><span class="p">(</span><span class="s2">&#34;complete&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="n">latch</span><span class="p">.</span><span class="n">countDown</span><span class="p">()</span>

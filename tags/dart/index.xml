@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Dart on Vasya Drobushkov</title>
+    <link>https://krossovochkin.com/tags/dart/</link>
+    <description>Recent content in Dart on Vasya Drobushkov</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 08 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://krossovochkin.com/tags/dart/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Dart language bad design choices</title>
+      <link>https://krossovochkin.com/posts/2019_04_08_dart_language_bad_design_choices/</link>
+      <pubDate>Mon, 08 Apr 2019 00:00:00 +0000</pubDate>
+      <guid>https://krossovochkin.com/posts/2019_04_08_dart_language_bad_design_choices/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://medium.com/@krossovochkin/dart-language-bad-design-choices-6e35987dc693&#34;&gt;&lt;img src=&#34;https://img.shields.io/badge/original-medium-green#badge&#34; alt=&#34;&#34;&gt;&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;Before raising a point about some design choices we need to define some criteria.&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;Intent/Declaration &amp;gt; Usage/Implementation&#xA;Code one write should clearly state the intent.&#xA;Implementation is not that important than an intent.&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;Implicit is bad&#xA;Implicit things do not share the intention, therefore from the first point it means that any implicit thing hides true intent.&#xA;If anything hides intention — it can be considered bad.&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;Mixing different things together is bad.&#xA;Partially it relates to the first point about intention.&#xA;If you do the change and it is not clear whether it is because of one thing or another (which are mixed into one) — then intention is hidden and it is bad.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

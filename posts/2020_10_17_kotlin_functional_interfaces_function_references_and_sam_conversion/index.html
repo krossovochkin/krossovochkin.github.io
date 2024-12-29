@@ -22,27 +22,30 @@
   
   <meta name="theme-color" content="#1e2327">
 
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Kotlin Functional Interfaces: Function reference and SAM conversion"/>
-<meta name="twitter:description" content="Overview of Kotlin functional interfaces and how they work with SAM conversions."/>
-<meta name="twitter:site" content="@krossovochkin"/>
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Kotlin Functional Interfaces: Function reference and SAM conversion">
+  <meta name="twitter:description" content="Overview of Kotlin functional interfaces and how they work with SAM conversions.">
 
 </head>
 
 <body>
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-YEWQ4T95D5', { 'anonymize_ip': false });
-}
-</script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-YEWQ4T95D5');
+        }
+      </script>
 
 <header>
 <nav>
@@ -94,8 +97,8 @@ if (!doNotTrack) {
 <p>About two years ago I <a href="https://medium.com/@krossovochkin/kotlin-java-interop-function-references-and-sam-conversions-3d0cd36f7967">made a post</a> about a tricky case in Kotlin-Java interop related to the usage of function references and SAM conversion.
 One of the points there was that in Kotlin, if interface is declared instead of a function, one has to explicitly create an object, therefore no caveats as with interop:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">callback</span> <span class="p">=</span> <span class="k">object</span> <span class="err">: </span><span class="nc">ThirdParty</span><span class="p">.</span><span class="n">Callback</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onValueChanged</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="nd">@App</span><span class="p">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onValueChanged</span><span class="p">(</span><span class="k">value</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="nd">@App</span><span class="p">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">value</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>With Kotlin 1.4 there is now a &ldquo;Functional interface&rdquo; which supports SAM conversion. And <a href="https://medium.com/@mwolfe38/does-the-new-kotlin-1-4-sam-interfaces-using-fun-interface-declaration-have-similar-issues-1b08fa65a096">I&rsquo;ve been asked</a> on how it works in a similar situation.<br>
@@ -122,7 +125,7 @@ Let&rsquo;s find out.</p>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">interface</span> <span class="n">Callback</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="k">fun</span> <span class="nf">onValueChanged</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">fun</span> <span class="nf">onValueChanged</span><span class="p">(</span><span class="k">value</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>And our client code in which we&rsquo;ll add and remove our callback:</p>
@@ -139,7 +142,7 @@ Let&rsquo;s find out.</p>
 </span></span><span class="line"><span class="cl">    <span class="n">thirdParty</span><span class="p">.</span><span class="n">printState</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">onValueChanged</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">onValueChanged</span><span class="p">(</span><span class="k">value</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>We create a function (from a private member) with a help of method reference. Then add and remove it printing state of our ThirdParty class (how many callbacks are registered).<br>
@@ -166,7 +169,7 @@ Callbacks count: 0
 </span></span><span class="line"><span class="cl">    <span class="n">INVOKESPECIAL</span> <span class="n">TestKt</span><span class="err">$</span><span class="n">sam</span><span class="err">$</span><span class="n">ThirdParty_Callback</span><span class="err">$</span><span class="m">0.</span><span class="p">&lt;</span><span class="k">init</span><span class="p">&gt;</span> <span class="p">(</span><span class="n">Lkotlin</span><span class="p">/</span><span class="n">jvm</span><span class="p">/</span><span class="n">functions</span><span class="p">/</span><span class="n">Function1</span><span class="p">;)</span><span class="n">V</span>
 </span></span><span class="line"><span class="cl">   <span class="n">L8</span>
 </span></span><span class="line"><span class="cl">    <span class="n">CHECKCAST</span> <span class="n">ThirdParty</span><span class="err">$</span><span class="n">Callback</span>
-</span></span><span class="line"><span class="cl">    <span class="n">INVOKEVIRTUAL</span> <span class="n">ThirdParty</span><span class="p">.</span><span class="n">addCallback</span> <span class="p">(</span><span class="n">LThirdParty</span><span class="err">$</span><span class="n">Callback</span><span class="p">;)</span><span class="n">V</span>
+</span></span><span class="line"><span class="cl">    <span class="n">INVOKEVIRTUAL</span> <span class="nc">ThirdParty</span><span class="p">.</span><span class="n">addCallback</span> <span class="p">(</span><span class="n">LThirdParty</span><span class="err">$</span><span class="n">Callback</span><span class="p">;)</span><span class="n">V</span>
 </span></span><span class="line"><span class="cl">   <span class="n">L9</span>
 </span></span></code></pre></div><p>We create a callback object and pass it to the <code>addCallback</code> method.</p>
 <p>What about <code>removeCallback</code>:</p>
@@ -183,12 +186,12 @@ Callbacks count: 0
 </span></span><span class="line"><span class="cl">    <span class="n">INVOKESPECIAL</span> <span class="n">TestKt</span><span class="err">$</span><span class="n">sam</span><span class="err">$</span><span class="n">ThirdParty_Callback</span><span class="err">$</span><span class="m">0.</span><span class="p">&lt;</span><span class="k">init</span><span class="p">&gt;</span> <span class="p">(</span><span class="n">Lkotlin</span><span class="p">/</span><span class="n">jvm</span><span class="p">/</span><span class="n">functions</span><span class="p">/</span><span class="n">Function1</span><span class="p">;)</span><span class="n">V</span>
 </span></span><span class="line"><span class="cl">   <span class="n">L11</span>
 </span></span><span class="line"><span class="cl">    <span class="n">CHECKCAST</span> <span class="n">ThirdParty</span><span class="err">$</span><span class="n">Callback</span>
-</span></span><span class="line"><span class="cl">    <span class="n">INVOKEVIRTUAL</span> <span class="n">ThirdParty</span><span class="p">.</span><span class="n">removeCallback</span> <span class="p">(</span><span class="n">LThirdParty</span><span class="err">$</span><span class="n">Callback</span><span class="p">;)</span><span class="n">V</span>
+</span></span><span class="line"><span class="cl">    <span class="n">INVOKEVIRTUAL</span> <span class="nc">ThirdParty</span><span class="p">.</span><span class="n">removeCallback</span> <span class="p">(</span><span class="n">LThirdParty</span><span class="err">$</span><span class="n">Callback</span><span class="p">;)</span><span class="n">V</span>
 </span></span><span class="line"><span class="cl">   <span class="n">L12</span>
 </span></span></code></pre></div><p>Bytecode is the same! We still create a new Callback object.<br>
 So, we create two callback objects. One per each method call. But the program works correctly.</p>
 <p>This is because of the inner callback implementation:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">final</span> <span class="k">class</span> <span class="nc">TestKt</span><span class="err">$</span><span class="n">sam</span><span class="err">$</span><span class="n">ThirdParty_Callback</span><span class="err">$</span><span class="m">0</span> <span class="n">implements</span> <span class="n">ThirdParty</span><span class="p">.</span><span class="n">Callback</span><span class="p">,</span> <span class="n">FunctionAdapter</span> <span class="p">{</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">final</span> <span class="k">class</span> <span class="nc">TestKt</span><span class="err">$</span><span class="n">sam</span><span class="err">$</span><span class="n">ThirdParty_Callback</span><span class="err">$</span><span class="m">0</span> <span class="n">implements</span> <span class="nc">ThirdParty</span><span class="p">.</span><span class="n">Callback</span><span class="p">,</span> <span class="n">FunctionAdapter</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">   <span class="c1">// $FF: synthetic field
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="k">private</span> <span class="k">final</span> <span class="n">Function1</span> <span class="n">function</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
@@ -197,8 +200,8 @@ So, we create two callback objects. One per each method call. But the program wo
 </span></span><span class="line"><span class="cl">   <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">   <span class="c1">// $FF: synthetic method
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="k">public</span> <span class="k">final</span> <span class="n">void</span> <span class="n">onValueChanged</span><span class="p">(</span><span class="n">int</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="n">Intrinsics</span><span class="p">.</span><span class="n">checkExpressionValueIsNotNull</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">function</span><span class="p">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="s2">&#34;invoke(...)&#34;</span><span class="p">);</span>
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="k">public</span> <span class="k">final</span> <span class="n">void</span> <span class="n">onValueChanged</span><span class="p">(</span><span class="n">int</span> <span class="k">value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nc">Intrinsics</span><span class="p">.</span><span class="n">checkExpressionValueIsNotNull</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">function</span><span class="p">.</span><span class="n">invoke</span><span class="p">(</span><span class="k">value</span><span class="p">),</span> <span class="s2">&#34;invoke(...)&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">   <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">   <span class="k">public</span> <span class="n">Function</span> <span class="n">getFunctionDelegate</span><span class="p">()</span> <span class="p">{</span>
@@ -206,7 +209,7 @@ So, we create two callback objects. One per each method call. But the program wo
 </span></span><span class="line"><span class="cl">   <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">   <span class="k">public</span> <span class="n">boolean</span> <span class="n">equals</span><span class="p">(</span><span class="n">Object</span> <span class="n">var1</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="n">var1</span> <span class="n">instanceof</span> <span class="n">ThirdParty</span><span class="p">.</span><span class="n">Callback</span> <span class="o">&amp;&amp;</span> <span class="n">var1</span> <span class="n">instanceof</span> <span class="n">FunctionAdapter</span> <span class="o">&amp;&amp;</span> <span class="n">Intrinsics</span><span class="p">.</span><span class="n">areEqual</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">function</span><span class="p">,</span> <span class="p">((</span><span class="n">FunctionAdapter</span><span class="p">)</span><span class="n">var1</span><span class="p">).</span><span class="n">getFunctionDelegate</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="n">var1</span> <span class="n">instanceof</span> <span class="nc">ThirdParty</span><span class="p">.</span><span class="n">Callback</span> <span class="o">&amp;&amp;</span> <span class="n">var1</span> <span class="n">instanceof</span> <span class="n">FunctionAdapter</span> <span class="o">&amp;&amp;</span> <span class="nc">Intrinsics</span><span class="p">.</span><span class="n">areEqual</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">function</span><span class="p">,</span> <span class="p">((</span><span class="n">FunctionAdapter</span><span class="p">)</span><span class="n">var1</span><span class="p">).</span><span class="n">getFunctionDelegate</span><span class="p">());</span>
 </span></span><span class="line"><span class="cl">   <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">   <span class="k">public</span> <span class="n">int</span> <span class="n">hashCode</span><span class="p">()</span> <span class="p">{</span>
@@ -229,7 +232,7 @@ So, we create two callback objects. One per each method call. But the program wo
 <p>But pay attention that in this case for each method call new Callback object will be created. To optimize consecutive method calls one might consider creating a callback instance manually and pass it explicitly.</p>
 </blockquote>
 <p>With Kotlin 1.4 one don&rsquo;t have to write <code>object : Callback {}</code>, it is possible to do:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">callback</span> <span class="p">=</span> <span class="n">ThirdParty</span><span class="p">.</span><span class="n">Callback</span><span class="p">(</span><span class="o">::</span><span class="n">onValueChanged</span><span class="p">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">callback</span> <span class="p">=</span> <span class="nc">ThirdParty</span><span class="p">.</span><span class="n">Callback</span><span class="p">(</span><span class="o">::</span><span class="n">onValueChanged</span><span class="p">)</span>
 </span></span></code></pre></div><p>Because functional interfaces support SAM conversion.</p>
 <h3 id="conclusion">Conclusion</h3>
 <p>It seems like with Kotlin functional interfaces there is no such issue as in Kotlin-Java interop. The program will work as it was intended.<br>

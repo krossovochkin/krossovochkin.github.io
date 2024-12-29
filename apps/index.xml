@@ -4,47 +4,37 @@
     <title>Apps on Vasya Drobushkov</title>
     <link>https://krossovochkin.com/apps/</link>
     <description>Recent content in Apps on Vasya Drobushkov</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 22 Aug 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://krossovochkin.com/apps/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 22 Aug 2022 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://krossovochkin.com/apps/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Dimensions Utils</title>
       <link>https://krossovochkin.com/apps/dimensions-utils/</link>
       <pubDate>Mon, 22 Aug 2022 00:00:00 +0000</pubDate>
-      
       <guid>https://krossovochkin.com/apps/dimensions-utils/</guid>
-      <description>Sources: https://github.com/krossovochkin/dimensions-utils</description>
+      <description>&lt;iframe width=&#34;340px&#34; height=&#34;270px&#34; src=&#34;../../applications/dimensions-utils/index.html&#34; style=&#34;margin: 0 auto; display: block; background-color: white;&#34;&gt;&lt;/iframe&gt;&#xD;&#xA;&lt;p&gt;Sources: &lt;a href=&#34;https://github.com/krossovochkin/dimensions-utils&#34;&gt;https://github.com/krossovochkin/dimensions-utils&lt;/a&gt;&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Time Utils</title>
       <link>https://krossovochkin.com/apps/time-utils/</link>
       <pubDate>Mon, 22 Aug 2022 00:00:00 +0000</pubDate>
-      
       <guid>https://krossovochkin.com/apps/time-utils/</guid>
-      <description>Sources: https://github.com/krossovochkin/time-utils</description>
+      <description>&lt;iframe width=&#34;340px&#34; height=&#34;140px&#34; src=&#34;../../applications/time-utils/index.html&#34; style=&#34;margin: 0 auto; display: block; background-color: white;&#34;&gt;&lt;/iframe&gt;&#xD;&#xA;&lt;p&gt;Sources: &lt;a href=&#34;https://github.com/krossovochkin/time-utils&#34;&gt;https://github.com/krossovochkin/time-utils&lt;/a&gt;&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Color Utils</title>
       <link>https://krossovochkin.com/apps/color-utils/</link>
       <pubDate>Sat, 23 Jul 2022 00:00:00 +0000</pubDate>
-      
       <guid>https://krossovochkin.com/apps/color-utils/</guid>
-      <description>Sources: https://github.com/krossovochkin/color-utils</description>
+      <description>&lt;iframe width=&#34;480px&#34; height=&#34;260px&#34; src=&#34;../../applications/color-utils/index.html&#34; style=&#34;margin: 0 auto; display: block; background-color: white;&#34;&gt;&lt;/iframe&gt;&#xD;&#xA;&lt;p&gt;Sources: &lt;a href=&#34;https://github.com/krossovochkin/color-utils&#34;&gt;https://github.com/krossovochkin/color-utils&lt;/a&gt;&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Card Soccer</title>
       <link>https://krossovochkin.com/apps/card-soccer/</link>
       <pubDate>Sun, 10 Jul 2022 00:00:00 +0000</pubDate>
-      
       <guid>https://krossovochkin.com/apps/card-soccer/</guid>
-      <description>How to play The goal of the game is to win AI opponent by scoring more goals.
-The game is turn based.
-On your turn you should move the &amp;ldquo;ball&amp;rdquo; (card opened from your deck) to opponents goal.
-You start from the row that is close to your goal: you should select a card in a row and if it matches by value or suite - proceed to the next row up until the opponent&amp;rsquo;s goal.</description>
+      <description>&lt;iframe width=&#34;275px&#34; height=&#34;600px&#34; src=&#34;../../applications/card-soccer/index.html&#34; style=&#34;margin: 0 auto; display: block;&#34;&gt;&lt;/iframe&gt;&#xA;&lt;h3 id=&#34;how-to-play&#34;&gt;How to play&lt;/h3&gt;&#xA;&lt;p&gt;The goal of the game is to win AI opponent by scoring more goals.&lt;br&gt;&#xA;The game is turn based.&lt;br&gt;&#xA;On your turn you should move the &amp;ldquo;ball&amp;rdquo; (card opened from your deck) to opponents goal.&lt;br&gt;&#xA;You start from the row that is close to your goal: you should select a card in a row and if it matches by value or suite - proceed to the next row up until the opponent&amp;rsquo;s goal.&lt;br&gt;&#xA;If there is no match - your turn is over.&lt;br&gt;&#xA;You can select opened and closed cards.&lt;br&gt;&#xA;If the whole row is opened - you can skip it and procced to the next one.&#xA;You score when your &amp;ldquo;ball&amp;rdquo; matches opponent goal.&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

@@ -22,27 +22,30 @@
   
   <meta name="theme-color" content="#1e2327">
 
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Bad Kotlin Extensions"/>
-<meta name="twitter:description" content="Kotlin extensions is a cool feature. Though trying to write &#39;idiomatic&#39; Kotlin code some developers tend to overuse that feature making code worse that it could be without extensions. In this article we&#39;ll go through some examples of how not to write Kotlin extensions"/>
-<meta name="twitter:site" content="@krossovochkin"/>
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Bad Kotlin Extensions">
+  <meta name="twitter:description" content="Kotlin extensions is a cool feature. Though trying to write &#39;idiomatic&#39; Kotlin code some developers tend to overuse that feature making code worse that it could be without extensions. In this article we&#39;ll go through some examples of how not to write Kotlin extensions">
 
 </head>
 
 <body>
 
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-YEWQ4T95D5', { 'anonymize_ip': false });
-}
-</script>
-
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-YEWQ4T95D5');
+        }
+      </script>
 
 <header>
 <nav>
@@ -95,7 +98,7 @@ if (!doNotTrack) {
 <p>Kotlin extensions are a cool feature. Though trying to write &lsquo;idiomatic&rsquo; Kotlin code some developers tend to overuse that feature making code worse than it could be without extensions. In this article, we&rsquo;ll go through some examples of how not to write Kotlin extensions.</p>
 <p>First of all, we need to try to define what a good extension is.<br>
 It is simple though vague: good extension solves some problems. When we talk about code the main feature extensions have is to improve readability. Extension methods are static methods with the first parameter being a receiver of the extension. For example, these are equivalents:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">CollectionUtils</span><span class="p">.</span><span class="n">first</span><span class="p">(</span><span class="n">collection</span><span class="p">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="nc">CollectionUtils</span><span class="p">.</span><span class="n">first</span><span class="p">(</span><span class="n">collection</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">collection</span><span class="p">.</span><span class="n">first</span><span class="p">()</span>
 </span></span></code></pre></div><p>The second looks better because we don&rsquo;t overwhelm our code with details about <code>CollectionUtils</code>. It feels better because we extend the functionality of some classes without changing their internals, and we don&rsquo;t need to look for some Utils class to find the corresponding method - so IDE can help us with auto-complete to find the required method.</p>
@@ -131,7 +134,7 @@ From the perspective of such a person that expression looks like a negation of t
 <p>Another example of a smart expression is building file paths. Instead of:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">File</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="k">file</span><span class="p">)</span>
 </span></span></code></pre></div><p>What if we do:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">operator</span> <span class="n">File</span><span class="p">.</span><span class="n">div</span><span class="p">(</span><span class="n">fileName</span><span class="p">:</span> <span class="n">String</span><span class="p">):</span> <span class="n">File</span> <span class="p">=</span> <span class="n">File</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="n">fileName</span><span class="p">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">operator</span> <span class="nc">File</span><span class="p">.</span><span class="n">div</span><span class="p">(</span><span class="n">fileName</span><span class="p">:</span> <span class="n">String</span><span class="p">):</span> <span class="n">File</span> <span class="p">=</span> <span class="n">File</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="n">fileName</span><span class="p">)</span>
 </span></span></code></pre></div><p>And use it like:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">file</span> <span class="p">=</span> <span class="n">File</span><span class="p">(</span><span class="s2">&#34;src&#34;</span><span class="p">)</span> <span class="p">/</span> <span class="s2">&#34;main&#34;</span> <span class="p">/</span> <span class="s2">&#34;java&#34;</span> <span class="p">/</span> <span class="s2">&#34;com&#34;</span>
 </span></span></code></pre></div><p>Cool, it is almost like writing path directly!</p>
@@ -142,18 +145,18 @@ Or it is just some smart trick? I think the last, therefore such extension is no
 For example, to replace fragment we might need to write:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">supportFragmentManager</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">beginTransaction</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">	<span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">container</span><span class="p">,</span> <span class="n">fragment</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="nc">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">container</span><span class="p">,</span> <span class="n">fragment</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">	<span class="p">.</span><span class="n">addToBackStack</span><span class="p">(</span><span class="k">null</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">	<span class="p">.</span><span class="n">commit</span><span class="p">()</span>
 </span></span></code></pre></div><p>Why not create an extension:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">FragmentManager</span><span class="p">.</span><span class="n">replaceFragment</span><span class="p">(</span><span class="nd">@IdRes</span> <span class="n">id</span><span class="p">:</span> <span class="n">Int</span><span class="p">,</span> <span class="n">fragment</span><span class="p">:</span> <span class="n">Fragment</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="p">.</span><span class="n">beginTransaction</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">	    <span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">container</span><span class="p">,</span> <span class="n">fragment</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	    <span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="nc">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">container</span><span class="p">,</span> <span class="n">fragment</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">		<span class="p">.</span><span class="n">addToBackStack</span><span class="p">(</span><span class="k">null</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">		<span class="p">.</span><span class="n">commit</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>And then just write:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">supportFragmentManager</span><span class="p">.</span><span class="n">replaceFragment</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">container</span><span class="p">,</span> <span class="n">fragment</span><span class="p">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">supportFragmentManager</span><span class="p">.</span><span class="n">replaceFragment</span><span class="p">(</span><span class="nc">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">container</span><span class="p">,</span> <span class="n">fragment</span><span class="p">)</span>
 </span></span></code></pre></div><p>We reduced the boilerplate and everything is cooler now!<br>
 But not really. The issue with such an extension is that it does more than it says.<br>
 It is not only replacing a fragment but also adds to the back stack. And someone who is not aware of that feature (didn&rsquo;t look at sources) might misuse that method if adding to the back stack wasn&rsquo;t something that actually should&rsquo;ve been done.<br>
@@ -190,7 +193,7 @@ Let&rsquo;s look at some better extension by first looking at the issue. Probabl
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>And use it like:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">supportFragmentManager</span><span class="p">.</span><span class="n">inTransaction</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">replace</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">container</span><span class="p">,</span> <span class="n">fragment</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">replace</span><span class="p">(</span><span class="nc">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">container</span><span class="p">,</span> <span class="n">fragment</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">	<span class="n">addToBackStack</span><span class="p">(</span><span class="k">null</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>The code becomes shorter and we still have all the flexibility we might ever need.</p>
