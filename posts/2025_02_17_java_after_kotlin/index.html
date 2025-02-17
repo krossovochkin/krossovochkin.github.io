@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <title>Java after Kotlin</title>
+
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon-144-precompressed.png"/>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script src="https://kit.fontawesome.com/6d5aec2882.js" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <link rel="me" href="https://androiddev.social/@krossovochkin" />
+
+  
+  <meta name="theme-color" content="#1e2327">
+
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Java after Kotlin">
+  <meta name="twitter:description" content="I am usually pretty slow with new technologies and software updates. That happened with Kotlin a while ago. While version 1.0 was released in early 2016, and many companies were early adopters since the alpha versions, I really started using it only around the end of 2017.
+I should say that I do find it a very concise and easy-to-write-and-read language. Its focus on developer experience makes it very pleasant to use (except coroutines, lol).">
+
+</head>
+
+<body>
+
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-YEWQ4T95D5"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-YEWQ4T95D5');
+        }
+      </script>
+
+<header>
+<nav>
+  <ul>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/apps">Apps</a></li>
+    
+    
+    <li class="menu-right"><a rel="me" href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://androiddev.social/@krossovochkin" target="_blank"><i class="fa-brands fa-mastodon fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-l"></i></a></li>
+    
+  </ul>
+</nav>
+
+</header>
+
+<br/>
+
+
+<div class="meta">
+
+  
+    <h1><span class="title">Java after Kotlin</span></h1>
+  
+  
+    <h3>February 17, 2025</h3>
+  
+
+</div>
+
+<main>
+<p>I am usually pretty slow with new technologies and software updates. That happened with Kotlin a while ago. While version 1.0 was released in early 2016, and many companies were early adopters since the alpha versions, I really started using it only around the end of 2017.</p>
+<p>I should say that I do find it a very concise and easy-to-write-and-read language. Its focus on developer experience makes it very pleasant to use (except coroutines, lol).</p>
+<p>Right now, this is the primary language that I use. Here and there, I might touch something else like Python, Go, JavaScript, etc.</p>
+<p>A few days ago, I needed to write some code in Java, and I immediately noticed a number of things that Kotlin does better, in my opinion.</p>
+<h2 id="semicolon">Semicolon</h2>
+<p>I remember how I used to defend this in Java back in the day. Like, how can you be sure there are no issues with how the code is run when it doesn&rsquo;t fit on one line without a semicolon?<br>
+Over time, I had no issues with that, and being required to type one on each line is truly annoying. Especially when you don&rsquo;t have that habit anymore and forget to type it here and there.</p>
+<h2 id="equality">Equality</h2>
+<p><code>==</code> instead of <code>equals</code> is truly a game-changer. Between instance and content equality, 99% of the time we want to compare content, so having a shortcut exactly for that is absolutely logical.<br>
+The comparison in Java hit me hard when I used <code>==</code> on Strings. These are not primitive types, and while in certain cases this would work as expected, if the instances are different, one can get into a very tricky-to-find bug.</p>
+<h2 id="naming">Naming</h2>
+<p>Some of the classes in Kotlin have a shorter name: <code>Int</code> vs <code>Integer</code>, <code>Char</code> vs <code>Character</code>.<br>
+Again, feels like not a very big deal, but it adds some points to Kotlin for conciseness.</p>
+<h2 id="get-data">Get data</h2>
+<p>This one is my favorite—whenever you want to get something, you just use <code>[]</code>. Simple as that.<br>
+In Java, you would use <code>[]</code> on arrays, <code>.get()</code> on collections, and <code>.charAt()</code> on Strings. Having different ways of doing practically the same thing increases cognitive load. Instead of thinking about what you want to do, you have to keep in mind what you are working with.</p>
+<p>There is a downside in Kotlin, though: if you get something outside the bounds from a collection, you will get <code>null</code>, but from an array, you&rsquo;ll get an exception. So, you still have to think at least about that.</p>
+<h2 id="switching-discomfort">Switching discomfort</h2>
+<p>There are also things that are mostly whatever but make it difficult to switch between languages. Like in Java, you first declare a type and then the name, while in Kotlin, it is the opposite. I&rsquo;m okay with both approaches, but it brings some discomfort.</p>
+<h2 id="java-improvements">Java improvements</h2>
+<p>There are also things that Java now does pretty well. Like the ability to use <code>var</code>—a very nice addition.</p>
+<h2 id="final-thoughts">Final thoughts</h2>
+<p>Overall, I haven&rsquo;t felt doomed for having to write something in Java. It is still a great language with tons of new features that make it better every year. It has some legacy that is difficult to change.<br>
+But Kotlin, feeling more modern and developer-friendly, is a great language to use on a daily basis.</p>
+<p><strong>Happy coding!</strong></p>
+
+</main>
+
+
+<hr/>
+
+<footer>
+<nav>
+  <ul>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/apps">Apps</a></li>
+    
+    
+    <li class="menu-right"><a rel="me" href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://androiddev.social/@krossovochkin" target="_blank"><i class="fa-brands fa-mastodon fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-l"></i></a></li>
+    
+  </ul>
+</nav>
+
+</footer>
+
+
+</body>
+
+</html>

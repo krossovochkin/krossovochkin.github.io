@@ -2,16 +2,25 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://krossovochkin.com/tags/java/</loc>
+    <lastmod>2025-02-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://krossovochkin.com/posts/2025_02_17_java_after_kotlin/</loc>
+    <lastmod>2025-02-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://krossovochkin.com/tags/kotlin/</loc>
+    <lastmod>2025-02-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://krossovochkin.com/posts/</loc>
+    <lastmod>2025-02-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://krossovochkin.com/</loc>
+    <lastmod>2025-02-17T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://krossovochkin.com/tags/other/</loc>
     <lastmod>2024-12-21T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://krossovochkin.com/posts/</loc>
-    <lastmod>2024-12-21T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://krossovochkin.com/posts/2024_12_21_relatively_non_obvious_tricks_in_solving_simple_algorithmic_problems/</loc>
-    <lastmod>2024-12-21T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://krossovochkin.com/</loc>
     <lastmod>2024-12-21T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://krossovochkin.com/posts/2023_01_08_reactive_streams_testing/</loc>
@@ -63,9 +72,6 @@
     <lastmod>2021-07-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://krossovochkin.com/posts/2021_07_10_junit_coroutines_runner/</loc>
-    <lastmod>2021-07-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://krossovochkin.com/tags/kotlin/</loc>
     <lastmod>2021-07-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://krossovochkin.com/tags/kotlin-flow/</loc>
@@ -147,9 +153,6 @@
     <lastmod>2020-03-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://krossovochkin.com/posts/2020_03_19_compiler_generated_classes_methods_and_fields_in_java/</loc>
-    <lastmod>2020-03-19T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://krossovochkin.com/tags/java/</loc>
     <lastmod>2020-03-19T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://krossovochkin.com/posts/2020_03_19_unit_testing_best_practices/</loc>

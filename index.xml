@@ -6,8 +6,15 @@
     <description>Recent content on Vasya Drobushkov</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 21 Dec 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 17 Feb 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://krossovochkin.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Java after Kotlin</title>
+      <link>https://krossovochkin.com/posts/2025_02_17_java_after_kotlin/</link>
+      <pubDate>Mon, 17 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>https://krossovochkin.com/posts/2025_02_17_java_after_kotlin/</guid>
+      <description>&lt;p&gt;I am usually pretty slow with new technologies and software updates. That happened with Kotlin a while ago. While version 1.0 was released in early 2016, and many companies were early adopters since the alpha versions, I really started using it only around the end of 2017.&lt;/p&gt;&#xA;&lt;p&gt;I should say that I do find it a very concise and easy-to-write-and-read language. Its focus on developer experience makes it very pleasant to use (except coroutines, lol).&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Relatively Non-Obvious Tricks in Solving Simple Algorithmic Problems</title>
       <link>https://krossovochkin.com/posts/2024_12_21_relatively_non_obvious_tricks_in_solving_simple_algorithmic_problems/</link>
