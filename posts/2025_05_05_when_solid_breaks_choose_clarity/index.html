@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <title>When SOLID breaks: Choose CLARITY</title>
+
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon-144-precompressed.png"/>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script src="https://kit.fontawesome.com/6d5aec2882.js" crossorigin="anonymous"></script>
+
+  <script src="https://cdn.counter.dev/script.js" data-id="2d1779da-dc31-440f-8099-940355d12f4d" data-utcoffset="2"></script>
+  
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <link rel="me" href="https://androiddev.social/@krossovochkin" />
+
+  
+  <meta name="theme-color" content="#1e2327">
+</head>
+
+<body>
+
+<header>
+<nav>
+  <ul>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/apps">Apps</a></li>
+    
+    
+    <li class="menu-right"><a rel="me" href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://androiddev.social/@krossovochkin" target="_blank"><i class="fa-brands fa-mastodon fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-l"></i></a></li>
+    
+  </ul>
+</nav>
+
+</header>
+
+<br/>
+
+
+<div class="meta">
+
+  
+    <h1><span class="title">When SOLID breaks: Choose CLARITY</span></h1>
+  
+  
+    <h3>May 5, 2025</h3>
+  
+
+</div>
+
+<main>
+<p>A long time ago, when I had just started my journey into programming, development, and engineering, it wasn&rsquo;t easy to find information, and bikeshedding could happen quite often because of that. We read books to gain insights into best practices and learn how to do things correctly. The concepts from the past were usually crucial and provided a great ramp-up to avoid obvious mistakes.
+Over time, we became flooded with information and opinions. In such an environment, old-time thoughts may even seem better, as they’ve been tested by time and by many engineers in the field.
+However, times change, technology evolves, and some of the old principles may no longer be fully applicable. You can find articles here and there claiming that Clean Architecture is overengineered, Clean Code contains bad examples, and so on.
+On top of all this stands SOLID—a set of principles that has hurt me many times. Honestly, I’ve grown tired of it. The intentions are good, and the principles themselves are fine. The main issue is that different people interpret these vaguely described principles differently. Ask ten developers about each of the principles, and I bet at least one will argue that others misunderstand it.
+Strictly following all these principles can unexpectedly lead to very unmaintainable code, full of small interfaces, deep compositions, and tiny classes that do almost nothing.</p>
+<p>The worst part is when SOLID is used as an argument in discussions. That’s a nightmare I’ve encountered too many times to stay silent.
+<em>&ldquo;But it’s not following SOLID&rdquo;</em> is not an argument. It’s a phrase people use when they lack real arguments and can’t explain why they think things should be done a certain way. Arguing about whether a class does one thing or more is daunting by itself, and it escalates when you start discussing implementation details.
+And honestly, looking at the principles, it sometimes feels like they were just made to form a good acronym—which is not a great sign.</p>
+<p>SOLID is broken and should be discouraged.<br>
+You can still use the principles it describes, but you don’t have to reference SOLID at all.</p>
+<p>Instead, I propose another set of principles that I’ve successfully used on a daily basis for quite some time: <strong>CLARITY</strong></p>
+<hr>
+<h2 id="clarity">CLARITY</h2>
+<h3 id="c--consistent-abstraction-levels">C – Consistent Abstraction Levels</h3>
+<p>At each level of abstraction, you should work with the same concepts. When writing UI animation code, don’t map DTOs to domain models. Don’t do low-level bitwise math in a service that aggregates data. In each place, define the current level of abstraction and stick to it.</p>
+<hr>
+<h3 id="l--limit-interfaces">L – Limit Interfaces</h3>
+<p>Interfaces are a tool, not a silver bullet. Every interface increases system complexity by affecting discoverability. If you have hundreds of interfaces, it becomes hard to figure out their implementations, how they’re constructed, and how they relate to the rest of the system.</p>
+<p>Especially bad are interfaces with only one implementation. Rule of thumb: if you have only one implementation, don’t create an interface. If another implementation is needed in the future, it’s easy to extract one—IDEs are great at that. Removing a redundant interface is much harder.</p>
+<hr>
+<h3 id="a--api-over-implementation">A – API Over Implementation</h3>
+<p>Most of the time, the API should be your primary concern. Make a diagram of the system you want to build. Define relations and how parts will communicate. A clear API with some implementation flaws is better than a perfect implementation behind a poor API.</p>
+<p>You can always refine the implementation with tests and benchmarks. A bad API will rot your codebase.</p>
+<hr>
+<h3 id="r--reduce-dependency-complexity">R – Reduce Dependency Complexity</h3>
+<p>Avoid creating classes unless truly necessary. Redundant intermediate classes often aim to improve structure but actually add complexity.</p>
+<p>This is especially true for Clean Architecture and the repository pattern on Android. If your UI, domain, and data layers are just packages in the same module, and nothing prevents using data classes from the UI layer, then it’s all just boilerplate.
+If the only thing your screen does is load data from the network, you don’t need a chain of interactor–repository–datasource. Just fetch the data. If more is needed in the future, you can always add it. Keep code simple. The less code you write, the better.</p>
+<hr>
+<h3 id="i--isolate-dependency-creation">I – Isolate Dependency Creation</h3>
+<p>Simply put: separate class creation from class usage. This improves testability and maintainability. Using a dependency injection library is optional, but in practice, it saves a lot of boilerplate.</p>
+<hr>
+<h3 id="t--take-exceptions-when-justified">T – Take Exceptions When Justified</h3>
+<p>This is the most important principle—and one that SOLID and others miss.
+Principles are guidelines, not rules carved in stone. There may be exceptions due to poor definitions, different interpretations, or technical limitations—and that’s OK.
+Take an exception when you understand why you&rsquo;re doing it. For example, if you&rsquo;re working with a third-party library and want to hide it behind an interface—you’ll have only one implementation, but using that interface for mocking is fine if you can justify it.</p>
+<hr>
+<h3 id="y--you-decide">Y – You Decide</h3>
+<p>To double down on the previous point: principles should guide you—not dictate your code style.
+Use them to build your understanding. Study various principles and strategies. Look at different codebases. Talk to people.
+Decide for yourself what’s best in a given situation. Be ready to explain your decisions and follow your own reasoning.</p>
+<hr>
+<h2 id="choose-clarity">Choose CLARITY</h2>
+<p>C – Consistent abstraction levels<br>
+L – Limit interfaces<br>
+A – API over implementation<br>
+R – Reduce dependency complexity<br>
+I – Isolate dependency creation<br>
+T – Take exceptions when justified<br>
+Y – You decide</p>
+<p>Happy coding</p>
+
+</main>
+
+
+<hr/>
+
+<footer>
+<nav>
+  <ul>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/apps">Apps</a></li>
+    
+    
+    <li class="menu-right"><a rel="me" href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://androiddev.social/@krossovochkin" target="_blank"><i class="fa-brands fa-mastodon fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-l"></i></a></li>
+    
+  </ul>
+</nav>
+
+</footer>
+
+
+</body>
+
+</html>

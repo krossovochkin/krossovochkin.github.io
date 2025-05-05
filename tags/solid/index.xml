@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Solid on Vasya Drobushkov</title>
+    <link>https://krossovochkin.com/tags/solid/</link>
+    <description>Recent content in Solid on Vasya Drobushkov</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 05 May 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://krossovochkin.com/tags/solid/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>When SOLID breaks: Choose CLARITY</title>
+      <link>https://krossovochkin.com/posts/2025_05_05_when_solid_breaks_choose_clarity/</link>
+      <pubDate>Mon, 05 May 2025 00:00:00 +0000</pubDate>
+      <guid>https://krossovochkin.com/posts/2025_05_05_when_solid_breaks_choose_clarity/</guid>
+      <description>&lt;p&gt;A long time ago, when I had just started my journey into programming, development, and engineering, it wasn&amp;rsquo;t easy to find information, and bikeshedding could happen quite often because of that. We read books to gain insights into best practices and learn how to do things correctly. The concepts from the past were usually crucial and provided a great ramp-up to avoid obvious mistakes.&#xA;Over time, we became flooded with information and opinions. In such an environment, old-time thoughts may even seem better, as they’ve been tested by time and by many engineers in the field.&#xA;However, times change, technology evolves, and some of the old principles may no longer be fully applicable. You can find articles here and there claiming that Clean Architecture is overengineered, Clean Code contains bad examples, and so on.&#xA;On top of all this stands SOLID—a set of principles that has hurt me many times. Honestly, I’ve grown tired of it. The intentions are good, and the principles themselves are fine. The main issue is that different people interpret these vaguely described principles differently. Ask ten developers about each of the principles, and I bet at least one will argue that others misunderstand it.&#xA;Strictly following all these principles can unexpectedly lead to very unmaintainable code, full of small interfaces, deep compositions, and tiny classes that do almost nothing.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
