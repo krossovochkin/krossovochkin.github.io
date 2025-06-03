@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <title>Data-Driven Debugging for Engineers</title>
+
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon-144-precompressed.png"/>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script src="https://kit.fontawesome.com/6d5aec2882.js" crossorigin="anonymous"></script>
+
+  <script src="https://cdn.counter.dev/script.js" data-id="2d1779da-dc31-440f-8099-940355d12f4d" data-utcoffset="2"></script>
+  
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <link rel="me" href="https://androiddev.social/@krossovochkin" />
+
+  
+  <meta name="theme-color" content="#1e2327">
+</head>
+
+<body>
+
+<header>
+<nav>
+  <ul>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/apps">Apps</a></li>
+    
+    
+    <li class="menu-right"><a rel="me" href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://androiddev.social/@krossovochkin" target="_blank"><i class="fa-brands fa-mastodon fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-l"></i></a></li>
+    
+  </ul>
+</nav>
+
+</header>
+
+<br/>
+
+
+<div class="meta">
+
+  
+    <h1><span class="title">Data-Driven Debugging for Engineers</span></h1>
+  
+  
+    <h3>June 3, 2025</h3>
+  
+
+</div>
+
+<main>
+<p>As engineers, we deal with bugs every day. Finding the root cause and delivering the right fix is one of our most essential — and satisfying — skills.</p>
+<p>In this post, I want to walk through different types of issues we face and how we typically debug them. Most importantly, I’ll share my favorite and most challenging method: <strong>data-driven debugging</strong>.</p>
+<p>Let’s break it down by who reports the issue and how it’s discovered.</p>
+<hr>
+<h2 id="1-developer-reported-issues">1. Developer-Reported Issues</h2>
+<p>When you’re writing code, you’re usually writing tests too. You may not be doing full-blown Test-Driven Development (TDD), but adding tests is still the cheapest and easiest way to ensure correctness.</p>
+<p>Unit tests are fast and stable — great for checking individual functions or modules. However, they only verify isolated parts of the system. So even when all unit tests pass, your app may still break when everything is put together.</p>
+<p>That’s where end-to-end (E2E) tests come in. They’re harder to write, more brittle, but more valuable for verifying real-world behavior.</p>
+<p>A typical debugging flow here is: a test fails → you inspect the code → fix the bug → all tests pass. Clean and efficient.</p>
+<p>This is the easiest phase for catching and fixing bugs — the feedback is immediate, and you&rsquo;re already deep in the context of the code.</p>
+<hr>
+<h2 id="2-qa-reported-issues">2. QA-Reported Issues</h2>
+<p>Next, we have bugs found by QA — the professional bug hunters. Having a second set of eyes on the feature often reveals blind spots, especially around misunderstood requirements or unexpected user flows.</p>
+<p>When QA finds a bug, they’ll usually provide a ticket with preconditions, steps to reproduce, and a comparison of expected vs. actual results.</p>
+<p>Your first job? Reproduce the issue. From there, you might inspect logs, step through the debugger, or trace the flow in the code. Once you’ve isolated the problem, write a test and push a fix.</p>
+<p>This stage is still relatively efficient — you get a clear report with reproduction steps, which makes isolating the issue much easier.</p>
+<hr>
+<h2 id="3-user-reported-issues">3. User-Reported Issues</h2>
+<p>This is when things get trickier. Now the feature is live, and real users are discovering problems.</p>
+<p>Sometimes they report it via in-app feedback tools. Other times, it’s buried in a one-star review. Either way, the report is usually vague. Users don’t speak in stack traces or HTTP error codes — they describe symptoms, not causes.</p>
+<p>As a developer, you’ll need to interpret what they meant, recreate the issue, and try different approaches to break the app the same way.</p>
+<p>Some bugs are easy to reproduce. Others might only show up on certain devices, or under rare timing conditions.</p>
+<p>User reports are harder to act on, but they often highlight real-world edge cases you never thought about during development.</p>
+<hr>
+<h2 id="4-metrics-driven-issues">4. Metrics-Driven Issues</h2>
+<p>Now we enter the most complex — and, honestly, the most fascinating — form of debugging.</p>
+<p>Here, no one reports a bug. Instead, you’re monitoring system metrics: page load times, crash rates, memory usage, API latency, conversion funnels — anything critical to the health of your product.</p>
+<p>One day, a metric goes off. Maybe there’s a spike. Or maybe a slow, steady trend downward. It doesn’t look right, but there’s no specific error. No user complaint. Just a number telling you: <em>something’s wrong.</em></p>
+<p>Sometimes, this correlates with user-reported issues. Great — now you have clues. But often it doesn’t. For example, users don’t notice a 20% increase in network traffic. But your servers and infrastructure budget definitely will.</p>
+<p>So how do you debug without a clear bug?</p>
+<p>This is where <strong>data-driven debugging</strong> comes in. You form hypotheses, slice the data into segments — by country, app version, device type, user behavior — and hunt for patterns.</p>
+<p>If a metric looks fine across all Android versions but is broken only on iOS 17.3, you’ve got a lead. If new users are fine but returning users aren’t, that’s another breadcrumb.</p>
+<p>You explore the data, test theories, and either validate or reject them. Each rejected hypothesis is still a valuable learning — it narrows the search space and builds context.</p>
+<p>This is the most difficult and time-consuming form of debugging, but also the most rewarding. When you finally crack the mystery and fix the root cause — it feels amazing.</p>
+<hr>
+<h2 id="what-is-data-driven-debugging">What Is Data-Driven Debugging?</h2>
+<p>It’s a systematic process of using your system’s data — metrics, logs, analytics — to discover issues that aren’t easily surfaced by tests or user reports.</p>
+<h3 id="how-it-works">How It Works</h3>
+<ul>
+<li>Start by identifying the metric that&rsquo;s off.</li>
+<li>Slice your data across dimensions: versions, countries, segments, device types, etc.</li>
+<li>Look for patterns and anomalies.</li>
+<li>Form and test hypotheses.</li>
+<li>Dig deeper where you find differences. Move on where you don’t.</li>
+<li>Supplement this with manual testing, code inspection, or rollback experiments if needed.</li>
+</ul>
+<p>It’s time-intensive. Writing and running queries isn’t cheap. You need to prioritize where to dig first. And sometimes, analytics are missing, or have changed recently, which adds even more complexity.</p>
+<p>But as you get more comfortable with your tools and systems, you build an intuition for where to look and how to spot weak signals.</p>
+<p>Data-driven debugging feels impossible at first, but over time you get faster, smarter, and better at uncovering hidden issues in production systems.</p>
+<hr>
+<h2 id="final-thoughts">Final Thoughts</h2>
+<p>In modern engineering, working with data isn’t optional — it’s a superpower. Data-driven debugging gives you the ability to find and fix issues <strong>before</strong> they become catastrophic.</p>
+<p>Want to get started? Set up some core metrics for your product today. Monitor them. One day, something will go off — and when it does, you’ll be ready to dig in.</p>
+<p>Happy coding</p>
+
+</main>
+
+
+<hr/>
+
+<footer>
+<nav>
+  <ul>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/apps">Apps</a></li>
+    
+    
+    <li class="menu-right"><a rel="me" href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://androiddev.social/@krossovochkin" target="_blank"><i class="fa-brands fa-mastodon fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-l"></i></a></li>
+    
+  </ul>
+</nav>
+
+</footer>
+
+
+</body>
+
+</html>

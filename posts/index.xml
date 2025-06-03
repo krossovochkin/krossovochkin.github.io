@@ -6,8 +6,15 @@
     <description>Recent content in Posts on Vasya Drobushkov</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 05 May 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 03 Jun 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://krossovochkin.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Data-Driven Debugging for Engineers</title>
+      <link>https://krossovochkin.com/posts/2025_06_03_data_driven_debugging_for_engineers/</link>
+      <pubDate>Tue, 03 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>https://krossovochkin.com/posts/2025_06_03_data_driven_debugging_for_engineers/</guid>
+      <description>&lt;p&gt;As engineers, we deal with bugs every day. Finding the root cause and delivering the right fix is one of our most essential — and satisfying — skills.&lt;/p&gt;&#xA;&lt;p&gt;In this post, I want to walk through different types of issues we face and how we typically debug them. Most importantly, I’ll share my favorite and most challenging method: &lt;strong&gt;data-driven debugging&lt;/strong&gt;.&lt;/p&gt;&#xA;&lt;p&gt;Let’s break it down by who reports the issue and how it’s discovered.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>When SOLID breaks: Choose CLARITY</title>
       <link>https://krossovochkin.com/posts/2025_05_05_when_solid_breaks_choose_clarity/</link>

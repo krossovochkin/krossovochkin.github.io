@@ -2,22 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://krossovochkin.com/tags/data/</loc>
+    <lastmod>2025-06-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://krossovochkin.com/posts/2025_06_03_data_driven_debugging_for_engineers/</loc>
+    <lastmod>2025-06-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://krossovochkin.com/tags/debug/</loc>
+    <lastmod>2025-06-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://krossovochkin.com/tags/debugging/</loc>
+    <lastmod>2025-06-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://krossovochkin.com/posts/</loc>
+    <lastmod>2025-06-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://krossovochkin.com/</loc>
+    <lastmod>2025-06-03T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://krossovochkin.com/tags/clarity/</loc>
     <lastmod>2025-05-05T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://krossovochkin.com/tags/clean-code/</loc>
     <lastmod>2025-05-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://krossovochkin.com/posts/</loc>
-    <lastmod>2025-05-05T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://krossovochkin.com/tags/principles/</loc>
     <lastmod>2025-05-05T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://krossovochkin.com/tags/solid/</loc>
-    <lastmod>2025-05-05T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://krossovochkin.com/</loc>
     <lastmod>2025-05-05T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://krossovochkin.com/posts/2025_05_05_when_solid_breaks_choose_clarity/</loc>
