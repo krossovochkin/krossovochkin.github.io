@@ -16,6 +16,13 @@
       <description>&lt;p&gt;I am usually pretty slow with new technologies and software updates. That happened with Kotlin a while ago. While version 1.0 was released in early 2016, and many companies were early adopters since the alpha versions, I really started using it only around the end of 2017.&lt;/p&gt;&#xA;&lt;p&gt;I should say that I do find it a very concise and easy-to-write-and-read language. Its focus on developer experience makes it very pleasant to use (except coroutines, lol).&lt;/p&gt;</description>
     </item>
     <item>
+      <title>Kotlin Coroutines Cancellation and Exception Handling</title>
+      <link>https://krossovochkin.com/posts/2025_08_30_kotlin_coroutines_cancellation_and_exception_handling/</link>
+      <pubDate>Sat, 11 Jan 2025 00:00:00 +0000</pubDate>
+      <guid>https://krossovochkin.com/posts/2025_08_30_kotlin_coroutines_cancellation_and_exception_handling/</guid>
+      <description>&lt;p&gt;Cancellation and exception handling in coroutines is by far the most complex thing I&amp;rsquo;ve faced during my entire career. These two things are so complicated that I sometimes ask myself how people are using such a difficult-to-use framework. I read all the possible docs that I found, many different articles, video courses, and even tried to look at the code - and still, I feel that my understanding of this topic is quite bad.&lt;br&gt;&#xA;When reading articles, I often thought that their structure was not good and that things were not clarified in a reasonable way. Usually, articles are just a collection of examples that show how certain combinations of suspending functions or coroutine builders will work. Learning by examples is good, but they should help with understanding core concepts so that all other situations are easy to relate to what was learned.&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>JUnit Coroutines Runner</title>
       <link>https://krossovochkin.com/posts/2021_07_10_junit_coroutines_runner/</link>
       <pubDate>Sat, 10 Jul 2021 00:00:00 +0000</pubDate>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <title>Kotlin Coroutines Cancellation and Exception Handling</title>
+
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon-144-precompressed.png"/>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script src="https://kit.fontawesome.com/6d5aec2882.js" crossorigin="anonymous"></script>
+
+  <script src="https://cdn.counter.dev/script.js" data-id="2d1779da-dc31-440f-8099-940355d12f4d" data-utcoffset="2"></script>
+  
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <link rel="me" href="https://androiddev.social/@krossovochkin" />
+
+  
+  <meta name="theme-color" content="#1e2327">
+</head>
+
+<body>
+
+<header>
+<nav>
+  <ul>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/apps">Apps</a></li>
+    
+    
+    <li class="menu-right"><a rel="me" href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://androiddev.social/@krossovochkin" target="_blank"><i class="fa-brands fa-mastodon fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-l"></i></a></li>
+    
+  </ul>
+</nav>
+
+</header>
+
+<br/>
+
+
+<div class="meta">
+
+  
+    <h1><span class="title">Kotlin Coroutines Cancellation and Exception Handling</span></h1>
+  
+  
+    <h3>January 11, 2025</h3>
+  
+
+</div>
+
+<main>
+<p>Cancellation and exception handling in coroutines is by far the most complex thing I&rsquo;ve faced during my entire career. These two things are so complicated that I sometimes ask myself how people are using such a difficult-to-use framework. I read all the possible docs that I found, many different articles, video courses, and even tried to look at the code - and still, I feel that my understanding of this topic is quite bad.<br>
+When reading articles, I often thought that their structure was not good and that things were not clarified in a reasonable way. Usually, articles are just a collection of examples that show how certain combinations of suspending functions or coroutine builders will work. Learning by examples is good, but they should help with understanding core concepts so that all other situations are easy to relate to what was learned.</p>
+<p>So, I decided to write my own article, and my original idea was to create a definitive checklist and a cheat sheet that would cover all cases and serve as a go-to document to reference when you&rsquo;re unsure what to do.</p>
+<p>And I failed.</p>
+<p>I tried to structure the materials, and every time I felt everything was good, I found another case that broke most of what I had.</p>
+<p>Still, I wanted to shed some light on this topic, so here is my best attempt. The article has three parts:</p>
+<ol>
+<li>My opinion on the complexity of the coroutines framework with respect to cancellation and exception handling.</li>
+<li>An explanation of cancellation and exception handling to the best of my skills, in a way I think is reasonable to learn.</li>
+<li>Best practices for cancellation and exception handling.</li>
+</ol>
+<hr>
+<h3 id="why-so-complex">Why so complex?</h3>
+<p>I think there are a lot of reasons why cancellation and exception handling are so complex.<br>
+First, cancellation and exception handling are two different things, but they are coupled together. When an exception happens, the work cannot proceed further, so it should be cancelled. Understanding how these two concepts work together makes it more difficult to work with.</p>
+<p>The API of coroutines is very flexible - sometimes too flexible. The fact that <code>coroutineContext</code> is just a map of some elements opens the possibility of misuse, passing incorrect objects, or getting unexpected results. The compiler doesn&rsquo;t help, as it doesn&rsquo;t know anything specific. Custom linting can help, but you have to create it yourself.</p>
+<p>Also, the API hides a lot from the developer, which is again both good and bad. On the good side, you don&rsquo;t need to dive into the complexity of concurrency to use coroutines. On the other hand, it is often difficult to understand what is happening inside and why the result you got differs from your expectations. There are a lot of methods and extensions meant to help, but from their names, it is very difficult to understand what they do exactly - do they create a new coroutine or work in the current one, do they reuse the job or create a new one, how exceptions will be propagated, and so on.</p>
+<p>All this together makes the topic very difficult to grasp, even for professional engineers with a good background in concurrency.</p>
+<hr>
+<h3 id="cancellation-and-exception-handling-in-coroutines">Cancellation and Exception Handling in Coroutines</h3>
+<p>Let&rsquo;s start with some simple concepts that are also described in the official documentation.</p>
+<p>Cancelling can happen in two directions. The first one goes from parent to child. The simplest example is manual cancellation of the scope or job:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">scope</span><span class="p">.</span><span class="n">cancel</span><span class="p">()</span> <span class="c1">// after that, scope can&#39;t be used anymore
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">scope</span><span class="p">.</span><span class="n">coroutineContext</span><span class="p">.</span><span class="n">cancelChildren</span><span class="p">()</span> <span class="c1">// cancels all the jobs in the scope, but scope stays alive
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">job</span><span class="p">.</span><span class="n">cancel</span><span class="p">()</span>
+</span></span></code></pre></div><p>Cancellation might also go from child to parent, so effectively a child can cancel the parent, and then the parent will cancel all its remaining children. This might happen, for example, when there is an exception in the child:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">scope</span><span class="p">.</span><span class="n">launch</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">launch</span> <span class="p">{</span> <span class="k">throw</span> <span class="n">RuntimeException</span><span class="p">()</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">launch</span> <span class="p">{</span> <span class="n">delay</span><span class="p">(</span><span class="m">100</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>In the example above, all the coroutines and the scope will be cancelled because the child was cancelled with an exception.</p>
+<p>So far, pretty straightforward and easy. Why call this complex? Let&rsquo;s dive into details.</p>
+<hr>
+<p>There are two ways of handling exceptions with coroutines:</p>
+<ol>
+<li><code>try-catch</code></li>
+<li><code>CoroutineExceptionHandler</code></li>
+</ol>
+<p>Note that <code>try-catch</code> doesn&rsquo;t work with coroutine builder functions <code>launch</code> and <code>async</code>.<br>
+This won&rsquo;t catch any exceptions thrown in their blocks. This is because builders create the coroutine, effectively entering a concurrent world. What is inside can be executed on another thread, so wrapping that with <code>try-catch</code> in our thread cannot have an effect.</p>
+<p>A side note: this <strong>will</strong> work with the <code>runBlocking</code> coroutine builder due to its nature. So, as we&rsquo;ll see many times - pay attention to details, look at specifics, and try to avoid premature generalization.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">try</span> <span class="p">{</span> <span class="n">scope</span><span class="p">.</span><span class="n">launch</span> <span class="p">{</span> <span class="o">..</span><span class="p">.</span> <span class="p">}</span> <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="n">e</span><span class="p">:</span> <span class="n">Exception</span><span class="p">)</span> <span class="p">{</span> <span class="o">..</span><span class="p">.</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">try</span> <span class="p">{</span> <span class="n">scope</span><span class="p">.</span><span class="n">async</span> <span class="p">{</span> <span class="o">..</span><span class="p">.</span> <span class="p">}</span> <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="n">e</span><span class="p">:</span> <span class="n">Exception</span><span class="p">)</span> <span class="p">{</span> <span class="o">..</span><span class="p">.</span> <span class="p">}</span>
+</span></span></code></pre></div><p>Let&rsquo;s look at <code>launch</code>. Any unhandled exception can be handled by <code>CoroutineExceptionHandler</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">handler</span> <span class="p">=</span> <span class="n">CoroutineExceptionHandler</span> <span class="p">{</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">-&gt;</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;handled&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">scope</span> <span class="p">=</span> <span class="n">CoroutineScope</span><span class="p">(</span><span class="n">Job</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="n">scope</span><span class="p">.</span><span class="n">launch</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span> <span class="p">{</span> <span class="k">throw</span> <span class="n">RuntimeException</span><span class="p">()</span> <span class="p">}</span>
+</span></span></code></pre></div><p>Setting a handler to a <code>launch</code> worked, and the message &ldquo;handled&rdquo; was printed.</p>
+<p>Similar behavior occurs if we set the handler on the scope. This way, we don&rsquo;t need to set it for each <code>launch</code> in that scope:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">handler</span> <span class="p">=</span> <span class="n">CoroutineExceptionHandler</span> <span class="p">{</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">-&gt;</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;handled&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">scope</span> <span class="p">=</span> <span class="n">CoroutineScope</span><span class="p">(</span><span class="n">Job</span><span class="p">()</span> <span class="p">+</span> <span class="n">handler</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">scope</span><span class="p">.</span><span class="n">launch</span> <span class="p">{</span> <span class="k">throw</span> <span class="n">RuntimeException</span><span class="p">()</span> <span class="p">}</span>
+</span></span></code></pre></div><hr>
+<p><strong>First important note</strong>: the handler works only in top-level coroutines. That means, if you set it to an intermediate <code>launch</code>, the exception won&rsquo;t be handled.<br>
+This won&rsquo;t handle it:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">handler</span> <span class="p">=</span> <span class="n">CoroutineExceptionHandler</span> <span class="p">{</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">-&gt;</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;handled&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">scope</span> <span class="p">=</span> <span class="n">CoroutineScope</span><span class="p">(</span><span class="n">Job</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="n">scope</span><span class="p">.</span><span class="n">launch</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">launch</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span> <span class="p">{</span> <span class="k">throw</span> <span class="n">RuntimeException</span><span class="p">()</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><hr>
+<p><strong>Second important note</strong>: the handler can work in an intermediate <code>launch</code>, but only if there is a <code>SupervisorJob</code> in that scope. In the example below, we create a new <code>supervisorScope</code> that will have a <code>SupervisorJob</code>, so setting up a handler for its launches will handle them:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">handler</span> <span class="p">=</span> <span class="n">CoroutineExceptionHandler</span> <span class="p">{</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">-&gt;</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;handled&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">scope</span> <span class="p">=</span> <span class="n">CoroutineScope</span><span class="p">(</span><span class="n">Job</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="n">scope</span><span class="p">.</span><span class="n">launch</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">supervisorScope</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">launch</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span> <span class="p">{</span> <span class="k">throw</span> <span class="n">RuntimeException</span><span class="p">()</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><hr>
+<p><strong>Third important note</strong>: handling exceptions with <code>CoroutineExceptionHandler</code> is not designed for application-level exception handling. Even if you have a top-level <code>launch</code> with a handler, if an exception happens, the coroutine will be cancelled, and the parent will be cancelled as well.<br>
+So, the handler is designed for more technical aspects - logging something to analytics, preventing app crashes - but it doesn&rsquo;t affect scope management.</p>
+<hr>
+<p>Let&rsquo;s switch to <code>async</code> now. <code>async</code> handles all exceptions and rethrows them when <code>await</code> is called. Here&rsquo;s a basic example:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">handler</span> <span class="p">=</span> <span class="n">CoroutineExceptionHandler</span> <span class="p">{</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">-&gt;</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;handled&#34;</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">scope</span> <span class="p">=</span> <span class="n">CoroutineScope</span><span class="p">(</span><span class="n">Job</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">deferred</span> <span class="p">=</span> <span class="n">scope</span><span class="p">.</span><span class="n">async</span> <span class="p">{</span> <span class="k">throw</span> <span class="n">RuntimeException</span><span class="p">()</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">try</span> <span class="p">{</span> <span class="n">deferred</span><span class="p">.</span><span class="n">await</span><span class="p">()</span> <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="n">e</span><span class="p">:</span> <span class="n">Exception</span><span class="p">)</span> <span class="p">{</span> <span class="o">..</span><span class="p">.</span> <span class="p">}</span>
+</span></span></code></pre></div><p>The exception is handled, and the app doesn&rsquo;t crash.</p>
+<hr>
+<p><strong>First important note</strong>: setting up an exception handler will be a no-op. While it is possible to pass it to <code>async</code>, you should not do that. They just don&rsquo;t work together.</p>
+<p><strong>Second important note</strong>: while the exception is re-thrown in <code>await</code>, <code>async</code> cancels with the exception at the time it happens. Why does this matter? Because cancelling with an exception cancels the parent job, which can eventually lead to a crash:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">scope</span> <span class="p">=</span> <span class="n">CoroutineScope</span><span class="p">(</span><span class="n">Job</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">job</span> <span class="p">=</span> <span class="n">scope</span><span class="p">.</span><span class="n">launch</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">async</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">throw</span> <span class="n">RuntimeException</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Here, even though we haven&rsquo;t called <code>await</code>, the exception is propagated to the parent along with a cancellation. And because the parent <code>launch</code> doesn&rsquo;t handle the exception, it will lead to a crash.</p>
+<hr>
+<h3 id="best-practices">Best Practices</h3>
+<p>When talking about cancellation and exceptions, there is only one best practice:</p>
+<p><strong>Use exceptions only for exceptional cases.</strong></p>
+<p>And this is a best practice from a long time ago:<br>
+Joshua Bloch, <em>Effective Java</em>, Item 69: <em>Use exceptions only for exceptional conditions.</em></p>
+<p>So, the best thing you can do is to avoid exceptions as much as possible and handle them in scope.<br>
+There are various techniques to achieve that. Two common ones are:</p>
+<ol>
+<li>Return <code>null</code> when some conditions are not met (if you don&rsquo;t care about the type of error).</li>
+<li>Use wrappers such as <code>Result&lt;Success, Error&gt;</code> that provide additional information about the error.</li>
+</ol>
+<p>By following the rule to avoid exceptions, you will end up with much simpler code that is easier to manage and maintain. You won&rsquo;t need to handle various edge cases related to error propagation and cancellation because of errors.<br>
+Consider exceptions to be errors that you cannot handle, and therefore they may crash your app. Make your code as safe as possible by handling exceptions where possible, and if something slips through, then it might be a good reason to let the app crash.</p>
+<hr>
+<h3 id="bad-practices">Bad Practices</h3>
+<p>A few words on the flexibility of the coroutines API. Previously, I pointed out that you can add any coroutine element to the context, including <code>Job</code>.<br>
+Also, <code>CoroutineExceptionHandler</code> only works for top-level coroutines or the ones launched within a <code>SupervisorJob</code>.</p>
+<p>In the example above, I used <code>supervisorScope</code> to create a new scope with a <code>SupervisorJob</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">scope</span><span class="p">.</span><span class="n">launch</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">supervisorScope</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">launch</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span> <span class="p">{</span> <span class="k">throw</span> <span class="n">RuntimeException</span><span class="p">()</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>At the same time, it&rsquo;s possible to do something like this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">scope</span><span class="p">.</span><span class="n">launch</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">launch</span><span class="p">(</span><span class="n">SupervisorJob</span><span class="p">()</span> <span class="p">+</span> <span class="n">handler</span><span class="p">)</span> <span class="p">{</span> <span class="k">throw</span> <span class="n">RuntimeException</span><span class="p">()</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Here, I manually set a <code>SupervisorJob</code> to the inner <code>launch</code>, which makes that <code>launch</code> coroutine &ldquo;top-level,&rdquo; so the handler works.<br>
+However, you should <strong>never</strong> do this.</p>
+<p>While it seems to work from the handler&rsquo;s perspective, this destroys the main principle of coroutines - structured concurrency.<br>
+By injecting a job into the inner <code>launch</code>, we effectively break the parent-child relationship. The inner <code>launch</code> is no longer connected to the parent job. Instead, it is connected to the injected job.</p>
+<p>I can hardly imagine a practical use case where such injection is needed. And even if it exists, there should be a more straightforward way to accomplish it. Breaking structured concurrency for coroutines is a recipe for disaster later.<br>
+<strong>Avoid it at all costs.</strong></p>
+<hr>
+<h3 id="conclusion">Conclusion</h3>
+<p>That said, I don&rsquo;t think this is the definitive guide I wanted to write. Each suspend function and coroutine builder in the API might have its own specific behavior that one should learn by first reading the docs for each method and testing the functionality.<br>
+Other than that, I still hope this article was useful.</p>
+<p>Happy coding!</p>
+
+</main>
+
+
+<hr/>
+
+<footer>
+<nav>
+  <ul>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/apps">Apps</a></li>
+    
+    
+    <li class="menu-right"><a rel="me" href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://androiddev.social/@krossovochkin" target="_blank"><i class="fa-brands fa-mastodon fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-l"></i></a></li>
+    
+  </ul>
+</nav>
+
+</footer>
+
+
+</body>
+
+</html>
