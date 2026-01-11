@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://krossovochkin.com/tags/coroutines/</loc>
+    <lastmod>2026-01-11T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://krossovochkin.com/tags/exception/</loc>
+    <lastmod>2026-01-11T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://krossovochkin.com/tags/kotlin/</loc>
+    <lastmod>2026-01-11T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://krossovochkin.com/posts/2025_08_30_kotlin_coroutines_cancellation_and_exception_handling/</loc>
+    <lastmod>2026-01-11T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://krossovochkin.com/posts/</loc>
+    <lastmod>2026-01-11T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://krossovochkin.com/</loc>
+    <lastmod>2026-01-11T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://krossovochkin.com/tags/app/</loc>
     <lastmod>2025-07-27T00:00:00+00:00</lastmod>
   </url><url>
@@ -9,9 +27,6 @@
     <lastmod>2025-07-27T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://krossovochkin.com/apps/chesskt/</loc>
-    <lastmod>2025-07-27T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://krossovochkin.com/</loc>
     <lastmod>2025-07-27T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://krossovochkin.com/tags/data/</loc>
@@ -24,9 +39,6 @@
     <lastmod>2025-06-03T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://krossovochkin.com/tags/debugging/</loc>
-    <lastmod>2025-06-03T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://krossovochkin.com/posts/</loc>
     <lastmod>2025-06-03T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://krossovochkin.com/tags/clarity/</loc>
@@ -49,18 +61,6 @@
   </url><url>
     <loc>https://krossovochkin.com/posts/2025_02_17_java_after_kotlin/</loc>
     <lastmod>2025-02-17T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://krossovochkin.com/tags/kotlin/</loc>
-    <lastmod>2025-02-17T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://krossovochkin.com/tags/coroutines/</loc>
-    <lastmod>2025-01-11T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://krossovochkin.com/tags/exception/</loc>
-    <lastmod>2025-01-11T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://krossovochkin.com/posts/2025_08_30_kotlin_coroutines_cancellation_and_exception_handling/</loc>
-    <lastmod>2025-01-11T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://krossovochkin.com/tags/other/</loc>
     <lastmod>2024-12-21T00:00:00+00:00</lastmod>
