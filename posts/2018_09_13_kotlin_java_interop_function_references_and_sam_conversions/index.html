@@ -84,7 +84,7 @@
 </span></span><span class="line"><span class="cl"><span class="o">..</span><span class="p">.</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">method</span> <span class="p">{</span> <span class="n">input</span> <span class="o">-&gt;</span> <span class="n">callback</span><span class="p">(</span><span class="n">input</span><span class="p">)</span> <span class="p">}</span> <span class="c1">// lambda
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">method</span><span class="p">(</span><span class="o">::</span><span class="n">callback</span><span class="p">)</span> <span class="c1">// function reference
+</span></span></span><span class="line"><span class="cl"><span class="n">method</span><span class="p">(</span><span class="o">::</span><span class="n">callback</span><span class="p">)</span> <span class="c1">// function reference
 </span></span></span></code></pre></div><p>I really like to use function references where possible, because it is a bit more concise, you do not create wrapper for “callback”, code is shorter and even easier to read (most of the time).
 And this article is about issues function references can produce when they touch Java.</p>
 <h3 id="sam-conversions"><strong>SAM conversions</strong></h3>
@@ -96,11 +96,11 @@ And this article is about issues function references can produce when they touch
 <p>So example (from the same reference):</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">// Executor.java:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kt">void</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="n">Runnable</span><span class="w"> </span><span class="n">command</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="n">Runnable</span><span class="w"> </span><span class="n">command</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">// Kotlin:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c1">// Kotlin:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">executor</span><span class="p">.</span><span class="na">execute</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">doSomething</span><span class="p">()</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="n">executor</span><span class="p">.</span><span class="na">execute</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">doSomething</span><span class="p">()</span><span class="w"> </span><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><h3 id="issue-description">Issue description</h3>
 <p>So, let’s take a look at the example, which shows the issue.
 Consider we have some ThirdParty Java class with some listeners inside.
@@ -132,7 +132,7 @@ ThirdParty class might look like this (code with business logic of calculating s
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">interface</span> <span class="nc">Callback</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">onValueChanged</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>So we have <strong>Callback</strong> interface which satisfied SAM conversion rules, so as a result we can pass lambdas and method references to **addCallback **and **removeCallback **methods from Kotlin code.</p>
 <p>Then let’s look at the client code.
 We will create callback, register it in the ThirdParty class and then immediately unregister it.
@@ -153,7 +153,7 @@ After each step we’ll look at the state of ThirdParty class (using logs).</p>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">onValueChanged</span><span class="p">(</span><span class="k">value</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// do something
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>So, here we’ve created callback (we store value in the property, so that we can unregister that callback later).</p>
 <p>Let’s look at logs:</p>
 <pre tabindex="0"><code>D/ThirdParty: callback created: function onValueChanged (Kotlin reflection is not available)

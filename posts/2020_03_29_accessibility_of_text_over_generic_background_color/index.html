@@ -109,7 +109,7 @@ Luckily for us, we don’t need to do the color conversion ourselves, there is a
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="nc">ColorUtils</span><span class="p">.</span><span class="n">calculateLuminance</span><span class="p">(</span><span class="n">bgColor</span><span class="p">)</span>
 </span></span></code></pre></div><p>It will return a float value between 0 and 1. The simplest logic of defining whether bgColor is dark or not is to compare with the middle value — 0.5:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">isDarkColor</span><span class="p">(</span><span class="nd">@ColorInt</span> <span class="n">color</span><span class="p">:</span> <span class="n">Int</span><span class="p">):</span> <span class="n">Boolean</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nc">ColorUtils</span><span class="p">.</span><span class="n">calculateLuminance</span><span class="p">(</span><span class="n">color</span><span class="p">)</span> <span class="p">&lt;</span> <span class="m">0.5</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nc">ColorUtils</span><span class="p">.</span><span class="n">calculateLuminance</span><span class="p">(</span><span class="n">color</span><span class="p">)</span> <span class="p">&lt;</span> <span class="mf">0.5</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><blockquote>
 <p><strong>NOTE</strong>: this is exactly what <a href="https://stackoverflow.com/a/48267387">one can find on StackOverflow</a> after searching for dark color checking.</p>
@@ -124,9 +124,9 @@ What it means that we need to convert our RGB color into HSL or HSV (translated 
 This time we’ll do some manual work by creating a special method for de-saturation, which under the hood will convert our color to HSV (as there is ready method for that in the Android SDK):</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="nd">@ColorInt</span>
 </span></span><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">getDesaturatedColor</span><span class="p">(</span><span class="nd">@ColorInt</span> <span class="n">color</span><span class="p">:</span> <span class="n">Int</span><span class="p">):</span> <span class="n">Int</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">result</span> <span class="p">=</span> <span class="n">FloatArray</span><span class="p">(</span><span class="n">size</span> <span class="p">=</span> <span class="m">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">result</span> <span class="p">=</span> <span class="n">FloatArray</span><span class="p">(</span><span class="n">size</span> <span class="p">=</span> <span class="mi">3</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="nc">Color</span><span class="p">.</span><span class="n">colorToHSV</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="n">result</span><span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="o">*=</span> <span class="p">*</span><span class="m">0.6</span>
+</span></span><span class="line"><span class="cl">    <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*=</span> <span class="p">*</span><span class="mf">0.6</span>
 </span></span><span class="line"><span class="cl">    <span class="p">*</span><span class="k">return</span> <span class="nc">Color</span><span class="p">.</span><span class="n">HSVToColor</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>We’ll multiply saturation by 0.6. It is just the experimentally taken value.</p>
@@ -138,7 +138,7 @@ This time we’ll do some manual work by creating a special method for de-satura
 <p>This looks better.</p>
 <h3 id="color-contrast">Color contrast</h3>
 <p>But still, there is an issue. But this time it might be quite surprising.
-In the Play Store, there is an app “<a href="https://play.google.com/store/apps/details?id=com.google.android.apps.accessibility.auditor&amp;hl=en_US">Accessibility Scanner</a>” developed by Google, which allows you to make some screenshot testing of your screen to meet accessibility guidelines.
+In the Play Store, there is an app “<a href="https://play.google.com/store/apps/details?id=com.google.android.apps.accessibility.auditor&amp;amp;hl=en_US">Accessibility Scanner</a>” developed by Google, which allows you to make some screenshot testing of your screen to meet accessibility guidelines.
 If we run this check on the screen:</p>
 <p><img src="../../img/1_U_B0WxvfUIIjuvvEnmtnAw.png" alt=""></p>
 <p>We see that we have an issue: contrast between toolbar background and text on top of it is not sufficient!

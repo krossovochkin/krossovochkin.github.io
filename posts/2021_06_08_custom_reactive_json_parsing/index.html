@@ -88,7 +88,7 @@ I used sqldelight and unfortunately it <a href="https://stackoverflow.com/a/5736
 <p>What I decided to do is to introduce setup on the first app launch. We&rsquo;ll parse JSON from assets and populate the database manually showing the user fancy circular progress bar. Yes, the user experience is terrible in such a case (just like the design!), but it is just a one-time setup.
 The first implementation was pretty straightforward: just read the JSON file from assets, parse it and then write each city into the database.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">override</span> <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">setup</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">outputCityListDatasource</span><span class="p">.</span><span class="n">getCityList</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="m">1</span><span class="p">).</span><span class="n">isNotEmpty</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">outputCityListDatasource</span><span class="p">.</span><span class="n">getCityList</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">).</span><span class="n">isNotEmpty</span><span class="p">())</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">		<span class="k">return</span>
 </span></span><span class="line"><span class="cl">	<span class="p">}</span>
 </span></span><span class="line"><span class="cl">
@@ -116,7 +116,7 @@ In a pseudocode it could look like:</p>
 The idea was to create a separate implementation of a parsing JsonArray method to, instead of adding values into a list, being able to take them on demand.</p>
 <p>I went one step further and made the parsing code reactive using kotlin <code>Flow</code> API. The parser would parse JSON and instead of adding it to a list, it would emit items to stream instead. In this case, we also handle cancellation during parsing, handle back-pressure by suspending parsing if writing into the database doesn&rsquo;t catch up with parsing.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-diff" data-lang="diff"><span class="line"><span class="cl"><span class="gd">-val array = JsonArray()
-</span></span></span><span class="line"><span class="cl"><span class="gd"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">var nextToken = this.next()
 </span></span><span class="line"><span class="cl">while (nextToken.type != JsonToken.Type.END_ARRAY) {
 </span></span><span class="line"><span class="cl">	if (array.children.isNotEmpty()) {
@@ -125,8 +125,8 @@ The idea was to create a separate implementation of a parsing JsonArray method t
 </span></span><span class="line"><span class="cl">	}
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="gd">-	array.add(this.parseJsonElement(startToken = nextToken))
-</span></span></span><span class="line"><span class="cl"><span class="gd"></span><span class="gi">+   emit(this.parseJsonElement(startToken = nextToken))
-</span></span></span><span class="line"><span class="cl"><span class="gi"></span>
+</span></span></span><span class="line"><span class="cl"><span class="gi">+   emit(this.parseJsonElement(startToken = nextToken))
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">	nextToken = this.next()
 </span></span><span class="line"><span class="cl">}
 </span></span><span class="line"><span class="cl">

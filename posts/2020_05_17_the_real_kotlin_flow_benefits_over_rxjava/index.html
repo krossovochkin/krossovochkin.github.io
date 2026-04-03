@@ -135,14 +135,14 @@ Also flatMap allows concurrency (by merging various streams), when map is for di
 <p>The issue with having map to accept suspending functions is that now we can do something like this:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">suspend</span> <span class="k">fun</span> <span class="nf">hiThere</span><span class="p">():</span> <span class="n">Int</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">withContext</span><span class="p">(</span><span class="nc">Dispatchers</span><span class="p">.</span><span class="n">Default</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="m">1000</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="m">40</span>
+</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="mi">40</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">test</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="n">CoroutineScope</span><span class="p">(</span><span class="n">Job</span><span class="p">()).</span><span class="n">launch</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">flowOf</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">flowOf</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">hiThere</span><span class="p">()</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">flowOn</span><span class="p">(</span><span class="nc">Dispatchers</span><span class="p">.</span><span class="n">IO</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">collect</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="k">it</span><span class="p">)</span> <span class="p">}</span>
@@ -150,12 +150,12 @@ Also flatMap allows concurrency (by merging various streams), when map is for di
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>In RxJava we would do something like:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">hiThere</span><span class="p">():</span> <span class="n">Single</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nc">Completable</span><span class="p">.</span><span class="n">timer</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="nc">TimeUnit</span><span class="p">.</span><span class="n">SECONDS</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">andThen</span><span class="p">(</span><span class="nc">Single</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="m">40</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nc">Completable</span><span class="p">.</span><span class="n">timer</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nc">TimeUnit</span><span class="p">.</span><span class="n">SECONDS</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">andThen</span><span class="p">(</span><span class="nc">Single</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="mi">40</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">subscribeOn</span><span class="p">(</span><span class="n">computation</span><span class="p">())</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">test</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nc">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nc">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">flatMapSingle</span> <span class="p">{</span> <span class="n">hiThere</span><span class="p">()</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">subscribeOn</span><span class="p">(</span><span class="n">io</span><span class="p">())</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">subscribe</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="k">it</span><span class="p">)</span> <span class="p">}</span>
@@ -214,7 +214,7 @@ More info on the threading in the article:
 </span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">launchIn</span><span class="p">(</span><span class="n">scope</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="c1">// beware, still possible to run without scope
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nc">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="s2">&#34;10&#34;</span><span class="p">)</span>
+</span></span></span><span class="line"><span class="cl">        <span class="nc">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="s2">&#34;10&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">subscribe</span> <span class="p">{</span> <span class="n">println</span><span class="p">(</span><span class="s2">&#34;Something&#34;</span><span class="p">)</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>

@@ -92,53 +92,53 @@ It might be shown as such (scale doesn’t apply):</p>
 <p>For RxJava we’ll have the following observable:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">observable</span><span class="p">():</span> <span class="n">Observable</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nc">Observable</span><span class="p">.</span><span class="n">create</span> <span class="p">{</span> <span class="n">emitter</span> <span class="o">-&gt;</span>
-</span></span><span class="line"><span class="cl">        <span class="n">emitter</span><span class="p">.</span><span class="n">onNext</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="nc">Thread</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="m">90</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">emitter</span><span class="p">.</span><span class="n">onNext</span><span class="p">(</span><span class="m">2</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="nc">Thread</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="m">90</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">emitter</span><span class="p">.</span><span class="n">onNext</span><span class="p">(</span><span class="m">3</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="nc">Thread</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="m">1010</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">emitter</span><span class="p">.</span><span class="n">onNext</span><span class="p">(</span><span class="m">4</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="nc">Thread</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="m">1010</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">emitter</span><span class="p">.</span><span class="n">onNext</span><span class="p">(</span><span class="m">5</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="nc">Thread</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="m">2000</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">emitter</span><span class="p">.</span><span class="n">onNext</span><span class="p">(</span><span class="m">6</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="nc">Thread</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="m">90</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">emitter</span><span class="p">.</span><span class="n">onNext</span><span class="p">(</span><span class="m">7</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="nc">Thread</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="m">1010</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">emitter</span><span class="p">.</span><span class="n">onNext</span><span class="p">(</span><span class="m">8</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="nc">Thread</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="m">80</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">emitter</span><span class="p">.</span><span class="n">onNext</span><span class="p">(</span><span class="m">9</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">emitter</span><span class="p">.</span><span class="n">onNext</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nc">Thread</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">emitter</span><span class="p">.</span><span class="n">onNext</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nc">Thread</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">emitter</span><span class="p">.</span><span class="n">onNext</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nc">Thread</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1010</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">emitter</span><span class="p">.</span><span class="n">onNext</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nc">Thread</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1010</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">emitter</span><span class="p">.</span><span class="n">onNext</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nc">Thread</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">emitter</span><span class="p">.</span><span class="n">onNext</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nc">Thread</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">emitter</span><span class="p">.</span><span class="n">onNext</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nc">Thread</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1010</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">emitter</span><span class="p">.</span><span class="n">onNext</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nc">Thread</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">80</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">emitter</span><span class="p">.</span><span class="n">onNext</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="n">emitter</span><span class="p">.</span><span class="n">onComplete</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>And for Kotlin Flow:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">myFlow</span><span class="p">():</span> <span class="n">Flow</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">flow</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="m">90</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="m">2</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="m">90</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="m">3</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="m">1010</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="m">4</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="m">1010</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="m">5</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="m">2000</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="m">6</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="m">90</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="m">7</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="m">1010</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="m">8</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="m">80</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="m">9</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="mi">1010</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="mi">1010</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="mi">2000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="mi">1010</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="mi">80</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>In order to test various throttling strategies we’ll have the following test functions parametrized by operators.</p>
 <p>For RxJava:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">testObservable</span><span class="p">(</span><span class="k">operator</span><span class="p">:</span> <span class="n">Observable</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;.()</span> <span class="o">-&gt;</span> <span class="n">Observable</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">latch</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">latch</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">result</span> <span class="p">=</span> <span class="n">StringBuffer</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">observable</span><span class="p">()</span>
@@ -153,7 +153,7 @@ It might be shown as such (scale doesn’t apply):</p>
 </span></span></code></pre></div><p>And for Kotlin Flow:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">testFlow</span><span class="p">(</span><span class="k">operator</span><span class="p">:</span> <span class="n">Flow</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;.()</span> <span class="o">-&gt;</span> <span class="n">Flow</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">latch</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">latch</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">result</span> <span class="p">=</span> <span class="n">StringBuffer</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">CoroutineScope</span><span class="p">(</span><span class="n">Job</span><span class="p">()</span> <span class="p">+</span> <span class="nc">Dispatchers</span><span class="p">.</span><span class="n">Default</span><span class="p">).</span><span class="n">launch</span> <span class="p">{</span>
@@ -174,28 +174,28 @@ If we show expected result on a plot we’ll see the following:</p>
 <p>So, in short after event received we start timer. If new event comes when timer is active, we restart timer. If timer expired then we emit latest item emitted.</p>
 <p>So, we expect here to get events from 3, 4, 5, 7 and 9 events (with all other events throttled).</p>
 <p>To achieve such result in RxJava we’ll need to use debounce operator:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">testObservable</span> <span class="p">{</span> <span class="n">debounce</span><span class="p">(</span><span class="m">1000</span><span class="p">,</span> <span class="nc">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span> <span class="p">}</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">testObservable</span> <span class="p">{</span> <span class="n">debounce</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="nc">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span> <span class="p">}</span>
 </span></span></code></pre></div><p>With Kotlin Flow we’ll have to use same operator:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">testFlow</span> <span class="p">{</span> <span class="n">debounce</span><span class="p">(</span><span class="m">1000</span><span class="p">)</span> <span class="p">}</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">testFlow</span> <span class="p">{</span> <span class="n">debounce</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span> <span class="p">}</span>
 </span></span></code></pre></div><h3 id="throttlelast">ThrottleLast</h3>
 <p>This mode starts timer with predefined interval and emit last emitted value when timer expires. After that it will restart timer.</p>
 <p><img src="../../img/1_lLXqIZ9_Tysd1V3z3i9hsg.png" alt=""></p>
 <p>Here we expect values of 3, 4, 5 and 7 to be emitted.
 Value 9 won’t be emitted in this case because stream would be finished before timer expired.</p>
 <p>To get such behavior we’ll have to use throttleLast in RxJava and sample in Kotlin Flow:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">testObservable</span> <span class="p">{</span> <span class="n">throttleLast</span><span class="p">(</span><span class="m">1000</span><span class="p">,</span> <span class="nc">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span> <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="n">testFlow</span> <span class="p">{</span> <span class="n">sample</span><span class="p">(</span><span class="m">1000</span><span class="p">)</span> <span class="p">}</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">testObservable</span> <span class="p">{</span> <span class="n">throttleLast</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="nc">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">testFlow</span> <span class="p">{</span> <span class="n">sample</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span> <span class="p">}</span>
 </span></span></code></pre></div><h3 id="throttlefirst">ThrottleFirst</h3>
 <p>This operator is useful to avoid double-clicks on buttons. It emits very first item and starts timer. All items which will come before timer expired will be discarded.</p>
 <p><img src="../../img/1_x66TBAX2--F3XtxX54MfJQ.png" alt=""></p>
 <p>Here we would expect to receive events 1, 4, 5, 6, 8.</p>
 <p>In RxJava we’ll use throttleFirst operator:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">testObservable</span> <span class="p">{</span> <span class="n">throttleFirst</span><span class="p">(</span><span class="m">1000</span><span class="p">,</span> <span class="nc">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span> <span class="p">}</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">testObservable</span> <span class="p">{</span> <span class="n">throttleFirst</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="nc">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span> <span class="p">}</span>
 </span></span></code></pre></div><p>In Kotlin Flow though there is no such operator, so we’ll have to write some implementation by our own. The implementation might look like this:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="nf">Flow</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;.</span><span class="n">throttleFirstJava</span><span class="p">(</span><span class="n">periodMillis</span><span class="p">:</span> <span class="n">Long</span><span class="p">):</span> <span class="n">Flow</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">require</span><span class="p">(</span><span class="n">periodMillis</span> <span class="p">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span> <span class="s2">&#34;period should be positive&#34;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">require</span><span class="p">(</span><span class="n">periodMillis</span> <span class="p">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="s2">&#34;period should be positive&#34;</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">flow</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">var</span> <span class="py">lastTime</span> <span class="p">=</span> <span class="m">0L</span>
+</span></span><span class="line"><span class="cl">        <span class="k">var</span> <span class="py">lastTime</span> <span class="p">=</span> <span class="mi">0L</span>
 </span></span><span class="line"><span class="cl">        <span class="n">collect</span> <span class="p">{</span> <span class="k">value</span> <span class="o">-&gt;</span>
 </span></span><span class="line"><span class="cl">            <span class="k">val</span> <span class="py">currentTime</span> <span class="p">=</span> <span class="nc">System</span><span class="p">.</span><span class="n">currentTimeMillis</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">currentTime</span> <span class="p">-</span> <span class="n">lastTime</span> <span class="o">&gt;=</span> <span class="n">periodMillis</span><span class="p">)</span> <span class="p">{</span>
@@ -206,13 +206,13 @@ Value 9 won’t be emitted in this case because stream would be finished before 
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>And the usage will be:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">testFlow</span> <span class="p">{</span> <span class="n">throttleFirstJava</span><span class="p">(</span><span class="m">1000</span><span class="p">)</span> <span class="p">}</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">testFlow</span> <span class="p">{</span> <span class="n">throttleFirstJava</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span> <span class="p">}</span>
 </span></span></code></pre></div><h3 id="throttlelatest">ThrottleLatest</h3>
 <p>ThrottleLatest can be seen as some combination of throttleFirst and throttleLast. It will emit first item and start timer. Then when timer expires it would emit latest emitted value. But it won’t restart timer before new item emitted.</p>
 <p><img src="../../img/1_rQUZS4HK-o5WtTut555gsA.png" alt=""></p>
 <p>Here we expect values of 1, 3, 4, 5, 6, 7 to be emitted. Here value of 8 won’t be emitted because timer hasn’t expired after 7. And 9 won’t be emitted because stream completed before timer expired.</p>
 <p>In RxJava we’ll use throttleLatest operator:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">testObservable</span> <span class="p">{</span> <span class="n">throttleLatest</span><span class="p">(</span><span class="m">1000</span><span class="p">,</span> <span class="nc">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span> <span class="p">}</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">testObservable</span> <span class="p">{</span> <span class="n">throttleLatest</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="nc">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span> <span class="p">}</span>
 </span></span></code></pre></div><p>In Kotlin Flow again there is no such operator, but we can try to write implementation by our own.
 Some java version which uses Timer can look like this:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="nf">Flow</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;.</span><span class="n">throttleLatestJava</span><span class="p">(</span><span class="n">periodMillis</span><span class="p">:</span> <span class="n">Long</span><span class="p">):</span> <span class="n">Flow</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="p">{</span>
@@ -240,7 +240,7 @@ Some java version which uses Timer can look like this:</p>
 </span></span><span class="line"><span class="cl">                            <span class="p">}</span>
 </span></span><span class="line"><span class="cl">                        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">                    <span class="p">},</span>
-</span></span><span class="line"><span class="cl">                    <span class="m">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                    <span class="mi">0</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">                    <span class="n">periodMillis</span>
 </span></span><span class="line"><span class="cl">                <span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="p">}</span>
@@ -251,7 +251,7 @@ Some java version which uses Timer can look like this:</p>
 <p>We might want to write some version which uses coroutines only (similar to debounce):</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="nd">@ExperimentalCoroutinesApi</span>
 </span></span><span class="line"><span class="cl"><span class="k">fun</span> <span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="nf">Flow</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;.</span><span class="n">throttleLatestKotlin</span><span class="p">(</span><span class="n">periodMillis</span><span class="p">:</span> <span class="n">Long</span><span class="p">):</span> <span class="n">Flow</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">require</span><span class="p">(</span><span class="n">periodMillis</span> <span class="p">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span> <span class="s2">&#34;period should be positive&#34;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">require</span><span class="p">(</span><span class="n">periodMillis</span> <span class="p">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="s2">&#34;period should be positive&#34;</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">channelFlow</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="k">val</span> <span class="py">done</span> <span class="p">=</span> <span class="n">Any</span><span class="p">()</span>
@@ -304,7 +304,7 @@ Some java version which uses Timer can look like this:</p>
 </span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">start</span><span class="p">(</span><span class="n">scope</span><span class="p">:</span> <span class="n">CoroutineScope</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">isStarted</span> <span class="p">=</span> <span class="k">true</span>
 </span></span><span class="line"><span class="cl">        <span class="n">channel</span><span class="p">.</span><span class="n">cancel</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">        <span class="n">channel</span> <span class="p">=</span> <span class="n">scope</span><span class="p">.</span><span class="n">produce</span><span class="p">(</span><span class="n">capacity</span> <span class="p">=</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">channel</span> <span class="p">=</span> <span class="n">scope</span><span class="p">.</span><span class="n">produce</span><span class="p">(</span><span class="n">capacity</span> <span class="p">=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">            <span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">                <span class="n">channel</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">Unit</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">                <span class="n">delay</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
@@ -324,8 +324,8 @@ Some java version which uses Timer can look like this:</p>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>Usages of such operators will look like this:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">testFlow</span> <span class="p">{</span> <span class="n">throttleLatestKotlin</span><span class="p">(</span><span class="m">1000</span><span class="p">)</span> <span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="n">testFlow</span> <span class="p">{</span> <span class="n">throttleLatestJava</span><span class="p">(</span><span class="m">1000</span><span class="p">)</span> <span class="p">}</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">testFlow</span> <span class="p">{</span> <span class="n">throttleLatestKotlin</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">testFlow</span> <span class="p">{</span> <span class="n">throttleLatestJava</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span> <span class="p">}</span>
 </span></span></code></pre></div><p>Though because of complexity and possible issues with threading I’d not recommend to use such operators in production code. I hope we’ll have some operators which will be inside standard library.</p>
 <h2 id="conslusion">Conslusion</h2>
 <p>As seen above in Kotlin Flow we have only 2 out of 4 operators for throttling. Though throttleFirst implementation is simple and straightforward, implementation of throttleLatest might be error-prone and it is better to wait until implementation is added to standard library.</p>

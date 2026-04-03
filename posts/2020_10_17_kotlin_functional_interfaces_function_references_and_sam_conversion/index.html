@@ -137,16 +137,16 @@ Callbacks count: 0
 <h3 id="bytecode">Bytecode</h3>
 <p>Let&rsquo;s look on how that is achieved in the bytecode. For <code>addCallback</code> line we have:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl">  <span class="n">L7</span>
-</span></span><span class="line"><span class="cl">    <span class="n">LINENUMBER</span> <span class="m">8</span> <span class="n">L7</span>
-</span></span><span class="line"><span class="cl">    <span class="n">ALOAD</span> <span class="m">1</span>
-</span></span><span class="line"><span class="cl">    <span class="n">ALOAD</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">    <span class="n">LINENUMBER</span> <span class="mi">8</span> <span class="n">L7</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ALOAD</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ALOAD</span> <span class="mi">0</span>
 </span></span><span class="line"><span class="cl">    <span class="n">DUP</span>
 </span></span><span class="line"><span class="cl">    <span class="n">IFNULL</span> <span class="n">L8</span>
-</span></span><span class="line"><span class="cl">    <span class="n">ASTORE</span> <span class="m">2</span>
-</span></span><span class="line"><span class="cl">    <span class="n">NEW</span> <span class="n">TestKt</span><span class="err">$</span><span class="n">sam</span><span class="err">$</span><span class="n">ThirdParty_Callback</span><span class="err">$</span><span class="m">0</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ASTORE</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl">    <span class="n">NEW</span> <span class="n">TestKt</span><span class="err">$</span><span class="n">sam</span><span class="err">$</span><span class="n">ThirdParty_Callback</span><span class="err">$</span><span class="mi">0</span>
 </span></span><span class="line"><span class="cl">    <span class="n">DUP</span>
-</span></span><span class="line"><span class="cl">    <span class="n">ALOAD</span> <span class="m">2</span>
-</span></span><span class="line"><span class="cl">    <span class="n">INVOKESPECIAL</span> <span class="n">TestKt</span><span class="err">$</span><span class="n">sam</span><span class="err">$</span><span class="n">ThirdParty_Callback</span><span class="err">$</span><span class="m">0.</span><span class="p">&lt;</span><span class="k">init</span><span class="p">&gt;</span> <span class="p">(</span><span class="n">Lkotlin</span><span class="p">/</span><span class="n">jvm</span><span class="p">/</span><span class="n">functions</span><span class="p">/</span><span class="n">Function1</span><span class="p">;)</span><span class="n">V</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ALOAD</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl">    <span class="n">INVOKESPECIAL</span> <span class="n">TestKt</span><span class="err">$</span><span class="n">sam</span><span class="err">$</span><span class="n">ThirdParty_Callback</span><span class="err">$</span><span class="mi">0</span><span class="p">.&lt;</span><span class="k">init</span><span class="p">&gt;</span> <span class="p">(</span><span class="n">Lkotlin</span><span class="p">/</span><span class="n">jvm</span><span class="p">/</span><span class="n">functions</span><span class="p">/</span><span class="n">Function1</span><span class="p">;)</span><span class="n">V</span>
 </span></span><span class="line"><span class="cl">   <span class="n">L8</span>
 </span></span><span class="line"><span class="cl">    <span class="n">CHECKCAST</span> <span class="n">ThirdParty</span><span class="err">$</span><span class="n">Callback</span>
 </span></span><span class="line"><span class="cl">    <span class="n">INVOKEVIRTUAL</span> <span class="nc">ThirdParty</span><span class="p">.</span><span class="n">addCallback</span> <span class="p">(</span><span class="n">LThirdParty</span><span class="err">$</span><span class="n">Callback</span><span class="p">;)</span><span class="n">V</span>
@@ -154,16 +154,16 @@ Callbacks count: 0
 </span></span></code></pre></div><p>We create a callback object and pass it to the <code>addCallback</code> method.</p>
 <p>What about <code>removeCallback</code>:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl">  <span class="n">L10</span>
-</span></span><span class="line"><span class="cl">    <span class="n">LINENUMBER</span> <span class="m">10</span> <span class="n">L10</span>
-</span></span><span class="line"><span class="cl">    <span class="n">ALOAD</span> <span class="m">1</span>
-</span></span><span class="line"><span class="cl">    <span class="n">ALOAD</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">    <span class="n">LINENUMBER</span> <span class="mi">10</span> <span class="n">L10</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ALOAD</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ALOAD</span> <span class="mi">0</span>
 </span></span><span class="line"><span class="cl">    <span class="n">DUP</span>
 </span></span><span class="line"><span class="cl">    <span class="n">IFNULL</span> <span class="n">L11</span>
-</span></span><span class="line"><span class="cl">    <span class="n">ASTORE</span> <span class="m">2</span>
-</span></span><span class="line"><span class="cl">    <span class="n">NEW</span> <span class="n">TestKt</span><span class="err">$</span><span class="n">sam</span><span class="err">$</span><span class="n">ThirdParty_Callback</span><span class="err">$</span><span class="m">0</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ASTORE</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl">    <span class="n">NEW</span> <span class="n">TestKt</span><span class="err">$</span><span class="n">sam</span><span class="err">$</span><span class="n">ThirdParty_Callback</span><span class="err">$</span><span class="mi">0</span>
 </span></span><span class="line"><span class="cl">    <span class="n">DUP</span>
-</span></span><span class="line"><span class="cl">    <span class="n">ALOAD</span> <span class="m">2</span>
-</span></span><span class="line"><span class="cl">    <span class="n">INVOKESPECIAL</span> <span class="n">TestKt</span><span class="err">$</span><span class="n">sam</span><span class="err">$</span><span class="n">ThirdParty_Callback</span><span class="err">$</span><span class="m">0.</span><span class="p">&lt;</span><span class="k">init</span><span class="p">&gt;</span> <span class="p">(</span><span class="n">Lkotlin</span><span class="p">/</span><span class="n">jvm</span><span class="p">/</span><span class="n">functions</span><span class="p">/</span><span class="n">Function1</span><span class="p">;)</span><span class="n">V</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ALOAD</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl">    <span class="n">INVOKESPECIAL</span> <span class="n">TestKt</span><span class="err">$</span><span class="n">sam</span><span class="err">$</span><span class="n">ThirdParty_Callback</span><span class="err">$</span><span class="mi">0</span><span class="p">.&lt;</span><span class="k">init</span><span class="p">&gt;</span> <span class="p">(</span><span class="n">Lkotlin</span><span class="p">/</span><span class="n">jvm</span><span class="p">/</span><span class="n">functions</span><span class="p">/</span><span class="n">Function1</span><span class="p">;)</span><span class="n">V</span>
 </span></span><span class="line"><span class="cl">   <span class="n">L11</span>
 </span></span><span class="line"><span class="cl">    <span class="n">CHECKCAST</span> <span class="n">ThirdParty</span><span class="err">$</span><span class="n">Callback</span>
 </span></span><span class="line"><span class="cl">    <span class="n">INVOKEVIRTUAL</span> <span class="nc">ThirdParty</span><span class="p">.</span><span class="n">removeCallback</span> <span class="p">(</span><span class="n">LThirdParty</span><span class="err">$</span><span class="n">Callback</span><span class="p">;)</span><span class="n">V</span>
@@ -171,16 +171,16 @@ Callbacks count: 0
 </span></span></code></pre></div><p>Bytecode is the same! We still create a new Callback object.<br>
 So, we create two callback objects. One per each method call. But the program works correctly.</p>
 <p>This is because of the inner callback implementation:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">final</span> <span class="k">class</span> <span class="nc">TestKt</span><span class="err">$</span><span class="n">sam</span><span class="err">$</span><span class="n">ThirdParty_Callback</span><span class="err">$</span><span class="m">0</span> <span class="n">implements</span> <span class="nc">ThirdParty</span><span class="p">.</span><span class="n">Callback</span><span class="p">,</span> <span class="n">FunctionAdapter</span> <span class="p">{</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">final</span> <span class="k">class</span> <span class="nc">TestKt</span><span class="err">$</span><span class="n">sam</span><span class="err">$</span><span class="n">ThirdParty_Callback</span><span class="err">$</span><span class="mi">0</span> <span class="n">implements</span> <span class="nc">ThirdParty</span><span class="p">.</span><span class="n">Callback</span><span class="p">,</span> <span class="n">FunctionAdapter</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">   <span class="c1">// $FF: synthetic field
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="k">private</span> <span class="k">final</span> <span class="n">Function1</span> <span class="n">function</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl">   <span class="k">private</span> <span class="k">final</span> <span class="n">Function1</span> <span class="n">function</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">   <span class="n">TestKt</span><span class="err">$</span><span class="n">sam</span><span class="err">$</span><span class="n">ThirdParty_Callback</span><span class="err">$</span><span class="m">0</span><span class="p">(</span><span class="n">Function1</span> <span class="n">var1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">   <span class="n">TestKt</span><span class="err">$</span><span class="n">sam</span><span class="err">$</span><span class="n">ThirdParty_Callback</span><span class="err">$</span><span class="mi">0</span><span class="p">(</span><span class="n">Function1</span> <span class="n">var1</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="k">this</span><span class="p">.</span><span class="n">function</span> <span class="p">=</span> <span class="n">var1</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">   <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">   <span class="c1">// $FF: synthetic method
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="k">public</span> <span class="k">final</span> <span class="n">void</span> <span class="n">onValueChanged</span><span class="p">(</span><span class="n">int</span> <span class="k">value</span><span class="p">)</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">   <span class="k">public</span> <span class="k">final</span> <span class="n">void</span> <span class="n">onValueChanged</span><span class="p">(</span><span class="n">int</span> <span class="k">value</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="nc">Intrinsics</span><span class="p">.</span><span class="n">checkExpressionValueIsNotNull</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">function</span><span class="p">.</span><span class="n">invoke</span><span class="p">(</span><span class="k">value</span><span class="p">),</span> <span class="s2">&#34;invoke(...)&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">   <span class="p">}</span>
 </span></span><span class="line"><span class="cl">

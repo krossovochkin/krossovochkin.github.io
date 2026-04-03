@@ -130,7 +130,7 @@ As in previous articles, we’ll try to compare RxJava and Kotlin Flow error han
 <p>First of all, for our comparison, we’ll create helper functions of Flow and Observable, which emit a value and then throw an exception.</p>
 <p>For Observable:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">observable</span><span class="p">(</span>
-</span></span><span class="line"><span class="cl">    <span class="k">value</span><span class="p">:</span> <span class="n">Int</span> <span class="p">=</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">    <span class="k">value</span><span class="p">:</span> <span class="n">Int</span> <span class="p">=</span> <span class="mi">1</span>
 </span></span><span class="line"><span class="cl"><span class="p">):</span> <span class="n">Observable</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nc">Observable</span><span class="p">.</span><span class="n">create</span> <span class="p">{</span> <span class="n">emitter</span> <span class="o">-&gt;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">emitter</span><span class="p">.</span><span class="n">onNext</span><span class="p">(</span><span class="k">value</span><span class="p">)</span>
@@ -139,7 +139,7 @@ As in previous articles, we’ll try to compare RxJava and Kotlin Flow error han
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>And for Kotlin Flow (due to clash of names have to name it with “my” prefix):</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">myFlow</span><span class="p">(</span>
-</span></span><span class="line"><span class="cl">    <span class="k">value</span><span class="p">:</span> <span class="n">Int</span> <span class="p">=</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">    <span class="k">value</span><span class="p">:</span> <span class="n">Int</span> <span class="p">=</span> <span class="mi">1</span>
 </span></span><span class="line"><span class="cl"><span class="p">):</span> <span class="n">Flow</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">flow</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="k">value</span><span class="p">)</span>
@@ -151,7 +151,7 @@ As in previous articles, we’ll try to compare RxJava and Kotlin Flow error han
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">testObservable</span><span class="p">(</span>
 </span></span><span class="line"><span class="cl">    <span class="k">operator</span><span class="p">:</span> <span class="n">Observable</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;.()</span> <span class="o">-&gt;</span> <span class="n">Observable</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">latch</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">latch</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">result</span> <span class="p">=</span> <span class="n">StringBuffer</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">observable</span><span class="p">()</span>
@@ -170,7 +170,7 @@ As in previous articles, we’ll try to compare RxJava and Kotlin Flow error han
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">testFlow</span><span class="p">(</span>
 </span></span><span class="line"><span class="cl">    <span class="k">operator</span><span class="p">:</span> <span class="n">Flow</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;.()</span> <span class="o">-&gt;</span> <span class="n">Flow</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">latch</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">latch</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">result</span> <span class="p">=</span> <span class="n">StringBuffer</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">CoroutineScope</span><span class="p">(</span><span class="n">Job</span><span class="p">()</span> <span class="p">+</span> <span class="nc">Dispatchers</span><span class="p">.</span><span class="n">IO</span><span class="p">).</span><span class="n">launch</span> <span class="p">{</span>
@@ -199,16 +199,16 @@ As in previous articles, we’ll try to compare RxJava and Kotlin Flow error han
 <h3 id="catching-errors-with-an-emitting-default-value">Catching Errors with an emitting default value</h3>
 <p>What if we don’t want our stream to be terminated (as error event terminates the stream)? One of the options is to emit some default value if we encounter an exception.</p>
 <p>In RxJava for that, there is a special operator called onErrorReturn:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">testObservable</span> <span class="p">{</span> <span class="n">onErrorReturn</span> <span class="p">{</span> <span class="m">5</span> <span class="p">}</span> <span class="p">}</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">testObservable</span> <span class="p">{</span> <span class="n">onErrorReturn</span> <span class="p">{</span> <span class="mi">5</span> <span class="p">}</span> <span class="p">}</span>
 </span></span></code></pre></div><p>If we run this example we’ll see that in logs it will be printed:</p>
 <pre tabindex="0"><code>next 1, next 5,
 </code></pre><p>So the first item in the stream (1) was emitted as before, but then instead of an error, we have a default value (5) emitted as well.</p>
 <p>In Kotlin Flow for the same use case, there is an operator catch, and the usage is the following:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">testFlow</span> <span class="p">{</span> <span class="k">catch</span> <span class="p">{</span> <span class="n">emit</span><span class="p">(</span><span class="m">5</span><span class="p">)</span> <span class="p">}</span> <span class="p">}</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">testFlow</span> <span class="p">{</span> <span class="k">catch</span> <span class="p">{</span> <span class="n">emit</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="p">}</span> <span class="p">}</span>
 </span></span></code></pre></div><p>Operator catch catches all the exceptions from the upstream and can do some work, such as emitting default value. And result in logs will be the same.</p>
 <h3 id="catching-errors-by-switching-to-another-stream">Catching Errors by switching to another stream</h3>
 <p>Another option with not failing our stream on error is to switch to another stream. In RxJava for that, there is a special operator onErrorResumeNext:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">testObservable</span> <span class="p">{</span> <span class="n">onErrorResumeNext</span><span class="p">(</span><span class="nc">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">))</span> <span class="p">}</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">testObservable</span> <span class="p">{</span> <span class="n">onErrorResumeNext</span><span class="p">(</span><span class="nc">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span> <span class="p">}</span>
 </span></span></code></pre></div><p>After running the code the result will be:</p>
 <pre tabindex="0"><code>next 1, next 1, next 2, next 3,
 </code></pre><p>First, we have the value of 1 emitted (this is from the initial stream), then after error happened we switch to the new stream and all its values are emitted (and we won’t have an exception thrown).</p>
@@ -216,7 +216,7 @@ As in previous articles, we’ll try to compare RxJava and Kotlin Flow error han
 <p><strong>NOTE</strong>: Essentially it is possible to achieve onErrorReturn with onErrorResumeNext by using onErrorResumeNext(Observable.just(5)), though usage of onErrorResumeNext has bigger overhead, so use it only when new stream is really needed.</p>
 </blockquote>
 <p>In Kotlin Flow for such a case we use that same operator catch:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">testFlow</span> <span class="p">{</span> <span class="k">catch</span> <span class="p">{</span> <span class="n">emitAll</span><span class="p">(</span><span class="n">flowOf</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">))</span> <span class="p">}</span> <span class="p">}</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">testFlow</span> <span class="p">{</span> <span class="k">catch</span> <span class="p">{</span> <span class="n">emitAll</span><span class="p">(</span><span class="n">flowOf</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span> <span class="p">}</span> <span class="p">}</span>
 </span></span></code></pre></div><p>Instead of emitting a single value on error, we emitAll values from the stream with the same expected result.</p>
 <h3 id="intercepting-errors">Intercepting Errors</h3>
 <p>The next thing which we’ll do is intercepting errors. When we intercept errors we can do some side effects without actually handling that error, for example, logging.</p>
@@ -251,10 +251,10 @@ We can apply directly what we’ve learned to our inner streams, though sometime
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">testInnerObservable</span><span class="p">(</span>
 </span></span><span class="line"><span class="cl">    <span class="k">operator</span><span class="p">:</span> <span class="n">Observable</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;.()</span> <span class="o">-&gt;</span> <span class="n">Observable</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">latch</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">latch</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">result</span> <span class="p">=</span> <span class="n">StringBuffer</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nc">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="m">10</span><span class="p">,</span> <span class="m">11</span><span class="p">,</span> <span class="m">12</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nc">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">subscribeOn</span><span class="p">(</span><span class="nc">Schedulers</span><span class="p">.</span><span class="n">io</span><span class="p">())</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="k">operator</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">doOnTerminate</span> <span class="p">{</span> <span class="n">latch</span><span class="p">.</span><span class="n">countDown</span><span class="p">()</span> <span class="p">}</span>
@@ -271,12 +271,12 @@ We can apply directly what we’ve learned to our inner streams, though sometime
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">testInnerFlow</span><span class="p">(</span>
 </span></span><span class="line"><span class="cl">    <span class="k">operator</span><span class="p">:</span> <span class="n">Flow</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;.()</span> <span class="o">-&gt;</span> <span class="n">Flow</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">latch</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">latch</span> <span class="p">=</span> <span class="n">CountDownLatch</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">result</span> <span class="p">=</span> <span class="n">StringBuffer</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">CoroutineScope</span><span class="p">(</span><span class="n">Job</span><span class="p">()</span> <span class="p">+</span> <span class="nc">Dispatchers</span><span class="p">.</span><span class="n">IO</span><span class="p">).</span><span class="n">launch</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="k">try</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="n">flowOf</span><span class="p">(</span><span class="m">10</span><span class="p">,</span> <span class="m">11</span><span class="p">,</span> <span class="m">12</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">flowOf</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">                <span class="p">.</span><span class="k">operator</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">                <span class="p">.</span><span class="n">onCompletion</span> <span class="p">{</span> <span class="n">latch</span><span class="p">.</span><span class="n">countDown</span><span class="p">()</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">                <span class="p">.</span><span class="n">collect</span> <span class="p">{</span>
@@ -367,7 +367,7 @@ In onEach we’ll get all the values emitted. In onCompletion we’ll see that w
 <p><strong>But did anyone spot the issue?</strong></p>
 <p>Let’s run few tests:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">runBlocking</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">flowOf</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flowOf</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">subscribe</span><span class="p">(</span>
 </span></span><span class="line"><span class="cl">            <span class="p">{</span> <span class="n">print</span><span class="p">(</span><span class="s2">&#34;next </span><span class="si">$it</span><span class="s2">, &#34;</span><span class="p">)</span> <span class="p">},</span>
 </span></span><span class="line"><span class="cl">            <span class="p">{</span> <span class="n">print</span><span class="p">(</span><span class="s2">&#34;error </span><span class="si">$it</span><span class="s2">, &#34;</span><span class="p">)</span> <span class="p">},</span>
@@ -380,7 +380,7 @@ In onEach we’ll get all the values emitted. In onCompletion we’ll see that w
 <p>Next test will be with error:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">runBlocking</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="n">flow</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="k">throw</span> <span class="n">RuntimeException</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">subscribe</span><span class="p">(</span>
@@ -395,7 +395,7 @@ In onEach we’ll get all the values emitted. In onCompletion we’ll see that w
 <p>Let’s check the final test — we throw exception in a callback:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">runBlocking</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="n">flow</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">subscribe</span><span class="p">(</span>
 </span></span><span class="line"><span class="cl">            <span class="p">{</span> <span class="n">print</span><span class="p">(</span><span class="s2">&#34;next </span><span class="si">$it</span><span class="s2">, &#34;</span><span class="p">)</span> <span class="p">},</span>

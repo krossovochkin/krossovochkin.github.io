@@ -92,18 +92,18 @@ With Test schedulers we can either provide blocking work in places where it was 
 <h3 id="simple-assert-on-stream">Simple assert on stream</h3>
 <p>We’ll start from simple assertion of the stream values. We might want to verify that subscribing to some stream (e.g. repository method) provides required items and for example has no errors but completes in the end.</p>
 <p>Test for Rxjava in this case will look like the following:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="nc">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="nc">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">test</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertComplete</span><span class="p">()</span>
 </span></span></code></pre></div><p>Here we have simple observable which emits three values and then completes. We subscribe to it using test() method and receive TestObserver as a result. Then we can make assertions on that observer. For example check that we have all three values emitted and that stream completed without errors.</p>
 <p>In Kotlin there is no TestObserver implementation yet. So in order to verify that our stream contains required items we’ll have to just collect into list and look at the results:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">runBlockingTest</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">result</span> <span class="p">=</span> <span class="n">flowOf</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">result</span> <span class="p">=</span> <span class="n">flowOf</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">toList</span><span class="p">(</span><span class="n">mutableListOf</span><span class="p">())</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">assertEquals</span><span class="p">(</span><span class="n">listOf</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">),</span> <span class="n">result</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">assertEquals</span><span class="p">(</span><span class="n">listOf</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">result</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>We could use runBlocking for our test, but it is better to always use runBlockingTest as it provides more features and specially designed for testing.</p>
 <p>Testing of Kotlin Flow seems more similar to general unit testing (as for example with Sequences). But don’t make a decision too early, let’s look at next examples.</p>
@@ -121,10 +121,10 @@ In RxJava for that we’ll use Subject. If we want to send some event to our cla
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNotComplete</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">subject</span><span class="p">.</span><span class="n">onNext</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">subject</span><span class="p">.</span><span class="n">onNext</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">observer</span>
-</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNotComplete</span><span class="p">()</span>
 </span></span></code></pre></div><p>We create our test subject and subscribe to it with test.
@@ -141,9 +141,9 @@ After that we send some event (say we send UI click event to our class) and veri
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">assertEquals</span><span class="p">(</span><span class="n">emptyList</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;(),</span> <span class="n">values</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">assertEquals</span><span class="p">(</span><span class="n">listOf</span><span class="p">(</span><span class="m">1</span><span class="p">),</span> <span class="n">values</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">assertEquals</span><span class="p">(</span><span class="n">listOf</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">values</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">job</span><span class="p">.</span><span class="n">cancel</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
@@ -186,18 +186,18 @@ After using our test observer we’ll have such a test:</p>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">observer</span><span class="p">.</span><span class="n">assertNoValues</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">observer</span><span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">observer</span><span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">observer</span><span class="p">.</span><span class="n">finish</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>Looks better. But pay attention that we still have to finish our test observer in the end of test.</p>
 <p>Now let’s also re-write test for our first example using our test observer:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">runBlockingTest</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">flowOf</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flowOf</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">test</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">finish</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>Again, it now seems to look more declarative.</p>
@@ -208,21 +208,21 @@ For example if we have some load function which works on some particular schedul
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">load</span><span class="p">(</span>
 </span></span><span class="line"><span class="cl">    <span class="n">scheduler</span><span class="p">:</span> <span class="n">Scheduler</span> <span class="p">=</span> <span class="nc">Schedulers</span><span class="p">.</span><span class="n">computation</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl"><span class="p">):</span> <span class="n">Observable</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nc">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">delay</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="nc">TimeUnit</span><span class="p">.</span><span class="n">SECONDS</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nc">Observable</span><span class="p">.</span><span class="n">just</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">delay</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nc">TimeUnit</span><span class="p">.</span><span class="n">SECONDS</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>By default delay works on computation scheduler, which might make testing more difficult.
 For example if we write such a test:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">load</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">test</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertComplete</span><span class="p">()</span>
 </span></span></code></pre></div><p>It will fail, because test will be completed before separate computation thread finished.
 In tests we can provide separate scheduler and one option is to use trampoline.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">load</span><span class="p">(</span><span class="nc">Schedulers</span><span class="p">.</span><span class="n">trampoline</span><span class="p">())</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">test</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertComplete</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
 </span></span></code></pre></div><p>Now our test passes, as now we basically run our code in a blocking manner.
@@ -235,14 +235,14 @@ Note that we’ll wait for the whole delay to expire, so this test will be quite
 </span></span><span class="line"><span class="cl">    <span class="n">advanceUntilIdle</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">observer</span>
-</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">finish</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>And our test load function is:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">private</span> <span class="k">fun</span> <span class="nf">load</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="n">CoroutineContext</span><span class="p">):</span> <span class="n">Flow</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">flow</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="m">1000</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}.</span><span class="n">flowOn</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>What we do here is provide separate context (it is still good approach to provide context/dispatcher as a dependency, so we can use separate one in tests).
@@ -259,7 +259,7 @@ Let’s look at the final example where we’ll test debounce operator with our 
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">subject</span> <span class="p">=</span> <span class="nc">PublishSubject</span><span class="p">.</span><span class="n">create</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;()</span>
 </span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">observer</span> <span class="p">=</span> <span class="n">subject</span>
-</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">debounce</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="nc">TimeUnit</span><span class="p">.</span><span class="n">SECONDS</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">debounce</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nc">TimeUnit</span><span class="p">.</span><span class="n">SECONDS</span><span class="p">,</span> <span class="n">scheduler</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">test</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">observer</span>
@@ -267,24 +267,24 @@ Let’s look at the final example where we’ll test debounce operator with our 
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNotComplete</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">subject</span><span class="p">.</span><span class="n">onNext</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">subject</span><span class="p">.</span><span class="n">onNext</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">observer</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNoValues</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNotComplete</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">scheduler</span><span class="p">.</span><span class="n">advanceTimeBy</span><span class="p">(</span><span class="m">500</span><span class="p">,</span> <span class="nc">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">scheduler</span><span class="p">.</span><span class="n">advanceTimeBy</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="nc">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">observer</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNoValues</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNotComplete</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">scheduler</span><span class="p">.</span><span class="n">advanceTimeBy</span><span class="p">(</span><span class="m">500</span><span class="p">,</span> <span class="nc">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">scheduler</span><span class="p">.</span><span class="n">advanceTimeBy</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="nc">TimeUnit</span><span class="p">.</span><span class="n">MILLISECONDS</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">observer</span>
-</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNotComplete</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
 </span></span></code></pre></div><p>This test is much longer than previous ones, though pretty simple, let’s look what we have here.
@@ -300,23 +300,23 @@ And finally we advance time by 500ms which should expire timer and emit value. A
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">runBlockingTest</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">subject</span> <span class="p">=</span> <span class="n">Channel</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;()</span>
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">observer</span> <span class="p">=</span> <span class="n">subject</span><span class="p">.</span><span class="n">consumeAsFlow</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">debounce</span><span class="p">(</span><span class="m">1000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">debounce</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">test</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">observer</span><span class="p">.</span><span class="n">assertNoValues</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">subject</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">observer</span><span class="p">.</span><span class="n">assertNoValues</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">advanceTimeBy</span><span class="p">(</span><span class="m">500</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">advanceTimeBy</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">observer</span><span class="p">.</span><span class="n">assertNoValues</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">advanceTimeBy</span><span class="p">(</span><span class="m">500</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">advanceTimeBy</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">observer</span>
-</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">finish</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><h2 id="bonus">Bonus</h2>
@@ -325,25 +325,25 @@ One of that API is expect, which declares order in which code expected to be inv
 <p>Let’s look at one test for debounce operator:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl"><span class="k">public</span> <span class="k">fun</span> <span class="nf">testBasic</span><span class="p">()</span> <span class="p">=</span> <span class="n">withVirtualTime</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">expect</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">expect</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">flow</span> <span class="p">=</span> <span class="n">flow</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">expect</span><span class="p">(</span><span class="m">3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">expect</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="s2">&#34;A&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="m">1500</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="mi">1500</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="s2">&#34;B&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="m">500</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="s2">&#34;C&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="m">250</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="mi">250</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="s2">&#34;D&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="m">2000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">delay</span><span class="p">(</span><span class="mi">2000</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="n">emit</span><span class="p">(</span><span class="s2">&#34;E&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="k">expect</span><span class="p">(</span><span class="m">4</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">expect</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">expect</span><span class="p">(</span><span class="m">2</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">result</span> <span class="p">=</span> <span class="n">flow</span><span class="p">.</span><span class="n">debounce</span><span class="p">(</span><span class="m">1000</span><span class="p">).</span><span class="n">toList</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">expect</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">result</span> <span class="p">=</span> <span class="n">flow</span><span class="p">.</span><span class="n">debounce</span><span class="p">(</span><span class="mi">1000</span><span class="p">).</span><span class="n">toList</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="n">assertEquals</span><span class="p">(</span><span class="n">listOf</span><span class="p">(</span><span class="s2">&#34;A&#34;</span><span class="p">,</span> <span class="s2">&#34;D&#34;</span><span class="p">,</span> <span class="s2">&#34;E&#34;</span><span class="p">),</span> <span class="n">result</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="n">finish</span><span class="p">(</span><span class="m">5</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">finish</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>To understand what is the expected order of execution one should just look at indexes inside expect.
 Also it uses auto-incremental virtual time — whenever execution hits delay it automatically advances virtual time by that.

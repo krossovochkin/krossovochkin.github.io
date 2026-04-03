@@ -97,17 +97,17 @@ As a consequence implementation of such interface should also have as less chang
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>We convert this DTO to some Profile domain model, then to View model, which is pushed to View:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="c1">// ViewModel
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">data</span> <span class="k">class</span> <span class="nc">ProfileViewModel</span><span class="p">(</span>
+</span></span></span><span class="line"><span class="cl"><span class="k">data</span> <span class="k">class</span> <span class="nc">ProfileViewModel</span><span class="p">(</span>
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">firstName</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">lastName</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">birthDate</span><span class="p">:</span> <span class="n">String</span>
 </span></span><span class="line"><span class="cl"><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// Presenter
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">view</span><span class="p">.</span><span class="n">bindViewModel</span><span class="p">(</span><span class="n">profileViewModel</span><span class="p">)</span>
+</span></span></span><span class="line"><span class="cl"><span class="n">view</span><span class="p">.</span><span class="n">bindViewModel</span><span class="p">(</span><span class="n">profileViewModel</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// View
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">firstNameTextView</span><span class="p">.</span><span class="n">text</span> <span class="p">=</span> <span class="n">profileViewModel</span><span class="p">.</span><span class="n">firstName</span>
+</span></span></span><span class="line"><span class="cl"><span class="n">firstNameTextView</span><span class="p">.</span><span class="n">text</span> <span class="p">=</span> <span class="n">profileViewModel</span><span class="p">.</span><span class="n">firstName</span>
 </span></span><span class="line"><span class="cl"><span class="n">lastNameTextView</span><span class="p">.</span><span class="n">text</span> <span class="p">=</span> <span class="n">profileViewModel</span><span class="p">.</span><span class="n">lastName</span>
 </span></span><span class="line"><span class="cl"><span class="n">birthDateTextView</span><span class="p">.</span><span class="n">text</span> <span class="p">=</span> <span class="n">profileViewModel</span><span class="p">.</span><span class="n">birthDate</span>
 </span></span></code></pre></div><p>So far, so good. We have pretty clean interface between presenter and view which contains only one method bindViewModel(viewModel: ProfileViewModel) . But still it is way long to be flexible, because we missed view model’s interface.
@@ -119,7 +119,7 @@ Same will happen if we decide to remove some field (we just remove property from
 <p>Now suppose that we decided to relax our requirements and user might not have birth date. In this case response from server will not contain birth date field. And on UI in such case we should hide birth date section.
 Here is how the changes might look like:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="c1">// ViewModel
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">data</span> <span class="k">class</span> <span class="nc">ProfileViewModel</span><span class="p">(</span>
+</span></span></span><span class="line"><span class="cl"><span class="k">data</span> <span class="k">class</span> <span class="nc">ProfileViewModel</span><span class="p">(</span>
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">firstName</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">lastName</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">birthDate</span><span class="p">:</span> <span class="n">String</span><span class="p">,</span>
@@ -127,10 +127,10 @@ Here is how the changes might look like:</p>
 </span></span><span class="line"><span class="cl"><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// Presenter
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">view</span><span class="p">.</span><span class="n">bindViewModel</span><span class="p">(</span><span class="n">profileViewModel</span><span class="p">)</span>
+</span></span></span><span class="line"><span class="cl"><span class="n">view</span><span class="p">.</span><span class="n">bindViewModel</span><span class="p">(</span><span class="n">profileViewModel</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">// View
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">firstNameTextView</span><span class="p">.</span><span class="n">text</span> <span class="p">=</span> <span class="n">profileViewModel</span><span class="p">.</span><span class="n">firstName</span>
+</span></span></span><span class="line"><span class="cl"><span class="n">firstNameTextView</span><span class="p">.</span><span class="n">text</span> <span class="p">=</span> <span class="n">profileViewModel</span><span class="p">.</span><span class="n">firstName</span>
 </span></span><span class="line"><span class="cl"><span class="n">lastNameTextView</span><span class="p">.</span><span class="n">text</span> <span class="p">=</span> <span class="n">profileViewModel</span><span class="p">.</span><span class="n">lastName</span>
 </span></span><span class="line"><span class="cl"><span class="n">birthDateTextView</span><span class="p">.</span><span class="n">text</span> <span class="p">=</span> <span class="n">profileViewModel</span><span class="p">.</span><span class="n">birthDate</span>
 </span></span><span class="line"><span class="cl"><span class="n">birthDateSection</span><span class="p">.</span><span class="n">isVisible</span> <span class="p">=</span> <span class="n">profileViewModel</span><span class="p">.</span><span class="n">isBirthDateVisible</span>

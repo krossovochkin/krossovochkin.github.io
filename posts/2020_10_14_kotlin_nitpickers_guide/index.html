@@ -159,8 +159,8 @@ Having return might allow you to see relevant information while going in the &ld
 <p>I think that it is a matter of taste and agreement in the team. At the same time, I think that there is nothing bad or wrong in using explicit returns.</p>
 <p>One good usage of not-one-liner <code>=</code> I see in maintaining exhaustive <code>when</code>:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">resolve</span><span class="p">(</span><span class="n">orientation</span><span class="p">:</span> <span class="n">Orientation</span><span class="p">):</span> <span class="n">Int</span> <span class="p">=</span> <span class="k">when</span> <span class="p">(</span><span class="n">orientation</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">HORIZONTAL</span> <span class="o">-&gt;</span> <span class="m">0</span>
-</span></span><span class="line"><span class="cl">    <span class="n">VERTICAL</span> <span class="o">-&gt;</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">    <span class="n">HORIZONTAL</span> <span class="o">-&gt;</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="n">VERTICAL</span> <span class="o">-&gt;</span> <span class="mi">1</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>Here we save some space and at the same time support our &ldquo;scanning mode&rdquo; because the right part with <code>when</code> here is not that important.</p>
 <h3 id="implicit-return-types">Implicit return types</h3>
@@ -189,17 +189,17 @@ Less code is better.</p>
 <p>Second note is about primitive numbers initialization.<br>
 Unlike Java in Kotlin there is no auto-convert between primitive numbers. When in Java it is possible to write:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kt">float</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">0</span><span class="p">.</span><span class="na">4</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w">
 </span></span></span></code></pre></div><p>in Kotlin explicit conversion is required:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">a</span><span class="p">:</span> <span class="n">Float</span> <span class="p">=</span> <span class="m">0.4f</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">a</span><span class="p">:</span> <span class="n">Float</span> <span class="p">=</span> <span class="mf">0.4f</span>
 </span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">b</span><span class="p">:</span> <span class="n">Int</span> <span class="p">=</span> <span class="n">a</span><span class="p">.</span><span class="n">toInt</span><span class="p">()</span>
 </span></span></code></pre></div><p>And here we get to the caveat: it is so tempting to omit variable type here, because value is <code>0.4f</code> - it is float. If it was <code>0.0</code> then it would be double, if <code>0L</code> then long and if just 0 then Int. It is clear and idiomatic!<br>
 But there is nothing wrong with using explicit variable types:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">long1</span> <span class="p">=</span> <span class="m">1</span><span class="n">_000_000L</span>
-</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">long2</span><span class="p">:</span> <span class="n">Long</span> <span class="p">=</span> <span class="m">1</span><span class="n">_000_000</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">val</span> <span class="py">long1</span> <span class="p">=</span> <span class="mi">1_000_000L</span>
+</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">long2</span><span class="p">:</span> <span class="n">Long</span> <span class="p">=</span> <span class="mi">1_000_000</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">float1</span> <span class="p">=</span> <span class="m">0.004304939340f</span>
-</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">float2</span><span class="p">:</span> <span class="n">Float</span> <span class="p">=</span> <span class="m">0.004304939340f</span>
+</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">float1</span> <span class="p">=</span> <span class="mf">0.004304939340f</span>
+</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">float2</span><span class="p">:</span> <span class="n">Float</span> <span class="p">=</span> <span class="mf">0.004304939340f</span>
 </span></span></code></pre></div><p>If the number is big and you use implicit types then reader have to look at the whole line till the very end to infer type instead of looking at the declaration.<br>
 Remember, we write code not for compiler.</p>
 <h3 id="foreach-vs-for">forEach vs for</h3>
@@ -208,7 +208,7 @@ Remember, we write code not for compiler.</p>
 We&rsquo;re doing functional programming, not imperative!</p>
 </blockquote>
 <p>For collections, arrays, and basically, all objects which implement Iterable interface (or even Strings) it is possible to use <code>forEach</code> method instead of explicit <code>for</code> loop. In many cases, it has a decisive advantage. Compare:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="k">in</span> <span class="m">0</span> <span class="n">until</span> <span class="n">list</span><span class="p">.</span><span class="n">size</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="k">in</span> <span class="mi">0</span> <span class="n">until</span> <span class="n">list</span><span class="p">.</span><span class="n">size</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="n">println</span><span class="p">(</span><span class="n">list</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
@@ -221,12 +221,12 @@ We&rsquo;re doing functional programming, not imperative!</p>
 But we write functional code, right? Functions should be our primary option?</p>
 <p>I see no issues in using <code>for</code> loops instead of <code>forEach</code>.<br>
 In some cases using <code>forEach</code> would be bad:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="p">(</span><span class="m">1.</span><span class="p">.</span><span class="m">10</span><span class="p">).</span><span class="n">forEach</span> <span class="p">{</span> <span class="o">..</span><span class="p">.</span> <span class="p">}</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="p">(</span><span class="mi">1</span><span class="o">..</span><span class="mi">10</span><span class="p">).</span><span class="n">forEach</span> <span class="p">{</span> <span class="o">..</span><span class="p">.</span> <span class="p">}</span>
 </span></span></code></pre></div><p>will create additional object for <code>IntRange</code>, which we won&rsquo;t have if we use just <code>for</code> loop.</p>
 <p>Another important thing is that lambda declares scope. And in such a case Kotlin compiler might not be able to infer types.
 Let&rsquo;s look at the example of finding max value in an array:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">var</span> <span class="py">max</span><span class="p">:</span> <span class="n">Int</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
-</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">array</span> <span class="p">=</span> <span class="n">intArrayOf</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">val</span> <span class="py">array</span> <span class="p">=</span> <span class="n">intArrayOf</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="k">in</span> <span class="n">array</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">max</span> <span class="o">==</span> <span class="k">null</span> <span class="o">||</span> <span class="n">i</span> <span class="p">&gt;</span> <span class="n">max</span><span class="p">)</span> <span class="p">{</span>
@@ -236,7 +236,7 @@ Let&rsquo;s look at the example of finding max value in an array:</p>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">array</span><span class="p">.</span><span class="n">forEach</span> <span class="p">{</span> <span class="n">i</span> <span class="o">-&gt;</span>
 </span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">max</span> <span class="o">==</span> <span class="k">null</span> <span class="o">||</span> <span class="n">i</span> <span class="p">&gt;</span> <span class="n">max</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// &lt;- Smart cast to &#39;Int&#39; is impossible, because &#39;max&#39; is a local variable that is captured by a changing closure
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">max</span> <span class="p">=</span> <span class="n">i</span>
+</span></span></span><span class="line"><span class="cl">        <span class="n">max</span> <span class="p">=</span> <span class="n">i</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>Version with <code>for</code> works well because compiler was able to smart cast from <code>Int?</code> to <code>Int</code>. In case of <code>forEach</code> smart cast was impossible.</p>
@@ -270,12 +270,12 @@ Then you can remove curly braces and return type. Cool!</p>
 <p>Usage of apply/with/etc. also might lead to some issues with declaring what is <code>this</code> in given scope, in case where we use some nesting:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">object1</span><span class="p">.</span><span class="n">apply</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="n">object2</span><span class="p">.</span><span class="n">apply</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">value</span> <span class="p">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">        <span class="k">value</span> <span class="p">=</span> <span class="mi">0</span>
 </span></span><span class="line"><span class="cl">        <span class="k">this</span><span class="nd">@object1</span><span class="p">.</span><span class="k">value</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="k">value</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>If you use labeled <code>this</code> you should point yourself that code could look better without <code>apply</code>:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">object2</span><span class="p">.</span><span class="k">value</span> <span class="p">=</span> <span class="m">0</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">object2</span><span class="p">.</span><span class="k">value</span> <span class="p">=</span> <span class="mi">0</span>
 </span></span><span class="line"><span class="cl"><span class="n">objet1</span><span class="p">.</span><span class="k">value</span> <span class="p">=</span> <span class="n">object2</span><span class="p">.</span><span class="k">value</span>
 </span></span></code></pre></div><h3 id="conclusion">Conclusion</h3>
 <p>Code style is important. Code review is important.<br>

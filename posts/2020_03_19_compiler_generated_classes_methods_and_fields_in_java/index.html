@@ -95,7 +95,7 @@ Our example will be:</p>
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">static</span><span class="w"> </span><span class="n">Child</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>Next we’ll compile it with: javac Main.java
 It will produce two files: Main.class and Main$Child.class.
 To look at the generated code we’ll use javap:javap -v Main$Child.class</p>
@@ -143,7 +143,7 @@ Also pay attention that that field has ACC_SYNTHETIC flag, which shows that fiel
 </span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">foo</span><span class="p">();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>Here we’ll use javap with -p flag to see private members:</p>
 <pre tabindex="0"><code>class Main$Child
 ...
@@ -220,7 +220,7 @@ Also pay attention that that field has ACC_SYNTHETIC flag, which shows that fiel
 </span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">run</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">};</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>We’ll see that there will be two .class files: Main.class and Main$1.class. Second one is created for our anonymous Runnable and inside we’ll see the following:</p>
 <pre tabindex="0"><code>class Main$1 implements java.lang.Runnable
 ...
@@ -259,7 +259,7 @@ Applying that let’s imagine what could happen in the following case. We’ll c
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">compareTo</span><span class="p">(</span><span class="n">MyInt</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// TODO: implement</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>If we apply type erasure it would mean that effectively our class will have method compareTo(MyInt other) at the same time implementing Comparable without any type information (which means that we are working with Object).
 In this case as we don’t have compareTo(Object other) method nothing seems will work.
 Here to help comes special type of synthetic — bridge methods.</p>

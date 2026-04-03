@@ -109,7 +109,7 @@ Approach with *findViewById *will be our baseline.</p>
 </span></span><span class="line"><span class="cl">    <span class="k">private</span> <span class="k">fun</span> <span class="nf">update</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">textView</span><span class="p">.</span><span class="n">text</span> <span class="p">=</span> <span class="s2">&#34;Text&#34;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">textView</span><span class="p">.</span><span class="n">setTextColor</span><span class="p">(</span><span class="nc">Color</span><span class="p">.</span><span class="n">RED</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">textView</span><span class="p">.</span><span class="n">textSize</span> <span class="p">=</span> <span class="m">14.0f</span>
+</span></span><span class="line"><span class="cl">        <span class="n">textView</span><span class="p">.</span><span class="n">textSize</span> <span class="p">=</span> <span class="mf">14.0f</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>Here is what we’ll get if we try to look at generated java code:</p>
@@ -167,7 +167,7 @@ Approach with *findViewById *will be our baseline.</p>
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="p">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>We immediately have a number of questions:</p>
 <ul>
 <li>
@@ -199,7 +199,7 @@ But it is something we know, not the compiler.</p>
 </span></span><span class="line"><span class="cl">    <span class="n">textView</span><span class="p">.</span><span class="n">apply</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">text</span> <span class="p">=</span> <span class="s2">&#34;Text&#34;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">setTextColor</span><span class="p">(</span><span class="nc">Color</span><span class="p">.*</span><span class="n">RED</span><span class="p">*)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">textSize</span> <span class="p">=</span> <span class="m">14.0f</span>
+</span></span><span class="line"><span class="cl">        <span class="n">textSize</span> <span class="p">=</span> <span class="mf">14.0f</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>So the resulting Java code will be:</p>
@@ -213,7 +213,7 @@ But it is something we know, not the compiler.</p>
 </span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="n">var1</span><span class="p">.</span><span class="na">setText</span><span class="p">((</span><span class="n">CharSequence</span><span class="p">)</span><span class="s">&#34;Text&#34;</span><span class="p">);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="n">var1</span><span class="p">.</span><span class="na">setTextColor</span><span class="p">(</span><span class="o">-</span><span class="n">65536</span><span class="p">);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="n">var1</span><span class="p">.</span><span class="na">setTextSize</span><span class="p">(</span><span class="n">14</span><span class="p">.</span><span class="na">0F</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>So we have only one check and then update all properties on local property. Neat.</p>
 <p>Though such optimizations are definitely premature as anyway in release build ProGuard will do better optimization work without making your code look a bit weird.</p>
 <h3 id="hashmapsparsearray">HashMap/SparseArray</h3>
@@ -252,7 +252,7 @@ Seems *SparseArray *is better option because we’ll have primitive integers as 
 </span></span><span class="line"><span class="cl">    <span class="k">private</span> <span class="k">fun</span> <span class="nf">update</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">textView</span><span class="p">.</span><span class="n">text</span> <span class="p">=</span> <span class="s2">&#34;Text&#34;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">textView</span><span class="p">.</span><span class="n">setTextColor</span><span class="p">(</span><span class="nc">Color</span><span class="p">.</span><span class="n">RED</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">textView</span><span class="p">.</span><span class="n">textSize</span> <span class="p">=</span> <span class="m">14.0f</span>
+</span></span><span class="line"><span class="cl">        <span class="n">textView</span><span class="p">.</span><span class="n">textSize</span> <span class="p">=</span> <span class="mf">14.0f</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>Generated Java code (synthetics part is removed):</p>
@@ -303,7 +303,7 @@ Seems *SparseArray *is better option because we’ll have primitive integers as 
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="n">var10000</span><span class="p">.</span><span class="na">setTextSize</span><span class="p">(</span><span class="n">14</span><span class="p">.</span><span class="na">0F</span><span class="p">);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>So, basically everything is the same. The difference is only that additional getter and setter for our *TextView *was generated.
 It is actually redundant (and will be removed by <em>ProGuard</em>), because *ButterKnife *injector will work directly on field:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ButterKnifeAcivity_ViewBinding</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">Unbinder</span><span class="w"> </span><span class="p">{</span><span class="w">
@@ -329,7 +329,7 @@ It is actually redundant (and will be removed by <em>ProGuard</em>), because *Bu
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">target</span><span class="p">.</span><span class="na">textView</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>So, basically using <em>ButterKnife</em> is similar to vanilla approach. The only difference is that we don’t have to write a lot of *findViewById *calls (though we still need to write one line per property — *Binds *annotation — but it is anyway better as we have actual property and view id near to each other).</p>
 <p>There is small downside that *ButterKnife *uses reflection to instantiate *ViewBinding *class. But this is usual trade-off between reflection and code generation.</p>
 <h3 id="result-1">Result</h3>
@@ -355,7 +355,7 @@ It is actually redundant (and will be removed by <em>ProGuard</em>), because *Bu
 </span></span><span class="line"><span class="cl">    <span class="k">private</span> <span class="k">fun</span> <span class="nf">update</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">textView</span><span class="p">.</span><span class="n">text</span> <span class="p">=</span> <span class="s2">&#34;Text&#34;</span>
 </span></span><span class="line"><span class="cl">        <span class="n">textView</span><span class="p">.</span><span class="n">setTextColor</span><span class="p">(</span><span class="nc">Color</span><span class="p">.</span><span class="n">RED</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">textView</span><span class="p">.</span><span class="n">textSize</span> <span class="p">=</span> <span class="m">14.0f</span>
+</span></span><span class="line"><span class="cl">        <span class="n">textView</span><span class="p">.</span><span class="n">textSize</span> <span class="p">=</span> <span class="mf">14.0f</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>Generated Java code:</p>
@@ -398,7 +398,7 @@ It is actually redundant (and will be removed by <em>ProGuard</em>), because *Bu
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="p">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>Here we have version with *SparseArray *to not have, as discussed above, useless autoboxing of integer keys.</p>
 <p>The main issue with generated code is that even as we call three methods on same property sequentially, we still have 3 lookups in view cache (yes, *findViewById *will be called just once — at first time, but why to get value from cache all the time?).</p>
 <p>Again, we can work-around this by using <em>.apply</em>, as we did in vanilla approach. Then generated code will be like:</p>
@@ -407,7 +407,7 @@ It is actually redundant (and will be removed by <em>ProGuard</em>), because *Bu
 </span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="n">var1</span><span class="p">.</span><span class="na">setText</span><span class="p">((</span><span class="n">CharSequence</span><span class="p">)</span><span class="s">&#34;Text&#34;</span><span class="p">);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="n">var1</span><span class="p">.</span><span class="na">setTextColor</span><span class="p">(</span><span class="o">-</span><span class="n">65536</span><span class="p">);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">   </span><span class="n">var1</span><span class="p">.</span><span class="na">setTextSize</span><span class="p">(</span><span class="n">14</span><span class="p">.</span><span class="na">0F</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>Looks like we’ve improved our code a bit, as now we’ll call cache only once (and if HashMap is used, then we’ll not have two additional boxing of integer primitive).
 That actually looks pretty good.</p>
 <p>But if we look at generated *dex *byte-code for release build, then it turns out everything is not that easy and straightforward.

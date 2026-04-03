@@ -83,7 +83,7 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">observeLocations</span><span class="p">():</span> <span class="n">Flowable</span><span class="p">&lt;</span><span class="n">Location</span><span class="p">&gt;</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// implementation
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>We don’t care about implementation of the class (as it might be different depending on the use-case) and are more interested in looking at the public API and how we might want to test it.</p>
 <h3 id="values-emission">Values emission</h3>
@@ -92,9 +92,9 @@
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">`when platform provides location then value is emitted`</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// setup platform test double to provide location
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// verify value is emitted by provider
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">provider</span><span class="p">.</span><span class="n">observeLocations</span><span class="p">()</span>
+</span></span></span><span class="line"><span class="cl">    <span class="n">provider</span><span class="p">.</span><span class="n">observeLocations</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">test</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertValue</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
@@ -116,9 +116,9 @@
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">`when platform fails to provide location then stream has no errors`</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// setup platform test double to fail
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    
+</span></span></span><span class="line"><span class="cl">    
 </span></span><span class="line"><span class="cl">    <span class="c1">// verify error is not terminated with error 
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">provider</span><span class="p">.</span><span class="n">observeLocations</span><span class="p">()</span>
+</span></span></span><span class="line"><span class="cl">    <span class="n">provider</span><span class="p">.</span><span class="n">observeLocations</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">test</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
@@ -137,9 +137,9 @@
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">`when duplicate value provided then skips duplicate`</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// setup platform test double to emit two duplicate items
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// verify only the first item is emitted by provider
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">provider</span><span class="p">.</span><span class="n">observeLocations</span><span class="p">()</span>
+</span></span></span><span class="line"><span class="cl">    <span class="n">provider</span><span class="p">.</span><span class="n">observeLocations</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">test</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertValue</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
@@ -161,7 +161,7 @@
 </span></span><span class="line"><span class="cl">    <span class="n">provider</span><span class="p">.</span><span class="n">observeLocations</span><span class="p">().</span><span class="n">test</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// verify that platform API was called only once
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><h3 id="disposal">Disposal</h3>
 <p>When sharing subscriptions as an implementation detail, we might want to add test to ensure that if there are no subscribers - we don’t listen for platform API calls to not consume resources. Not doing so, we might end up with a provider being running in the background even if nobody listens to its values. To cover this, we can write the following test:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">`disposes when no subscribers`</span><span class="p">()</span> <span class="p">{</span>
@@ -172,7 +172,7 @@
 </span></span><span class="line"><span class="cl">    <span class="n">observer2</span><span class="p">.</span><span class="n">dispose</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// verify that platform API was unsubscribed
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><h3 id="throttling">Throttling</h3>
 <p>If we don’t want to overwhelm consumers with a lot of data, we can apply throttling to emit location e.g. every second. Again, not stating this explicitly might break consumers if the rate is changed afterwards. To ensure correct throttling is applied, one needs to add tests for that:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">`throttles by one second`</span><span class="p">()</span> <span class="p">{</span>
@@ -180,19 +180,19 @@
 </span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">observer</span> <span class="p">=</span> <span class="n">provider</span><span class="p">.</span><span class="n">observeLocations</span><span class="p">().</span><span class="n">test</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// make platform to emit few items 
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// verify only first item emitted
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">observer</span>
+</span></span></span><span class="line"><span class="cl">    <span class="n">observer</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertValue</span><span class="p">(</span><span class="n">location1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertNotComplete</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">testScheduler</span><span class="p">.</span><span class="n">advanceTimeBy</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">SECOND</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">testScheduler</span><span class="p">.</span><span class="n">advanceTimeBy</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">SECOND</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// make platform to emit a few more items
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// verify only one new item emitted
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">observer</span>
+</span></span></span><span class="line"><span class="cl">    <span class="n">observer</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertValues</span><span class="p">(</span><span class="n">location1</span><span class="p">,</span> <span class="n">locationN</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertNoErrors</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">assertNotComplete</span><span class="p">()</span>

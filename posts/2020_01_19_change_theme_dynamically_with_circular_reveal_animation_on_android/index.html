@@ -181,8 +181,8 @@ Sounds hacky, though pretty working solution.</p>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">TODO</span><span class="p">(</span><span class="s2">&#34;Change theme over all views&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">anim</span> <span class="p">=</span> <span class="nc">ViewAnimationUtils</span><span class="p">.</span><span class="n">createCircularReveal</span><span class="p">(</span><span class="n">container</span><span class="p">,</span> <span class="n">w</span> <span class="p">/</span> <span class="m">2</span><span class="p">,</span> <span class="n">h</span> <span class="p">/</span> <span class="m">2</span><span class="p">,</span> <span class="m">0f</span><span class="p">,</span> <span class="n">finalRadius</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="n">anim</span><span class="p">.</span><span class="n">duration</span> <span class="p">=</span> <span class="m">400L</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">anim</span> <span class="p">=</span> <span class="nc">ViewAnimationUtils</span><span class="p">.</span><span class="n">createCircularReveal</span><span class="p">(</span><span class="n">container</span><span class="p">,</span> <span class="n">w</span> <span class="p">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">h</span> <span class="p">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0f</span><span class="p">,</span> <span class="n">finalRadius</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">anim</span><span class="p">.</span><span class="n">duration</span> <span class="p">=</span> <span class="mi">400L</span>
 </span></span><span class="line"><span class="cl">    <span class="n">anim</span><span class="p">.</span><span class="n">doOnEnd</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">imageView</span><span class="p">.</span><span class="n">setImageDrawable</span><span class="p">(</span><span class="k">null</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="n">imageView</span><span class="p">.</span><span class="n">isVisible</span> <span class="p">=</span> <span class="k">false</span>
@@ -263,7 +263,7 @@ Let’s make our own custom TextView as example:</p>
 </span></span><span class="line"><span class="cl"><span class="k">constructor</span><span class="p">(</span>
 </span></span><span class="line"><span class="cl">    <span class="n">context</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">    <span class="n">attrs</span><span class="p">:</span> <span class="n">AttributeSet</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="n">defStyleAttr</span><span class="p">:</span> <span class="n">Int</span> <span class="p">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">    <span class="n">defStyleAttr</span><span class="p">:</span> <span class="n">Int</span> <span class="p">=</span> <span class="mi">0</span>
 </span></span><span class="line"><span class="cl"><span class="p">)</span> <span class="p">:</span> <span class="n">AppCompatTextView</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">attrs</span><span class="p">,</span> <span class="n">defStyleAttr</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">setTheme</span><span class="p">(</span><span class="n">theme</span><span class="p">:</span> <span class="nc">ThemeManager</span><span class="p">.</span><span class="n">Theme</span><span class="p">)</span> <span class="p">{</span>
@@ -304,7 +304,7 @@ For this we’ll add a bit more functionality into ThemeManager — we’ll add 
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">  
 </span></span><span class="line"><span class="cl">  <span class="c1">// ...
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>Nothing really interesting, just added listeners, ability to add and remove them and we update listeners on each change of theme.</p>
 <h3 id="views-with-reactive-theme-changes-support">Views with reactive theme changes support</h3>
 <p>Using these listeners we update our MyTextView to trigger update on theme changed:</p>
@@ -313,7 +313,7 @@ For this we’ll add a bit more functionality into ThemeManager — we’ll add 
 </span></span><span class="line"><span class="cl"><span class="k">constructor</span><span class="p">(</span>
 </span></span><span class="line"><span class="cl">    <span class="n">context</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">    <span class="n">attrs</span><span class="p">:</span> <span class="n">AttributeSet</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="n">defStyleAttr</span><span class="p">:</span> <span class="n">Int</span> <span class="p">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">    <span class="n">defStyleAttr</span><span class="p">:</span> <span class="n">Int</span> <span class="p">=</span> <span class="mi">0</span>
 </span></span><span class="line"><span class="cl"><span class="p">)</span> <span class="p">:</span> <span class="n">AppCompatTextView</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">attrs</span><span class="p">,</span> <span class="n">defStyleAttr</span><span class="p">),</span>
 </span></span><span class="line"><span class="cl">    <span class="nc">ThemeManager</span><span class="p">.</span><span class="n">ThemeChangedListener</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">
@@ -409,8 +409,8 @@ For this we’ll add a bit more functionality into ThemeManager — we’ll add 
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nc">ThemeManager</span><span class="p">.</span><span class="n">theme</span> <span class="p">=</span> <span class="n">theme</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">anim</span> <span class="p">=</span> <span class="nc">ViewAnimationUtils</span><span class="p">.</span><span class="n">createCircularReveal</span><span class="p">(</span><span class="n">imageView</span><span class="p">,</span> <span class="n">w</span> <span class="p">/</span> <span class="m">2</span><span class="p">,</span> <span class="n">h</span> <span class="p">/</span> <span class="m">2</span><span class="p">,</span> <span class="n">finalRadius</span><span class="p">,</span> <span class="m">0f</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="n">anim</span><span class="p">.</span><span class="n">duration</span> <span class="p">=</span> <span class="m">400L</span>
+</span></span><span class="line"><span class="cl">    <span class="k">val</span> <span class="py">anim</span> <span class="p">=</span> <span class="nc">ViewAnimationUtils</span><span class="p">.</span><span class="n">createCircularReveal</span><span class="p">(</span><span class="n">imageView</span><span class="p">,</span> <span class="n">w</span> <span class="p">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">h</span> <span class="p">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">finalRadius</span><span class="p">,</span> <span class="mf">0f</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">anim</span><span class="p">.</span><span class="n">duration</span> <span class="p">=</span> <span class="mi">400L</span>
 </span></span><span class="line"><span class="cl">    <span class="n">anim</span><span class="p">.</span><span class="n">doOnEnd</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">imageView</span><span class="p">.</span><span class="n">setImageDrawable</span><span class="p">(</span><span class="k">null</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="n">imageView</span><span class="p">.</span><span class="n">isVisible</span> <span class="p">=</span> <span class="k">false</span>

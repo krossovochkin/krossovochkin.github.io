@@ -92,19 +92,19 @@ It is simple though vague: good extension solves some problems. When we talk abo
 A classic example is an extension for a factorial.</p>
 <p>Say, we have a factorial method:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">num</span><span class="p">:</span> <span class="n">Int</span><span class="p">):</span> <span class="n">Long</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">var</span> <span class="py">result</span> <span class="p">=</span> <span class="m">1L</span>
-</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="k">in</span> <span class="m">2.</span><span class="p">.</span><span class="n">num</span><span class="p">)</span> <span class="n">result</span> <span class="o">*=</span> <span class="n">i</span>
+</span></span><span class="line"><span class="cl">    <span class="k">var</span> <span class="py">result</span> <span class="p">=</span> <span class="mi">1L</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="k">in</span> <span class="mi">2</span><span class="o">..</span><span class="n">num</span><span class="p">)</span> <span class="n">result</span> <span class="o">*=</span> <span class="n">i</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">result</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>This is just an <a href="https://stackoverflow.com/a/45194538/1533933">example</a> (don&rsquo;t use in production, as it might not suit best for your needs - for example, if you need to call this method many times).</p>
 <p>To calculate factorial we&rsquo;ll call it like:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">factorial</span><span class="p">(</span><span class="m">5</span><span class="p">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">factorial</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 </span></span></code></pre></div><p>&ldquo;Meh, too verbose, let&rsquo;s create an extension to make it shorter&rdquo;:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">operator</span> <span class="k">fun</span> <span class="nf">Int</span><span class="p">.</span><span class="n">not</span><span class="p">():</span> <span class="n">Int</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">factorial</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>This is our smart extension, and now we can call the method like this:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="p">!</span><span class="m">5</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="p">!</span><span class="mi">5</span>
 </span></span></code></pre></div><p>See, it is like <code>5!</code> which is a mathematical expression for factorial. Yes, we have an exclamation mark at the beginning, as we can&rsquo;t put it to the end, but still, it is shorter!</p>
 <p>The reality is that it is very difficult to understand for someone who doesn&rsquo;t know that trick what the method is doing.<br>
 From the perspective of such a person that expression looks like a negation of the <code>Int</code>. What it should do? Maybe it is a bitwise negation? Or maybe it converts the number to 1 or 0? Or something else. One can&rsquo;t say without looking at the source of the method. And here is the issue.</p>

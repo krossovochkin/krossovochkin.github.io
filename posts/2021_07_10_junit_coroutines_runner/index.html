@@ -80,8 +80,8 @@
 <h3 id="basic-test">Basic test</h3>
 <p>Let&rsquo;s get to the very beginning: we have some function that does some important work and that is suspendable. For simplicity, the function will return some constant value after some delay.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">suspend</span> <span class="k">fun</span> <span class="nf">calculate</span><span class="p">():</span> <span class="n">Int</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">delay</span><span class="p">(</span><span class="m">100L</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">    <span class="n">delay</span><span class="p">(</span><span class="mi">100L</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">1</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>The next step is to cover this function with tests. We&rsquo;ll have two tests: one for positive and one for negative cases. This can be considered simple mutation testing. In general, we don&rsquo;t need <code>testFail</code>, but for this specific case, it might be useful to verify that we get green tests only if everything is fine, and if something is wrong that we get red tests as expected.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">MainTest</span> <span class="p">{</span>
@@ -89,14 +89,14 @@
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">testSuccess</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">runBlockingTest</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="n">check</span><span class="p">(</span><span class="n">calculate</span><span class="p">()</span> <span class="o">==</span> <span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">check</span><span class="p">(</span><span class="n">calculate</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span><span class="p">(</span><span class="n">expected</span> <span class="p">=</span> <span class="n">IllegalStateException</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">testFail</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="n">runBlockingTest</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="n">check</span><span class="p">(</span><span class="n">calculate</span><span class="p">()</span> <span class="o">==</span> <span class="m">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">check</span><span class="p">(</span><span class="n">calculate</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
@@ -105,12 +105,12 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">testSuccess</span><span class="p">()</span> <span class="p">=</span> <span class="n">runBlockingTest</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">check</span><span class="p">(</span><span class="n">calculate</span><span class="p">()</span> <span class="o">==</span> <span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">check</span><span class="p">(</span><span class="n">calculate</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span><span class="p">(</span><span class="n">expected</span> <span class="p">=</span> <span class="n">IllegalStateException</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">testFail</span><span class="p">()</span> <span class="p">=</span> <span class="n">runBlockingTest</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">check</span><span class="p">(</span><span class="n">calculate</span><span class="p">()</span> <span class="o">==</span> <span class="m">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">check</span><span class="p">(</span><span class="n">calculate</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><h3 id="custom-junit-rule">Custom JUnit Rule</h3>
@@ -127,8 +127,8 @@
 </span></span></code></pre></div><p>Now we can drop <code>runBlockingTest</code> from the test method. But if we do - we face an error:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">testSuccess</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">check</span><span class="p">(</span><span class="n">calculate</span><span class="p">()</span> <span class="o">==</span> <span class="m">1</span><span class="p">)</span> <span class="c1">// Suspend function &#39;calculate&#39; should be called only from a coroutine or another suspend function
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">check</span><span class="p">(</span><span class="n">calculate</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">// Suspend function &#39;calculate&#39; should be called only from a coroutine or another suspend function
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>Yes, to call our function under test we need coroutine scope. Previously it was created by <code>runBlockingTest</code> and now it is missing. What can we do? Look at the second part of the error message: &ldquo;or another suspend function&rdquo;. Let&rsquo;s make our test methods <code>suspend</code> and apply our custom rule:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">MainTest</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">
@@ -137,7 +137,7 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">testSuccess</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">check</span><span class="p">(</span><span class="n">calculate</span><span class="p">()</span> <span class="o">==</span> <span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">check</span><span class="p">(</span><span class="n">calculate</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>Nice!</p>
@@ -164,7 +164,7 @@ Looking at the stack trace we find the place where validation checks happen - <c
 </span></span></span><span class="line"><span class="cl"><span class="cm"> * &lt;li&gt;is not static (given {@code isStatic is true}).
 </span></span></span><span class="line"><span class="cl"><span class="cm"> * &lt;/ul&gt;
 </span></span></span><span class="line"><span class="cl"><span class="cm"> */</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">validatePublicVoid</span><span class="p">(</span><span class="kt">boolean</span><span class="w"> </span><span class="n">isStatic</span><span class="p">,</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Throwable</span><span class="o">&gt;</span><span class="w"> </span><span class="n">errors</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">validatePublicVoid</span><span class="p">(</span><span class="kt">boolean</span><span class="w"> </span><span class="n">isStatic</span><span class="p">,</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Throwable</span><span class="o">&gt;</span><span class="w"> </span><span class="n">errors</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isStatic</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">isStatic</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">isStatic</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s">&#34;should&#34;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s">&#34;should not&#34;</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">errors</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Exception</span><span class="p">(</span><span class="s">&#34;Method &#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">method</span><span class="p">.</span><span class="na">getName</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&#34;() &#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&#34; be static&#34;</span><span class="p">));</span><span class="w">
@@ -175,7 +175,7 @@ Looking at the stack trace we find the place where validation checks happen - <c
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">method</span><span class="p">.</span><span class="na">getReturnType</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">Void</span><span class="p">.</span><span class="na">TYPE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">errors</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Exception</span><span class="p">(</span><span class="s">&#34;Method &#34;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">method</span><span class="p">.</span><span class="na">getName</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&#34;() should be void&#34;</span><span class="p">));</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>What we need is to be able to override the behavior of that method. Looking more at that class we can find the <code>validatePublicVoidNoArg</code> method. We immediately notice that we should also suppress the validation check that verifies that the method has no arguments. Yes, in general, the test method doesn&rsquo;t have arguments, but after adding <code>suspend</code> kotlin compiler will add the <code>continuation</code> argument automatically. So, we need to suppress that check as well.</p>
 <p>The easiest way to do that is to wrap <code>FrameworkMethod</code> into our class, which we&rsquo;ll call <code>SuspendFrameworkMethod</code>, and override the method with a new implementation:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="k">internal</span> <span class="k">class</span> <span class="nc">SuspendFrameworkMethod</span><span class="p">(</span><span class="k">val</span> <span class="py">frameworkMethod</span><span class="p">:</span> <span class="n">FrameworkMethod</span><span class="p">)</span> <span class="p">:</span> <span class="n">FrameworkMethod</span><span class="p">(</span><span class="n">frameworkMethod</span><span class="p">.</span><span class="n">method</span><span class="p">)</span> <span class="p">{</span>
@@ -189,8 +189,8 @@ Looking at the stack trace we find the place where validation checks happen - <c
 </span></span><span class="line"><span class="cl">            <span class="n">errors</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">Exception</span><span class="p">(</span><span class="s2">&#34;Method &#34;</span> <span class="p">+</span> <span class="n">method</span><span class="p">.</span><span class="n">name</span> <span class="p">+</span> <span class="s2">&#34;() should be public&#34;</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// skip check for void
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// skip check for no arg
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span></span><span class="line"><span class="cl">        <span class="c1">// skip check for no arg
+</span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>We still keep checks that method is public and not static though, as we want to keep these checks.</p>
 <p>After creating a wrapper around <code>FrameworkMethod</code> we should hook it somehow.</p>
@@ -209,7 +209,7 @@ We write our custom runner called <code>CoroutinesTestRunner</code> overriding s
 </span></span><span class="line"><span class="cl">        <span class="n">errors</span><span class="p">:</span> <span class="n">MutableList</span><span class="p">&lt;</span><span class="n">Throwable</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl">    <span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// skip check no arg
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">testClass</span><span class="p">.</span><span class="n">getAnnotatedMethods</span><span class="p">(</span><span class="k">annotation</span><span class="p">)</span>
+</span></span></span><span class="line"><span class="cl">        <span class="n">testClass</span><span class="p">.</span><span class="n">getAnnotatedMethods</span><span class="p">(</span><span class="k">annotation</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="p">.</span><span class="n">forEach</span> <span class="p">{</span> <span class="n">SuspendFrameworkMethod</span><span class="p">(</span><span class="k">it</span><span class="p">).</span><span class="n">validatePublicVoidNoArg</span><span class="p">(</span><span class="n">isStatic</span><span class="p">,</span> <span class="n">errors</span><span class="p">)</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
@@ -219,12 +219,12 @@ We write our custom runner called <code>CoroutinesTestRunner</code> overriding s
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">testSuccess</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">check</span><span class="p">(</span><span class="n">calculate</span><span class="p">()</span> <span class="o">==</span> <span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">check</span><span class="p">(</span><span class="n">calculate</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span><span class="p">(</span><span class="n">expected</span> <span class="p">=</span> <span class="n">IllegalStateException</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">testFail</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">check</span><span class="p">(</span><span class="n">calculate</span><span class="p">()</span> <span class="o">==</span> <span class="m">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">check</span><span class="p">(</span><span class="n">calculate</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>We run tests and again see the issue:</p>
@@ -246,7 +246,7 @@ We can see how it is done by looking at the <code>FrameworkMethod#invokeExplosiv
 </span></span></span><span class="line"><span class="cl"><span class="cm"> * parameters {@code params}. {@link InvocationTargetException}s thrown are
 </span></span></span><span class="line"><span class="cl"><span class="cm"> * unwrapped, and their causes rethrown.
 </span></span></span><span class="line"><span class="cl"><span class="cm"> */</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="n">Object</span><span class="w"> </span><span class="nf">invokeExplosively</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">Object</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Object</span><span class="p">...</span><span class="w"> </span><span class="n">params</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="n">Object</span><span class="w"> </span><span class="nf">invokeExplosively</span><span class="p">(</span><span class="kd">final</span><span class="w"> </span><span class="n">Object</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Object</span><span class="p">...</span><span class="w"> </span><span class="n">params</span><span class="p">)</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">throws</span><span class="w"> </span><span class="n">Throwable</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ReflectiveCallable</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nd">@Override</span><span class="w">
@@ -254,7 +254,7 @@ We can see how it is done by looking at the <code>FrameworkMethod#invokeExplosiv
 </span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">method</span><span class="p">.</span><span class="na">invoke</span><span class="p">(</span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="n">params</span><span class="p">);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}.</span><span class="na">run</span><span class="p">();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>We have the wrong number of arguments because we need to provide <code>continuation</code> as a parameter. An attentive reader could spot that we haven&rsquo;t added <code>runBlockingTest</code> yet.<br>
 Let&rsquo;s do that in our <code>SuspendFrameworkMethod</code>:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="nd">@Throws</span><span class="p">(</span><span class="n">Throwable</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
@@ -280,12 +280,12 @@ Awesome!</p>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl">    <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">testSuccess</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">check</span><span class="p">(</span><span class="n">calculate</span><span class="p">()</span> <span class="o">==</span> <span class="m">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">check</span><span class="p">(</span><span class="n">calculate</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nd">@Test</span><span class="p">(</span><span class="n">expected</span> <span class="p">=</span> <span class="n">IllegalStateException</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">testFail</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">check</span><span class="p">(</span><span class="n">calculate</span><span class="p">()</span> <span class="o">==</span> <span class="m">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">check</span><span class="p">(</span><span class="n">calculate</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>No more explicit <code>runBlockingTest</code>!</p>
@@ -299,13 +299,13 @@ Awesome!</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl"><span class="k">suspend</span> <span class="k">fun</span> <span class="nf">test</span><span class="p">(</span><span class="n">scope</span><span class="p">:</span> <span class="n">TestCorotinesScope</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// ...
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>This is even more verbose than using <code>runBlockingTest</code>.</p>
 <p>So, after all, have to admit that this &ldquo;optimization&rdquo; actually doesn&rsquo;t make the test methods look better. Still, the preferred way to write tests is:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="nd">@Test</span>
 </span></span><span class="line"><span class="cl"><span class="k">fun</span> <span class="nf">test</span><span class="p">()</span> <span class="p">=</span> <span class="n">runBlockingTest</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// ...
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>But at least we had some fun and probably understand better the internals of the JUnit framework.</p>
 <p>Happy coding!</p>
 

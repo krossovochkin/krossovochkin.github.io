@@ -91,7 +91,7 @@ That means that one can “replace” object on a given reference. To make it im
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">void</span> <span class="n">fooFinal</span><span class="p">(</span><span class="k">final</span> <span class="n">String</span> <span class="k">param</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="k">param</span> <span class="p">=</span> <span class="s2">&#34;hello&#34;</span><span class="p">;</span> <span class="c1">// Cannot assign a value to final variable &#39;param&#39;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>For example, as shown in a snippet, we get compilation error only if we add final keyword.</p>
 <h3 id="kotlin">Kotlin</h3>
@@ -100,7 +100,7 @@ That means that one can “replace” object on a given reference. To make it im
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">fun</span> <span class="nf">foo</span><span class="p">(</span><span class="k">param</span><span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">       <span class="k">param</span> <span class="p">=</span> <span class="s2">&#34;hello&#34;</span> <span class="c1">// Val cannot be reassigned
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><h2 id="package-private-vs-protected">Package private vs protected</h2>
 <p>Kotlin and Java have different approaches to visibility access. Though they are well documented, there is at least one interesting case, which is worth mentioning. And it is about protected keyword.</p>
@@ -177,7 +177,7 @@ That means that one can “replace” object on a given reference. To make it im
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">        <span class="n">b</span><span class="p">.</span><span class="n">internalMethod</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">        <span class="n">b</span><span class="p">.</span><span class="n">protectedMethod</span><span class="p">()</span> <span class="c1">// Cannot access &#39;protectedMethod&#39;: it is protected in &#39;B&#39;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>And I personally found that really useful. Package-private thing is clunky and feels somewhat outdated. Having protected to be accessible from the same package feels like encapsulation hole. Glad that Kotlin has a more strict approach for protected keyword.</p>
 <p>But what if we would like to have something similar to package-private in Kotlin? In this case, we can consider putting two classes into same file with marking classes we’d like to hide as private. All the methods can remain public as class won’t be accessible from outside anyway:</p>

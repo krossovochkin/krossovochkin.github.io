@@ -109,7 +109,7 @@ So, let&rsquo;s just use chaining always! Not so fast, there are still cases whe
 </span></span><span class="line"><span class="cl">        <span class="n">api</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="n">id</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">flatMap</span> <span class="p">{</span> <span class="k">data</span> <span class="o">-&gt;</span> <span class="n">api</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="k">data</span><span class="p">)</span> <span class="p">}</span> <span class="c1">// ! user is not accessible
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">.</span><span class="n">collect</span><span class="p">()</span>
+</span></span></span><span class="line"><span class="cl">    <span class="p">.</span><span class="n">collect</span><span class="p">()</span>
 </span></span></code></pre></div><p>An important observation is that nesting unlike chaining creates scope. And one of the simplest things one can do with the scope is to share some data inside it.</p>
 <h3 id="manage-scope-lifecycle">Manage scope lifecycle</h3>
 <p>Managing variables is the simplest thing, but there is another one - more powerful: scope lifecycle.
@@ -160,7 +160,7 @@ Then start collecting our stream under test, emit data to each of the streams an
 </span></span><span class="line"><span class="cl">   <span class="n">testFlow</span><span class="p">:</span> <span class="p">(</span><span class="n">Flow</span><span class="p">&lt;</span><span class="n">Unit</span><span class="p">&gt;,</span> <span class="n">Flow</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;,</span> <span class="n">Flow</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;)</span> <span class="o">-&gt;</span> <span class="n">Flow</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">   <span class="c1">// GIVEN
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="k">val</span> <span class="py">triggerFlow</span> <span class="p">=</span> <span class="n">MutableSharedFlow</span><span class="p">&lt;</span><span class="n">Unit</span><span class="p">&gt;()</span>
+</span></span></span><span class="line"><span class="cl">   <span class="k">val</span> <span class="py">triggerFlow</span> <span class="p">=</span> <span class="n">MutableSharedFlow</span><span class="p">&lt;</span><span class="n">Unit</span><span class="p">&gt;()</span>
 </span></span><span class="line"><span class="cl">   <span class="k">val</span> <span class="py">observeData</span> <span class="p">=</span> <span class="n">MutableSharedFlow</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;()</span>
 </span></span><span class="line"><span class="cl">   <span class="k">val</span> <span class="py">observeFlow</span> <span class="p">=</span> <span class="n">MutableSharedFlow</span><span class="p">&lt;</span><span class="n">Int</span><span class="p">&gt;()</span>
 </span></span><span class="line"><span class="cl">
@@ -177,15 +177,15 @@ Then start collecting our stream under test, emit data to each of the streams an
 </span></span><span class="line"><span class="cl">           <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">           <span class="c1">// WHEN
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>           <span class="k">val</span> <span class="py">data</span> <span class="p">=</span> <span class="m">200</span>
-</span></span><span class="line"><span class="cl">           <span class="k">val</span> <span class="py">changedCount1</span> <span class="p">=</span> <span class="m">500</span>
+</span></span></span><span class="line"><span class="cl">           <span class="k">val</span> <span class="py">data</span> <span class="p">=</span> <span class="mi">200</span>
+</span></span><span class="line"><span class="cl">           <span class="k">val</span> <span class="py">changedCount1</span> <span class="p">=</span> <span class="mi">500</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">           <span class="n">triggerFlow</span><span class="p">.</span><span class="n">emit</span><span class="p">(</span><span class="n">Unit</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">           <span class="n">observeData</span><span class="p">.</span><span class="n">emit</span><span class="p">(</span><span class="k">data</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">           <span class="n">observeFlow</span><span class="p">.</span><span class="n">emit</span><span class="p">(</span><span class="n">changedCount1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">           <span class="c1">// THEN
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>           <span class="n">check</span><span class="p">(</span><span class="n">items</span> <span class="o">==</span> <span class="n">listOf</span><span class="p">(</span><span class="n">changedCount1</span><span class="p">))</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">           <span class="n">check</span><span class="p">(</span><span class="n">items</span> <span class="o">==</span> <span class="n">listOf</span><span class="p">(</span><span class="n">changedCount1</span><span class="p">))</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">               <span class="s">&#34;&#34;&#34;Check failed:
 </span></span></span><span class="line"><span class="cl"><span class="s">                   |Expected: </span><span class="si">${listOf(changedCount1)}</span><span class="s">
 </span></span></span><span class="line"><span class="cl"><span class="s">                   |Actual: </span><span class="si">$items</span><span class="s">
@@ -195,13 +195,13 @@ Then start collecting our stream under test, emit data to each of the streams an
 </span></span></span></code></pre></div><p>If we run this test for each of the approaches we&rsquo;ll see that everything works correctly: all flows are triggered and the result is the same.
 But let&rsquo;s extend the test with some custom emission:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl">   <span class="c1">// WHEN
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="k">val</span> <span class="py">changedCount2</span> <span class="p">=</span> <span class="m">200</span>
+</span></span></span><span class="line"><span class="cl">   <span class="k">val</span> <span class="py">changedCount2</span> <span class="p">=</span> <span class="mi">200</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">   <span class="n">triggerFlow</span><span class="p">.</span><span class="n">emit</span><span class="p">(</span><span class="n">Unit</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">   <span class="n">observeFlow</span><span class="p">.</span><span class="n">emit</span><span class="p">(</span><span class="n">changedCount2</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">   <span class="c1">// THEN
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="n">check</span><span class="p">(</span><span class="n">items</span> <span class="o">==</span> <span class="n">listOf</span><span class="p">(</span><span class="n">changedCount1</span><span class="p">))</span> <span class="p">{</span>
+</span></span></span><span class="line"><span class="cl">   <span class="n">check</span><span class="p">(</span><span class="n">items</span> <span class="o">==</span> <span class="n">listOf</span><span class="p">(</span><span class="n">changedCount1</span><span class="p">))</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">       <span class="s">&#34;&#34;&#34;Check failed:
 </span></span></span><span class="line"><span class="cl"><span class="s">           |Expected: </span><span class="si">${listOf(changedCount1)}</span><span class="s">
 </span></span></span><span class="line"><span class="cl"><span class="s">           |Actual: </span><span class="si">$items</span><span class="s">

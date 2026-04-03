@@ -107,9 +107,9 @@ But SQLite also has some advanced features and this article is about one of such
 </blockquote>
 <p>So, if we’d like to create trigger, we can execute such query:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">TRIGGER</span><span class="w"> </span><span class="n">update_value</span><span class="w"> </span><span class="k">INSTEAD</span><span class="w"> </span><span class="k">OF</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">persons</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">BEGIN</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">UPDATE</span><span class="w"> </span><span class="n">persons</span><span class="p">(</span><span class="n">age</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="p">(</span><span class="mi">21</span><span class="p">)</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">END</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">BEGIN</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">UPDATE</span><span class="w"> </span><span class="n">persons</span><span class="p">(</span><span class="n">age</span><span class="p">)</span><span class="w"> </span><span class="k">values</span><span class="p">(</span><span class="mi">21</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">END</span><span class="p">;</span><span class="w">
 </span></span></span></code></pre></div><p>In such example whenever any update on persons table happen instead of actual update for all affected rows, value of column age will be set to 21.</p>
 <p>This example looks weird, but main idea is to become familiar with syntax. And now, when we should be fine with that, one important question might arise: why we need or even might need triggers?
 It feels so unsafe to implement business logic this way as it will be difficult to test, it might be broken with database schema updates and it is implicit somewhere inside SQL. It seems better to expose all the callbacks of database changes to our actual program and implement all the required logic in code.
@@ -250,7 +250,7 @@ Therefore in order to work with triggers on Android we have to return to the bas
 </span></span><span class="line"><span class="cl">    <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">read</span><span class="p">():</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">OrderInsertedLog</span><span class="p">&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>And finally we’ll create a database we’ll work with:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="nd">@Database</span><span class="p">(</span><span class="n">entities</span> <span class="p">=</span> <span class="p">[</span><span class="n">Order</span><span class="o">::</span><span class="k">class</span><span class="p">,</span> <span class="n">OrderInsertedLog</span><span class="o">::</span><span class="k">class</span><span class="p">],</span> <span class="n">version</span> <span class="p">=</span> <span class="m">1</span><span class="p">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="nd">@Database</span><span class="p">(</span><span class="n">entities</span> <span class="p">=</span> <span class="p">[</span><span class="n">Order</span><span class="o">::</span><span class="k">class</span><span class="p">,</span> <span class="n">OrderInsertedLog</span><span class="o">::</span><span class="k">class</span><span class="p">],</span> <span class="n">version</span> <span class="p">=</span> <span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="k">abstract</span> <span class="k">class</span> <span class="nc">AppDb</span> <span class="p">:</span> <span class="n">RoomDatabase</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">abstract</span> <span class="k">fun</span> <span class="nf">orderDao</span><span class="p">():</span> <span class="n">OrderDao</span>
@@ -288,8 +288,8 @@ Therefore in order to work with triggers on Android we have to return to the bas
 <p>And in ViewModel we’ll actually use this database to verify that our trigger worked:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-kotlin" data-lang="kotlin"><span class="line"><span class="cl"><span class="n">viewModelScope</span><span class="p">.</span><span class="n">launch</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="n">db</span><span class="p">.</span><span class="n">orderDao</span><span class="p">().*</span><span class="n">apply</span> <span class="p">*{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">insert</span><span class="p">(</span><span class="n">Order</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">1568069843</span><span class="p">,</span> <span class="m">12.2</span><span class="p">))</span>
-</span></span><span class="line"><span class="cl">        <span class="n">insert</span><span class="p">(</span><span class="n">Order</span><span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="m">1568069862</span><span class="p">,</span> <span class="m">15.2</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="n">insert</span><span class="p">(</span><span class="n">Order</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1568069843</span><span class="p">,</span> <span class="mf">12.2</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="n">insert</span><span class="p">(</span><span class="n">Order</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1568069862</span><span class="p">,</span> <span class="mf">15.2</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">db</span><span class="p">.</span><span class="n">logDao</span><span class="p">().</span><span class="n">read</span><span class="p">()</span>
@@ -334,7 +334,7 @@ Here is short snippet of how this method looks like:</p>
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="n">observerChannel</span><span class="p">.</span><span class="n">offer</span><span class="p">(</span><span class="n">Unit</span><span class="p">)</span> <span class="c1">// Initial signal to perform first query.
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    
+</span></span></span><span class="line"><span class="cl">    
 </span></span><span class="line"><span class="cl">    <span class="n">db</span><span class="p">.</span><span class="n">invalidationTracker</span><span class="p">.</span><span class="n">addObserver</span><span class="p">(</span><span class="n">observer</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="n">signal</span> <span class="k">in</span> <span class="n">observerChannel</span><span class="p">)</span> <span class="p">{</span>
@@ -386,7 +386,7 @@ Here is short snippet of how this method looks like:</p>
 </span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">.</span><span class="na">append</span><span class="p">(</span><span class="s">&#34;; END&#34;</span><span class="p">);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">writableDb</span><span class="p">.</span><span class="na">execSQL</span><span class="p">(</span><span class="n">stringBuilder</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>And whoa! Tracker creates trigger for any update, insert or delete for a given table with copying table name and column to the tracking table. Sounds familiar!</p>
 <p>This method is called in:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kt">void</span><span class="w"> </span><span class="nf">syncTriggers</span><span class="p">(</span><span class="n">SupportSQLiteDatabase</span><span class="w"> </span><span class="n">database</span><span class="p">)</span><span class="w">
@@ -399,8 +399,8 @@ Here is short snippet of how this method looks like:</p>
 </span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">entry</span><span class="p">.</span><span class="na">getValue</span><span class="p">()</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="p">.</span><span class="na">notifyByTableInvalidStatus</span><span class="p">(</span><span class="n">invalidatedTableIds</span><span class="p">);</span><span class="w">  
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">...</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>In which actual checks on what was updated are made and where all the registered observers are notified.</p>
 <blockquote>
 <p>Cases in which all these methods (such as syncTriggers, or running refresh runnable) called are out of scope of this article. It is better to check the source code directly</p>
@@ -423,8 +423,8 @@ The case we’re interested in is whether custom SQLite trigger’s operation ca
 </span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="n">launchIn</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">db</span><span class="p">.</span><span class="n">orderDao</span><span class="p">().*</span><span class="n">apply</span> <span class="p">*{</span>
-</span></span><span class="line"><span class="cl">        <span class="n">insert</span><span class="p">(</span><span class="n">Order</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">1568069843</span><span class="p">,</span> <span class="m">12.2</span><span class="p">))</span>
-</span></span><span class="line"><span class="cl">        <span class="n">insert</span><span class="p">(</span><span class="n">Order</span><span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="m">1568069862</span><span class="p">,</span> <span class="m">15.2</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="n">insert</span><span class="p">(</span><span class="n">Order</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1568069843</span><span class="p">,</span> <span class="mf">12.2</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="n">insert</span><span class="p">(</span><span class="n">Order</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1568069862</span><span class="p">,</span> <span class="mf">15.2</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>What we’d expect after code execution?
