@@ -96,32 +96,32 @@ Here we download tools, unpack them, and set required env variables</p>
 </span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s1">&#39;export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/36.0.0&#39;</span> &gt;&gt; ~/.bashrc
 </span></span><span class="line"><span class="cl"><span class="nb">source</span> ~/.bashrc
 </span></span></code></pre></div><p>Next we need to download platform and build tools and accept all licenses</p>
-<pre tabindex="0"><code>sdkmanager &#34;platforms;android-34&#34; &#34;build-tools;34.0.0&#34; &#34;platform-tools&#34;
-sdkmanager --licenses
-</code></pre><p>Installing Gradle - that simple</p>
-<pre tabindex="0"><code>pkg install gradle
-</code></pre><p>And Termux version of aapt2. Android SDK has an aapt2 tool in the main distribution, but it is for Linux and Termux is not compatible with that version. So we need to download a native version of aapt2 and set up an override in Gradle to point to that new binary</p>
-<pre tabindex="0"><code>apt install aapt2
-mkdir -p ~/.gradle &amp;&amp; echo &#39;android.aapt2FromMavenOverride=/data/data/com.termux/files/usr/bin/aapt2&#39; &gt;&gt; ~/.gradle/gradle.properties
-</code></pre><p>And here we have all the setup for building the app ready</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sdkmanager <span class="s2">&#34;platforms;android-34&#34;</span> <span class="s2">&#34;build-tools;34.0.0&#34;</span> <span class="s2">&#34;platform-tools&#34;</span>
+</span></span><span class="line"><span class="cl">sdkmanager --licenses
+</span></span></code></pre></div><p>Installing Gradle - that simple</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pkg install gradle
+</span></span></code></pre></div><p>And Termux version of aapt2. Android SDK has an aapt2 tool in the main distribution, but it is for Linux and Termux is not compatible with that version. So we need to download a native version of aapt2 and set up an override in Gradle to point to that new binary</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">apt install aapt2
+</span></span><span class="line"><span class="cl">mkdir -p ~/.gradle <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s1">&#39;android.aapt2FromMavenOverride=/data/data/com.termux/files/usr/bin/aapt2&#39;</span> &gt;&gt; ~/.gradle/gradle.properties
+</span></span></code></pre></div><p>And here we have all the setup for building the app ready</p>
 <p>Let&rsquo;s get into the app. We&rsquo;ll need to have a git package installed, then we clone the project (of course, better to set up SSH, but it will work the same way as everywhere, and as we are not going to push changes, we&rsquo;ll use HTTPS)</p>
-<pre tabindex="0"><code>pkg install git
-
-git clone https://github.com/android/architecture-samples.git
-
-cd architecture-samples
-</code></pre><p>And now we can assemble the app (I had issues and lags when running a daemon, so disabled it for the sake of testing)</p>
-<pre tabindex="0"><code>./gradlew assembleDebug --no-daemon
-</code></pre><p>And it builds!</p>
-<p><img src="../../img/Screenshot_20260426-122452_Termux.png" alt="Build successful"></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pkg install git
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">git clone https://github.com/android/architecture-samples.git
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> architecture-samples
+</span></span></code></pre></div><p>And now we can assemble the app (I had issues and lags when running a daemon, so disabled it for the sake of testing)</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./gradlew assembleDebug --no-daemon
+</span></span></code></pre></div><p>And it builds!</p>
+<img src="../../img/Screenshot_20260426-122452_Termux.png" width="300px" />
 <p>Right on your phone<br>
 (Say goodbye to your phone&rsquo;s battery though, lol). Took around 6 minutes - not that great for a not that big project.</p>
 <p>Next and last thing - install Gemini (termux-api is a package that will allow opening a browser for auth request)</p>
-<pre tabindex="0"><code>pkg install termux-api
-pkg install nodejs
-npm install -g @google/gemini-cli
-gemini
-</code></pre><p>And voilà, follow setup and sign in for Gemini and you are now ready to work on Android projects from an Android phone.<br>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pkg install termux-api
+</span></span><span class="line"><span class="cl">pkg install nodejs
+</span></span><span class="line"><span class="cl">npm install -g @google/gemini-cli
+</span></span><span class="line"><span class="cl">gemini
+</span></span></code></pre></div><p>And voilà, follow setup and sign in for Gemini and you are now ready to work on Android projects from an Android phone.<br>
 Now you can have a workflow of giving tasks to Gemini along with verifying outputs right away.</p>
 <p>Incredible, even though completely useless :)<br>
 I don&rsquo;t think it will be useful to anybody, but I still find it quite fun.</p>
