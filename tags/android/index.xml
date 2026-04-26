@@ -6,8 +6,15 @@
     <description>Recent content in Android on Vasya Drobushkov</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 23 Jul 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 26 Apr 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://krossovochkin.com/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Android Development on Android: A Self-Contained Setup</title>
+      <link>https://krossovochkin.com/posts/2026_04_26_android_development_on_android/</link>
+      <pubDate>Sun, 26 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://krossovochkin.com/posts/2026_04_26_android_development_on_android/</guid>
+      <description>&lt;p&gt;I use my phone on a daily basis for dozens of various things. This is truly my pocket computer that helps me with many different tasks. Since the first time I had an Android phone until nowadays, the flexibility of the platform has been very astonishing&lt;/p&gt;&#xA;&lt;p&gt;Recently, I&amp;rsquo;ve learned about Termux - it is a UNIX terminal running on the phone. Yes, just directly on a mobile phone you have access to git, ssh, curl, and other terminal commands.&lt;br&gt;&#xA;It is very powerful by itself to be able to connect to a remote server from a phone and do sth, but one thing came to my mind - whether it can be used to work on Android projects&lt;/p&gt;</description>
+    </item>
     <item>
       <title>When Compose remember cannot forget</title>
       <link>https://krossovochkin.com/posts/2022_07_23_when_compose_remember_cannot_forget/</link>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <title>Android Development on Android: A Self-Contained Setup</title>
+
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon-144-precompressed.png"/>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script src="https://kit.fontawesome.com/6d5aec2882.js" crossorigin="anonymous"></script>
+
+  <script src="https://cdn.counter.dev/script.js" data-id="2d1779da-dc31-440f-8099-940355d12f4d" data-utcoffset="2"></script>
+  
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <link rel="me" href="https://androiddev.social/@krossovochkin" />
+
+  
+  <meta name="theme-color" content="#1e2327">
+</head>
+
+<body>
+
+<header>
+<nav>
+  <ul>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/apps">Apps</a></li>
+    
+    
+    <li class="menu-right"><a rel="me" href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://androiddev.social/@krossovochkin" target="_blank"><i class="fa-brands fa-mastodon fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-l"></i></a></li>
+    
+  </ul>
+</nav>
+
+</header>
+
+<br/>
+
+
+<div class="meta">
+
+  
+    <h1><span class="title">Android Development on Android: A Self-Contained Setup</span></h1>
+  
+  
+    <h3>April 26, 2026</h3>
+  
+
+</div>
+
+<main>
+<p>I use my phone on a daily basis for dozens of various things. This is truly my pocket computer that helps me with many different tasks. Since the first time I had an Android phone until nowadays, the flexibility of the platform has been very astonishing</p>
+<p>Recently, I&rsquo;ve learned about Termux - it is a UNIX terminal running on the phone. Yes, just directly on a mobile phone you have access to git, ssh, curl, and other terminal commands.<br>
+It is very powerful by itself to be able to connect to a remote server from a phone and do sth, but one thing came to my mind - whether it can be used to work on Android projects</p>
+<p>With the AI boom, in many cases one even doesn&rsquo;t need to open a text editor, and there are a bunch of CLI tools - Claude Code, Cursor, Gemini - that can help with modifying the code.<br>
+What is left is verification - which is overall better to have on CI, but why not try to do everything on the phone?</p>
+<p>First of all, one should install <a href="https://play.google.com/store/apps/details?id=com.termux">Termux</a> and update packages</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pkg update <span class="o">&amp;&amp;</span> pkg upgrade
+</span></span></code></pre></div><p>Next thing is JDK - right, after that you&rsquo;ll have everything to run Java code on your phone. For me, that is quite insane by itself</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pkg install openjdk-21
+</span></span></code></pre></div><p>Next thing is Android CLI tools to build the app. Usually they are part of the Android Studio distribution, but we don&rsquo;t need an IDE for that - only tools are enough.<br>
+Here we download tools, unpack them, and set required env variables</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -O https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+</span></span><span class="line"><span class="cl">unzip commandlinetools-linux-*.zip -d <span class="nv">$HOME</span>/android-sdk
+</span></span><span class="line"><span class="cl">mkdir -p <span class="nv">$HOME</span>/android-sdk/cmdline-tools/latest
+</span></span><span class="line"><span class="cl">mv <span class="nv">$HOME</span>/android-sdk/cmdline-tools/bin <span class="se">\
+</span></span></span><span class="line"><span class="cl">   <span class="nv">$HOME</span>/android-sdk/cmdline-tools/lib <span class="se">\
+</span></span></span><span class="line"><span class="cl">   <span class="nv">$HOME</span>/android-sdk/cmdline-tools/NOTICE.txt <span class="se">\
+</span></span></span><span class="line"><span class="cl">   <span class="nv">$HOME</span>/android-sdk/cmdline-tools/source.properties <span class="se">\
+</span></span></span><span class="line"><span class="cl">   <span class="nv">$HOME</span>/android-sdk/cmdline-tools/latest/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s1">&#39;export ANDROID_HOME=$HOME/android-sdk&#39;</span> &gt;&gt; ~/.bashrc
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s1">&#39;export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/36.0.0&#39;</span> &gt;&gt; ~/.bashrc
+</span></span><span class="line"><span class="cl"><span class="nb">source</span> ~/.bashrc
+</span></span></code></pre></div><p>Next we need to download platform and build tools and accept all licenses</p>
+<pre tabindex="0"><code>sdkmanager &#34;platforms;android-34&#34; &#34;build-tools;34.0.0&#34; &#34;platform-tools&#34;
+sdkmanager --licenses
+</code></pre><p>Installing Gradle - that simple</p>
+<pre tabindex="0"><code>pkg install gradle
+</code></pre><p>And Termux version of aapt2. Android SDK has an aapt2 tool in the main distribution, but it is for Linux and Termux is not compatible with that version. So we need to download a native version of aapt2 and set up an override in Gradle to point to that new binary</p>
+<pre tabindex="0"><code>apt install aapt2
+mkdir -p ~/.gradle &amp;&amp; echo &#39;android.aapt2FromMavenOverride=/data/data/com.termux/files/usr/bin/aapt2&#39; &gt;&gt; ~/.gradle/gradle.properties
+</code></pre><p>And here we have all the setup for building the app ready</p>
+<p>Let&rsquo;s get into the app. We&rsquo;ll need to have a git package installed, then we clone the project (of course, better to set up SSH, but it will work the same way as everywhere, and as we are not going to push changes, we&rsquo;ll use HTTPS)</p>
+<pre tabindex="0"><code>pkg install git
+
+git clone https://github.com/android/architecture-samples.git
+
+cd architecture-samples
+</code></pre><p>And now we can assemble the app (I had issues and lags when running a daemon, so disabled it for the sake of testing)</p>
+<pre tabindex="0"><code>./gradlew assembleDebug --no-daemon
+</code></pre><p>And it builds!</p>
+<p><img src="../../img/Screenshot_20260426-122452_Termux.png" alt="Build successful"></p>
+<p>Right on your phone<br>
+(Say goodbye to your phone&rsquo;s battery though, lol). Took around 6 minutes - not that great for a not that big project.</p>
+<p>Next and last thing - install Gemini (termux-api is a package that will allow opening a browser for auth request)</p>
+<pre tabindex="0"><code>pkg install termux-api
+pkg install nodejs
+npm install -g @google/gemini-cli
+gemini
+</code></pre><p>And voilà, follow setup and sign in for Gemini and you are now ready to work on Android projects from an Android phone.<br>
+Now you can have a workflow of giving tasks to Gemini along with verifying outputs right away.</p>
+<p>Incredible, even though completely useless :)<br>
+I don&rsquo;t think it will be useful to anybody, but I still find it quite fun.</p>
+<p>And still Termux is quite powerful to do remote work via ssh on the go</p>
+<p>Happy building!</p>
+
+</main>
+
+
+<hr/>
+
+<footer>
+<nav>
+  <ul>
+    
+    <li class="menu-left"><a href="/about">About</a></li>
+    
+    <li class="menu-left"><a href="/">Posts</a></li>
+    
+    <li class="menu-left"><a href="/apps">Apps</a></li>
+    
+    
+    <li class="menu-right"><a rel="me" href="https://t.me/krossovochkin_newsletter" target="_blank"><i class="fa-brands fa-telegram fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://stackoverflow.com/users/1533933/krossovochkin" target="_blank"><i class="fa-brands fa-stack-overflow fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://linkedin.com/in/vasyadrobushkov" target="_blank"><i class="fa-brands fa-linkedin fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://facebook.com/vasya.drobushkov" target="_blank"><i class="fa-brands fa-facebook fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="/index.xml" target="_blank"><i class="fa-solid fa-rss fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://androiddev.social/@krossovochkin" target="_blank"><i class="fa-brands fa-mastodon fa-l"></i></a></li>
+    
+    <li class="menu-right"><a rel="me" href="https://github.com/krossovochkin" target="_blank"><i class="fa-brands fa-github fa-l"></i></a></li>
+    
+  </ul>
+</nav>
+
+</footer>
+
+
+</body>
+
+</html>

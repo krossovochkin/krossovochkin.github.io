@@ -2,6 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://krossovochkin.com/tags/android/</loc>
+    <lastmod>2026-04-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://krossovochkin.com/posts/2026_04_26_android_development_on_android/</loc>
+    <lastmod>2026-04-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://krossovochkin.com/tags/cli/</loc>
+    <lastmod>2026-04-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://krossovochkin.com/tags/development/</loc>
+    <lastmod>2026-04-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://krossovochkin.com/tags/gradle/</loc>
+    <lastmod>2026-04-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://krossovochkin.com/tags/mobile/</loc>
+    <lastmod>2026-04-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://krossovochkin.com/posts/</loc>
+    <lastmod>2026-04-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://krossovochkin.com/</loc>
+    <lastmod>2026-04-26T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://krossovochkin.com/tags/coroutines/</loc>
     <lastmod>2026-01-11T00:00:00+00:00</lastmod>
   </url><url>
@@ -12,12 +36,6 @@
     <lastmod>2026-01-11T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://krossovochkin.com/posts/2026_01_11_kotlin_coroutines_cancellation_and_exception_handling/</loc>
-    <lastmod>2026-01-11T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://krossovochkin.com/posts/</loc>
-    <lastmod>2026-01-11T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://krossovochkin.com/</loc>
     <lastmod>2026-01-11T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://krossovochkin.com/tags/app/</loc>
@@ -82,9 +100,6 @@
   </url><url>
     <loc>https://krossovochkin.com/apps/time-utils/</loc>
     <lastmod>2022-08-22T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://krossovochkin.com/tags/android/</loc>
-    <lastmod>2022-07-23T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://krossovochkin.com/apps/color-utils/</loc>
     <lastmod>2022-07-23T00:00:00+00:00</lastmod>
