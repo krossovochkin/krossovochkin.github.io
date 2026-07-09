@@ -109,6 +109,8 @@
       <div id="big" class="big">—</div>
       <div id="small" class="small">—</div>
     </div>
+
+    <div id="debug" style="margin-top:16px; font-size:11px; color:var(--muted); font-family:var(--mono); word-break:break-all; white-space:pre-wrap;"></div>
   </div>
 
 <script>
@@ -194,19 +196,29 @@
   // --- init from query params ---
   const params = new URLSearchParams(window.location.search);
   const today = new Date();
+  const debugLines = [];
+  debugLines.push('href: ' + window.location.href);
+  debugLines.push('search: ' + JSON.stringify(window.location.search));
+  debugLines.push('has d: ' + params.has('d') + ', d value: ' + JSON.stringify(params.get('d')));
+  debugLines.push('has s: ' + params.has('s') + ', s value: ' + JSON.stringify(params.get('s')));
 
   let beforeDate = today;
   if (params.has('d')) {
     const parsed = parseDParam(params.get('d').trim());
+    debugLines.push('parsed d -> ' + (parsed ? toISO(parsed) : 'null (regex did not match)'));
     if (parsed) beforeDate = parsed;
   }
   beforeEl.value = toISO(beforeDate);
+  debugLines.push('beforeEl.value set to: ' + beforeEl.value);
 
   let afterDate = today;
   if (params.get('s') === '1') {
     afterDate = new Date(today.getFullYear(), beforeDate.getMonth(), beforeDate.getDate());
   }
   afterEl.value = toISO(afterDate);
+  debugLines.push('afterEl.value set to: ' + afterEl.value);
+
+  document.getElementById('debug').textContent = debugLines.join('\n');
 
   beforeEl.addEventListener('change', update);
   afterEl.addEventListener('change', update);
