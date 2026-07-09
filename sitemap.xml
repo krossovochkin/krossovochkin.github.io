@@ -2,18 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://krossovochkin.com/tags/app/</loc>
-    <lastmod>2026-07-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://krossovochkin.com/apps/</loc>
-    <lastmod>2026-07-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://krossovochkin.com/apps/date-utils/</loc>
-    <lastmod>2026-07-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://krossovochkin.com/</loc>
-    <lastmod>2026-07-09T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://krossovochkin.com/tags/android/</loc>
     <lastmod>2026-04-26T00:00:00+00:00</lastmod>
   </url><url>
@@ -35,6 +23,9 @@
     <loc>https://krossovochkin.com/posts/</loc>
     <lastmod>2026-04-26T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>https://krossovochkin.com/</loc>
+    <lastmod>2026-04-26T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://krossovochkin.com/tags/coroutines/</loc>
     <lastmod>2026-01-11T00:00:00+00:00</lastmod>
   </url><url>
@@ -46,6 +37,12 @@
   </url><url>
     <loc>https://krossovochkin.com/posts/2026_01_11_kotlin_coroutines_cancellation_and_exception_handling/</loc>
     <lastmod>2026-01-11T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://krossovochkin.com/tags/app/</loc>
+    <lastmod>2025-07-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://krossovochkin.com/apps/</loc>
+    <lastmod>2025-07-27T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://krossovochkin.com/apps/chesskt/</loc>
     <lastmod>2025-07-27T00:00:00+00:00</lastmod>

@@ -10,16 +10,9 @@
 		
 		
 		
-			<lastBuildDate>Thu, 09 Jul 2026 00:00:00 +0000</lastBuildDate>
+			<lastBuildDate>Sun, 27 Jul 2025 00:00:00 +0000</lastBuildDate>
 		
 			<atom:link href="https://krossovochkin.com/apps/index.xml" rel="self" type="application/rss+xml" />
-			<item>
-				<title>Date Utils</title>
-				<link>https://krossovochkin.com/apps/date-utils/</link>
-				<pubDate>Thu, 09 Jul 2026 00:00:00 +0000</pubDate>
-				<guid>https://krossovochkin.com/apps/date-utils/</guid>
-				<description>&lt;iframe width=&#34;340px&#34; height=&#34;140px&#34; src=&#34;../../applications/date-utils/index.html&#34; style=&#34;margin: 0 auto; display: block; background-color: white;&#34;&gt;&lt;/iframe&gt;</description>
-			</item>
 			<item>
 				<title>ChessKt Demo</title>
 				<link>https://krossovochkin.com/apps/chesskt/</link>
