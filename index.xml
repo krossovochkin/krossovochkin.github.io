@@ -10,9 +10,16 @@
 		
 		
 		
-			<lastBuildDate>Sun, 26 Apr 2026 00:00:00 +0000</lastBuildDate>
+			<lastBuildDate>Thu, 09 Jul 2026 00:00:00 +0000</lastBuildDate>
 		
 			<atom:link href="https://krossovochkin.com/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Date Utils</title>
+				<link>https://krossovochkin.com/apps/date-utils/</link>
+				<pubDate>Thu, 09 Jul 2026 00:00:00 +0000</pubDate>
+				<guid>https://krossovochkin.com/apps/date-utils/</guid>
+				<description>&lt;iframe width=&#34;340px&#34; height=&#34;140px&#34; src=&#34;../../applications/date-utils/index.html&#34; style=&#34;margin: 0 auto; display: block; background-color: white;&#34;&gt;&lt;/iframe&gt;</description>
+			</item>
 			<item>
 				<title>Android Development on Android: A Self-Contained Setup</title>
 				<link>https://krossovochkin.com/posts/2026_04_26_android_development_on_android/</link>
